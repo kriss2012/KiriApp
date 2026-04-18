@@ -103,8 +103,12 @@ fun ChatBubble(msg: ChatMessage) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isBot) Arrangement.Start else Arrangement.End
     ) {
+        Column(
+            modifier = Modifier.widthIn(max = 280.dp),
+            horizontalAlignment = if (isBot) Alignment.Start else Alignment.End
+        ) {
             Card(
-                modifier = Modifier.width(if (isBot) 220.dp else 210.dp),
+                modifier = Modifier.widthIn(min = 40.dp, max = 240.dp),
                 shape = if (isBot) RoundedCornerShape(4.dp, 14.dp, 14.dp, 14.dp) else RoundedCornerShape(14.dp, 4.dp, 14.dp, 14.dp),
                 colors = CardDefaults.cardColors(containerColor = if (isBot) Color.White else OrangePrimary),
                 border = if (isBot) BorderStroke(1.dp, BorderColor) else null,
@@ -112,15 +116,19 @@ fun ChatBubble(msg: ChatMessage) {
             ) {
                 Text(
                     text = msg.text,
-                    modifier = Modifier.padding(9.dp, 11.dp),
+                    modifier = Modifier.padding(10.dp, 10.dp),
                     style = MaterialTheme.typography.bodySmall,
                     color = if (isBot) TextPrimary else Color.White,
-                    lineHeight = 16.sp
+                    lineHeight = 16.sp,
+                    fontSize = 11.sp
                 )
             }
             
             if (msg.chips != null) {
-                LazyRow(modifier = Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                LazyRow(
+                    modifier = Modifier.padding(top = 6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
                     items(msg.chips) { chip ->
                         Surface(
                             color = OrangeLight,
@@ -128,7 +136,14 @@ fun ChatBubble(msg: ChatMessage) {
                             border = BorderStroke(1.dp, OrangePrimary),
                             modifier = Modifier.clickable { }
                         ) {
-                            Text(chip, modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold)
+                            Text(
+                                text = chip,
+                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = OrangeDark,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 9.sp
+                            )
                         }
                     }
                 }
@@ -138,7 +153,13 @@ fun ChatBubble(msg: ChatMessage) {
                 MatchResultCard()
             }
 
-            Text("9:32 AM", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = TextSecondary, modifier = Modifier.padding(top = 2.dp))
+            Text(
+                text = "9:32 AM",
+                style = MaterialTheme.typography.labelSmall,
+                fontSize = 8.sp,
+                color = TextSecondary,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
     }
 }
