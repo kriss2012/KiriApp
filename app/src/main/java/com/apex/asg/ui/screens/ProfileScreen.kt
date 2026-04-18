@@ -26,15 +26,72 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.components.SectionHeader
 import com.apex.asg.ui.theme.*
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.UserDto
+import com.apex.asg.ui.viewmodels.ProfileState
+import com.apex.asg.ui.viewmodels.ProfileViewModel
+import androidx.compose.ui.platform.LocalContext
+
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val userId = sessionManager.getUserId() ?: ""
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            viewModel.fetchProfile(userId)
+        }
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = BgCream,
+        bottomBar = { Spacer(Modifier.height(0.dp)) } // Padding already in MainScaffold
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            when (val state = uiState) {
+                is ProfileState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = OrangePrimary
+                    )
+                }
+                is ProfileState.Success -> {
+                    ProfileContent(state.user)
+                }
+                is ProfileState.Error -> {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Button(onClick = { viewModel.fetchProfile(userId) }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+                else -> {}
+            }
+        }
+    }
+}
+
+@Composable
+fun ProfileContent(user: UserDto) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 60.dp) // Reduced padding
+            .padding(bottom = 20.dp)
     ) {
-        item { ProfileHeroSection(isVerified = true) } // Verification badge added
+        item { ProfileHeroSection(user = user, isVerified = true) }
         item { AchievementChipsRow() }
         item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
         item { DashboardMenu() }
@@ -42,7 +99,7 @@ fun ProfileScreen() {
 }
 
 @Composable
-fun ProfileHeroSection(isVerified: Boolean = false) {
+fun ProfileHeroSection(user: UserDto, isVerified: Boolean = false) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,12 +130,12 @@ fun ProfileHeroSection(isVerified: Boolean = false) {
                         .border(1.5.dp, Color.White.copy(alpha = 0.4f), RoundedCornerShape(16.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("U", style = MaterialTheme.typography.headlineSmall, color = Color.White, fontWeight = FontWeight.Black, fontSize = 19.sp)
+                    Text(user.fullName.take(1).uppercase(), style = MaterialTheme.typography.headlineSmall, color = Color.White, fontWeight = FontWeight.Black, fontSize = 19.sp)
                 }
                 
                 Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("User Name", style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
+                        Text(user.fullName, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
                         if (isVerified) {
                             Spacer(Modifier.width(4.dp))
                             // Verification Badge Logo
@@ -93,7 +150,7 @@ fun ProfileHeroSection(isVerified: Boolean = false) {
                             }
                         }
                     }
-                    Text("Stakeholder Role", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.7f), fontSize = 10.sp)
+                    Text(user.role, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.7f), fontSize = 10.sp)
                     Text("Institution Name", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f), fontSize = 9.sp)
                 }
                 
