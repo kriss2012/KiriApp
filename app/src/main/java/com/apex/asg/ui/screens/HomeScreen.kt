@@ -28,6 +28,7 @@ import com.apex.asg.ui.components.AIStatusChip
 import com.apex.asg.ui.components.ASGIconBadge
 import com.apex.asg.ui.components.SectionHeader
 import com.apex.asg.ui.theme.*
+import androidx.compose.runtime.collectAsState
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
