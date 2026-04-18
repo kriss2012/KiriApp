@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: asg-backend
+    runtime: docker
+    rootDir: backend
+    dockerFilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromContext: parameter
+      - key: JWT_SECRET
+        fromContext: parameter
+parameters:
+  - key: DATABASE_URL
+    description: Your AWS RDS PostgreSQL connection string
+  - key: JWT_SECRET
+    description: Secret key for JWT authentication
