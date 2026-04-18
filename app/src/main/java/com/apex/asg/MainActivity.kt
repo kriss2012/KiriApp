@@ -12,10 +12,18 @@ import com.apex.asg.ui.navigation.ASGNavGraph
 import com.apex.asg.ui.navigation.MainScaffold
 import dagger.hilt.android.AndroidEntryPoint
 
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.ApiClient
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Restore session
+        val sessionManager = SessionManager.getInstance(this)
+        ApiClient.setToken(sessionManager.getToken())
+
         setContent {
             ASGAppTheme {
                 val navController = rememberNavController()
