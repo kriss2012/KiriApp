@@ -1,5 +1,5 @@
 # Fail-safe Dockerfile for Repository Root
-FROM node:18
+FROM node:20
 
 WORKDIR /app
 
