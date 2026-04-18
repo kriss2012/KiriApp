@@ -29,19 +29,77 @@ import com.apex.asg.ui.components.ASGIconBadge
 import com.apex.asg.ui.components.SectionHeader
 import com.apex.asg.ui.theme.*
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.EventDto
+import com.apex.asg.data.remote.UserDto
+import com.apex.asg.ui.viewmodels.HomeState
+import com.apex.asg.ui.viewmodels.HomeViewModel
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.*
+
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val userId = sessionManager.getUserId() ?: ""
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            viewModel.loadHomeData(userId)
+        }
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        containerColor = BgCream,
+        bottomBar = { Spacer(Modifier.height(0.dp)) } // Padding in MainScaffold
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            when (val state = uiState) {
+                is HomeState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = OrangePrimary
+                    )
+                }
+                is HomeState.Success -> {
+                    HomeContent(user = state.user, events = state.upcomingEvents)
+                }
+                is HomeState.Error -> {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Button(onClick = { viewModel.loadHomeData(userId) }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun HomeContent(user: UserDto, events: List<EventDto>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 80.dp) // Space for bottom nav
+            .padding(bottom = 20.dp)
     ) {
         item { HomeTopBar() }
-        item { GreetingSection(userName = "User") }
+        item { GreetingSection(userName = user.fullName) }
         item { HeroOpportunityCard() }
         item { RepositoriesSection() }
-        item { UpcomingEventsSection() }
+        item { UpcomingEventsSection(events) }
     }
 }
 
@@ -229,15 +287,28 @@ fun RepositoryCard(item: RepoItem) {
 }
 
 @Composable
-fun UpcomingEventsSection() {
+fun UpcomingEventsSection(events: List<EventDto>) {
     Column {
         SectionHeader(title = "Upcoming Events", actionText = "See all", onActionClick = {})
         Column(
             modifier = Modifier.padding(horizontal = 14.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
-            // Placeholder for live data
-            Text("No upcoming events yet", style = MaterialTheme.typography.bodySmall, color = TextSecondary, modifier = Modifier.padding(16.dp))
+            if (events.isEmpty()) {
+                Text("No upcoming events found", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            } else {
+                events.forEach { event ->
+                    EventItemCard(
+                        day = event.date.split("-").lastOrNull() ?: "01",
+                        month = "Apr",
+                        title = event.title,
+                        location = "ASG Community",
+                        tag = "Live",
+                        tagBg = OrangeLight,
+                        tagText = OrangeDark
+                    )
+                }
+            }
         }
     }
 }
