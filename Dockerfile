@@ -9,12 +9,13 @@ COPY backend/prisma ./prisma/
 COPY backend/global-bundle.pem ./
 
 # Install dependencies
-RUN npm install
+# Install dependencies (ignore postinstall for now as schema isn't copied)
+RUN npm install --ignore-scripts
 
 # Copy the rest of the backend source
 COPY backend/ .
 
-# Generate Prisma Client
+# Generate Prisma Client (now that schema is copied)
 RUN npx prisma generate
 
 # Build TypeScript
