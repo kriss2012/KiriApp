@@ -16,6 +16,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.apex.asg.ui.components.ASGPrimaryButton
 import com.apex.asg.ui.theme.*
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.ApiClient
+import com.apex.asg.data.remote.RegisterRequest
+import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,6 +28,8 @@ fun RegisterScreen(
     onNavigateToLogin: () -> Unit,
     onRegisterSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
@@ -182,9 +188,31 @@ fun RegisterScreen(
                     isLoading = true
                     errorMessage = null
                     coroutineScope.launch {
-                        kotlinx.coroutines.delay(1500)
-                        isLoading = false
-                        onRegisterSuccess()
+                        try {
+                            val request = RegisterRequest(
+                                email = email.trim(),
+                                password = password.trim(),
+                                fullName = fullName.trim(),
+                                role = selectedRole,
+                                studentLevel = studentLevel,
+                                department = department.takeIf { it.isNotBlank() },
+                                college = college.takeIf { it.isNotBlank() },
+                                year = year.takeIf { it.isNotBlank() },
+                                section = section.takeIf { it.isNotBlank() }
+                            )
+                            val response = ApiClient.service.register(request)
+                            
+                            sessionManager.saveToken(response.token)
+                            sessionManager.saveUserId(response.user.id)
+                            sessionManager.saveUserRole(response.user.role)
+                            ApiClient.setToken(response.token)
+
+                            isLoading = false
+                            onRegisterSuccess()
+                        } catch (e: Exception) {
+                            isLoading = false
+                            errorMessage = e.message ?: "Registration failed"
+                        }
                     }
                 },
                 enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty() && fullName.isNotEmpty()
