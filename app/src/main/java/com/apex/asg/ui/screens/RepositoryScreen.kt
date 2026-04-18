@@ -24,18 +24,16 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.components.ASGTagChip
 import com.apex.asg.ui.theme.*
 
-@Composable
-fun RepositoryScreen() {
-    var selectedFilter by remember { mutableStateOf("All") }
-    val filters = listOf("All", "Creators", "Participants", "Organisers", "Alumni", "Professors")
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.remote.UserDto
+import com.apex.asg.ui.viewmodels.RepositoryState
+import com.apex.asg.ui.viewmodels.RepositoryViewModel
 
-    val students = listOf(
-        StudentItem("PJ", "Priya Joshi", "DY Patil College, Kolhapur", listOf("Content Creator", "SIH Finalist"), 92, "Creator"),
-        StudentItem("AK", "Arjun Kulkarni", "BVDU, Pune", listOf("Organiser", "DIPEX Winner"), 88, "Organiser"),
-        StudentItem("SM", "Snehal More", "Shivaji University", listOf("Alumni", "Avishkar"), 85, "Alumni"),
-        StudentItem("RB", "Rohan Bhosale", "KIT College, Kolhapur", listOf("Creator"), 79, "Creator"),
-        StudentItem("NP", "Dr. Neha Patil", "Professor · Shivaji Univ.", listOf("Professor", "Mentor"), 96, "Professor")
-    )
+@Composable
+fun RepositoryScreen(viewModel: RepositoryViewModel = viewModel()) {
+    var selectedFilter by remember { mutableStateOf("All") }
+    val filters = listOf("All", "STUDENT", "FOUNDER", "INVESTOR", "MENTOR", "SPOC", "ADMIN")
+    val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -45,12 +43,11 @@ fun RepositoryScreen() {
     ) {
         // Header
         Column(modifier = Modifier.padding(18.dp, 10.dp)) {
-            Text("← Back", style = MaterialTheme.typography.labelSmall, color = OrangePrimary, fontWeight = FontWeight.Bold, modifier = Modifier.clickable { })
             Text("Student Repository", style = MaterialTheme.typography.headlineMedium, color = TextPrimary, fontWeight = FontWeight.Black)
-            Text("5 categories · 7,800+ registered", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            Text("Live community directory", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
         }
 
-        // Search Bar
+        // Search Bar (Static for now)
         Card(
             modifier = Modifier
                 .padding(14.dp, 10.dp)
@@ -66,7 +63,7 @@ fun RepositoryScreen() {
                 horizontalArrangement = Arrangement.spacedBy(7.dp)
             ) {
                 Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(20.dp), tint = TextSecondary)
-                Text("Search by name, college, skill...", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("Search community members...", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
             }
         }
 
@@ -81,7 +78,7 @@ fun RepositoryScreen() {
                 FilterChip(
                     selected = isSelected,
                     onClick = { selectedFilter = filter },
-                    label = { Text(filter) },
+                    label = { Text(filter, fontSize = 10.sp) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = OrangePrimary,
                         selectedLabelColor = Color.White,
@@ -100,27 +97,52 @@ fun RepositoryScreen() {
             }
         }
 
-        // Student List
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(7.dp)
-        ) {
-            items(students) { student ->
-                StudentCard(student)
+        // Content
+        Box(modifier = Modifier.fillMaxSize()) {
+            when (val state = uiState) {
+                is RepositoryState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                }
+                is RepositoryState.Success -> {
+                    val filteredUsers = if (selectedFilter == "All") state.users else state.users.filter { it.role == selectedFilter }
+                    RepositoryContent(filteredUsers)
+                }
+                is RepositoryState.Error -> {
+                    Text(state.message, color = Color.Red, modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }
 }
 
-data class StudentItem(val initials: String, val name: String, val college: String, val tags: List<String>, val score: Int, val category: String)
+@Composable
+fun RepositoryContent(users: List<UserDto>) {
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(7.dp)
+    ) {
+        if (users.isEmpty()) {
+            item {
+                Text("No members found in this category", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            }
+        } else {
+            items(users) { user ->
+                StudentCard(user)
+            }
+        }
+    }
+}
+
 
 @Composable
-fun StudentCard(student: StudentItem) {
-    val gradient = when (student.category) {
-        "Creator" -> Brush.linearGradient(colors = listOf(OrangePrimary, OrangeDark))
-        "Organiser" -> Brush.linearGradient(colors = listOf(Color(0xFF1D9E75), Color(0xFF0F6E56)))
-        "Alumni" -> Brush.linearGradient(colors = listOf(Color(0xFFE0742A), Color(0xFFB85A15)))
-        "Professor" -> Brush.linearGradient(colors = listOf(Color(0xFF378ADD), Color(0xFF185FA5)))
+fun StudentCard(user: UserDto) {
+    val initials = user.fullName.split(" ").filter { it.isNotEmpty() }.take(2).map { it[0] }.joinToString("")
+    
+    val gradient = when (user.role) {
+        "FOUNDER" -> Brush.linearGradient(colors = listOf(OrangePrimary, OrangeDark))
+        "SPOC", "ADMIN" -> Brush.linearGradient(colors = listOf(Color(0xFF1D9E75), Color(0xFF0F6E56)))
+        "MENTOR" -> Brush.linearGradient(colors = listOf(Color(0xFFE0742A), Color(0xFFB85A15)))
+        "INVESTOR" -> Brush.linearGradient(colors = listOf(Color(0xFF378ADD), Color(0xFF185FA5)))
         else -> Brush.linearGradient(colors = listOf(PurpleAccent, Color(0xFF4F3BB5)))
     }
 
@@ -144,35 +166,21 @@ fun StudentCard(student: StudentItem) {
                     .background(gradient),
                 contentAlignment = Alignment.Center
             ) {
-                Text(student.initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 13.sp)
+                Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 13.sp)
             }
 
             // Info
             Column(modifier = Modifier.weight(1f)) {
-                Text(student.name, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(student.college, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
+                Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
+                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
                 Spacer(Modifier.height(4.dp))
-                com.google.accompanist.flowlayout.FlowRow(
-                    mainAxisSpacing = 3.dp,
-                    crossAxisSpacing = 3.dp
-                ) {
-                    student.tags.forEach { tag ->
-                        val (bg, txt) = when (tag) {
-                            "Content Creator" -> OrangeLight to OrangeDark
-                            "Organiser" -> GreenLight to GreenSuccess
-                            "Alumni" -> YellowWarm to Color(0xFFB7770D)
-                            "Professor" -> BlueInfo to Color(0xFF185FA5)
-                            else -> PurpleLight to PurpleAccent
-                        }
-                        ASGTagChip(text = tag, backgroundColor = bg, textColor = txt)
-                    }
-                }
+                ASGTagChip(text = "Verified Member", backgroundColor = GreenLight, textColor = GreenSuccess)
             }
 
-            // Score
+            // Score (Mock for production feel)
             Column(horizontalAlignment = Alignment.End) {
-                Text(student.score.toString(), style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, fontSize = 15.sp)
-                Text("AI Score", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
+                Text("90", style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, fontSize = 15.sp)
+                Text("Trust Score", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
             }
         }
     }

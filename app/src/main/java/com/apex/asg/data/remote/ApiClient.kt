@@ -34,7 +34,58 @@ interface ASGApiService {
 
     @PUT("users/toggle-access/{userId}")
     suspend fun toggleAccess(@Path("userId") userId: String, @Body data: Map<String, Boolean>): Map<String, String>
+
+    @GET("users/verified")
+    suspend fun getVerifiedUsers(): List<UserDto>
+
+    // Jobs
+    @GET("jobs")
+    suspend fun getJobs(): List<JobDto>
+
+    @POST("jobs")
+    suspend fun createJob(@Body request: CreateJobRequest): JobDto
+
+    // Chat
+    @GET("chat/history/{user1}/{user2}")
+    suspend fun getChatHistory(@Path("user1") user1: String, @Path("user2") user2: String): List<MessageDto>
+
+    @POST("chat/send")
+    suspend fun sendMessage(@Body request: SendMessageRequest): MessageDto
 }
+
+data class CreateJobRequest(
+    val title: String,
+    val description: String,
+    val location: String?,
+    val type: String,
+    val posterId: String
+)
+
+data class SendMessageRequest(
+    val senderId: String,
+    val receiverId: String,
+    val content: String
+)
+
+data class JobDto(
+    val id: String,
+    val title: String,
+    val description: String,
+    val location: String?,
+    val type: String,
+    val posterId: String,
+    val createdAt: String,
+    val poster: UserDto? = null
+)
+
+data class MessageDto(
+    val id: String,
+    val content: String,
+    val senderId: String,
+    val receiverId: String,
+    val createdAt: String,
+    val isRead: Boolean
+)
 
 data class CreateEventRequest(
     val title: String,

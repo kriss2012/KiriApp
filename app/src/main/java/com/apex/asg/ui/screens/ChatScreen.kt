@@ -19,16 +19,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.MessageDto
+import com.apex.asg.ui.viewmodels.ChatState
+import com.apex.asg.ui.viewmodels.ChatViewModel
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.*
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen() {
+fun ChatScreen(viewModel: ChatViewModel = viewModel()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val currentUserId = sessionManager.getUserId() ?: ""
+    val receiverId = "admin-support" // Default support user for demo
+    
     var messageText by remember { mutableStateOf("") }
-    val messages = remember {
-        mutableStateListOf(
-            ChatMessage("Hello! How can I help you today?", false),
-            ChatMessage("I'm looking for a co-founder for my AI startup.", true),
-            ChatMessage("That's great! Have you checked the 'Team Formation' section?", false)
-        )
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(currentUserId) {
+        if (currentUserId.isNotEmpty()) {
+            viewModel.fetchHistory(currentUserId, receiverId)
+        }
     }
 
     Scaffold(
@@ -70,7 +83,7 @@ fun ChatScreen() {
                     IconButton(
                         onClick = {
                             if (messageText.isNotEmpty()) {
-                                messages.add(ChatMessage(messageText, true))
+                                viewModel.sendMessage(currentUserId, receiverId, messageText)
                                 messageText = ""
                             }
                         },
@@ -82,36 +95,47 @@ fun ChatScreen() {
             }
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
-        ) {
-            items(messages) { msg ->
-                MessageBubble(msg)
+        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+            when (val state = uiState) {
+                is ChatState.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                }
+                is ChatState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
+                    ) {
+                        items(state.messages) { msg ->
+                            MessageBubble(msg, currentUserId)
+                        }
+                    }
+                }
+                is ChatState.Error -> {
+                    Text(state.message, color = Color.Red, modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }
 }
 
-data class ChatMessage(val content: String, val isFromMe: Boolean)
-
 @Composable
-fun MessageBubble(message: ChatMessage) {
+fun MessageBubble(message: MessageDto, currentUserId: String) {
+    val isFromMe = message.senderId == currentUserId
+    
     Box(
         modifier = Modifier.fillMaxWidth(),
-        contentAlignment = if (message.isFromMe) Alignment.CenterEnd else Alignment.CenterStart
+        contentAlignment = if (isFromMe) Alignment.CenterEnd else Alignment.CenterStart
     ) {
         Surface(
-            color = if (message.isFromMe) OrangePrimary else Color.White,
+            color = if (isFromMe) OrangePrimary else Color.White,
             shape = RoundedCornerShape(
                 topStart = 16.dp,
                 topEnd = 16.dp,
-                bottomStart = if (message.isFromMe) 16.dp else 4.dp,
-                bottomEnd = if (message.isFromMe) 4.dp else 16.dp
+                bottomStart = if (isFromMe) 16.dp else 4.dp,
+                bottomEnd = if (isFromMe) 4.dp else 16.dp
             ),
             tonalElevation = 2.dp,
             shadowElevation = 1.dp
@@ -119,7 +143,7 @@ fun MessageBubble(message: ChatMessage) {
             Text(
                 text = message.content,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                color = if (message.isFromMe) Color.White else TextPrimary,
+                color = if (isFromMe) Color.White else TextPrimary,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
