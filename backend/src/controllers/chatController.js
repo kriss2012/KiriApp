@@ -13,7 +13,11 @@ export const sendMessage = async (req, res) => {
 };
 export const getChatHistory = async (req, res) => {
     try {
-        const { user1, user2 } = req.params;
+        const user1 = req.params['user1'];
+        const user2 = req.params['user2'];
+        if (typeof user1 !== 'string' || typeof user2 !== 'string') {
+            return res.status(400).json({ message: 'Invalid User IDs' });
+        }
         const messages = await prisma.message.findMany({
             where: {
                 OR: [
