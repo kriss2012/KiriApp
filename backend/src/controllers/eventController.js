@@ -115,4 +115,4 @@ export const deleteEvent = async (req, res) => {
         res.status(500).json({ message: 'Error deleting event', error: error.message });
     }
 };
-//# sourceMappingURL=eventController.js.m
+//# sourceMappingURL=eventController.js.map
