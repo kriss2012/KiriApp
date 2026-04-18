@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  FOUNDER
+  INVESTOR
+  MENTOR
+  SERVICE_PROVIDER
+  SPOC
+  ADMIN
+}
+
+enum StudentLevel {
+  R1
+  R2
+  R3
+  R4
+  R5
+}
+
+model User {
+  id               String        @id @default(uuid())
+  email            String        @unique
+  password         String
+  fullName         String
+  role             Role          @default(STUDENT)
+  studentLevel     StudentLevel?
+  department       String?
+  college          String?
+  year             String?
+  section          String?
+  isVerified       Boolean       @default(false)
+  canCreateEvents  Boolean       @default(false)
+  avatarUrl        String?
+  bio              String?
+  skills           String[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  // Relationships
+  jobsPosted       Job[]         @relation("JobsPosted")
+  eventsCreated    Event[]       @relation("EventsCreated")
+  messagesSent     Message[]     @relation("MessagesSent")
+  messagesReceived Message[]     @relation("MessagesReceived")
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  location    String?
+  type        String   @default("FULL_TIME") // e.g., Internship, Full-time, Project
+  posterId    String
+  poster      User     @relation("JobsPosted", fields: [posterId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  content     String
+  senderId    String
+  sender      User     @relation("MessagesSent", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User     @relation("MessagesReceived", fields: [receiverId], references: [id])
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  type        String   @default("GENERAL") // e.g., Hackathon, Meetup
+  ownerId     String
+  owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now())
+}

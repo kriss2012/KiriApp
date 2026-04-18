@@ -1,0 +1,184 @@
+﻿> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kaptGenerateStubsDebugKotlin UP-TO-DATE
+> Task :app:kaptDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:4:47 Unresolved reference 'CalendarMonth'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:5:47 Unresolved reference 'Group'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:8:47 Unresolved reference 'SmartToy'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:15:74 Unresolved reference 'Group'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:16:67 Unresolved reference 'SmartToy'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/navigation/NavRoutes.kt:17:62 Unresolved reference 'CalendarMonth'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:12:47 Unresolved reference 'Mic'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:112:26 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier?', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:112:37 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:112:110 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:115:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:118:43 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:130:38 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:130:38 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:130:92 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:133:29 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:133:127 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:154:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:154:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:156:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:207:32 Unresolved reference 'Mic'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AIAgentScreen.kt:228:13 None of the following candidates is applicable:
+fun Icon(bitmap: ImageBitmap, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(painter: Painter, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(imageVector: ImageVector, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EventsScreen.kt:99:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EventsScreen.kt:99:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EventsScreen.kt:102:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HackathonOrganizerScreen.kt:103:13 None of the following candidates is applicable:
+fun Icon(bitmap: ImageBitmap, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(painter: Painter, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(imageVector: ImageVector, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:140:30 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:140:30 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:140:102 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:143:21 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:146:47 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:197:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:197:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:200:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:250:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:250:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/HomeScreen.kt:253:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:50:21 None of the following candidates is applicable:
+fun Icon(bitmap: ImageBitmap, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(painter: Painter, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(imageVector: ImageVector, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:76:29 No value passed for parameter 'enabled'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:76:29 No value passed for parameter 'selected'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:108:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:108:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NAACRecordsScreen.kt:111:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:30:56 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:53:32 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:53:43 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:55:29 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:55:40 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:56:53 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:56:64 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:56:84 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:56:95 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:72:49 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:72:60 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:81:9 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:82:21 This foundation API is experimental and is likely to change or be removed in the future.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:205:25 No value passed for parameter 'enabled'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/OnboardingScreen.kt:205:25 No value passed for parameter 'selected'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:13:47 Unresolved reference 'ChevronRight'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:84:17 None of the following candidates is applicable:
+fun Icon(bitmap: ImageBitmap, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(painter: Painter, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(imageVector: ImageVector, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:130:26 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:130:26 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:130:79 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:133:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:171:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:171:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:174:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:195:36 Unresolved reference 'ChevronRight'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:59:22 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:59:22 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:59:75 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:62:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:67:17 None of the following candidates is applicable:
+fun Icon(bitmap: ImageBitmap, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(painter: Painter, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+fun Icon(imageVector: ImageVector, contentDescription: String?, modifier: Modifier = ..., tint: Color = ...): Unit
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:93:25 No value passed for parameter 'enabled'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:93:25 No value passed for parameter 'selected'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:128:18 Unresolved reference 'border'.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:128:18 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:131:9 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:99:22 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:99:22 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:99:77 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:102:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:182:26 None of the following candidates is applicable:
+fun Modifier.border(border: BorderStroke, shape: Shape = ...): Modifier
+fun Modifier.border(width: Dp, brush: Brush, shape: Shape): Modifier
+fun Modifier.border(width: Dp, color: Color, shape: Shape = ...): Modifier
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:182:26 Argument type mismatch: actual type is 'androidx.compose.ui.Modifier', but 'androidx.compose.foundation.BorderStroke?' was expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:182:81 Function invocation 'border(...)' expected.
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:184:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///D:/APP!@/ASGApp/app/src/main/java/com/apex/asg/ui/screens/SplashScreen.kt:186:43 @Composable invocations can only happen from the context of a @Composable function
+
+[Incubating] Problems report is available at: file:///D:/APP!@/ASGApp/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 17s
+28 actionable tasks: 1 executed, 27 up-to-date

@@ -1,0 +1,58 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import prisma from '../utils/prisma.js';
+export const register = async (req, res) => {
+    try {
+        const { email, password, fullName, role, studentLevel, department, college, year, section } = req.body;
+        // Check if user already exists
+        const existingUser = await prisma.user.findUnique({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 12);
+        // Create user
+        const user = await prisma.user.create({
+            data: {
+                email,
+                password: hashedPassword,
+                fullName,
+                role,
+                studentLevel,
+                department,
+                college,
+                year,
+                section,
+                isVerified: false // Admin must verify non-students
+            }
+        });
+        // Generate token
+        const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '7d' });
+        res.status(201).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role } });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    }
+};
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        // Find user
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        // Check password
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        if (!isPasswordCorrect) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+        // Generate token
+        const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '7d' });
+        res.status(200).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role } });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Something went wrong', error: error.message });
+    }
+};
+//# sourceMappingURL=authController.js.map

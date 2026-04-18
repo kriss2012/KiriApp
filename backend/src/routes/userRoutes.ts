@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { getProfile, updateProfile, getAllVerifiedUsers, toggleEventAccess } from '../controllers/userController.js';
+
+const router = Router();
+
+router.get('/profile/:userId', getProfile);
+router.put('/profile/:userId', updateProfile);
+router.put('/toggle-access/:userId', toggleEventAccess);
+router.get('/verified', getAllVerifiedUsers);
+
+export default router;
