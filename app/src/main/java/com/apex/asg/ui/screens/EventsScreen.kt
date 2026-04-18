@@ -19,20 +19,44 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.EventDto
+import com.apex.asg.ui.viewmodels.*
+import androidx.compose.ui.platform.LocalContext
+
 @Composable
-fun EventsScreen() {
+fun EventsScreen(viewModel: EventsViewModel = viewModel()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val userId = sessionManager.getUserId() ?: ""
+    val uiState by viewModel.uiState.collectAsState()
+
     var selectedTab by remember { mutableStateOf("All") }
     val tabs = listOf("All", "Hackathon", "Competition", "Workshop", "Seminar")
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchEvents()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 80.dp)
+            .padding(bottom = 20.dp)
     ) {
         // Header
-        Column(modifier = Modifier.padding(18.dp, 10.dp)) {
+        Row(
+            modifier = Modifier.padding(18.dp, 10.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text("Upcoming Events", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
+            if (sessionManager.canCreateEvents()) {
+                IconButton(onClick = { /* TODO: Open Create Event Dialog */ }) {
+                    Text("+", fontSize = 24.sp, color = OrangePrimary, fontWeight = FontWeight.Bold)
+                }
+            }
         }
 
         // Tabs
@@ -66,28 +90,63 @@ fun EventsScreen() {
             }
         }
 
-        // Events List
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            item { Text("APRIL 2025", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, modifier = Modifier.padding(vertical = 5.dp)) }
-            items(2) { index ->
-                EventDetailCard(
-                    day = if (index == 0) "15" else "22",
-                    month = "Apr",
-                    title = if (index == 0) "Avishkar 2025 — Kolhapur" else "DIPEX Innovation Fair",
-                    organizer = if (index == 0) "Shivaji University" else "DIPEX State Committee",
-                    location = if (index == 0) "Kolhapur · District Level" else "Pune · State Level",
-                    type = if (index == 0) "Competition" else "Hackathon",
-                    typeBg = if (index == 0) OrangeLight else GreenLight,
-                    typeText = if (index == 0) OrangeDark else GreenSuccess,
-                    prize = "₹1,00,000"
-                )
+        Box(modifier = Modifier.fillMaxSize()) {
+            when (val state = uiState) {
+                is EventsState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = OrangePrimary
+                    )
+                }
+                is EventsState.Success -> {
+                    val filteredEvents = if (selectedTab == "All") state.events else state.events.filter { it.title.contains(selectedTab, ignoreCase = true) }
+                    
+                    if (filteredEvents.isEmpty()) {
+                        Text("No events found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                    } else {
+                        EventsList(filteredEvents)
+                    }
+                }
+                is EventsState.Error -> {
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Button(onClick = { viewModel.fetchEvents() }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+                else -> {}
             }
         }
     }
 }
+
+@Composable
+fun EventsList(events: List<EventDto>) {
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        item { Text("ACTIVE EVENTS", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, modifier = Modifier.padding(vertical = 5.dp)) }
+        items(events) { event ->
+            EventDetailCard(
+                day = event.date.split("-").lastOrNull() ?: "01",
+                month = "Apr", // Simplified for now
+                title = event.title,
+                organizer = "ASG Community",
+                location = "Online / In-Person",
+                type = "General",
+                typeBg = OrangeLight,
+                typeText = OrangeDark,
+                prize = "₹10,000"
+            )
+        }
+    }
+}
+
 
 @Composable
 fun EventDetailCard(day: String, month: String, title: String, organizer: String, location: String, type: String, typeBg: Color, typeText: Color, prize: String) {
