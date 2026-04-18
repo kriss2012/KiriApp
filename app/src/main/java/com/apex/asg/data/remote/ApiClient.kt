@@ -8,9 +8,10 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-// Current Local IP for testing (change to your local PC IP for emulator access)
-// Android emulator uses 10.0.2.2 to access localhost of the host machine
-const val BASE_URL = "http://10.0.2.2:5000/api/"
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+
+const val BASE_URL = "https://asgapp.onrender.com/api/"
 
 interface ASGApiService {
     @POST("auth/register")
@@ -45,9 +46,29 @@ data class CreateEventRequest(
 )
 
 object ApiClient {
+    private var token: String? = null
+
+    fun setToken(newToken: String?) {
+        token = newToken
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val builder = chain.request().newBuilder()
+            token?.let {
+                builder.addHeader("Authorization", "Bearer $it")
+            }
+            chain.proceed(builder.build())
+        }
+        .addInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        })
+        .build()
+
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
