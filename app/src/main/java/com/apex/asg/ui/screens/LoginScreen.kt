@@ -15,7 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.components.ASGPrimaryButton
 import com.apex.asg.ui.theme.*
-import kotlinx.coroutines.launch
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.ApiClient
+import com.apex.asg.data.remote.LoginRequest
+import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,6 +26,8 @@ fun LoginScreen(
     onNavigateToRegister: () -> Unit,
     onLoginSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -92,16 +97,27 @@ fun LoginScreen(
                 onClick = {
                     isLoading = true
                     errorMessage = null
-                    // For now, bypass real API until backend is deployed
-                    // Actual implementation would be:
-                    // coroutineScope.launch { 
-                    //    val response = ApiClient.service.login(LoginRequest(email, password))
-                    //    onLoginSuccess()
-                    // }
                     coroutineScope.launch {
-                        kotlinx.coroutines.delay(1000)
-                        isLoading = false
-                        onLoginSuccess()
+                        try {
+                            val response = ApiClient.service.login(LoginRequest(email.trim(), password.trim()))
+                            
+                            // Save to session
+                            sessionManager.saveToken(response.token)
+                            sessionManager.saveUserId(response.user.id)
+                            sessionManager.saveUserRole(response.user.role)
+                            
+                            // Check if admin/event creator (In real app, this might come from profile)
+                            sessionManager.setCanCreateEvents(response.user.role == "ADMIN")
+                            
+                            // Set token for future API calls
+                            ApiClient.setToken(response.token)
+                            
+                            isLoading = false
+                            onLoginSuccess()
+                        } catch (e: Exception) {
+                            isLoading = false
+                            errorMessage = e.message ?: "Authentication failed"
+                        }
                     }
                 },
                 enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty()
