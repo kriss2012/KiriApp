@@ -16,7 +16,7 @@
         android:theme="@style/Theme.ASGApp"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.ASGApp">
             <intent-filter>
@@ -24,6 +24,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ASGApp">
         </activity>
     </application>
 
