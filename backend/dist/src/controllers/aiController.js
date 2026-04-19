@@ -3,15 +3,24 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 dotenv.config();
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "nvidia/nemotron-3-super-120b-a12b:free"; // Upgraded to powerful NVIDIA Nemotron model
+const MODEL = "google/gemini-2.0-flash-001"; // Updated to fixed model slug
 export const getAiHistory = async (req, res) => {
     try {
         const userId = req.user.id;
-        const history = await prisma.aiMessage.findMany({
-            where: { userId },
-            orderBy: { createdAt: 'asc' }
+        // Get the most recent conversation's messages
+        const latestConversation = await prisma.conversation.findFirst({
+            where: { userId, isArchived: false },
+            orderBy: { updatedAt: 'desc' },
+            include: {
+                messages: {
+                    orderBy: { createdAt: 'asc' }
+                }
+            }
         });
-        res.json(history);
+        if (!latestConversation) {
+            return res.json([]);
+        }
+        res.json(latestConversation.messages);
     }
     catch (error) {
         res.status(500).json({ error: error.message });
@@ -25,13 +34,26 @@ export const chatWithKiri = async (req, res) => {
         const userProfile = await prisma.user.findUnique({
             where: { id: userId }
         });
-        // 2. Fetch recent history (last 10 messages)
+        // 2. Find or Create Conversation
+        let conversation = await prisma.conversation.findFirst({
+            where: { userId, isArchived: false },
+            orderBy: { updatedAt: 'desc' }
+        });
+        if (!conversation) {
+            conversation = await prisma.conversation.create({
+                data: {
+                    userId,
+                    title: content ? (content.length > 60 ? content.substring(0, 60) + '...' : content) : "New Conversation"
+                }
+            });
+        }
+        // 3. Fetch recent history from this conversation
         const history = await prisma.aiMessage.findMany({
-            where: { userId },
+            where: { conversationId: conversation.id },
             orderBy: { createdAt: 'desc' },
             take: 10
         });
-        // 3. Construct Kiri's context and messages
+        // 4. Construct Kiri's context and messages
         const systemPrompt = `You are Kiri AI, the 'Second Brain' of the ASG (Apex Startup Group) Community Platform in Jalgaon. 
         Your goal is to assist users with entrepreneurship, academic growth, and networking.
         
@@ -67,7 +89,7 @@ export const chatWithKiri = async (req, res) => {
             ];
         }
         chatMessages.push({ role: "user", content: currentMessageContent });
-        // 4. Call OpenRouter
+        // 5. Call OpenRouter
         const response = await axios.post("https://openrouter.ai/api/v1/chat/completions", {
             model: MODEL,
             messages: chatMessages
@@ -80,12 +102,27 @@ export const chatWithKiri = async (req, res) => {
             }
         });
         const aiResponseText = response.data.choices[0].message.content;
-        // 5. Save only the text context to DB (Don't save files as requested)
+        // 6. Save messages to DB
         await prisma.aiMessage.create({
-            data: { userId, content: content || "[Analyzed Document]", role: "user" }
+            data: {
+                userId,
+                conversationId: conversation.id,
+                content: content || "[Analyzed Document]",
+                role: "user"
+            }
         });
         const savedAiMsg = await prisma.aiMessage.create({
-            data: { userId, content: aiResponseText, role: "assistant" }
+            data: {
+                userId,
+                conversationId: conversation.id,
+                content: aiResponseText,
+                role: "assistant"
+            }
+        });
+        // Update conversation timestamp
+        await prisma.conversation.update({
+            where: { id: conversation.id },
+            data: { updatedAt: new Date() }
         });
         res.json(savedAiMsg);
     }
