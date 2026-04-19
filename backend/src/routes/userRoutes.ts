@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { getProfile, updateProfile, getAllVerifiedUsers, toggleEventAccess } from '../controllers/userController.js';
+import { getProfile, updateProfile, getAllVerifiedUsers, toggleEventAccess, searchUsers } from '../controllers/userController.js';
 
 const router = Router();
 
+router.get('/', searchUsers);
 router.get('/profile/:userId', getProfile);
 router.put('/profile/:userId', updateProfile);
 router.put('/toggle-access/:userId', toggleEventAccess);
