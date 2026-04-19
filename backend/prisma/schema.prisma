@@ -54,6 +54,7 @@ model User {
   messagesSent     Message[]     @relation("MessagesSent")
   messagesReceived Message[]     @relation("MessagesReceived")
   aiMessages       AiMessage[]
+  conversations    Conversation[]
   sentRequests     Connection[]  @relation("SentRequests")
   receivedRequests Connection[]  @relation("ReceivedRequests")
 }
@@ -72,12 +73,27 @@ model Connection {
 }
 
 model AiMessage {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  content   String
-  role      String   // "user" or "assistant"
-  createdAt DateTime @default(now())
+  id             String        @id @default(uuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  conversationId String?
+  conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  content        String
+  role           String        // "user" or "assistant"
+  createdAt      DateTime      @default(now())
+}
+
+model Conversation {
+  id         String      @id @default(uuid())
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  title      String      @default("New Conversation")
+  model      String      @default("google/gemini-2.0-flash-001")
+  isArchived Boolean     @default(false)
+  isPinned   Boolean     @default(false)
+  messages   AiMessage[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Job {
