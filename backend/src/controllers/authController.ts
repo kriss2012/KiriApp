@@ -28,7 +28,7 @@ export const register = async (req: Request, res: Response) => {
         college,
         year,
         section,
-        isVerified: false // Admin must verify non-students
+        isVerified: true // Auto-verify for immediate discovery
       }
     });
 
