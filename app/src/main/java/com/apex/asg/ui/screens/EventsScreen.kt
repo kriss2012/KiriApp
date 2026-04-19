@@ -103,7 +103,7 @@ fun EventsScreen(viewModel: EventsViewModel = viewModel()) {
                     val filteredEvents = if (selectedTab == "All") state.events else state.events.filter { it.title.contains(selectedTab, ignoreCase = true) }
                     
                     if (filteredEvents.isEmpty()) {
-                        Text("No events found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                        Text("No related data found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
                     } else {
                         EventsList(filteredEvents)
                     }

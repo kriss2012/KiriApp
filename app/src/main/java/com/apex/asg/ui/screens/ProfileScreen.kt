@@ -37,7 +37,9 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
-    onNavigateToEdit: () -> Unit = {}
+    onNavigateToEdit: () -> Unit = {},
+    onNavigateToConnections: () -> Unit = {},
+    onNavigateToActivity: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -70,7 +72,9 @@ fun ProfileScreen(
                 is ProfileState.Success -> {
                     ProfileContent(
                         user = state.user,
-                        onNavigateToEdit = onNavigateToEdit
+                        onNavigateToEdit = onNavigateToEdit,
+                        onNavigateToConnections = onNavigateToConnections,
+                        onNavigateToActivity = onNavigateToActivity
                     )
                 }
                 is ProfileState.Error -> {
@@ -93,7 +97,9 @@ fun ProfileScreen(
 @Composable
 fun ProfileContent(
     user: UserDto,
-    onNavigateToEdit: () -> Unit
+    onNavigateToEdit: () -> Unit,
+    onNavigateToConnections: () -> Unit,
+    onNavigateToActivity: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -108,7 +114,12 @@ fun ProfileContent(
             ) 
         }
         item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
-        item { DashboardMenu() }
+        item { 
+            DashboardMenu(
+                onNavigateToConnections = onNavigateToConnections,
+                onNavigateToActivity = onNavigateToActivity
+            ) 
+        }
     }
 }
 
@@ -192,7 +203,10 @@ fun RowScope.StatBox(value: String, label: String) {
 }
 
 @Composable
-fun DashboardMenu() {
+fun DashboardMenu(
+    onNavigateToConnections: () -> Unit,
+    onNavigateToActivity: () -> Unit
+) {
     val menuItems = listOf(
         DashboardMenuItem("🚀", "My Startup Profile", OrangeLight, "Coming Soon"),
         DashboardMenuItem("🤝", "Team Requests", GreenLight),
@@ -204,7 +218,15 @@ fun DashboardMenu() {
             Text("No dashboard items available", modifier = Modifier.padding(16.dp), color = TextSecondary)
         } else {
             menuItems.forEach { item ->
-                DashboardMenuCard(item)
+                DashboardMenuCard(
+                    item = item,
+                    onClick = {
+                        when (item.label) {
+                            "Team Requests" -> onNavigateToConnections()
+                            "My Community Activity" -> onNavigateToActivity()
+                        }
+                    }
+                )
             }
         }
     }
@@ -213,9 +235,11 @@ fun DashboardMenu() {
 data class DashboardMenuItem(val icon: String, val label: String, val color: Color, val badge: String? = null)
 
 @Composable
-fun DashboardMenuCard(item: DashboardMenuItem) {
+fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().clickable { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(13.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, BorderColor),

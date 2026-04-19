@@ -115,7 +115,7 @@ fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Uni
         if (users.isEmpty()) {
             item {
                 Box(modifier = Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) {
-                    Text("No members found in this category", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                    Text("No related data found", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
                 }
             }
         } else {

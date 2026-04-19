@@ -42,7 +42,10 @@ import androidx.compose.runtime.*
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
-    onNavigateToNotifications: () -> Unit = {}
+    onNavigateToNotifications: () -> Unit = {},
+    onNavigateToSearch: () -> Unit = {},
+    onNavigateToRepository: () -> Unit = {},
+    onNavigateToEvents: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -76,7 +79,10 @@ fun HomeScreen(
                     HomeContent(
                         user = state.user, 
                         events = state.upcomingEvents,
-                        onNavigateToNotifications = onNavigateToNotifications
+                        onNavigateToNotifications = onNavigateToNotifications,
+                        onNavigateToSearch = onNavigateToSearch,
+                        onNavigateToRepository = onNavigateToRepository,
+                        onNavigateToEvents = onNavigateToEvents
                     )
                 }
                 is HomeState.Error -> {
@@ -99,7 +105,10 @@ fun HomeScreen(
 fun HomeContent(
     user: UserDto, 
     events: List<EventDto>,
-    onNavigateToNotifications: () -> Unit
+    onNavigateToNotifications: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToRepository: () -> Unit,
+    onNavigateToEvents: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -109,9 +118,9 @@ fun HomeContent(
     ) {
         item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
         item { GreetingSection(userName = user.fullName) }
-        item { DiscoverCommunityCard() }
-        item { RepositoriesSection() }
-        item { UpcomingEventsSection(events) }
+        item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
+        item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
+        item { UpcomingEventsSection(events, onNavigateToEvents = onNavigateToEvents) }
     }
 }
 
@@ -154,7 +163,7 @@ fun GreetingSection(userName: String) {
 }
 
 @Composable
-fun DiscoverCommunityCard() {
+fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(14.dp, 12.dp)
@@ -195,7 +204,7 @@ fun DiscoverCommunityCard() {
                     color = Color.White.copy(alpha = 0.2f),
                     shape = RoundedCornerShape(9.dp),
                     border = BorderStroke(1.dp, Color.White.copy(alpha = 0.35f)),
-                    modifier = Modifier.clickable { }
+                    modifier = Modifier.clickable { onNavigateToSearch() }
                 ) {
                     Text(
                         "Discover Members →",
@@ -211,7 +220,7 @@ fun DiscoverCommunityCard() {
 }
 
 @Composable
-fun RepositoriesSection() {
+fun RepositoriesSection(onNavigateToRepository: () -> Unit) {
     val repos = listOf(
         RepoItem("🎬", "Content Creators", "0", OrangeLight),
         RepoItem("🏆", "Students", "0", PurpleLight),
@@ -219,13 +228,13 @@ fun RepositoriesSection() {
     )
 
     Column {
-        SectionHeader(title = "Community Repositories", actionText = "See all", onActionClick = {})
+        SectionHeader(title = "Community Repositories", actionText = "See all", onActionClick = onNavigateToRepository)
         LazyRow(
             modifier = Modifier.padding(horizontal = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(repos) { item ->
-                RepositoryCard(item)
+                RepositoryCard(item, onClick = onNavigateToRepository)
             }
         }
     }
@@ -234,11 +243,12 @@ fun RepositoriesSection() {
 data class RepoItem(val icon: String, val name: String, val count: String, val color: Color)
 
 @Composable
-fun RepositoryCard(item: RepoItem) {
+fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(110.dp)
-            .height(100.dp),
+            .height(100.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, BorderColor),
@@ -274,9 +284,9 @@ fun RepositoryCard(item: RepoItem) {
 }
 
 @Composable
-fun UpcomingEventsSection(events: List<EventDto>) {
+fun UpcomingEventsSection(events: List<EventDto>, onNavigateToEvents: () -> Unit) {
     Column {
-        SectionHeader(title = "Upcoming Events", actionText = "See all", onActionClick = {})
+        SectionHeader(title = "Upcoming Events", actionText = "See all", onActionClick = onNavigateToEvents)
         Column(
             modifier = Modifier.padding(horizontal = 14.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp)
@@ -289,7 +299,7 @@ fun UpcomingEventsSection(events: List<EventDto>) {
                     border = BorderStroke(1.dp, BorderColor)
                 ) {
                     Text(
-                        "No events listed yet. Check back soon!", 
+                        "No related data found", 
                         modifier = Modifier.padding(24.dp).fillMaxWidth(), 
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.bodySmall, 

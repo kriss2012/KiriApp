@@ -76,9 +76,11 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search by name, college, or role...") },
+            placeholder = { Text("Search members, colleges...", style = MaterialTheme.typography.bodySmall) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextSecondary) },
             shape = RoundedCornerShape(12.dp),
+            singleLine = true,
+            maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = OrangePrimary,
                 unfocusedBorderColor = BorderColor

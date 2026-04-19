@@ -58,7 +58,10 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         
         composable(Screen.Home.route) {
             HomeScreen(
-                onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) }
+                onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) },
+                onNavigateToSearch = { navController.navigate(Screen.Search.route) },
+                onNavigateToRepository = { navController.navigate(Screen.Repository.route) },
+                onNavigateToEvents = { navController.navigate(Screen.Events.route) }
             )
         }
         
@@ -96,7 +99,9 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         
         composable(Screen.Profile.route) {
             ProfileScreen(
-                onNavigateToEdit = { navController.navigate(Screen.EditProfile.route) }
+                onNavigateToEdit = { navController.navigate(Screen.EditProfile.route) },
+                onNavigateToConnections = { navController.navigate(Screen.Connections.route) },
+                onNavigateToActivity = { navController.navigate(Screen.Notifications.route) }
             )
         }
 
@@ -113,8 +118,9 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Screen.Connections.route) {
-            // Placeholder or future Connections Screen
-            Box(Modifier.fillMaxSize()) { Text("Connections List Coming Soon", modifier = androidx.compose.ui.Modifier.align(androidx.compose.ui.Alignment.Center)) }
+            ConnectionsScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Chat.route) {

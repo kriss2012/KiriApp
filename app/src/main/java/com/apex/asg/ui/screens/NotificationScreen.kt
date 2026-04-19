@@ -185,7 +185,7 @@ fun EmptyNotifications(modifier: Modifier = Modifier) {
             tint = TextSecondary.copy(alpha = 0.3f)
         )
         Spacer(Modifier.height(16.dp))
-        Text("No notifications yet", style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text("No related data found", style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
         Text("We'll alert you when something happens!", style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f))
     }
 }
