@@ -21,7 +21,10 @@ interface ASGApiService {
     suspend fun login(@Body request: LoginRequest): AuthResponse
 
     @GET("users")
-    suspend fun getUsers(): List<UserResponse>
+    suspend fun getUsers(
+        @retrofit2.http.Query("name") name: String? = null,
+        @retrofit2.http.Query("role") role: String? = null
+    ): List<UserResponse>
 
     @GET("events")
     suspend fun getEvents(): List<EventDto>
