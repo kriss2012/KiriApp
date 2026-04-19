@@ -30,7 +30,10 @@ import com.apex.asg.ui.viewmodels.RepositoryState
 import com.apex.asg.ui.viewmodels.RepositoryViewModel
 
 @Composable
-fun RepositoryScreen(viewModel: RepositoryViewModel = viewModel()) {
+fun RepositoryScreen(
+    onNavigateToProfile: (String) -> Unit,
+    viewModel: RepositoryViewModel = viewModel()
+) {
     var selectedFilter by remember { mutableStateOf("All") }
     val filters = listOf("All", "STUDENT", "FOUNDER", "INVESTOR", "MENTOR", "SPOC", "ADMIN")
     val uiState by viewModel.uiState.collectAsState()
@@ -43,29 +46,11 @@ fun RepositoryScreen(viewModel: RepositoryViewModel = viewModel()) {
     ) {
         // Header
         Column(modifier = Modifier.padding(18.dp, 10.dp)) {
-            Text("Student Repository", style = MaterialTheme.typography.headlineMedium, color = TextPrimary, fontWeight = FontWeight.Black)
-            Text("Live community directory", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            Text("Community", style = MaterialTheme.typography.headlineMedium, color = TextPrimary, fontWeight = FontWeight.Black)
+            Text("Live directory of Jalgaon's ecosystem", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
         }
 
-        // Search Bar (Static for now)
-        Card(
-            modifier = Modifier
-                .padding(14.dp, 10.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-            border = BorderStroke(1.dp, BorderColor),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-        ) {
-            Row(
-                modifier = Modifier.padding(9.dp, 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(7.dp)
-            ) {
-                Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(20.dp), tint = TextSecondary)
-                Text("Search community members...", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
-            }
-        }
+        Spacer(Modifier.height(16.dp))
 
         // Filter Chips
         LazyRow(
@@ -105,7 +90,7 @@ fun RepositoryScreen(viewModel: RepositoryViewModel = viewModel()) {
                 }
                 is RepositoryState.Success -> {
                     val filteredUsers = if (selectedFilter == "All") state.users else state.users.filter { it.role == selectedFilter }
-                    RepositoryContent(filteredUsers)
+                    RepositoryContent(filteredUsers, onNavigateToProfile)
                 }
                 is RepositoryState.Error -> {
                     Text(state.message, color = Color.Red, modifier = Modifier.align(Alignment.Center))
@@ -116,7 +101,7 @@ fun RepositoryScreen(viewModel: RepositoryViewModel = viewModel()) {
 }
 
 @Composable
-fun RepositoryContent(users: List<UserDto>) {
+fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.padding(horizontal = 14.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp)
@@ -127,15 +112,14 @@ fun RepositoryContent(users: List<UserDto>) {
             }
         } else {
             items(users) { user ->
-                StudentCard(user)
+                StudentCard(user = user, onClick = { onNavigateToProfile(user.id) })
             }
         }
     }
 }
 
-
 @Composable
-fun StudentCard(user: UserDto) {
+fun StudentCard(user: UserDto, onClick: () -> Unit) {
     val initials = user.fullName.split(" ").filter { it.isNotEmpty() }.take(2).map { it[0] }.joinToString("")
     
     val gradient = when (user.role) {
@@ -147,7 +131,9 @@ fun StudentCard(user: UserDto) {
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, BorderColor),
@@ -158,7 +144,6 @@ fun StudentCard(user: UserDto) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(9.dp)
         ) {
-            // Avatar
             Box(
                 modifier = Modifier
                     .size(38.dp)
@@ -169,7 +154,6 @@ fun StudentCard(user: UserDto) {
                 Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 13.sp)
             }
 
-            // Info
             Column(modifier = Modifier.weight(1f)) {
                 Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
                 Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
@@ -177,7 +161,6 @@ fun StudentCard(user: UserDto) {
                 ASGTagChip(text = "Verified Member", backgroundColor = GreenLight, textColor = GreenSuccess)
             }
 
-            // Score (Mock for production feel)
             Column(horizontalAlignment = Alignment.End) {
                 Text("90", style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, fontSize = 15.sp)
                 Text("Trust Score", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)

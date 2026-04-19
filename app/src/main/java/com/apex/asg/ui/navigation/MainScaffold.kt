@@ -70,15 +70,6 @@ fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
                                 modifier = Modifier.size(if (screen == Screen.AIAgent) 26.dp else 22.dp),
                                 tint = if (selected) OrangePrimary else TextSecondary
                             )
-                            if (selected) {
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .size(4.dp)
-                                        .clip(CircleShape)
-                                        .background(OrangePrimary)
-                                )
-                            }
                         }
                     },
                     label = {

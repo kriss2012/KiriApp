@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(onComplete: () -> Unit) {
-    val pagerState = androidx.compose.foundation.pager.rememberPagerState(pageCount = { 3 })
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -53,45 +52,18 @@ fun OnboardingScreen(onComplete: () -> Unit) {
         bottomBar = {
             Column(modifier = Modifier.padding(16.dp)) {
                 ASGPrimaryButton(
-                    text = if (pagerState.currentPage == 2) "Continue →" else "Next →",
-                    onClick = {
-                        if (pagerState.currentPage < 2) {
-                            coroutineScope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                        } else {
-                            onComplete()
-                        }
-                    }
+                    text = "Finish →",
+                    onClick = { onComplete() }
                 )
-                Spacer(Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    repeat(3) { index ->
-                        Box(
-                            modifier = Modifier
-                                .size(8.dp)
-                                .clip(RoundedCornerShape(50))
-                                .background(if (pagerState.currentPage == index) OrangePrimary else BorderColor)
-                                .padding(horizontal = 4.dp)
-                        )
-                        Spacer(Modifier.width(8.dp))
-                    }
-                }
             }
         }
     ) { padding ->
-        HorizontalPager(
-            state = pagerState,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-        ) { page ->
-            when (page) {
-                0 -> RoleSelectionPage()
-                1 -> CollegeSelectionPage()
-                2 -> InterestSelectionPage()
-            }
+        ) {
+            InterestSelectionPage()
         }
     }
 }

@@ -24,6 +24,11 @@ enum StudentLevel {
   R5
 }
 
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+}
+
 model User {
   id               String        @id @default(uuid())
   email            String        @unique
@@ -48,6 +53,31 @@ model User {
   eventsCreated    Event[]       @relation("EventsCreated")
   messagesSent     Message[]     @relation("MessagesSent")
   messagesReceived Message[]     @relation("MessagesReceived")
+  aiMessages       AiMessage[]
+  sentRequests     Connection[]  @relation("SentRequests")
+  receivedRequests Connection[]  @relation("ReceivedRequests")
+}
+
+model Connection {
+  id          String           @id @default(uuid())
+  status      ConnectionStatus @default(PENDING)
+  senderId    String
+  sender      User             @relation("SentRequests", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User             @relation("ReceivedRequests", fields: [receiverId], references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([senderId, receiverId])
+}
+
+model AiMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  role      String   // "user" or "assistant"
+  createdAt DateTime @default(now())
 }
 
 model Job {
@@ -55,7 +85,7 @@ model Job {
   title       String
   description String
   location    String?
-  type        String   @default("FULL_TIME") // e.g., Internship, Full-time, Project
+  type        String   @default("FULL_TIME")
   posterId    String
   poster      User     @relation("JobsPosted", fields: [posterId], references: [id])
   createdAt   DateTime @default(now())
@@ -78,7 +108,7 @@ model Event {
   description String
   date        DateTime
   location    String
-  type        String   @default("GENERAL") // e.g., Hackathon, Meetup
+  type        String   @default("GENERAL")
   ownerId     String
   owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])
   createdAt   DateTime @default(now())

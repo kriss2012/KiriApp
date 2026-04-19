@@ -20,6 +20,9 @@ interface ASGApiService {
     @POST("auth/login")
     suspend fun login(@Body request: LoginRequest): AuthResponse
 
+    @GET("users")
+    suspend fun getUsers(): List<UserResponse>
+
     @GET("events")
     suspend fun getEvents(): List<EventDto>
 
@@ -51,7 +54,31 @@ interface ASGApiService {
 
     @POST("chat/send")
     suspend fun sendMessage(@Body request: SendMessageRequest): MessageDto
+
+    // Kiri AI
+    @GET("ai/history")
+    suspend fun getAiHistory(): List<AiMessageResponse>
+
+    @POST("ai/chat")
+    suspend fun sendAiMessage(@Body request: AiMessageRequest): AiMessageResponse
+
+    // Connections
+    @POST("connections/request")
+    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, String>
 }
+
+data class AiMessageRequest(val content: String)
+data class AiMessageResponse(val id: String, val content: String, val role: String, val createdAt: String)
+
+data class UserResponse(
+    val id: String,
+    val email: String,
+    val fullName: String,
+    val role: String,
+    val bio: String? = null,
+    val college: String? = null,
+    val skills: List<String> = emptyList()
+)
 
 data class CreateJobRequest(
     val title: String,

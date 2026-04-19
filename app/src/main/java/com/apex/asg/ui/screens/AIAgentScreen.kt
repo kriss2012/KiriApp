@@ -1,250 +1,186 @@
 package com.apex.asg.ui.screens
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
+import com.apex.asg.ui.viewmodels.KiriAIViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AIAgentScreen() {
-    val messages = remember { mutableStateListOf(
-        ChatMessage("Namaste! I'm your ASG AI Agent. I can help you find co-founders, mentors, funding & events. How can I help you?", "assistant", listOf("Find co-founder", "Hackathons", "Get funding")),
-        ChatMessage("I need a tech co-founder for my agri-tech startup. I'm from Kolhapur.", "user"),
-        ChatMessage("Found 6 students in Kolhapur with tech skills interested in agri-tech. Here are top matches:", "assistant", null, true)
-    ) }
+fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
+    var textState by remember { mutableStateOf("") }
+    val messages = vm.messages
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BgSurface)
-            .padding(bottom = 80.dp)
-    ) {
-        // Chat Header
-        ChatHeader()
-
-        // Chat List
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            contentPadding = PaddingValues(12.dp),
-            verticalArrangement = Arrangement.spacedBy(9.dp),
-            reverseLayout = false // Not reverse for this simple demo
-        ) {
-            items(messages) { msg ->
-                ChatBubble(msg)
-            }
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
         }
-
-        // Voice/Input Bar
-        ChatInputBar()
     }
-}
 
-data class ChatMessage(val text: String, val role: String, val chips: List<String>? = null, val isMatch: Boolean = false)
-
-@Composable
-fun ChatHeader() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(10.dp, 18.dp)
-            .border(BorderStroke(0.5.dp, BorderColor)), 
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(9.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(Brush.linearGradient(listOf(OrangePrimary, OrangeDark))),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("🤖", fontSize = 16.sp)
+    Scaffold(
+        containerColor = BgCream,
+        topBar = {
+            TopAppBar(
+                title = { Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center) },
+                navigationIcon = { Icon(Icons.Default.Menu, contentDescription = null, modifier = Modifier.padding(16.dp)) },
+                actions = {
+                    Icon(Icons.Default.DarkMode, contentDescription = null, modifier = Modifier.padding(8.dp))
+                    Icon(Icons.Default.Star, contentDescription = null, modifier = Modifier.padding(end = 16.dp, start = 8.dp))
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+            )
+        },
+        bottomBar = {
+            KiriInputBar(
+                text = textState,
+                onTextChange = { textState = it },
+                onSend = {
+                    vm.sendMessage(textState)
+                    textState = ""
+                }
+            )
         }
-        Column {
-            Text("ASG AI Agent", style = MaterialTheme.typography.titleMedium, color = TextPrimary, fontWeight = FontWeight.ExtraBold)
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.size(6.dp).background(GreenSuccess, RoundedCornerShape(50)))
-                Spacer(Modifier.width(4.dp))
-                Text("Active · Voice enabled", style = MaterialTheme.typography.labelSmall, color = GreenSuccess, fontWeight = FontWeight.SemiBold, fontSize = 9.sp)
-            }
-        }
-        Spacer(Modifier.weight(1f))
-        Text("⋯", fontSize = 20.sp, color = BorderColor)
-    }
-}
-
-@Composable
-fun ChatBubble(msg: ChatMessage) {
-    val isBot = msg.role == "assistant"
-    
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = if (isBot) Arrangement.Start else Arrangement.End
-    ) {
+    ) { padding ->
         Column(
-            modifier = Modifier.widthIn(max = 280.dp),
-            horizontalAlignment = if (isBot) Alignment.Start else Alignment.End
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
-            Card(
-                modifier = Modifier.widthIn(min = 40.dp, max = 240.dp),
-                shape = if (isBot) RoundedCornerShape(4.dp, 14.dp, 14.dp, 14.dp) else RoundedCornerShape(14.dp, 4.dp, 14.dp, 14.dp),
-                colors = CardDefaults.cardColors(containerColor = if (isBot) Color.White else OrangePrimary),
-                border = if (isBot) BorderStroke(1.dp, BorderColor) else null,
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-            ) {
-                Text(
-                    text = msg.text,
-                    modifier = Modifier.padding(10.dp, 10.dp),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (isBot) TextPrimary else Color.White,
-                    lineHeight = 16.sp,
-                    fontSize = 11.sp
-                )
-            }
-            
-            if (msg.chips != null) {
-                LazyRow(
-                    modifier = Modifier.padding(top = 6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+            if (messages.isEmpty()) {
+                KiriEmptyState()
+            } else {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.weight(1f).padding(horizontal = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(vertical = 24.dp)
                 ) {
-                    items(msg.chips) { chip ->
-                        Surface(
-                            color = OrangeLight,
-                            shape = RoundedCornerShape(8.dp),
-                            border = BorderStroke(1.dp, OrangePrimary),
-                            modifier = Modifier.clickable { }
-                        ) {
-                            Text(
-                                text = chip,
-                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = OrangeDark,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 9.sp
-                            )
-                        }
+                    items(messages) { msg ->
+                        KiriMessageBubble(msg)
                     }
                 }
             }
+        }
+    }
+}
 
-            if (msg.isMatch) {
-                MatchResultCard()
-            }
+@Composable
+fun KiriEmptyState() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "SYSTEM_READY",
+            style = MaterialTheme.typography.labelSmall,
+            color = TextSecondary,
+            letterSpacing = 2.sp
+        )
+        Spacer(Modifier.height(32.dp))
+        Text(
+            "KIRI AI",
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.Black,
+            color = TextPrimary,
+            fontSize = 72.sp
+        )
+        Spacer(Modifier.height(32.dp))
+        Text(
+            "Multimodal intelligence layer active.\nSend a message to begin analysis.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 48.dp),
+            lineHeight = 24.sp
+        )
+    }
+}
 
+@Composable
+fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
+    val isUser = msg.role == "user"
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
+    ) {
+        Text(
+            text = if (isUser) "YOU" else "KIRI AI",
+            style = MaterialTheme.typography.labelSmall,
+            color = if (isUser) OrangePrimary else TextSecondary,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Surface(
+            color = if (isUser) OrangePrimary else Color.White,
+            shape = RoundedCornerShape(12.dp),
+            border = if (!isUser) BorderStroke(1.dp, BorderColor) else null,
+            shadowElevation = if (isUser) 4.dp else 1.dp
+        ) {
             Text(
-                text = "9:32 AM",
-                style = MaterialTheme.typography.labelSmall,
-                fontSize = 8.sp,
-                color = TextSecondary,
-                modifier = Modifier.padding(top = 4.dp)
+                text = msg.content,
+                modifier = Modifier.padding(16.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (isUser) Color.White else TextPrimary
             )
         }
     }
 }
 
 @Composable
-fun MatchResultCard() {
-    Card(
-        modifier = Modifier.padding(top = 2.dp).fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = OrangeLight),
-        border = BorderStroke(1.dp, OrangePrimary)
-    ) {
-        Column(modifier = Modifier.padding(9.dp)) {
-            Text("TOP MATCHES", style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
-            Spacer(Modifier.height(5.dp))
-            MatchItem("VS", "Vikram Shinde", "Full Stack · KIT College", 94)
-            MatchItem("AM", "Aditya Mane", "AI/ML · DY Patil", 89)
-        }
-    }
-}
-
-@Composable
-fun MatchItem(initials: String, name: String, info: String, score: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(7.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(24.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(Brush.linearGradient(listOf(OrangePrimary, OrangeDark))),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(initials, color = Color.White, fontSize = 9.sp, fontWeight = FontWeight.Bold)
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(name, style = MaterialTheme.typography.labelSmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-            Text(info, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
-        }
-        Text("$score%", style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, fontSize = 12.sp)
-    }
-}
-
-@Composable
-fun ChatInputBar() {
+fun KiriInputBar(text: String, onTextChange: (String) -> Unit, onSend: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
-            .padding(10.dp, 12.dp, 10.dp, 20.dp)
-            .border(BorderStroke(0.5.dp, BorderColor)), 
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(16.dp)
+            .padding(bottom = 80.dp), // Adjust for bottom nav
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(14.dp))
-                .background(OrangePrimary),
-            contentAlignment = Alignment.Center
+        OutlinedTextField(
+            value = text,
+            onValueChange = onTextChange,
+            modifier = Modifier.weight(1f),
+            placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
+            leadingIcon = { Icon(Icons.Default.Add, contentDescription = null) },
+            shape = RoundedCornerShape(50),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = BorderColor.copy(alpha = 0.3f),
+                unfocusedContainerColor = BorderColor.copy(alpha = 0.3f),
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent
+            )
+        )
+        Spacer(Modifier.width(12.dp))
+        FloatingActionButton(
+            onClick = onSend,
+            containerColor = BorderColor.copy(alpha = 0.5f),
+            contentColor = TextPrimary,
+            shape = CircleShape,
+            modifier = Modifier.size(56.dp),
+            elevation = FloatingActionButtonDefaults.elevation(0.dp)
         ) {
-            Icon(Icons.Default.Mic, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
-        }
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .height(40.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(BgCream)
-                .border(1.dp, BorderColor, RoundedCornerShape(10.dp))
-                .padding(horizontal = 12.dp),
-            contentAlignment = Alignment.CenterStart
-        ) {
-            Text("Speak or type your message...", style = MaterialTheme.typography.bodySmall, color = Color(0xFFBBBBBB))
-        }
-        Box(
-            modifier = Modifier
-                .size(34.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(OrangeLight),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
+            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
         }
     }
 }

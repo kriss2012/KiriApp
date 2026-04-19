@@ -141,13 +141,53 @@ fun RegisterScreen(
 
             if (selectedRole == "STUDENT" || selectedRole == "SPOC") {
                 Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = college,
-                    onValueChange = { college = it },
-                    label = { Text("College Name") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
+                
+                var expanded by remember { mutableStateOf(false) }
+                val jalgaonColleges = listOf(
+                    "GH Raisoni Institute of Engineering & Business Management, Jalgaon",
+                    "Government College of Engineering, Jalgaon (GCOEJ)",
+                    "SSBT's College of Engineering & Technology, Bambhori",
+                    "KBC North Maharashtra University (KBCNMU)",
+                    "Moolji Jaitha College (MJ College)",
+                    "KCES's College of Engineering and Management (COEM)",
+                    "Godavari College of Engineering",
+                    "Shri Gulabrao Deokar College of Engineering (SGDCOE)",
+                    "Pratibha College of Education",
+                    "DNCVP's College of Social Work",
+                    "Nuton Maratha College",
+                    "Other / Outsider"
                 )
+
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
+                    OutlinedTextField(
+                        value = college,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("College Name") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier.fillMaxWidth().menuAnchor(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        jalgaonColleges.forEach { collegeName ->
+                            DropdownMenuItem(
+                                text = { Text(collegeName) },
+                                onClick = {
+                                    college = collegeName
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = department,

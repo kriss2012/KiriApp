@@ -12,23 +12,25 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Register : Screen("register")
     object Onboarding : Screen("onboarding")
     object Home : Screen("home", "Home", Icons.Default.Home)
-    object Repository : Screen("repository", "Repository", Icons.Default.Group)
-    object AIAgent : Screen("ai_agent", "AI Agent", Icons.Default.SmartToy)
+    object Search : Screen("search", "Search", Icons.Default.Search)
+    object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.SmartToy)
+    object Repository : Screen("repository", "Community", Icons.Default.Group)
     object Events : Screen("events", "Events", Icons.Default.CalendarMonth)
     object Profile : Screen("profile", "Profile", Icons.Default.Person)
     
     // Sub-screens
-    object HackathonOrganizer : Screen("hackathon_organizer")
-    object NAACRecords : Screen("naac_records")
-    object DistrictMap : Screen("district_map")
+    object PublicProfile : Screen("public_profile/{userId}") {
+        fun createRoute(userId: String) = "public_profile/$userId"
+    }
+    object Connections : Screen("connections", "Connections", Icons.Default.Link)
     object Chat : Screen("chat", "Chat")
     object Jobs : Screen("jobs", "Jobs")
 }
 
 val BottomNavItems = listOf(
     Screen.Home,
-    Screen.Repository,
+    Screen.Search,
     Screen.AIAgent,
-    Screen.Events,
+    Screen.Repository,
     Screen.Profile
 )

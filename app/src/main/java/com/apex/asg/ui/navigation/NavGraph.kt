@@ -11,6 +11,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apex.asg.ui.screens.*
 import com.apex.asg.data.SessionManager
+import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 
 @Composable
 fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
@@ -55,12 +60,32 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             HomeScreen()
         }
         
+        composable(Screen.Search.route) {
+            SearchScreen(
+                onNavigateToProfile = { userId -> 
+                    navController.navigate(Screen.PublicProfile.createRoute(userId))
+                }
+            )
+        }
+
         composable(Screen.Repository.route) {
-            RepositoryScreen()
+            RepositoryScreen(
+                onNavigateToProfile = { userId -> 
+                    navController.navigate(Screen.PublicProfile.createRoute(userId))
+                }
+            )
         }
         
         composable(Screen.AIAgent.route) {
             AIAgentScreen()
+        }
+
+        composable(Screen.PublicProfile.route) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            PublicProfileScreen(
+                userId = userId,
+                onBack = { navController.popBackStack() }
+            )
         }
         
         composable(Screen.Events.route) {
@@ -71,16 +96,9 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             ProfileScreen()
         }
 
-        composable(Screen.HackathonOrganizer.route) {
-            HackathonOrganizerScreen()
-        }
-
-        composable(Screen.NAACRecords.route) {
-            NAACRecordsScreen()
-        }
-
-        composable(Screen.DistrictMap.route) {
-            DistrictMapScreen()
+        composable(Screen.Connections.route) {
+            // Placeholder or future Connections Screen
+            Box(Modifier.fillMaxSize()) { Text("Connections List Coming Soon", modifier = androidx.compose.ui.Modifier.align(androidx.compose.ui.Alignment.Center)) }
         }
 
         composable(Screen.Chat.route) {
