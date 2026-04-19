@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import prisma from '../utils/prisma.js';
+import { Role } from '@prisma/client';
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
@@ -95,5 +96,37 @@ export const getAllVerifiedUsers = async (req: Request, res: Response) => {
     res.status(200).json(users);
   } catch (error: any) {
     res.status(500).json({ message: 'Error fetching verified users', error: error.message });
+  }
+};
+
+export const searchUsers = async (req: Request, res: Response) => {
+  try {
+    const { name, role } = req.query;
+
+    const where: any = {};
+    if (name) {
+      where.fullName = { contains: name as string, mode: 'insensitive' };
+    }
+    if (role && role !== 'ALL') {
+      where.role = role as Role;
+    }
+
+    const users = await prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        fullName: true,
+        role: true,
+        avatarUrl: true,
+        college: true,
+        bio: true,
+        skills: true
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.status(200).json(users);
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error searching users', error: error.message });
   }
 };
