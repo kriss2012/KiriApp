@@ -13,6 +13,11 @@ import eventRoutes from './routes/eventRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import connectionRoutes from './routes/connectionRoutes.js';
+import pitchRoutes from './routes/pitchRoutes.js';
+import matchRoutes from './routes/matchRoutes.js';
+import investorRoutes from './routes/investorRoutes.js';
+import mentorRoutes from './routes/mentorRoutes.js';
+import inviteRoutes from './routes/inviteRoutes.js';
 
 dotenv.config();
 
