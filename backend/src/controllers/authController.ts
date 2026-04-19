@@ -41,7 +41,11 @@ export const register = async (req: Request, res: Response) => {
 
     res.status(201).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role } });
   } catch (error: any) {
-    res.status(500).json({ message: 'Something went wrong', error: error.message });
+    console.error('Registration Error:', error);
+    if (error.message.includes('timed out')) {
+      return res.status(503).json({ message: 'Database connection timed out. Please check RDS Security Groups.', error: error.message });
+    }
+    res.status(500).json({ message: 'Registration failed', error: error.message });
   }
 };
 
@@ -70,6 +74,10 @@ export const login = async (req: Request, res: Response) => {
 
     res.status(200).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, role: user.role } });
   } catch (error: any) {
-    res.status(500).json({ message: 'Something went wrong', error: error.message });
+    console.error('Login Error:', error);
+    if (error.message.includes('timed out')) {
+      return res.status(503).json({ message: 'Database connection timed out. Please check RDS Security Groups.', error: error.message });
+    }
+    res.status(500).json({ message: 'Login failed', error: error.message });
   }
 };
