@@ -1,5 +1,6 @@
 import prisma from '../utils/prisma.js';
 import { createNotification } from './notificationController.js';
+import { createActivity } from './aiController.js';
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, location, type, ownerId } = req.body;
@@ -29,6 +30,8 @@ export const createEvent = async (req, res) => {
             select: { id: true }
         });
         await Promise.all(allUsers.map(u => createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT')));
+        // Record Innovation Activity for NAAC
+        await createActivity(ownerId, 'EVENT_JOIN', 'Organized Event', `Organized "${title}" on ${date}.`, 50);
         res.status(201).json(event);
     }
     catch (error) {

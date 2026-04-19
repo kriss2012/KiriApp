@@ -22,38 +22,58 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 
+import com.apex.asg.ui.viewmodels.NAACViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.data.SessionManager
+import androidx.compose.ui.platform.LocalContext
+
+import com.apex.asg.data.services.CertificateService
+
 @Composable
-fun NAACRecordsScreen() {
+fun NAACRecordsScreen(vm: NAACViewModel = viewModel()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val userId = sessionManager.getUserId() ?: ""
+    val userName = sessionManager.getFullName() ?: "Student"
+    
     var selectedTab by remember { mutableStateOf("Student Data") }
-    val tabs = listOf("Student Data", "Events Log", "Visiting Guests", "Innovation")
+    val tabs = listOf("Student Data", "Events Log", "Connectivity", "Innovation")
+
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            vm.loadActivities(userId)
+        }
+    }
 
     Scaffold(
         containerColor = BgCream,
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { },
+            ExtendedFloatingActionButton(
+                onClick = { CertificateService.generateInnovationReport(context, userName, vm.activities) },
                 containerColor = OrangePrimary,
                 contentColor = Color.White,
+                icon = { Icon(Icons.Default.Add, null) },
+                text = { Text("DOWNLOAD PORTFOLIO") },
                 shape = RoundedCornerShape(16.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Record")
-            }
+            )
         }
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            // ... (keep Header and Tabs from original code) ...
+            
             // Header
             Column(modifier = Modifier.padding(18.dp, 10.dp)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    Text("NAAC & NEP Records", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
+                    Text("Innovation Portfolio", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
                     Icon(Icons.Default.Info, contentDescription = null, modifier = Modifier.size(16.dp), tint = TextSecondary)
                 }
-                Text("Maintain college data for accreditation", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("Automated records for NAAC & NEP documentation", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
             }
 
-            // Tabs
+            // Tabs (same as original)
             LazyRow(
                 modifier = Modifier.padding(vertical = 5.dp),
                 contentPadding = PaddingValues(horizontal = 14.dp),
@@ -83,18 +103,42 @@ fun NAACRecordsScreen() {
                 }
             }
 
-            // Records List
+            // Records List (REAL DATA)
+            val filteredActivities = when(selectedTab) {
+                "Student Data" -> vm.activities
+                "Events Log" -> vm.activities.filter { it.type == "EVENT_JOIN" }
+                "Connectivity" -> vm.activities.filter { it.type == "CONNECTION" }
+                "Innovation" -> vm.activities.filter { it.type == "AI_SESSION" }
+                else -> vm.activities
+            }
+
             LazyColumn(
                 modifier = Modifier.padding(horizontal = 14.dp),
                 contentPadding = PaddingValues(bottom = 80.dp),
                 verticalArrangement = Arrangement.spacedBy(7.dp)
             ) {
-                items(5) { index ->
+                if (filteredActivities.isEmpty()) {
+                    item {
+                        Card(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(1.dp, BorderColor)
+                        ) {
+                            Text("No activity records found for this category.", 
+                                modifier = Modifier.padding(32.dp).fillMaxWidth(),
+                                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                color = TextSecondary)
+                        }
+                    }
+                }
+
+                items(filteredActivities) { activity ->
                     RecordCard(
-                        title = "Monthly Innovation Report",
-                        date = "March 2025",
-                        status = if (index % 2 == 0) "Verified" else "Pending",
-                        statusColor = if (index % 2 == 0) GreenSuccess else OrangePrimary
+                        title = activity.title,
+                        date = activity.createdAt.split("T").firstOrNull() ?: activity.createdAt,
+                        status = "Verified",
+                        statusColor = GreenSuccess
                     )
                 }
             }

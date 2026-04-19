@@ -30,8 +30,22 @@ class KiriAIViewModel : ViewModel() {
     private val _selectedFileName = MutableStateFlow<String?>(null)
     val selectedFileName: StateFlow<String?> = _selectedFileName
 
+    private val _currentSpecialization = MutableStateFlow("GENERAL")
+    val currentSpecialization: StateFlow<String> = _currentSpecialization
+
     init {
         loadHistory()
+    }
+
+    fun setSpecialization(specialization: String) {
+        _currentSpecialization.value = specialization
+        viewModelScope.launch {
+            try {
+                ApiClient.service.updateSpecialization(mapOf("specialization" to specialization))
+            } catch (e: Exception) {
+                // Silently fail, prompt will be updated next message anyway
+            }
+        }
     }
 
     fun onFileSelected(context: Context, uri: Uri) {

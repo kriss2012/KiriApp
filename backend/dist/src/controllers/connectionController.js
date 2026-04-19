@@ -1,5 +1,6 @@
 import prisma from '../utils/prisma.js';
 import { createNotification } from './notificationController.js';
+import { createActivity } from './aiController.js';
 export const sendRequest = async (req, res) => {
     try {
         const { senderId, receiverId } = req.body;
@@ -29,11 +30,14 @@ export const acceptRequest = async (req, res) => {
         const connection = await prisma.connection.update({
             where: { id: connectionId },
             data: { status: 'ACCEPTED' },
-            include: { receiver: true }
+            include: { sender: true, receiver: true }
         });
-        // Create Notification for sender
-        await createNotification(connection.senderId, 'Request Accepted', `${connection.receiver.fullName} accepted your connection request!`, 'REQUEST');
-        res.status(200).json(connection);
+        // Notify sender
+        await createNotification(connection.senderId, 'Connection Accepted!', `${connection.receiver.fullName} accepted your connection request.`, 'REQUEST');
+        // Log Activity for NAAC
+        await createActivity(connection.receiverId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.sender.fullName}.`, 25);
+        await createActivity(connection.senderId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.receiver.fullName}.`, 25);
+        res.status(200).json({ message: 'Connection accepted successfully', connection });
     }
     catch (error) {
         res.status(500).json({ message: 'Error accepting request', error: error.message });

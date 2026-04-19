@@ -81,7 +81,184 @@ interface ASGApiService {
 
     @POST("ai/chat")
     suspend fun sendAiMessage(@Body request: AiMessageRequest): AiMessageResponse
+
+    @PUT("ai/specialization")
+    suspend fun updateSpecialization(@Body request: Map<String, String>): Map<String, Any>
+
+    @GET("users/activities/{userId}")
+    suspend fun getActivities(@Path("userId") userId: String): List<ActivityDto>
+
+    @GET("users/stats/{userId}")
+    suspend fun getUserStats(@Path("userId") userId: String): UserStatsDto
+
+    // Pitches / Marketplace
+    @GET("pitches")
+    suspend fun getPitches(): List<PitchDto>
+
+    @POST("pitches")
+    suspend fun createPitch(@Body request: CreatePitchRequest): PitchDto
+
+    @POST("pitches/back")
+    suspend fun backPitch(@Body request: Map<String, String>): Map<String, Any>
+
+    @GET("match/suggestions")
+    suspend fun getMatchSuggestions(): List<MatchSuggestionDto>
+
+    @GET("investor/high-potential")
+    suspend fun getHighPotentialPitches(): List<InvestorPitchDto>
+
+    @GET("investor/trends")
+    suspend fun getMarketTrends(): List<MarketTrendDto>
+
+    @GET("projects/artifacts/{userId}")
+    suspend fun getProjectArtifacts(@Path("userId") userId: String): List<ProjectArtifactDto>
+
+    @POST("projects/artifacts")
+    suspend fun createProjectArtifact(@Body request: CreateArtifactRequest): ProjectArtifactDto
+
+    // Mentorship
+    @POST("mentor/request")
+    suspend fun requestMentorSession(@Body request: MentorSessionRequest): MentorSessionDto
+
+    @GET("mentor/history")
+    suspend fun getMentorHistory(): List<MentorSessionDto>
+
+    @GET("investor/heatmap")
+    suspend fun getInnovationHeatmap(): List<HeatMapDto>
+
+    @POST("invite/generate")
+    suspend fun generateInvite(@Body request: GenerateInviteRequest): InviteCodeDto
+
+    @GET("invite/list")
+    suspend fun getInvites(): List<InviteCodeDto>
 }
+
+data class GenerateInviteRequest(
+    val targetRole: String,
+    val expiryDays: Int = 7
+)
+
+data class InviteCodeDto(
+    val id: String,
+    val code: String,
+    val targetRole: String,
+    val isUsed: Boolean,
+    val expiresAt: String
+)
+
+data class MentorSessionDto(
+    val id: String,
+    val topic: String,
+    val status: String,
+    val scheduledAt: String?,
+    val mentor: UserDto,
+    val founder: UserDto,
+    val createdAt: String
+)
+
+data class MentorSessionRequest(
+    val mentorId: String,
+    val topic: String,
+    val scheduledAt: String? = null
+)
+
+data class HeatMapDto(
+    val department: String,
+    val _count: HeatMapCountDto
+)
+
+data class HeatMapCountDto(val activities: Int, val pitches: Int)
+
+data class ProjectArtifactDto(
+    val id: String,
+    val title: String,
+    val description: String?,
+    val url: String?,
+    val summary: String?,
+    val createdAt: String
+)
+
+data class CreateArtifactRequest(
+    val title: String,
+    val description: String?,
+    val url: String?,
+    val userId: String
+)
+
+data class InvestorPitchDto(
+    val id: String,
+    val title: String,
+    val description: String,
+    val fundingGoal: Float,
+    val category: String,
+    val healthScore: Int,
+    val founder: UserDto,
+    val _count: PitchCountDto
+)
+
+data class MarketTrendDto(
+    val category: String,
+    val _count: Map<String, Int>,
+    val _avg: Map<String, Float>
+)
+
+data class MatchSuggestionDto(
+    val id: String,
+    val fullName: String,
+    val role: String,
+    val avatarUrl: String?,
+    val skills: List<String>,
+    val college: String?,
+    val intent: String?,
+    val matchScore: Int
+)
+
+data class PitchDto(
+    val id: String,
+    val title: String,
+    val description: String,
+    val problem: String,
+    val solution: String,
+    val impact: String,
+    val fundingGoal: Float,
+    val status: String,
+    val category: String,
+    val founderId: String,
+    val founder: UserDto,
+    val _count: PitchCountDto,
+    val createdAt: String
+)
+
+data class PitchCountDto(val backers: Int)
+
+data class CreatePitchRequest(
+    val title: String,
+    val description: String,
+    val problem: String,
+    val solution: String,
+    val impact: String,
+    val fundingGoal: String,
+    val category: String
+)
+
+data class ActivityDto(
+    val id: String,
+    val type: String,
+    val title: String,
+    val content: String?,
+    val points: Int,
+    val createdAt: String
+)
+
+data class UserStatsDto(
+    val points: Int,
+    val _count: UserCountDto
+)
+
+data class UserCountDto(
+    val activities: Int,
+    val connections: Int
+)
 
 data class AiMessageRequest(
     val content: String,

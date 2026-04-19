@@ -81,6 +81,11 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
                 .fillMaxSize()
                 .padding(padding)
         ) {
+            SpecializationSelector(
+                selected = vm.currentSpecialization.collectAsState().value,
+                onSelected = { vm.setSpecialization(it) }
+            )
+
             if (messages.isEmpty()) {
                 KiriEmptyState()
             } else {
@@ -227,6 +232,36 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
                 modifier = Modifier.padding(16.dp),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (isUser) Color.White else TextPrimary
+            )
+        }
+    }
+}
+
+@Composable
+fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
+    val options = listOf("GENERAL", "TECH", "LEGAL", "GTM")
+    androidx.compose.foundation.lazy.LazyRow(
+        modifier = Modifier.fillMaxWidth().background(BgCream).padding(horizontal = 24.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(options) { option ->
+            val isSelected = selected == option
+            FilterChip(
+                selected = isSelected,
+                onClick = { onSelected(option) },
+                label = { Text(option, style = MaterialTheme.typography.labelSmall) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = OrangePrimary,
+                    selectedLabelColor = Color.White,
+                    containerColor = Color.White
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    enabled = true,
+                    selected = isSelected,
+                    borderColor = BorderColor,
+                    selectedBorderColor = OrangePrimary
+                ),
+                shape = RoundedCornerShape(20.dp)
             )
         }
     }

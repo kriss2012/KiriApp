@@ -118,9 +118,82 @@ fun HomeContent(
     ) {
         item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
         item { GreetingSection(userName = user.fullName) }
+        item { InnovationProgressCard(points = user.points) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
+        item { InnovationHubCard(onNavigateToHub = { /* TODO: onNavigateToHub */ }) }
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
         item { UpcomingEventsSection(events, onNavigateToEvents = onNavigateToEvents) }
+    }
+}
+
+@Composable
+fun InnovationHubCard(onNavigateToHub: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .padding(14.dp, 8.dp)
+            .fillMaxWidth()
+            .clickable { onNavigateToHub() },
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = BluePrimary)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("INNOVATION HUB", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.7f), letterSpacing = 1.sp)
+                Text("Ecosystem Dashboard", style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black)
+                Text("Access Marketplace, Matchmaker & more.", style = MaterialTheme.typography.bodySmall, color = Color.White.copy(alpha = 0.8f))
+            }
+            Box(
+                modifier = Modifier.size(48.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("⚡", fontSize = 20.sp)
+            }
+        }
+    }
+}
+
+@Composable
+fun InnovationProgressCard(points: Int) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, BorderColor)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(54.dp)
+                    .clip(CircleShape)
+                    .background(OrangePrimary.copy(alpha = 0.1f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("🔥", fontSize = 24.sp)
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text("Innovation Rank", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text("Vanguard Level", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = TextPrimary)
+                LinearProgressIndicator(
+                    progress = { (points % 1000) / 1000f },
+                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape).padding(vertical = 4.dp),
+                    color = OrangePrimary,
+                    trackColor = OrangeLight
+                )
+            }
+            Column(horizontalAlignment = Alignment.End) {
+                Text(points.toString(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = OrangePrimary)
+                Text("POINTS", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
+            }
+        }
     }
 }
 
@@ -134,7 +207,7 @@ fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text("ASG", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = TextPrimary, letterSpacing = 2.sp)
+            Text("APEX", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = TextPrimary, letterSpacing = 2.sp)
             Text("Ecosystem", style = MaterialTheme.typography.labelSmall, color = TextSecondary, letterSpacing = 1.sp)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {

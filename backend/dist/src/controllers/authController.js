@@ -3,8 +3,31 @@ import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma.js';
 export const register = async (req, res) => {
     try {
-        const { email, password, fullName, role, studentLevel, department, college, year, section } = req.body;
-        // Check if user already exists
+        const { email, password, fullName, role, studentLevel, department, college, year, section, inviteCode } = req.body;
+        // 1. Role Security Check
+        const protectedRoles = ['ADMIN', 'SPOC', 'MENTOR', 'INVESTOR'];
+        if (protectedRoles.includes(role)) {
+            if (!inviteCode) {
+                return res.status(403).json({ message: `Invite code required for registration as ${role}` });
+            }
+            const invite = await prisma.inviteCode.findFirst({
+                where: {
+                    code: inviteCode,
+                    targetRole: role,
+                    isUsed: false,
+                    expiresAt: { gt: new Date() }
+                }
+            });
+            if (!invite) {
+                return res.status(403).json({ message: 'Invalid or expired invite code' });
+            }
+            // Mark code as used
+            await prisma.inviteCode.update({
+                where: { id: invite.id },
+                data: { isUsed: true }
+            });
+        }
+        // 2. Check if user already exists
         const existingUser = await prisma.user.findUnique({ where: { email } });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
