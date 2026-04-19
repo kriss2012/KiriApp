@@ -105,7 +105,7 @@ fun ConnectionsScreen(
                                 items(filteredList) { connection ->
                                     val otherUser = if (connection.senderId == userId) connection.receiver else connection.sender
                                     ConnectionItem(
-                                        connection = connection,
+                                        user = otherUser,
                                         isRequest = selectedTab == 0,
                                         onAccept = { viewModel.acceptRequest(connection.id, userId) }
                                     )
@@ -125,11 +125,10 @@ fun ConnectionsScreen(
 
 @Composable
 fun ConnectionItem(
-    connection: ConnectionDto,
+    user: com.apex.asg.data.remote.UserDto,
     isRequest: Boolean,
     onAccept: () -> Unit
 ) {
-    val user = if (isRequest) connection.sender else connection.receiver 
     // Wait, if it's a request, I'm the receiver, user is sender.
     // If it's network, I could be either. Let's just use a simple logic:
     // Receiver sees sender as the "other" person in a request.
