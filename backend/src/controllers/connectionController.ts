@@ -7,14 +7,24 @@ export const sendRequest = async (req: Request, res: Response) => {
   try {
     const { senderId, receiverId } = req.body;
 
-    const existing = await prisma.connection.findUnique({
+    if (senderId === receiverId) {
+      return res.status(400).json({ message: 'Cannot connect to yourself' });
+    }
+
+    const existing = await prisma.connection.findFirst({
       where: {
-        senderId_receiverId: { senderId, receiverId }
+        OR: [
+          { senderId, receiverId },
+          { senderId: receiverId, receiverId: senderId }
+        ]
       }
     });
 
     if (existing) {
-      return res.status(400).json({ message: 'Request already sent' });
+      return res.status(400).json({ 
+        message: existing.status === 'PENDING' ? 'Request already pending' : 'Already connected',
+        status: existing.status
+      });
     }
 
     const connection = await prisma.connection.create({
