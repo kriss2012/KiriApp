@@ -32,10 +32,10 @@ class ConnectionsViewModel : ViewModel() {
         }
     }
 
-    fun acceptRequest(requestId: String, userId: String) {
+    fun acceptRequest(connectionId: String, userId: String) {
         viewModelScope.launch {
             try {
-                ApiClient.service.acceptConnectionRequest(mapOf("requestId" to requestId, "userId" to userId))
+                ApiClient.service.acceptConnectionRequest(mapOf("connectionId" to connectionId, "userId" to userId))
                 // Refresh list
                 fetchConnections(userId)
             } catch (e: Exception) {
