@@ -45,6 +45,7 @@ model User {
   avatarUrl        String?
   bio              String?
   skills           String[]
+  points           Int           @default(100) // Welcome points
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
@@ -58,6 +59,51 @@ model User {
   sentRequests     Connection[]  @relation("SentRequests")
   receivedRequests Connection[]  @relation("ReceivedRequests")
   notifications    Notification[]
+  activities       Activity[]
+  pitches          Pitch[]
+  backedPitches    Backer[]
+  githubUrl        String?
+  linkedInUrl      String?
+  intent           String?   // "HIRING", "CO_FOUNDER", "INTERNSHIP", "MENTORSHIP"
+  preferredLanguage String?  @default("ENGLISH") // "ENGLISH", "MARATHI", "HINDI"
+  artifacts        ProjectArtifact[]
+  expertise        String[]   // e.g. ["FINTECH", "UI", "BLOCKCHAIN"]
+  mentorSessions   MentorSession[] @relation("MentorSessions")
+  founderSessions  MentorSession[] @relation("FounderSessions")
+}
+
+model MentorSession {
+  id          String   @id @default(uuid())
+  mentorId    String
+  mentor      User     @relation("MentorSessions", fields: [mentorId], references: [id])
+  founderId   String
+  founder     User     @relation("FounderSessions", fields: [founderId], references: [id])
+  topic       String
+  status      String   @default("PENDING") // PENDING, SCHEDULED, COMPLETED, CANCELLED
+  scheduledAt DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model ProjectArtifact {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  url         String?  // Link to code/doc
+  summary     String?  // AI Generated Summary
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // "EVENT_JOIN", "CONNECTION", "AI_SESSION", "RECORD_CREATED"
+  title     String
+  content   String?
+  points    Int      @default(10)
+  createdAt DateTime @default(now())
 }
 
 model Notification {
@@ -139,5 +185,43 @@ model Event {
   type        String   @default("GENERAL")
   ownerId     String
   owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Pitch {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  problem     String
+  solution    String
+  impact      String   // Regional Impact
+  fundingGoal Float
+  status      String   @default("OPEN") // OPEN, FUNDED, CLOSED
+  category    String   @default("TECH")
+  founderId   String
+  founder     User     @relation(fields: [founderId], references: [id])
+  backers     Backer[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Backer {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  pitchId   String
+  pitch     Pitch    @relation(fields: [pitchId], references: [id])
+  points    Int      @default(10)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, pitchId])
+}
+
+model InviteCode {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  targetRole  Role
+  isUsed      Boolean  @default(false)
+  expiresAt   DateTime
   createdAt   DateTime @default(now())
 }
