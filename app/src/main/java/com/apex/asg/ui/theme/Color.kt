@@ -18,3 +18,4 @@ val GreenSuccess = Color(0xFF228B22)
 val GreenLight = Color(0xFFF0FAF0)
 val YellowWarm = Color(0xFFFFF8E1)
 val BlueInfo = Color(0xFFE3F2FD)
+val BluePrimary = Color(0xFF001F3F) // Premium Navy Blue for APEX Branding

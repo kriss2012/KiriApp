@@ -56,4 +56,12 @@ class SessionManager private constructor(context: Context) {
     fun isLoggedIn(): Boolean {
         return getToken() != null
     }
+
+    fun saveUserName(name: String) {
+        prefs.edit().putString("user_name", name).apply()
+    }
+
+    fun getUserName(): String? {
+        return prefs.getString("user_name", null)
+    }
 }

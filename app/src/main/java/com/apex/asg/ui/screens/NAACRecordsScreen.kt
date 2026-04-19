@@ -34,7 +34,7 @@ fun NAACRecordsScreen(vm: NAACViewModel = viewModel()) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
-    val userName = sessionManager.getFullName() ?: "Student"
+    val userName = sessionManager.getUserName() ?: "Student"
     
     var selectedTab by remember { mutableStateOf("Student Data") }
     val tabs = listOf("Student Data", "Events Log", "Connectivity", "Innovation")

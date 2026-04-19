@@ -397,7 +397,8 @@ data class UserDto(
     val year: String? = null,
     val section: String? = null,
     val avatarUrl: String? = null,
-    val canCreateEvents: Boolean = false
+    val canCreateEvents: Boolean = false,
+    val points: Int = 100
 )
 
 data class NotificationDto(
