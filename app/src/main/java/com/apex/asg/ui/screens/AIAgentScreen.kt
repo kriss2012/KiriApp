@@ -11,6 +11,8 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -124,10 +126,10 @@ fun KiriInputBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(androidx.compose.material.icons.filled.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
+                    Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
                     Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
                     IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
-                        Icon(androidx.compose.material.icons.filled.Close, contentDescription = null, tint = OrangePrimary)
+                        Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
                     }
                 }
             }
