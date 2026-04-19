@@ -25,7 +25,31 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
     
     NavHost(
         navController = navController,
-        startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route
+        startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route,
+        enterTransition = {
+            androidx.compose.animation.slideInHorizontally(
+                initialOffsetX = { 1000 },
+                animationSpec = androidx.compose.animation.core.tween(500)
+            ) + androidx.compose.animation.fadeIn(animationSpec = androidx.compose.animation.core.tween(500))
+        },
+        exitTransition = {
+            androidx.compose.animation.slideOutHorizontally(
+                targetOffsetX = { -1000 },
+                animationSpec = androidx.compose.animation.core.tween(500)
+            ) + androidx.compose.animation.fadeOut(animationSpec = androidx.compose.animation.core.tween(500))
+        },
+        popEnterTransition = {
+            androidx.compose.animation.slideInHorizontally(
+                initialOffsetX = { -1000 },
+                animationSpec = androidx.compose.animation.core.tween(500)
+            ) + androidx.compose.animation.fadeIn(animationSpec = androidx.compose.animation.core.tween(500))
+        },
+        popExitTransition = {
+            androidx.compose.animation.slideOutHorizontally(
+                targetOffsetX = { 1000 },
+                animationSpec = androidx.compose.animation.core.tween(500)
+            ) + androidx.compose.animation.fadeOut(animationSpec = androidx.compose.animation.core.tween(500))
+        }
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(

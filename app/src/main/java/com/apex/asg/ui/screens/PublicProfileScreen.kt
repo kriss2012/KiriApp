@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 
 import androidx.compose.ui.graphics.Color
@@ -37,6 +38,8 @@ fun PublicProfileScreen(
     val sessionManager = remember { SessionManager.getInstance(context) }
     val currentUserId = sessionManager.getUserId() ?: ""
     
+    var isLoading by remember { mutableStateOf(true) }
+    var isPending by remember { mutableStateOf(false) }
     var user by remember { mutableStateOf<UserDto?>(null) }
     var connectionStatus by remember { mutableStateOf<String?>(null) } // "PENDING", "ACCEPTED", null
     val coroutineScope = rememberCoroutineScope()
@@ -185,7 +188,7 @@ fun PublicProfileScreen(
                         Column(Modifier.padding(16.dp)) {
                             Text("Contact Info", fontWeight = FontWeight.Bold, color = TextPrimary)
                             Spacer(Modifier.height(8.dp))
-                            if (isConnected || userId == currentUserId) {
+                            if (connectionStatus == "ACCEPTED" || userId == currentUserId) {
                                 Text("Email: ${u.email}", style = MaterialTheme.typography.bodyMedium)
                             } else {
                                 Box(
