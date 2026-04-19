@@ -93,7 +93,15 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
         
         composable(Screen.Profile.route) {
-            ProfileScreen()
+            ProfileScreen(
+                onNavigateToEdit = { navController.navigate(Screen.EditProfile.route) }
+            )
+        }
+
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Connections.route) {

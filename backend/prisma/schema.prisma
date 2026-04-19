@@ -57,6 +57,18 @@ model User {
   conversations    Conversation[]
   sentRequests     Connection[]  @relation("SentRequests")
   receivedRequests Connection[]  @relation("ReceivedRequests")
+  notifications    Notification[]
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  type      String   // "EVENT", "REQUEST", "MESSAGE", "SYSTEM"
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Connection {

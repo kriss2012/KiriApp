@@ -32,13 +32,22 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun updateProfile(userId: String, fullName: String, role: String) {
+    fun updateProfile(userId: String, fullName: String, role: String, bio: String? = null, department: String? = null, college: String? = null, year: String? = null) {
         viewModelScope.launch {
             _uiState.value = ProfileState.Loading
             try {
+                val profileData = mutableMapOf<String, Any?>(
+                    "fullName" to fullName,
+                    "role" to role
+                )
+                bio?.let { profileData["bio"] = it }
+                department?.let { profileData["department"] = it }
+                college?.let { profileData["college"] = it }
+                year?.let { profileData["year"] = it }
+
                 val updatedUser = ApiClient.service.updateProfile(
                     userId = userId,
-                    profileData = mapOf("fullName" to fullName, "role" to role)
+                    profileData = profileData
                 )
                 _uiState.value = ProfileState.Success(updatedUser)
             } catch (e: Exception) {

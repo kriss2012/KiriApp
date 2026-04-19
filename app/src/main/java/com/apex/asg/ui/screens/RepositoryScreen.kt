@@ -44,35 +44,18 @@ fun RepositoryScreen(
             .background(BgCream)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        // Premium Header with Search
+        // Premium Header
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
-                .padding(24.dp)
+                .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
             Text("Community", style = MaterialTheme.typography.displaySmall, color = TextPrimary, fontWeight = FontWeight.Black)
             Text("Network of Jalgaon's brightest minds", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
-            
-            Spacer(Modifier.height(20.dp))
-            
-            OutlinedTextField(
-                value = "",
-                onValueChange = { },
-                modifier = Modifier.fillMaxWidth().height(56.dp),
-                placeholder = { Text("Search members, roles, skills...", fontSize = 14.sp) },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextSecondary) },
-                shape = RoundedCornerShape(28.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = BgCream,
-                    unfocusedContainerColor = BgCream,
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                )
-            )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         // Filter Chips
         LazyRow(
@@ -130,7 +113,9 @@ fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Uni
     ) {
         if (users.isEmpty()) {
             item {
-                Text("No members found in this category", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Box(modifier = Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) {
+                    Text("No members found in this category", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                }
             }
         } else {
             items(users) { user ->
@@ -168,25 +153,23 @@ fun StudentCard(user: UserDto, onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(42.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(gradient),
                 contentAlignment = Alignment.Center
             ) {
-                Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 13.sp)
+                Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 14.sp)
             }
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
-                Spacer(Modifier.height(4.dp))
-                ASGTagChip(text = "Verified Member", backgroundColor = GreenLight, textColor = GreenSuccess)
+                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
+                if (!user.college.isNullOrEmpty()) {
+                    Text(user.college!!, style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f), fontSize = 8.sp)
+                }
             }
 
-            Column(horizontalAlignment = Alignment.End) {
-                Text("90", style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, fontSize = 15.sp)
-                Text("Trust Score", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
-            }
+            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color(0xFFCCCCCC))
         }
     }
 }

@@ -135,14 +135,14 @@ fun EventsList(events: List<EventDto>) {
         items(events) { event ->
             EventDetailCard(
                 day = event.date.split("-").lastOrNull() ?: "01",
-                month = "Apr", // Simplified for now
+                month = "EVENT", 
                 title = event.title,
-                organizer = "ASG Community",
-                location = "Online / In-Person",
-                type = "General",
+                organizer = "Community Event",
+                location = event.description.take(20) + "...", 
+                type = event.category ?: "General",
                 typeBg = OrangeLight,
                 typeText = OrangeDark,
-                prize = "₹10,000"
+                prize = "TBD"
             )
         }
     }
@@ -185,7 +185,7 @@ fun EventDetailCard(day: String, month: String, title: String, organizer: String
                     Spacer(Modifier.height(4.dp))
                     Text(title, style = MaterialTheme.typography.bodyMedium, color = TextPrimary, fontWeight = FontWeight.Bold)
                     Text(organizer, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
-                    Text("📍 $location", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
+                    Text("ℹ️ $location", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
                 }
             }
             HorizontalDivider(color = BorderColor)
@@ -204,7 +204,7 @@ fun EventDetailCard(day: String, month: String, title: String, organizer: String
                     colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
                 ) {
-                    Text("Register →", style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+                    Text("Details →", style = MaterialTheme.typography.labelSmall, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 11.sp)
                 }
             }
         }

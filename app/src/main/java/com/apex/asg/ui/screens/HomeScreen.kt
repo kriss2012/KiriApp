@@ -98,8 +98,7 @@ fun HomeContent(user: UserDto, events: List<EventDto>) {
     ) {
         item { HomeTopBar() }
         item { GreetingSection(userName = user.fullName) }
-        item { HeroOpportunityCard() }
-        item { CommunityAnalyticsSection() }
+        item { DiscoverCommunityCard() }
         item { RepositoriesSection() }
         item { UpcomingEventsSection(events) }
     }
@@ -142,42 +141,12 @@ fun GreetingSection(userName: String) {
 }
 
 @Composable
-fun CommunityAnalyticsSection() {
-    Card(
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
-    ) {
-        Row(
-            modifier = Modifier.padding(20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AnalyticsItem("4.2k", "Active Brains", GreenSuccess)
-            Divider(modifier = Modifier.height(30.dp).width(1.dp), color = BorderColor)
-            AnalyticsItem("128", "Live Events", OrangePrimary)
-            Divider(modifier = Modifier.height(30.dp).width(1.dp), color = BorderColor)
-            AnalyticsItem("₹50L", "Funding", Color(0xFF378ADD))
-        }
-    }
-}
-
-@Composable
-fun AnalyticsItem(value: String, label: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = color)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-    }
-}
-
-@Composable
-fun HeroOpportunityCard() {
+fun DiscoverCommunityCard() {
     Card(
         modifier = Modifier
             .padding(14.dp, 12.dp)
             .fillMaxWidth()
-            .height(160.dp),
+            .height(140.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = OrangePrimary)
     ) {
@@ -193,33 +162,19 @@ fun HeroOpportunityCard() {
                 )
                 .padding(16.dp)
         ) {
-            // Glassmorphism circle decoration
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .align(Alignment.TopEnd)
-                    .offset(x = 30.dp, y = (-40).dp)
-                    .background(Color.White.copy(alpha = 0.08f), CircleShape)
-            )
-
             Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.SpaceBetween) {
                 Column {
                     Text(
-                        "🚀 FEATURED OPPORTUNITY",
+                        "ASG COMMUNITY",
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White.copy(alpha = 0.75f),
                         letterSpacing = 1.sp
                     )
                     Text(
-                        "Smart India Hackathon 2025 is live!",
+                        "Connect with innovators in your region.",
                         style = MaterialTheme.typography.titleMedium,
                         color = Color.White,
                         fontWeight = FontWeight.Black
-                    )
-                    Text(
-                        "₹1 lakh prize · Deadline: Apr 20",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.7f)
                     )
                 }
                 
@@ -230,21 +185,13 @@ fun HeroOpportunityCard() {
                     modifier = Modifier.clickable { }
                 ) {
                     Text(
-                        "Apply Now →",
+                        "Discover Members →",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }
-            }
-
-            Column(
-                modifier = Modifier.align(Alignment.BottomEnd),
-                horizontalAlignment = Alignment.End
-            ) {
-                Text("2.4k", style = MaterialTheme.typography.headlineMedium, color = Color.White, fontWeight = FontWeight.Black)
-                Text("registered", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f))
             }
         }
     }
@@ -253,15 +200,13 @@ fun HeroOpportunityCard() {
 @Composable
 fun RepositoriesSection() {
     val repos = listOf(
-        RepoItem("🎬", "Content Creators", "1,240", OrangeLight),
-        RepoItem("🏆", "Participants", "3,180", PurpleLight),
-        RepoItem("🎯", "Organisers", "860", GreenLight),
-        RepoItem("🎓", "Alumni", "2,100", YellowWarm),
-        RepoItem("👨‍🏫", "Professors", "420", BlueInfo)
+        RepoItem("🎬", "Content Creators", "0", OrangeLight),
+        RepoItem("🏆", "Students", "0", PurpleLight),
+        RepoItem("🎯", "Organisers", "0", GreenLight)
     )
 
     Column {
-        SectionHeader(title = "5 Repositories", actionText = "View all", onActionClick = {})
+        SectionHeader(title = "Community Repositories", actionText = "See all", onActionClick = {})
         LazyRow(
             modifier = Modifier.padding(horizontal = 14.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -279,8 +224,8 @@ data class RepoItem(val icon: String, val name: String, val count: String, val c
 fun RepositoryCard(item: RepoItem) {
     Card(
         modifier = Modifier
-            .width(90.dp)
-            .height(110.dp),
+            .width(110.dp)
+            .height(100.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, BorderColor),
@@ -311,7 +256,6 @@ fun RepositoryCard(item: RepoItem) {
                 textAlign = TextAlign.Center,
                 lineHeight = 11.sp
             )
-            Text(item.count + " members", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 8.sp)
         }
     }
 }
@@ -325,14 +269,27 @@ fun UpcomingEventsSection(events: List<EventDto>) {
             verticalArrangement = Arrangement.spacedBy(7.dp)
         ) {
             if (events.isEmpty()) {
-                Text("No upcoming events found", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = BorderStroke(1.dp, BorderColor)
+                ) {
+                    Text(
+                        "No events listed yet. Check back soon!", 
+                        modifier = Modifier.padding(24.dp).fillMaxWidth(), 
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodySmall, 
+                        color = TextSecondary
+                    )
+                }
             } else {
                 events.forEach { event ->
                     EventItemCard(
                         day = event.date.split("-").lastOrNull() ?: "01",
                         month = "Apr",
                         title = event.title,
-                        location = "ASG Community",
+                        location = "Jalgaon, MH",
                         tag = "Live",
                         tagBg = OrangeLight,
                         tagText = OrangeDark
@@ -379,4 +336,3 @@ fun EventItemCard(day: String, month: String, title: String, location: String, t
         }
     }
 }
-

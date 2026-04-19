@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -34,13 +35,14 @@ import com.apex.asg.ui.viewmodels.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+fun ProfileScreen(
+    viewModel: ProfileViewModel = viewModel(),
+    onNavigateToEdit: () -> Unit = {}
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
-    
-    var isEditing by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
@@ -68,12 +70,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                 is ProfileState.Success -> {
                     ProfileContent(
                         user = state.user,
-                        isEditing = isEditing,
-                        onEditToggle = { isEditing = !isEditing },
-                        onSave = { name, role ->
-                            viewModel.updateProfile(userId, name, role)
-                            isEditing = false
-                        }
+                        onNavigateToEdit = onNavigateToEdit
                     )
                 }
                 is ProfileState.Error -> {
@@ -96,9 +93,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
 @Composable
 fun ProfileContent(
     user: UserDto,
-    isEditing: Boolean,
-    onEditToggle: () -> Unit,
-    onSave: (String, String) -> Unit
+    onNavigateToEdit: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -109,13 +104,9 @@ fun ProfileContent(
         item { 
             ProfileHeroSection(
                 user = user, 
-                isVerified = true,
-                isEditing = isEditing,
-                onEditToggle = onEditToggle,
-                onSave = onSave
+                onNavigateToEdit = onNavigateToEdit
             ) 
         }
-        item { AchievementChipsRow() }
         item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
         item { DashboardMenu() }
     }
@@ -124,14 +115,8 @@ fun ProfileContent(
 @Composable
 fun ProfileHeroSection(
     user: UserDto, 
-    isVerified: Boolean = false,
-    isEditing: Boolean,
-    onEditToggle: () -> Unit,
-    onSave: (String, String) -> Unit
+    onNavigateToEdit: () -> Unit
 ) {
-    var nameText by remember(user.fullName) { mutableStateOf(user.fullName) }
-    var roleText by remember(user.role) { mutableStateOf(user.role) }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -157,65 +142,32 @@ fun ProfileHeroSection(
                 }
                 
                 Column(modifier = Modifier.weight(1f)) {
-                    if (isEditing) {
-                        OutlinedTextField(
-                            value = nameText,
-                            onValueChange = { nameText = it },
-                            modifier = Modifier.fillMaxWidth().height(56.dp),
-                            textStyle = androidx.compose.ui.text.TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
-                                cursorColor = Color.White
-                            )
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        OutlinedTextField(
-                            value = roleText,
-                            onValueChange = { roleText = it },
-                            modifier = Modifier.fillMaxWidth().height(56.dp),
-                            textStyle = androidx.compose.ui.text.TextStyle(color = Color.White.copy(alpha = 0.9f), fontSize = 12.sp),
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color.White,
-                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
-                                cursorColor = Color.White
-                            )
-                        )
-                    } else {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(user.fullName, style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Black)
-                            if (isVerified) {
-                                Spacer(Modifier.width(6.dp))
-                                Box(modifier = Modifier.size(16.dp).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
-                                    Text("✓", color = OrangePrimary, fontSize = 10.sp, fontWeight = FontWeight.Black)
-                                }
-                            }
-                        }
-                        Text(user.role, style = MaterialTheme.typography.labelMedium, color = Color.White.copy(alpha = 0.8f))
-                        Text("Institution Name", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(user.fullName, style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Black)
+                    }
+                    Text(user.role, style = MaterialTheme.typography.labelMedium, color = Color.White.copy(alpha = 0.8f))
+                    if (!user.department.isNullOrEmpty()) {
+                        Text(user.department, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f))
                     }
                 }
                 
-                IconButton(onClick = { 
-                    if (isEditing) onSave(nameText, roleText) else onEditToggle() 
-                }) {
+                IconButton(onClick = onNavigateToEdit) {
                     Icon(
-                        if (isEditing) Icons.Default.CheckCircle else Icons.Default.Edit, 
-                        contentDescription = null, 
+                        Icons.Default.Edit, 
+                        contentDescription = "Edit Profile", 
                         tint = Color.White,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
 
             Spacer(Modifier.height(24.dp))
 
-            // Stats Row
+            // Real Stats Row (Placeholder for actual metrics later)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBox("92", "AI Score")
-                StatBox("4", "Events")
-                StatBox("2", "Hackathons")
-                StatBox("12", "Connections")
+                StatBox("0", "Events")
+                StatBox("0", "Connections")
+                StatBox("0", "Score")
             }
         }
     }
@@ -240,46 +192,20 @@ fun RowScope.StatBox(value: String, label: String) {
 }
 
 @Composable
-fun AchievementChipsRow() {
-    val achievements = listOf("🥇 SIH Finalist", "🎬 100+ Vlogs", "⭐ Top Creator")
-    
-    LazyRow(
-        modifier = Modifier.padding(10.dp, 14.dp, 10.dp, 2.dp),
-        horizontalArrangement = Arrangement.spacedBy(7.dp)
-    ) {
-        items(achievements) { ach ->
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, BorderColor),
-                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(6.dp, 9.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp)
-                ) {
-                    Text(ach, style = MaterialTheme.typography.labelSmall, color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 9.sp)
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun DashboardMenu() {
     val menuItems = listOf(
-        DashboardMenuItem("🚀", "My Startup Profile", OrangeLight, "Active"),
-        DashboardMenuItem("🤝", "Find Team Members", GreenLight),
-        DashboardMenuItem("💰", "Funding & Grants", YellowWarm),
-        DashboardMenuItem("🎓", "Find a Mentor", PurpleLight),
-        DashboardMenuItem("📋", "NAAC / NEP Records", BlueInfo, "New"),
-        DashboardMenuItem("🗓️", "Organise a Hackathon", GreenLight)
+        DashboardMenuItem("🚀", "My Startup Profile", OrangeLight, "Coming Soon"),
+        DashboardMenuItem("🤝", "Team Requests", GreenLight),
+        DashboardMenuItem("📋", "My Community Activity", BlueInfo)
     )
 
     Column(modifier = Modifier.padding(horizontal = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        menuItems.forEach { item ->
-            DashboardMenuCard(item)
+        if (menuItems.isEmpty()) {
+            Text("No dashboard items available", modifier = Modifier.padding(16.dp), color = TextSecondary)
+        } else {
+            menuItems.forEach { item ->
+                DashboardMenuCard(item)
+            }
         }
     }
 }
