@@ -42,49 +42,61 @@ fun MainScaffold(
 
 @Composable
 fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
-    Column {
-        HorizontalDivider(color = BorderColor, thickness = 1.dp)
-        NavigationBar(
-            containerColor = BgCream.copy(alpha = 0.97f),
-            tonalElevation = 0.dp,
-            modifier = Modifier.height(80.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 20.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Surface(
+            modifier = Modifier
+                .height(64.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(32.dp),
+            color = Color.White.copy(alpha = 0.95f),
+            shadowElevation = 8.dp,
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
         ) {
-            BottomNavItems.forEach { screen ->
-                val selected = currentRoute == screen.route
-                NavigationBarItem(
-                    selected = selected,
-                    onClick = {
-                        if (currentRoute != screen.route) {
-                            navController.navigate(screen.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BottomNavItems.forEach { screen ->
+                    val selected = currentRoute == screen.route
+                    val isAI = screen == Screen.AIAgent
+                    
+                    IconButton(
+                        onClick = {
+                            if (currentRoute != screen.route) {
+                                navController.navigate(screen.route) {
+                                    popUpTo(Screen.Home.route) { saveState = true }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
-                        }
-                    },
-                    icon = {
+                        },
+                        modifier = Modifier.size(if (isAI) 50.dp else 40.dp)
+                    ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
                                 imageVector = screen.icon!!,
                                 contentDescription = screen.title,
-                                modifier = Modifier.size(if (screen == Screen.AIAgent) 26.dp else 22.dp),
-                                tint = if (selected) OrangePrimary else TextSecondary
+                                modifier = Modifier.size(if (isAI) 28.dp else 22.dp),
+                                tint = if (selected) OrangePrimary else TextSecondary.copy(alpha = 0.6f)
                             )
+                            if (selected && !isAI) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(4.dp)
+                                        .clip(CircleShape)
+                                        .background(OrangePrimary)
+                                        .padding(top = 2.dp)
+                                )
+                            }
                         }
-                    },
-                    label = {
-                        Text(
-                            text = screen.title,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (selected) OrangePrimary else TextSecondary,
-                            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                            fontSize = 8.sp
-                        )
-                    },
-                    colors = NavigationBarItemDefaults.colors(
-                        indicatorColor = Color.Transparent
-                    )
-                )
+                    }
+                }
             }
         }
     }

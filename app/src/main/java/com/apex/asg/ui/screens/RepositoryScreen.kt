@@ -42,21 +42,43 @@ fun RepositoryScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 80.dp)
+            .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        // Header
-        Column(modifier = Modifier.padding(18.dp, 10.dp)) {
-            Text("Community", style = MaterialTheme.typography.headlineMedium, color = TextPrimary, fontWeight = FontWeight.Black)
-            Text("Live directory of Jalgaon's ecosystem", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        // Premium Header with Search
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(24.dp)
+        ) {
+            Text("Community", style = MaterialTheme.typography.displaySmall, color = TextPrimary, fontWeight = FontWeight.Black)
+            Text("Network of Jalgaon's brightest minds", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            
+            Spacer(Modifier.height(20.dp))
+            
+            OutlinedTextField(
+                value = "",
+                onValueChange = { },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                placeholder = { Text("Search members, roles, skills...", fontSize = 14.sp) },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextSecondary) },
+                shape = RoundedCornerShape(28.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = BgCream,
+                    unfocusedContainerColor = BgCream,
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
+                )
+            )
         }
 
         Spacer(Modifier.height(16.dp))
 
         // Filter Chips
         LazyRow(
-            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp),
+            modifier = Modifier.padding(bottom = 10.dp),
             contentPadding = PaddingValues(horizontal = 14.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(filters) { filter ->
                 val isSelected = selectedFilter == filter

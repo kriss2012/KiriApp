@@ -94,11 +94,12 @@ fun HomeContent(user: UserDto, events: List<EventDto>) {
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 20.dp)
+            .padding(bottom = 100.dp) // Space for floating nav
     ) {
         item { HomeTopBar() }
         item { GreetingSection(userName = user.fullName) }
         item { HeroOpportunityCard() }
+        item { CommunityAnalyticsSection() }
         item { RepositoriesSection() }
         item { UpcomingEventsSection(events) }
     }
@@ -109,36 +110,65 @@ fun HomeTopBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(18.dp, 10.dp, 18.dp, 0.dp),
+            .padding(24.dp, 16.dp, 24.dp, 0.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
-        ) {
-            // Mini Triangle Logo
-            Box(
-                modifier = Modifier
-                    .size(14.dp)
-                    .background(OrangePrimary) // Simplified triangle
-            )
-            Text("ASG", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+        Column {
+            Text("ASG", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = TextPrimary, letterSpacing = 2.sp)
+            Text("Ecosystem", style = MaterialTheme.typography.labelSmall, color = TextSecondary, letterSpacing = 1.sp)
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            ASGIconBadge(icon = "🔍", backgroundColor = OrangeLight)
-            ASGIconBadge(icon = "🔔", backgroundColor = OrangeLight)
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            ASGIconBadge(icon = "🔍", backgroundColor = Color.White)
+            ASGIconBadge(icon = "🔔", backgroundColor = Color.White)
         }
     }
 }
 
 @Composable
 fun GreetingSection(userName: String) {
-    Column(modifier = Modifier.padding(18.dp, 10.dp)) {
-        Text("Good Morning 👋", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-        Text(userName, style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-        Spacer(Modifier.height(6.dp))
+    Column(modifier = Modifier.padding(24.dp, 24.dp)) {
+        val calendar = java.util.Calendar.getInstance()
+        val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        val greeting = when (hour) {
+            in 0..11 -> "Rising high, 🌅"
+            in 12..16 -> "Still building, ☀️"
+            else -> "Planning tomorrow, 🌙"
+        }
+        Text(greeting, style = MaterialTheme.typography.labelMedium, color = OrangePrimary, fontWeight = FontWeight.Bold)
+        Text(userName.split(" ").firstOrNull() ?: userName, style = MaterialTheme.typography.displaySmall, color = TextPrimary, fontWeight = FontWeight.Black, fontSize = 36.sp)
+        Spacer(Modifier.height(12.dp))
         AIStatusChip()
+    }
+}
+
+@Composable
+fun CommunityAnalyticsSection() {
+    Card(
+        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, BorderColor)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnalyticsItem("4.2k", "Active Brains", GreenSuccess)
+            Divider(modifier = Modifier.height(30.dp).width(1.dp), color = BorderColor)
+            AnalyticsItem("128", "Live Events", OrangePrimary)
+            Divider(modifier = Modifier.height(30.dp).width(1.dp), color = BorderColor)
+            AnalyticsItem("₹50L", "Funding", Color(0xFF378ADD))
+        }
+    }
+}
+
+@Composable
+fun AnalyticsItem(value: String, label: String, color: Color) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = color)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
     }
 }
 

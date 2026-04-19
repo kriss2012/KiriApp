@@ -39,6 +39,8 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
+    
+    var isEditing by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
@@ -49,7 +51,7 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = BgCream,
-        bottomBar = { Spacer(Modifier.height(0.dp)) } // Padding already in MainScaffold
+        bottomBar = { Spacer(Modifier.height(0.dp)) }
     ) { padding ->
         Box(
             modifier = Modifier
@@ -64,7 +66,15 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
                     )
                 }
                 is ProfileState.Success -> {
-                    ProfileContent(state.user)
+                    ProfileContent(
+                        user = state.user,
+                        isEditing = isEditing,
+                        onEditToggle = { isEditing = !isEditing },
+                        onSave = { name, role ->
+                            viewModel.updateProfile(userId, name, role)
+                            isEditing = false
+                        }
+                    )
                 }
                 is ProfileState.Error -> {
                     Column(
@@ -84,14 +94,27 @@ fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
 }
 
 @Composable
-fun ProfileContent(user: UserDto) {
+fun ProfileContent(
+    user: UserDto,
+    isEditing: Boolean,
+    onEditToggle: () -> Unit,
+    onSave: (String, String) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(bottom = 20.dp)
+            .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        item { ProfileHeroSection(user = user, isVerified = true) }
+        item { 
+            ProfileHeroSection(
+                user = user, 
+                isVerified = true,
+                isEditing = isEditing,
+                onEditToggle = onEditToggle,
+                onSave = onSave
+            ) 
+        }
         item { AchievementChipsRow() }
         item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
         item { DashboardMenu() }
@@ -99,68 +122,94 @@ fun ProfileContent(user: UserDto) {
 }
 
 @Composable
-fun ProfileHeroSection(user: UserDto, isVerified: Boolean = false) {
+fun ProfileHeroSection(
+    user: UserDto, 
+    isVerified: Boolean = false,
+    isEditing: Boolean,
+    onEditToggle: () -> Unit,
+    onSave: (String, String) -> Unit
+) {
+    var nameText by remember(user.fullName) { mutableStateOf(user.fullName) }
+    var roleText by remember(user.role) { mutableStateOf(user.role) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+            .clip(RoundedCornerShape(0.dp, 0.dp, 32.dp, 32.dp))
             .background(Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08))))
-            .padding(18.dp, 18.dp, 22.dp, 18.dp) // Reduced bottom padding
+            .padding(24.dp)
     ) {
-        // Decoration (Subtle)
-        Box(
-            modifier = Modifier
-                .size(150.dp)
-                .align(Alignment.TopEnd)
-                .offset(x = 40.dp, y = (-50).dp)
-                .background(Color.White.copy(alpha = 0.07f), CircleShape)
-        )
-
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(11.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Avatar
                 Box(
                     modifier = Modifier
-                        .size(50.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.White.copy(alpha = 0.25f))
-                        .border(1.5.dp, Color.White.copy(alpha = 0.4f), RoundedCornerShape(16.dp)),
+                        .size(72.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(Color.White.copy(alpha = 0.2f))
+                        .border(2.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(20.dp)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(user.fullName.take(1).uppercase(), style = MaterialTheme.typography.headlineSmall, color = Color.White, fontWeight = FontWeight.Black, fontSize = 19.sp)
+                    Text(user.fullName.take(1).uppercase(), style = MaterialTheme.typography.headlineLarge, color = Color.White, fontWeight = FontWeight.Black)
                 }
                 
                 Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(user.fullName, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
-                        if (isVerified) {
-                            Spacer(Modifier.width(4.dp))
-                            // Verification Badge Logo
-                            Box(
-                                modifier = Modifier
-                                    .size(14.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.White),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("✓", color = OrangePrimary, fontSize = 10.sp, fontWeight = FontWeight.Black)
+                    if (isEditing) {
+                        OutlinedTextField(
+                            value = nameText,
+                            onValueChange = { nameText = it },
+                            modifier = Modifier.fillMaxWidth().height(56.dp),
+                            textStyle = androidx.compose.ui.text.TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
+                                cursorColor = Color.White
+                            )
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        OutlinedTextField(
+                            value = roleText,
+                            onValueChange = { roleText = it },
+                            modifier = Modifier.fillMaxWidth().height(56.dp),
+                            textStyle = androidx.compose.ui.text.TextStyle(color = Color.White.copy(alpha = 0.9f), fontSize = 12.sp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color.White,
+                                unfocusedBorderColor = Color.White.copy(alpha = 0.5f),
+                                cursorColor = Color.White
+                            )
+                        )
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(user.fullName, style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Black)
+                            if (isVerified) {
+                                Spacer(Modifier.width(6.dp))
+                                Box(modifier = Modifier.size(16.dp).clip(CircleShape).background(Color.White), contentAlignment = Alignment.Center) {
+                                    Text("✓", color = OrangePrimary, fontSize = 10.sp, fontWeight = FontWeight.Black)
+                                }
                             }
                         }
+                        Text(user.role, style = MaterialTheme.typography.labelMedium, color = Color.White.copy(alpha = 0.8f))
+                        Text("Institution Name", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f))
                     }
-                    Text(user.role, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.7f), fontSize = 10.sp)
-                    Text("Institution Name", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f), fontSize = 9.sp)
                 }
                 
-                Icon(Icons.Default.Edit, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color.White.copy(alpha = 0.5f))
+                IconButton(onClick = if (isEditing) { { onSave(nameText, roleText) } } else onEditToggle) {
+                    Icon(
+                        if (isEditing) Icons.Default.ArrowForward else Icons.Default.Edit, 
+                        contentDescription = null, 
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
 
-            Spacer(Modifier.height(10.dp)) // Reduced spacer
+            Spacer(Modifier.height(24.dp))
 
             // Stats Row
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 StatBox("92", "AI Score")
                 StatBox("4", "Events")
                 StatBox("2", "Hackathons")
