@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "google/gemma-4-31b-it:free"; // Switched to user-suggested free model
+const MODEL = "nvidia/nemotron-3-super-120b-a12b:free"; // Upgraded to powerful NVIDIA Nemotron model
 
 export const getAiHistory = async (req: Request, res: Response) => {
   try {
