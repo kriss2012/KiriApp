@@ -27,4 +27,13 @@ export const authenticate = (req, res, next) => {
         return res.status(401).json({ message: 'Authentication failed' });
     }
 };
+export const checkRole = (roles) => {
+    return (req, res, next) => {
+        const userRole = req.user?.role;
+        if (!userRole || !roles.includes(userRole)) {
+            return res.status(403).json({ message: 'Access denied: Insufficient permissions' });
+        }
+        next();
+    };
+};
 //# sourceMappingURL=auth.js.map
