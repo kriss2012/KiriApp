@@ -44,7 +44,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
-    const { fullName, bio, skills, avatarUrl, department, college, year, section } = req.body;
+    const { fullName, bio, skills, avatarUrl, department, college, year, section, role } = req.body;
 
     const user = await prisma.user.update({
       where: { id: userId },
@@ -56,7 +56,8 @@ export const updateProfile = async (req: Request, res: Response) => {
         department,
         college,
         year,
-        section
+        section,
+        role
       }
     });
 

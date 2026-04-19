@@ -196,12 +196,14 @@ fun ProfileHeroSection(
                     }
                 }
                 
-                IconButton(onClick = if (isEditing) { { onSave(nameText, roleText) } } else onEditToggle) {
+                IconButton(onClick = { 
+                    if (isEditing) onSave(nameText, roleText) else onEditToggle() 
+                }) {
                     Icon(
-                        if (isEditing) Icons.Default.ArrowForward else Icons.Default.Edit, 
+                        if (isEditing) Icons.Default.CheckCircle else Icons.Default.Edit, 
                         contentDescription = null, 
                         tint = Color.White,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(28.dp)
                     )
                 }
             }

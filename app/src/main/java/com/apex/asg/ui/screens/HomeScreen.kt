@@ -119,7 +119,6 @@ fun HomeTopBar() {
             Text("Ecosystem", style = MaterialTheme.typography.labelSmall, color = TextSecondary, letterSpacing = 1.sp)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            ASGIconBadge(icon = "🔍", backgroundColor = Color.White)
             ASGIconBadge(icon = "🔔", backgroundColor = Color.White)
         }
     }

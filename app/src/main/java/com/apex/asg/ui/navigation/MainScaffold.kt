@@ -52,12 +52,12 @@ fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
     ) {
         Surface(
             modifier = Modifier
-                .height(64.dp)
+                .height(58.dp)
                 .fillMaxWidth(),
-            shape = RoundedCornerShape(32.dp),
-            color = Color.White.copy(alpha = 0.95f),
-            shadowElevation = 8.dp,
-            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+            shape = RoundedCornerShape(29.dp),
+            color = Color.White.copy(alpha = 0.65f),
+            shadowElevation = 0.dp,
+            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.4f))
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
