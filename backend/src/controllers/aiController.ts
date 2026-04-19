@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "google/gemini-2.0-flash-exp:free"; // Resolved 404 error by switching to reliable free exp model
+const MODEL = "google/gemma-4-31b-it:free"; // Switched to user-suggested free model
 
 export const getAiHistory = async (req: Request, res: Response) => {
   try {
