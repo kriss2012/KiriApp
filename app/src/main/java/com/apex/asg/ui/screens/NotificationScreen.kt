@@ -69,7 +69,9 @@ fun NotificationScreen(
                     } else {
                         NotificationList(
                             notifications = state.notifications,
-                            onMarkRead = { id -> viewModel.markAsRead(id, userId) }
+                            userId = userId,
+                            onMarkRead = { id -> viewModel.markAsRead(id, userId) },
+                            onAccept = { notifId, connId -> viewModel.acceptConnection(notifId, connId, userId) }
                         )
                     }
                 }
@@ -84,7 +86,9 @@ fun NotificationScreen(
 @Composable
 fun NotificationList(
     notifications: List<NotificationDto>,
-    onMarkRead: (String) -> Unit
+    userId: String,
+    onMarkRead: (String) -> Unit,
+    onAccept: (String, String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -92,13 +96,23 @@ fun NotificationList(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(notifications) { notification ->
-            NotificationItem(notification = notification, onClick = { onMarkRead(notification.id) })
+            NotificationItem(
+                notification = notification, 
+                onClick = { onMarkRead(notification.id) },
+                onAccept = { connId -> onAccept(notification.id, connId) },
+                onDecline = { onMarkRead(notification.id) }
+            )
         }
     }
 }
 
 @Composable
-fun NotificationItem(notification: NotificationDto, onClick: () -> Unit) {
+fun NotificationItem(
+    notification: NotificationDto, 
+    onClick: () -> Unit,
+    onAccept: (String) -> Unit,
+    onDecline: () -> Unit
+) {
     val icon = when (notification.type) {
         "EVENT" -> Icons.Default.CalendarMonth
         "REQUEST" -> Icons.Default.PersonAdd
@@ -116,57 +130,86 @@ fun NotificationItem(notification: NotificationDto, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { if (!notification.isRead) onClick() },
+            .clickable { if (!notification.isRead && notification.type != "REQUEST") onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (notification.isRead) Color.White.copy(alpha = 0.6f) else Color.White
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = if (notification.isRead) 0.dp else 2.dp)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(color.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
-            }
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = notification.title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
-                    color = TextPrimary
-                )
-                Text(
-                    text = notification.content,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary,
-                    lineHeight = 14.sp
-                )
-                Text(
-                    text = notification.createdAt.take(10), // Simple date extraction
-                    style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary.copy(alpha = 0.5f),
-                    fontSize = 8.sp,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-            }
-
-            if (!notification.isRead) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(40.dp)
                         .clip(CircleShape)
-                        .background(OrangePrimary)
-                )
+                        .background(color.copy(alpha = 0.1f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
+                }
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = notification.title,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
+                        color = TextPrimary
+                    )
+                    Text(
+                        text = notification.content,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TextSecondary,
+                        lineHeight = 14.sp
+                    )
+                    Text(
+                        text = notification.createdAt.take(10), // Simple date extraction
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TextSecondary.copy(alpha = 0.5f),
+                        fontSize = 8.sp,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                }
+
+                if (!notification.isRead && notification.type != "REQUEST") {
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .clip(CircleShape)
+                            .background(OrangePrimary)
+                    )
+                }
+            }
+
+            // Action Buttons for Requests
+            if (notification.type == "REQUEST" && !notification.isRead && notification.relatedId != null) {
+                Spacer(Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Button(
+                        onClick = { onAccept(notification.relatedId!!) },
+                        modifier = Modifier.weight(1f),
+                        colors = ButtonDefaults.buttonColors(containerColor = color),
+                        shape = RoundedCornerShape(8.dp),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text("Accept", style = MaterialTheme.typography.labelSmall, color = Color.White)
+                    }
+                    OutlinedButton(
+                        onClick = onDecline,
+                        modifier = Modifier.weight(1f),
+                        border = BorderStroke(1.dp, BorderColor),
+                        shape = RoundedCornerShape(8.dp),
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text("Ignore", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                    }
+                }
             }
         }
     }

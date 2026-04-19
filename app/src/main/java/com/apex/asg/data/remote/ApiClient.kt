@@ -407,6 +407,7 @@ data class NotificationDto(
     val title: String,
     val content: String,
     val type: String,
+    val relatedId: String? = null,
     val isRead: Boolean,
     val createdAt: String
 )

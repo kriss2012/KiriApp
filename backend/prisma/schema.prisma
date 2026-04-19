@@ -113,6 +113,7 @@ model Notification {
   title     String
   content   String
   type      String   // "EVENT", "REQUEST", "MESSAGE", "SYSTEM"
+  relatedId String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }

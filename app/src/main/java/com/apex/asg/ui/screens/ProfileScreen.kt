@@ -39,7 +39,8 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
     onNavigateToEdit: () -> Unit = {},
     onNavigateToConnections: () -> Unit = {},
-    onNavigateToActivity: () -> Unit = {}
+    onNavigateToActivity: () -> Unit = {},
+    onLogout: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -74,7 +75,11 @@ fun ProfileScreen(
                         user = state.user,
                         onNavigateToEdit = onNavigateToEdit,
                         onNavigateToConnections = onNavigateToConnections,
-                        onNavigateToActivity = onNavigateToActivity
+                        onNavigateToActivity = onNavigateToActivity,
+                        onLogout = {
+                            sessionManager.logout()
+                            onLogout()
+                        }
                     )
                 }
                 is ProfileState.Error -> {
@@ -99,7 +104,8 @@ fun ProfileContent(
     user: UserDto,
     onNavigateToEdit: () -> Unit,
     onNavigateToConnections: () -> Unit,
-    onNavigateToActivity: () -> Unit
+    onNavigateToActivity: () -> Unit,
+    onLogout: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -119,6 +125,19 @@ fun ProfileContent(
                 onNavigateToConnections = onNavigateToConnections,
                 onNavigateToActivity = onNavigateToActivity
             ) 
+        }
+        item {
+            Button(
+                onClick = onLogout,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(14.dp, 24.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Color.Red.copy(alpha = 0.3f)),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Secure Logout", color = Color.Red, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }

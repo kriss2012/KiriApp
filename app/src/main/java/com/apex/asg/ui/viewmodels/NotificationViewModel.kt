@@ -41,4 +41,19 @@ class NotificationViewModel : ViewModel() {
             }
         }
     }
+
+    fun acceptConnection(notificationId: String, connectionId: String, userId: String) {
+        viewModelScope.launch {
+            try {
+                // 1. Accept the connection
+                ApiClient.service.acceptConnectionRequest(mapOf("connectionId" to connectionId, "userId" to userId))
+                // 2. Mark notification as read
+                ApiClient.service.markNotificationAsRead(notificationId)
+                // 3. Refresh list
+                fetchNotifications(userId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
 }

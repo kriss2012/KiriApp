@@ -37,14 +37,15 @@ export const markAsRead = async (req: Request, res: Response) => {
   }
 };
 
-export const createNotification = async (userId: string, title: string, content: string, type: string) => {
+export const createNotification = async (userId: string, title: string, content: string, type: string, relatedId?: string) => {
   try {
     return await prisma.notification.create({
       data: {
         userId,
         title,
         content,
-        type
+        type,
+        relatedId
       }
     });
   } catch (error) {

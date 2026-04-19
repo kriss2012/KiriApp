@@ -125,7 +125,12 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             ProfileScreen(
                 onNavigateToEdit = { navController.navigate(Screen.EditProfile.route) },
                 onNavigateToConnections = { navController.navigate(Screen.Connections.route) },
-                onNavigateToActivity = { navController.navigate(Screen.Notifications.route) }
+                onNavigateToActivity = { navController.navigate(Screen.Notifications.route) },
+                onLogout = { 
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Home.route) { inclusive = true }
+                    }
+                }
             )
         }
 

@@ -37,7 +37,8 @@ export const sendRequest = async (req: Request, res: Response) => {
       receiverId,
       'New Connection Request',
       `${connection.sender.fullName} wants to connect with you.`,
-      'REQUEST'
+      'REQUEST',
+      connection.id
     );
 
     res.status(201).json(connection);
@@ -48,10 +49,15 @@ export const sendRequest = async (req: Request, res: Response) => {
 
 export const acceptRequest = async (req: Request, res: Response) => {
   try {
-    const { connectionId } = req.body;
+    const { connectionId, requestId } = req.body;
+    const id = connectionId || requestId;
+
+    if (!id) {
+      return res.status(400).json({ message: 'connectionId or requestId is required' });
+    }
 
     const connection = await prisma.connection.update({
-      where: { id: connectionId },
+      where: { id: id },
       data: { status: 'ACCEPTED' },
       include: { sender: true, receiver: true }
     });
@@ -70,6 +76,9 @@ export const acceptRequest = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Connection accepted successfully', connection });
   } catch (error: any) {
+    if (error.code === 'P2025') {
+        return res.status(404).json({ message: 'Connection record not found' });
+    }
     res.status(500).json({ message: 'Error accepting request', error: error.message });
   }
 };

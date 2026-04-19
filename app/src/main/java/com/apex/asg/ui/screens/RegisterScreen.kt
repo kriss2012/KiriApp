@@ -80,7 +80,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = fullName,
                 onValueChange = { fullName = it },
-                label = { Text("Full Name") },
+                label = { Text("Full Name *") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             )
@@ -90,7 +90,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email Address") },
+                label = { Text("Email Address *") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             )
@@ -100,7 +100,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text("Password *") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 visualTransformation = PasswordVisualTransformation()
@@ -108,7 +108,7 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Text("Select Your Role", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
+            Text("Select Your Role *", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
             
             Column {
                 roles.forEach { (roleKey, roleLabel) ->
@@ -192,7 +192,7 @@ fun RegisterScreen(
                 OutlinedTextField(
                     value = department,
                     onValueChange = { department = it },
-                    label = { Text("Department") },
+                    label = { Text("Department *") },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -255,7 +255,7 @@ fun RegisterScreen(
                         }
                     }
                 },
-                enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty() && fullName.isNotEmpty()
+                enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty() && fullName.isNotEmpty() && selectedRole.isNotEmpty() && department.isNotEmpty()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
