@@ -135,8 +135,7 @@ fun EditField(
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = OrangePrimary,
-                unfocusedBorderColor = BorderColor,
-                containerColor = Color.White
+                unfocusedBorderColor = BorderColor
             )
         )
     }
