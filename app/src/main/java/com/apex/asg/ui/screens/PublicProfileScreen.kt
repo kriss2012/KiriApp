@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.UserResponse
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.UserDto
 import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -31,7 +31,11 @@ fun PublicProfileScreen(
     userId: String,
     onBack: () -> Unit
 ) {
-    var user by remember { mutableStateOf<UserResponse?>(null) }
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val currentUserId = sessionManager.getUserId() ?: ""
+    
+    var user by remember { mutableStateOf<UserDto?>(null) }
     var isConnected by remember { mutableStateOf(false) }
     var isPending by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
@@ -40,8 +44,8 @@ fun PublicProfileScreen(
     LaunchedEffect(userId) {
         try {
             // Fetch public user data
-            user = ApiClient.service.getUsers().find { it.id == userId }
-            // Check connection status in a real app
+            user = ApiClient.service.getProfile(userId)
+            // Ideally check connection status via ApiClient.service.getUserConnections()
             isLoading = false
         } catch (e: Exception) {
             isLoading = false
@@ -100,7 +104,11 @@ fun PublicProfileScreen(
                     
                     Spacer(Modifier.height(24.dp))
                     
-                    if (isConnected) {
+                    if (userId == currentUserId) {
+                        Surface(color = OrangeLight, shape = RoundedCornerShape(8.dp)) {
+                            Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = OrangeDark, style = MaterialTheme.typography.labelSmall)
+                        }
+                    } else if (isConnected) {
                         Button(
                             onClick = { /* Message UI */ },
                             modifier = Modifier.fillMaxWidth(),
@@ -113,7 +121,18 @@ fun PublicProfileScreen(
                         }
                     } else {
                         Button(
-                            onClick = { isPending = true },
+                            onClick = { 
+                                isPending = true
+                                coroutineScope.launch {
+                                    try {
+                                        ApiClient.service.sendConnectionRequest(
+                                            mapOf("senderId" to currentUserId, "receiverId" to userId)
+                                        )
+                                    } catch (e: Exception) {
+                                        isPending = false
+                                    }
+                                }
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             enabled = !isPending,
                             colors = ButtonDefaults.buttonColors(
@@ -142,7 +161,7 @@ fun PublicProfileScreen(
                         Column(Modifier.padding(16.dp)) {
                             Text("Contact Info", fontWeight = FontWeight.Bold, color = TextPrimary)
                             Spacer(Modifier.height(8.dp))
-                            if (isConnected) {
+                            if (isConnected || userId == currentUserId) {
                                 Text("Email: ${u.email}", style = MaterialTheme.typography.bodyMedium)
                             } else {
                                 Box(

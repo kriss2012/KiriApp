@@ -40,7 +40,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.*
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
+fun HomeScreen(
+    viewModel: HomeViewModel = viewModel(),
+    onNavigateToNotifications: () -> Unit = {}
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
@@ -70,7 +73,11 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
                     )
                 }
                 is HomeState.Success -> {
-                    HomeContent(user = state.user, events = state.upcomingEvents)
+                    HomeContent(
+                        user = state.user, 
+                        events = state.upcomingEvents,
+                        onNavigateToNotifications = onNavigateToNotifications
+                    )
                 }
                 is HomeState.Error -> {
                     Column(
@@ -89,14 +96,18 @@ fun HomeScreen(viewModel: HomeViewModel = viewModel()) {
 }
 
 @Composable
-fun HomeContent(user: UserDto, events: List<EventDto>) {
+fun HomeContent(
+    user: UserDto, 
+    events: List<EventDto>,
+    onNavigateToNotifications: () -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        item { HomeTopBar() }
+        item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
         item { GreetingSection(userName = user.fullName) }
         item { DiscoverCommunityCard() }
         item { RepositoriesSection() }
@@ -105,7 +116,7 @@ fun HomeContent(user: UserDto, events: List<EventDto>) {
 }
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,7 +129,9 @@ fun HomeTopBar() {
             Text("Ecosystem", style = MaterialTheme.typography.labelSmall, color = TextSecondary, letterSpacing = 1.sp)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            ASGIconBadge(icon = "🔔", backgroundColor = Color.White)
+            IconButton(onClick = onNavigateToNotifications) {
+                ASGIconBadge(icon = "🔔", backgroundColor = Color.White)
+            }
         }
     }
 }

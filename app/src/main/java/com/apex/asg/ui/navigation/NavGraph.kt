@@ -57,7 +57,9 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
         
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) }
+            )
         }
         
         composable(Screen.Search.route) {
@@ -100,6 +102,12 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
 
         composable(Screen.EditProfile.route) {
             EditProfileScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Notifications.route) {
+            NotificationScreen(
                 onBack = { navController.popBackStack() }
             )
         }

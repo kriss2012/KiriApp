@@ -18,6 +18,7 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Events : Screen("events", "Events", Icons.Default.CalendarMonth)
     object Profile : Screen("profile", "Profile", Icons.Default.Person)
     object EditProfile : Screen("edit_profile", "Edit Profile")
+    object Notifications : Screen("notifications", "Notifications")
     
     // Sub-screens
     object PublicProfile : Screen("public_profile/{userId}") {

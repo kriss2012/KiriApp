@@ -41,6 +41,23 @@ interface ASGApiService {
     @GET("users/verified")
     suspend fun getVerifiedUsers(): List<UserDto>
 
+    // Notifications
+    @GET("notifications/{userId}")
+    suspend fun getNotifications(@Path("userId") userId: String): List<NotificationDto>
+
+    @retrofit2.http.PATCH("notifications/{id}/read")
+    suspend fun markNotificationAsRead(@Path("id") id: String): NotificationDto
+
+    // Connections
+    @POST("connections/send")
+    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
+
+    @POST("connections/accept")
+    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
+
+    @GET("connections/{userId}")
+    suspend fun getUserConnections(@Path("userId") userId: String): List<ConnectionDto>
+
     // Jobs
     @GET("jobs")
     suspend fun getJobs(): List<JobDto>
@@ -196,5 +213,31 @@ data class UserDto(
     val id: String,
     val email: String,
     val fullName: String,
-    val role: String
+    val role: String,
+    val bio: String? = null,
+    val department: String? = null,
+    val college: String? = null,
+    val year: String? = null,
+    val section: String? = null,
+    val avatarUrl: String? = null,
+    val canCreateEvents: Boolean = false
+)
+
+data class NotificationDto(
+    val id: String,
+    val userId: String,
+    val title: String,
+    val content: String,
+    val type: String,
+    val isRead: Boolean,
+    val createdAt: String
+)
+
+data class ConnectionDto(
+    val id: String,
+    val status: String,
+    val senderId: String,
+    val receiverId: String,
+    val sender: UserDto,
+    val receiver: UserDto
 )
