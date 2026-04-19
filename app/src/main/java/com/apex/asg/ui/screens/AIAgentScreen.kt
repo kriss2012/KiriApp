@@ -30,7 +30,17 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
     var textState by remember { mutableStateOf("") }
     val messages = vm.messages
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    val context = androidx.compose.ui.platform.LocalContext.current
+    
+    // File Picker
+    val selectedFileUri by vm.selectedFileUri.collectAsState()
+    val selectedFileName by vm.selectedFileName.collectAsState()
+    
+    val filePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri ->
+        uri?.let { vm.onFileSelected(context, it) }
+    }
 
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
@@ -42,11 +52,10 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
         containerColor = BgCream,
         topBar = {
             TopAppBar(
-                title = { Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center) },
-                navigationIcon = { Icon(Icons.Default.Menu, contentDescription = null, modifier = Modifier.padding(16.dp)) },
-                actions = {
-                    Icon(Icons.Default.DarkMode, contentDescription = null, modifier = Modifier.padding(8.dp))
-                    Icon(Icons.Default.Star, contentDescription = null, modifier = Modifier.padding(end = 16.dp, start = 8.dp))
+                title = { 
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
             )
@@ -55,8 +64,11 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
             KiriInputBar(
                 text = textState,
                 onTextChange = { textState = it },
+                selectedFileName = selectedFileName,
+                onAttachClick = { filePickerLauncher.launch("*/*") },
+                onCancelAttachment = { vm.clearFileSelection() },
                 onSend = {
-                    vm.sendMessage(textState)
+                    vm.sendMessage(textState, context)
                     textState = ""
                 }
             )
@@ -80,6 +92,76 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
                         KiriMessageBubble(msg)
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun KiriInputBar(
+    text: String, 
+    onTextChange: (String) -> Unit, 
+    onSend: () -> Unit,
+    onAttachClick: () -> Unit,
+    selectedFileName: String?,
+    onCancelAttachment: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .padding(bottom = 80.dp)
+    ) {
+        // Attachment Preview
+        if (selectedFileName != null) {
+            Surface(
+                color = OrangePrimary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(androidx.compose.material.icons.filled.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
+                    Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
+                    IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
+                        Icon(androidx.compose.material.icons.filled.Close, contentDescription = null, tint = OrangePrimary)
+                    }
+                }
+            }
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                value = text,
+                onValueChange = onTextChange,
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
+                leadingIcon = { 
+                    IconButton(onClick = onAttachClick) {
+                        Icon(Icons.Default.Add, contentDescription = null, tint = TextPrimary) 
+                    }
+                },
+                shape = RoundedCornerShape(50),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = BorderColor.copy(alpha = 0.3f),
+                    unfocusedContainerColor = BorderColor.copy(alpha = 0.3f),
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
+                )
+            )
+            Spacer(Modifier.width(12.dp))
+            FloatingActionButton(
+                onClick = onSend,
+                containerColor = BorderColor.copy(alpha = 0.5f),
+                contentColor = TextPrimary,
+                shape = CircleShape,
+                modifier = Modifier.size(56.dp),
+                elevation = FloatingActionButtonDefaults.elevation(0.dp)
+            ) {
+                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
             }
         }
     }
@@ -144,43 +226,6 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (isUser) Color.White else TextPrimary
             )
-        }
-    }
-}
-
-@Composable
-fun KiriInputBar(text: String, onTextChange: (String) -> Unit, onSend: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .padding(bottom = 80.dp), // Adjust for bottom nav
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        OutlinedTextField(
-            value = text,
-            onValueChange = onTextChange,
-            modifier = Modifier.weight(1f),
-            placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
-            leadingIcon = { Icon(Icons.Default.Add, contentDescription = null) },
-            shape = RoundedCornerShape(50),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = BorderColor.copy(alpha = 0.3f),
-                unfocusedContainerColor = BorderColor.copy(alpha = 0.3f),
-                focusedBorderColor = Color.Transparent,
-                unfocusedBorderColor = Color.Transparent
-            )
-        )
-        Spacer(Modifier.width(12.dp))
-        FloatingActionButton(
-            onClick = onSend,
-            containerColor = BorderColor.copy(alpha = 0.5f),
-            contentColor = TextPrimary,
-            shape = CircleShape,
-            modifier = Modifier.size(56.dp),
-            elevation = FloatingActionButtonDefaults.elevation(0.dp)
-        ) {
-            Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
         }
     }
 }

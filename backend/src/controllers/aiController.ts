@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "google/gemini-flash-1.5"; // Fast and capable for community apps
+const MODEL = "google/gemini-2.0-flash-exp:free"; // Resolved 404 error by switching to reliable free exp model
 
 export const getAiHistory = async (req: Request, res: Response) => {
   try {
@@ -24,7 +24,7 @@ export const getAiHistory = async (req: Request, res: Response) => {
 export const chatWithKiri = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.id;
-    const { content } = req.body;
+    const { content, fileData, mimeType } = req.body;
 
     // 1. Fetch user profile for context
     const userProfile = await prisma.user.findUnique({
@@ -38,10 +38,8 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       take: 10
     });
 
-    const messages = [
-      {
-        role: "system",
-        content: `You are Kiri AI, the 'Second Brain' of the ASG (Apex Startup Group) Community Platform in Jalgaon. 
+    // 3. Construct Kiri's context and messages
+    const systemPrompt = `You are Kiri AI, the 'Second Brain' of the ASG (Apex Startup Group) Community Platform in Jalgaon. 
         Your goal is to assist users with entrepreneurship, academic growth, and networking.
         
         Current User Context:
@@ -54,21 +52,38 @@ export const chatWithKiri = async (req: Request, res: Response) => {
         - Be concise, analytical, and professional.
         - Give specific advice tailored to the Jalgaon ecosystem when possible.
         - Encourage networking and connection requests within the ASG community.
-        - Always act as a supportive 'Second Brain'.`
-      },
+        - Always act as a supportive 'Second Brain'.`;
+
+    const chatMessages = [
+      { role: "system", content: systemPrompt },
       ...history.reverse().map((msg: any) => ({
         role: msg.role,
         content: msg.content
-      })),
-      { role: "user", content }
+      }))
     ];
 
-    // 3. Call OpenRouter
+    // Multimodal payload construction
+    let currentMessageContent: any = content;
+    if (fileData && mimeType) {
+      currentMessageContent = [
+        { type: "text", text: content || "Analyze this document." },
+        {
+          type: "image_url",
+          image_url: {
+            url: `data:${mimeType};base64,${fileData}`
+          }
+        }
+      ];
+    }
+
+    chatMessages.push({ role: "user", content: currentMessageContent });
+
+    // 4. Call OpenRouter
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: MODEL,
-        messages: messages
+        messages: chatMessages
       },
       {
         headers: {
@@ -82,9 +97,9 @@ export const chatWithKiri = async (req: Request, res: Response) => {
 
     const aiResponseText = response.data.choices[0].message.content;
 
-    // 4. Save both messages to DB
+    // 5. Save only the text context to DB (Don't save files as requested)
     await prisma.aiMessage.create({
-      data: { userId, content, role: "user" }
+      data: { userId, content: content || "[Analyzed Document]", role: "user" }
     });
 
     const savedAiMsg = await prisma.aiMessage.create({

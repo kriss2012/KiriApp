@@ -67,7 +67,11 @@ interface ASGApiService {
     suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, String>
 }
 
-data class AiMessageRequest(val content: String)
+data class AiMessageRequest(
+    val content: String,
+    val fileData: String? = null,
+    val mimeType: String? = null
+)
 data class AiMessageResponse(val id: String, val content: String, val role: String, val createdAt: String)
 
 data class UserResponse(
