@@ -1,22 +1,34 @@
 package com.apex.asg.ui.navigation
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apex.asg.ui.screens.*
+import com.apex.asg.data.SessionManager
 
 @Composable
 fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val hasToken = sessionManager.getToken() != null
+    
     NavHost(
         navController = navController,
-        startDestination = Screen.Splash.route
+        startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(
                 onJoinCommunity = { navController.navigate(Screen.Register.route) },
-                onLaunchpad = { navController.navigate(Screen.AIAgent.route) },
+                onLaunchpad = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://apexstartupgroup.com"))
+                    context.startActivity(intent)
+                },
                 onSignIn = { navController.navigate(Screen.Login.route) }
             )
         }
