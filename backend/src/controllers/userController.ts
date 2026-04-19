@@ -101,7 +101,8 @@ export const getAllVerifiedUsers = async (req: Request, res: Response) => {
 
 export const searchUsers = async (req: Request, res: Response) => {
   try {
-    const { name, role } = req.query;
+    const name = req.query['name'] as string | undefined;
+    const role = req.query['role'] as string | undefined;
 
     const where: any = {};
     if (name) {

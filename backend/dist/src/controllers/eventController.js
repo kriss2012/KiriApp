@@ -1,4 +1,5 @@
 import prisma from '../utils/prisma.js';
+import { createNotification } from './notificationController.js';
 export const createEvent = async (req, res) => {
     try {
         const { title, description, date, location, type, ownerId } = req.body;
@@ -22,6 +23,12 @@ export const createEvent = async (req, res) => {
                 ownerId
             }
         });
+        // Notify all verified users about the new event
+        const allUsers = await prisma.user.findMany({
+            where: { isVerified: true },
+            select: { id: true }
+        });
+        await Promise.all(allUsers.map(u => createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT')));
         res.status(201).json(event);
     }
     catch (error) {

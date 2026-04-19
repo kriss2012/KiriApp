@@ -61,7 +61,7 @@ export const acceptRequest = async (req: Request, res: Response) => {
 
 export const getUserConnections = async (req: Request, res: Response) => {
     try {
-        const userId = req.params['userId'];
+        const userId = req.params['userId'] as string;
         const connections = await prisma.connection.findMany({
             where: {
                 OR: [

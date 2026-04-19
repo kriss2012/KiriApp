@@ -3,4 +3,5 @@ export declare const getProfile: (req: Request, res: Response) => Promise<Respon
 export declare const updateProfile: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const toggleEventAccess: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const getAllVerifiedUsers: (req: Request, res: Response) => Promise<void>;
+export declare const searchUsers: (req: Request, res: Response) => Promise<void>;
 //# sourceMappingURL=userController.d.ts.map

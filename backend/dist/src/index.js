@@ -11,6 +11,8 @@ import jobRoutes from './routes/jobRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import connectionRoutes from './routes/connectionRoutes.js';
 dotenv.config();
 const app = express();
 const httpServer = createServer(app);
@@ -33,6 +35,8 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/connections', connectionRoutes);
 app.get('/', (req, res) => {
     res.send('ASG Community API is running...');
 });

@@ -1,4 +1,5 @@
 import prisma from '../utils/prisma.js';
+import { Role } from '@prisma/client';
 export const getProfile = async (req, res) => {
     try {
         const userId = req.params['userId'];
@@ -88,6 +89,36 @@ export const getAllVerifiedUsers = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ message: 'Error fetching verified users', error: error.message });
+    }
+};
+export const searchUsers = async (req, res) => {
+    try {
+        const name = req.query['name'];
+        const role = req.query['role'];
+        const where = {};
+        if (name) {
+            where.fullName = { contains: name, mode: 'insensitive' };
+        }
+        if (role && role !== 'ALL') {
+            where.role = role;
+        }
+        const users = await prisma.user.findMany({
+            where,
+            select: {
+                id: true,
+                fullName: true,
+                role: true,
+                avatarUrl: true,
+                college: true,
+                bio: true,
+                skills: true
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+        res.status(200).json(users);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error searching users', error: error.message });
     }
 };
 //# sourceMappingURL=userController.js.map
