@@ -78,10 +78,6 @@ interface ASGApiService {
 
     @POST("ai/chat")
     suspend fun sendAiMessage(@Body request: AiMessageRequest): AiMessageResponse
-
-    // Connections
-    @POST("connections/request")
-    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, String>
 }
 
 data class AiMessageRequest(
@@ -184,7 +180,8 @@ data class EventDto(
     val id: String,
     val title: String,
     val description: String,
-    val date: String
+    val date: String,
+    val type: String? = null
 )
 
 data class LoginRequest(

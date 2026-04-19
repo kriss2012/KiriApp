@@ -139,7 +139,7 @@ fun EventsList(events: List<EventDto>) {
                 title = event.title,
                 organizer = "Community Event",
                 location = event.description.take(20) + "...", 
-                type = event.category ?: "General",
+                type = event.type ?: "General",
                 typeBg = OrangeLight,
                 typeText = OrangeDark,
                 prize = "TBD"
