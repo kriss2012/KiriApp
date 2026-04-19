@@ -64,21 +64,74 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       take: 10
     });
 
-    // 4. Construct Kiri's context and messages
-    const systemPrompt = `You are Kiri AI, the 'Second Brain' of the ASG (Apex Startup Group) Community Platform in Jalgaon. 
-        Your goal is to assist users with entrepreneurship, academic growth, and networking.
-        
-        Current User Context:
-        Name: ${userProfile?.fullName}
-        Role: ${userProfile?.role}
-        College: ${userProfile?.college}
-        Department: ${userProfile?.department}
-        
-        Guidelines:
-        - Be concise, analytical, and professional.
-        - Give specific advice tailored to the Jalgaon ecosystem when possible.
-        - Encourage networking and connection requests within the ASG community.
-        - Always act as a supportive 'Second Brain'.`;
+    const specialization = (conversation as any).specialization || "GENERAL";
+    let specializationContext = "";
+    
+    switch(specialization) {
+        case "TECH":
+            specializationContext = "You are in TECH MODE. Focus on code quality, scalability, tech architecture, and modern stacks (Native Android, Node.js).";
+            break;
+        case "LEGAL":
+            specializationContext = "You are in LEGAL MODE. Focus on Indian startup laws, regional compliance in Maharashtra, IP protection, and registration steps.";
+            break;
+        case "GTM":
+            specializationContext = "You are in GTM (Go-To-Market) MODE. Focus on marketing strategies, regional networking, and user acquisition in Tier 2/3 cities.";
+            break;
+        default:
+            specializationContext = "You are in GENERAL MODE. Provide balanced advice across entrepreneurs, academics, and networking.";
+    }
+
+    // Fetch relevant community context for Orchestration
+    const relevantMentors = await prisma.user.findMany({
+      where: {
+        AND: [
+          { role: { in: ['MENTOR', 'FOUNDER'] } },
+          { isVerified: true }
+        ]
+      },
+      take: 5,
+      select: { fullName: true, bio: true, skills: true }
+    });
+
+    const mentorContext = relevantMentors.map(m => 
+      `- ${m.fullName} (${(m.skills as string[]).join(", ")}): ${m.bio?.substring(0, 50)}...`
+    ).join("\n");
+
+    // 4. Multilingual Protocol
+    const preferredLang = (userProfile?.preferredLanguage as string || "ENGLISH").toUpperCase();
+    let langInstruction = "Respond primarily in English.";
+    if (preferredLang === "MARATHI") {
+        langInstruction = "The user prefers MARATHI. Respond in Marathi (using Devanagari script) while keeping technical terms in English.";
+    } else if (preferredLang === "HINDI") {
+        langInstruction = "The user prefers HINDI. Respond in Hindi (using Devanagari script) while keeping technical terms in English.";
+    }
+
+    // 5. Construct Kiri's context and messages
+    const systemPrompt = `You are Kiri, the Agentic Orchestrator of the ASG Community. 
+    You help regional startups and students innovate.
+    
+    LANGUAGE PROTOCOL: ${langInstruction}
+    
+    SPECIALIZATION: ${specialization}
+    RESEARCH PROTOCOL: ${specializationContext}
+    
+    ACTIVE ECOSYSTEM MEMBERS (Suggestion Context):
+    ${mentorContext}
+    
+    MISSION: If the user needs help in a specific field, suggest contacting one of the members listed above by name if their skills match.
+    BEHAVIOR: Be professional, premium, and focused on regional impact.
+    
+    Current User Context:
+    Name: ${userProfile?.fullName}
+    Role: ${userProfile?.role}
+    College: ${userProfile?.college}
+    Department: ${userProfile?.department}
+    
+    Guidelines:
+    - Be concise, analytical, and professional.
+    - Give specific advice tailored to the Jalgaon ecosystem when possible.
+    - Encourage networking and connection requests within the ASG community.
+    - Always act as a supportive 'Second Brain'.`;
 
     const chatMessages = [
       { role: "system", content: systemPrompt },
@@ -148,9 +201,52 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       data: { updatedAt: new Date() }
     });
 
+    // Award Innovation Points for discovery
+    await createActivity(userId, 'AI_SESSION', `Strategy Session (${specialization})`, `Consulted Kiri AI regarding ${specialization.toLowerCase()} strategies.`, 15);
+
     res.json(savedAiMsg);
   } catch (error: any) {
     console.error("AI Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Kiri is having trouble thinking. Please try again later." });
+  }
+};
+
+export const updateSpecialization = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { specialization } = req.body;
+    
+    const latestConversation = await prisma.conversation.findFirst({
+      where: { userId, isArchived: false },
+      orderBy: { updatedAt: 'desc' }
+    });
+
+    if (!latestConversation) {
+      return res.status(404).json({ message: 'Conversation not found' });
+    }
+
+    const updated = await prisma.conversation.update({
+      where: { id: latestConversation.id },
+      data: { specialization } as any
+    });
+
+    res.json(updated);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const createActivity = async (userId: string, type: string, title: string, content: string, points: number) => {
+  try {
+    await prisma.activity.create({
+      data: { userId, type, title, content, points }
+    });
+    // Increment User points
+    await prisma.user.update({
+      where: { id: userId },
+      data: { points: { increment: points } }
+    });
+  } catch (e) {
+    console.error("Failed to log activity:", e);
   }
 };
