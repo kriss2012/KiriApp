@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { getAiHistory, chatWithKiri } from '../controllers/aiController.js';
+import { chatWithKiri, getAiHistory, updateSpecialization } from '../controllers/aiController.js';
 import { authenticate } from '../middlewares/auth.js';
 const router = Router();
-router.get('/history', authenticate, getAiHistory);
-router.post('/chat', authenticate, chatWithKiri);
+router.use(authenticate);
+router.get('/history', getAiHistory);
+router.post('/chat', chatWithKiri);
+router.put('/specialization', updateSpecialization);
 export default router;
 //# sourceMappingURL=aiRoutes.js.map
