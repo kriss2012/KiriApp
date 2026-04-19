@@ -35,3 +35,13 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     return res.status(401).json({ message: 'Authentication failed' });
   }
 };
+
+export const checkRole = (roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const userRole = (req as any).user?.role;
+    if (!userRole || !roles.includes(userRole)) {
+      return res.status(403).json({ message: 'Access denied: Insufficient permissions' });
+    }
+    next();
+  };
+};
