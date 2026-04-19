@@ -38,16 +38,19 @@ fun PublicProfileScreen(
     val currentUserId = sessionManager.getUserId() ?: ""
     
     var user by remember { mutableStateOf<UserDto?>(null) }
-    var isConnected by remember { mutableStateOf(false) }
-    var isPending by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(true) }
+    var connectionStatus by remember { mutableStateOf<String?>(null) } // "PENDING", "ACCEPTED", null
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(userId) {
         try {
-            // Fetch public user data
             user = ApiClient.service.getProfile(userId)
-            // Ideally check connection status via ApiClient.service.getUserConnections()
+            // Check current connection status
+            val connections = ApiClient.service.getUserConnections(currentUserId)
+            val existing = connections.find { 
+                (it.senderId == currentUserId && it.receiverId == userId) || 
+                (it.senderId == userId && it.receiverId == currentUserId)
+            }
+            connectionStatus = existing?.status
             isLoading = false
         } catch (e: Exception) {
             isLoading = false
@@ -68,6 +71,13 @@ fun PublicProfileScreen(
             )
         }
     ) { padding ->
+        // Smooth Fade-in Transition for Content
+        val alpha by androidx.compose.animation.core.animateFloatAsState(
+            targetValue = if (isLoading) 0f else 1f,
+            animationSpec = androidx.compose.animation.core.tween(600),
+            label = "fade"
+        )
+        
         if (isLoading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = OrangePrimary)
@@ -78,7 +88,8 @@ fun PublicProfileScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
-                    .padding(horizontal = 24.dp),
+                    .padding(horizontal = 24.dp)
+                    .alpha(alpha), // Apply smooth fade
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
@@ -110,9 +121,9 @@ fun PublicProfileScreen(
                         Surface(color = OrangeLight, shape = RoundedCornerShape(8.dp)) {
                             Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = OrangeDark, style = MaterialTheme.typography.labelSmall)
                         }
-                    } else if (isConnected) {
+                    } else if (connectionStatus == "ACCEPTED") {
                         Button(
-                            onClick = { /* Message UI */ },
+                            onClick = { /* Navigate to Chat */ },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
                             shape = RoundedCornerShape(12.dp)
@@ -120,6 +131,16 @@ fun PublicProfileScreen(
                             Icon(Icons.Default.Email, null)
                             Spacer(Modifier.width(8.dp))
                             Text("Send Message")
+                        }
+                    } else if (connectionStatus == "PENDING") {
+                        Button(
+                            onClick = { },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = false,
+                            colors = ButtonDefaults.buttonColors(containerColor = BorderColor),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Text("Request Pending")
                         }
                     } else {
                         Button(
@@ -130,6 +151,7 @@ fun PublicProfileScreen(
                                         ApiClient.service.sendConnectionRequest(
                                             mapOf("senderId" to currentUserId, "receiverId" to userId)
                                         )
+                                        connectionStatus = "PENDING"
                                     } catch (e: Exception) {
                                         isPending = false
                                     }
@@ -144,7 +166,7 @@ fun PublicProfileScreen(
                         ) {
                             Icon(Icons.Default.PersonAdd, null)
                             Spacer(Modifier.width(8.dp))
-                            Text(if (isPending) "Request Sent" else "Connect with ${u.fullName.split(" ")[0]}")
+                            Text("Connect with ${u.fullName.split(" ")[0]}")
                         }
                     }
                     
