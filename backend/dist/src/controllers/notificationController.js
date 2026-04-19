@@ -31,14 +31,15 @@ export const markAsRead = async (req, res) => {
         res.status(500).json({ message: 'Error marking notification as read', error: error.message });
     }
 };
-export const createNotification = async (userId, title, content, type) => {
+export const createNotification = async (userId, title, content, type, relatedId = null) => {
     try {
         return await prisma.notification.create({
             data: {
                 userId,
                 title,
                 content,
-                type
+                type,
+                relatedId: relatedId ?? null
             }
         });
     }

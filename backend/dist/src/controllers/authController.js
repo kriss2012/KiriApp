@@ -4,6 +4,10 @@ import prisma from '../utils/prisma.js';
 export const register = async (req, res) => {
     try {
         const { email, password, fullName, role, studentLevel, department, college, year, section, inviteCode } = req.body;
+        // 0. Mandatory Field Validation
+        if (!email || !password || !fullName || !role || !department) {
+            return res.status(400).json({ message: 'Missing mandatory fields: Name, Email, Password, Role, and Department are required.' });
+        }
         // 1. Role Security Check
         const protectedRoles = ['ADMIN', 'SPOC', 'MENTOR', 'INVESTOR'];
         if (protectedRoles.includes(role)) {

@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-
 async function main() {
     console.log("Searching for empty users...");
     const emptyUsers = await prisma.user.findMany({
@@ -11,7 +10,6 @@ async function main() {
             ]
         }
     });
-
     console.log(`Found ${emptyUsers.length} empty users.`);
     for (const user of emptyUsers) {
         console.log(`Deleting user: ${user.fullName} (${user.email})`);
@@ -27,10 +25,10 @@ async function main() {
     }
     console.log("Cleanup complete.");
 }
-
 main().catch(e => {
     console.error(e);
     process.exit(1);
 }).finally(async () => {
     await prisma.$disconnect();
 });
+//# sourceMappingURL=cleanup-users.js.map

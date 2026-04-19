@@ -4,20 +4,29 @@ import { createActivity } from './aiController.js';
 export const sendRequest = async (req, res) => {
     try {
         const { senderId, receiverId } = req.body;
-        const existing = await prisma.connection.findUnique({
+        if (senderId === receiverId) {
+            return res.status(400).json({ message: 'Cannot connect to yourself' });
+        }
+        const existing = await prisma.connection.findFirst({
             where: {
-                senderId_receiverId: { senderId, receiverId }
+                OR: [
+                    { senderId, receiverId },
+                    { senderId: receiverId, receiverId: senderId }
+                ]
             }
         });
         if (existing) {
-            return res.status(400).json({ message: 'Request already sent' });
+            return res.status(400).json({
+                message: existing.status === 'PENDING' ? 'Request already pending' : 'Already connected',
+                status: existing.status
+            });
         }
         const connection = await prisma.connection.create({
             data: { senderId, receiverId, status: 'PENDING' },
             include: { sender: true }
         });
         // Create Notification for receiver
-        await createNotification(receiverId, 'New Connection Request', `${connection.sender.fullName} wants to connect with you.`, 'REQUEST');
+        await createNotification(receiverId, 'New Connection Request', `${connection.sender.fullName} wants to connect with you.`, 'REQUEST', connection.id);
         res.status(201).json(connection);
     }
     catch (error) {
@@ -26,9 +35,13 @@ export const sendRequest = async (req, res) => {
 };
 export const acceptRequest = async (req, res) => {
     try {
-        const { connectionId } = req.body;
+        const { connectionId, requestId } = req.body;
+        const id = connectionId || requestId;
+        if (!id) {
+            return res.status(400).json({ message: 'connectionId or requestId is required' });
+        }
         const connection = await prisma.connection.update({
-            where: { id: connectionId },
+            where: { id: id },
             data: { status: 'ACCEPTED' },
             include: { sender: true, receiver: true }
         });
@@ -40,6 +53,9 @@ export const acceptRequest = async (req, res) => {
         res.status(200).json({ message: 'Connection accepted successfully', connection });
     }
     catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ message: 'Connection record not found' });
+        }
         res.status(500).json({ message: 'Error accepting request', error: error.message });
     }
 };

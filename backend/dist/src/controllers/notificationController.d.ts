@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 export declare const getNotifications: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const markAsRead: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
-export declare const createNotification: (userId: string, title: string, content: string, type: string) => Promise<{
+export declare const createNotification: (userId: string, title: string, content: string, type: string, relatedId?: string | null) => Promise<{
     id: string;
     createdAt: Date;
     userId: string;
@@ -9,5 +9,6 @@ export declare const createNotification: (userId: string, title: string, content
     title: string;
     content: string;
     isRead: boolean;
+    relatedId: string | null;
 } | undefined>;
 //# sourceMappingURL=notificationController.d.ts.map
