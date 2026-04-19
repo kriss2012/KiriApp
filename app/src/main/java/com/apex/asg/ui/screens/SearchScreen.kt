@@ -95,7 +95,7 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
             }
         } else if (userResults.isEmpty() && searchQuery.length >= 2) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("No profiles found for '$searchQuery'", color = TextSecondary)
+                Text("No related data found", color = TextSecondary)
             }
         } else {
             LazyColumn(
