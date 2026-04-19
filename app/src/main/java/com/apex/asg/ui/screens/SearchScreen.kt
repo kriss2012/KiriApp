@@ -27,15 +27,38 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf("ALL") }
     var userResults by remember { mutableStateOf<List<UserResponse>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+
+    val categories = listOf("ALL", "STUDENT", "FOUNDER", "INVESTOR", "MENTOR", "SERVICE_PROVIDER")
+
+    fun performSearch() {
+        coroutineScope.launch {
+            isLoading = true
+            try {
+                userResults = ApiClient.service.getUsers(
+                    name = if (searchQuery.isNotEmpty()) searchQuery else null,
+                    role = if (selectedCategory != "ALL") selectedCategory else null
+                )
+            } catch (e: Exception) {
+                userResults = emptyList()
+            }
+            isLoading = false
+        }
+    }
+
+    // Initial load and on parameter change
+    LaunchedEffect(selectedCategory) {
+        performSearch()
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(BgCream)
-            .padding(24.dp)
+            .padding(top = 24.dp, start = 24.dp, end = 24.dp)
     ) {
         Text(
             "Community Discovery",
@@ -55,25 +78,7 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
             value = searchQuery,
             onValueChange = { 
                 searchQuery = it 
-                if (it.length >= 2) {
-                    coroutineScope.launch {
-                        isLoading = true
-                        try {
-                            // In a real app, this would be an API call
-                            // For now, fetching all and filtering locally
-                            val users = ApiClient.service.getUsers()
-                            userResults = users.filter { user -> 
-                                user.fullName.contains(searchQuery, ignoreCase = true) || 
-                                user.college?.contains(searchQuery, ignoreCase = true) == true
-                            }
-                        } catch (e: Exception) {
-                            userResults = emptyList()
-                        }
-                        isLoading = false
-                    }
-                } else {
-                    userResults = emptyList()
-                }
+                performSearch()
             },
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Search members, colleges...", style = MaterialTheme.typography.bodySmall) },
@@ -87,20 +92,53 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
             )
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Category Chips
+        androidx.compose.foundation.lazy.LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(bottom = 12.dp)
+        ) {
+            items(categories) { category ->
+                FilterChip(
+                    selected = selectedCategory == category,
+                    onClick = { selectedCategory = category },
+                    label = { 
+                        Text(
+                            category.lowercase().replaceFirstChar { it.uppercase() },
+                            style = MaterialTheme.typography.labelSmall
+                        ) 
+                    },
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = OrangePrimary,
+                        selectedLabelColor = Color.White,
+                        containerColor = Color.White,
+                        labelColor = TextSecondary
+                    ),
+                    border = FilterChipDefaults.filterChipBorder(
+                        borderColor = BorderColor,
+                        enabled = true,
+                        selected = selectedCategory == category
+                    )
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         if (isLoading) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(color = OrangePrimary)
             }
-        } else if (userResults.isEmpty() && searchQuery.length >= 2) {
+        } else if (userResults.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("No related data found", color = TextSecondary)
             }
         } else {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 80.dp)
+                contentPadding = PaddingValues(bottom = 80.dp),
+                modifier = Modifier.fillMaxSize()
             ) {
                 items(userResults) { user ->
                     UserSearchItem(user = user, onClick = { onNavigateToProfile(user.id) })
