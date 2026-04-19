@@ -34,14 +34,19 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
 
     val categories = listOf("ALL", "STUDENT", "FOUNDER", "INVESTOR", "MENTOR", "SERVICE_PROVIDER")
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val sessionManager = remember { com.apex.asg.data.SessionManager.getInstance(context) }
+    val currentUserId = sessionManager.getUserId() ?: ""
+
     fun performSearch() {
         coroutineScope.launch {
             isLoading = true
             try {
-                userResults = ApiClient.service.getUsers(
+                val results = ApiClient.service.getUsers(
                     name = if (searchQuery.isNotEmpty()) searchQuery else null,
                     role = if (selectedCategory != "ALL") selectedCategory else null
                 )
+                userResults = results.filter { it.id != currentUserId }
             } catch (e: Exception) {
                 userResults = emptyList()
             }
