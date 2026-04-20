@@ -37,6 +37,24 @@ export const markAsRead = async (req: Request, res: Response) => {
   }
 };
 
+export const markAllAsRead = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params['userId'];
+    if (typeof userId !== 'string') {
+      return res.status(400).json({ message: 'Invalid User ID' });
+    }
+
+    await prisma.notification.updateMany({
+      where: { userId, isRead: false },
+      data: { isRead: true }
+    });
+
+    res.status(200).json({ message: 'All notifications marked as read' });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error marking all as read', error: error.message });
+  }
+};
+
 export const createNotification = async (userId: string, title: string, content: string, type: string, relatedId: string | null = null) => {
   try {
     return await prisma.notification.create({
