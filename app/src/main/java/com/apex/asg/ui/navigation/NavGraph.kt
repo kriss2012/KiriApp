@@ -106,7 +106,7 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
         
         composable(Screen.AIAgent.route) {
-            AIAgentScreen()
+            AIAgentScreen(onBack = { navController.popBackStack() })
         }
 
         composable(Screen.PublicProfile.route) { backStackEntry ->

@@ -113,8 +113,8 @@ fun HomeContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent)
-            .padding(bottom = 100.dp) // Space for floating nav
+            .background(Color.Transparent),
+        contentPadding = PaddingValues(bottom = 100.dp) // Space for floating nav
     ) {
         item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
         item { GreetingSection(userName = user.fullName) }

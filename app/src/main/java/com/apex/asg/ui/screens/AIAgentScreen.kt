@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Description
@@ -29,7 +30,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
+fun AIAgentScreen(
+    onBack: () -> Unit = {},
+    vm: KiriAIViewModel = viewModel()
+) {
     var textState by remember { mutableStateOf("") }
     val messages = vm.messages
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
@@ -58,6 +62,11 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
                 title = { 
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -243,7 +252,7 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
 fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
     val options = listOf("GENERAL", "TECH", "LEGAL", "GTM")
     androidx.compose.foundation.lazy.LazyRow(
-        modifier = Modifier.fillMaxWidth().background(BgCream).padding(horizontal = 24.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().background(Color.Transparent).padding(horizontal = 24.dp, vertical = 2.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(options) { option ->

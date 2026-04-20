@@ -38,25 +38,30 @@ fun MainScaffold(
     val isKeyboardOpen = WindowInsets.ime.getBottom(androidx.compose.ui.platform.LocalDensity.current) > 0
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = Color.Transparent,
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Main Content
-            content(padding)
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = BgCream
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                // Main Content
+                content(padding)
 
-            // Floating Bottom Navigation
-            // Auto-hide when keyboard is open to avoid overlap and shifting
-            AnimatedVisibility(
-                visible = showBottomBar && !isKeyboardOpen,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-                exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .navigationBarsPadding() // Keep above gesture line
-                    .padding(bottom = 24.dp)
-            ) {
-                ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
+                // Floating Bottom Navigation
+                // Auto-hide when keyboard is open to avoid overlap and shifting
+                AnimatedVisibility(
+                    visible = showBottomBar && !isKeyboardOpen,
+                    enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                    exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .navigationBarsPadding() // Keep above gesture line
+                        .padding(bottom = 24.dp)
+                ) {
+                    ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
+                }
             }
         }
     }

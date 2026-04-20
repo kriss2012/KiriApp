@@ -142,7 +142,7 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
         } else {
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(bottom = 80.dp),
+                contentPadding = PaddingValues(bottom = 100.dp), // Clear space for floating nav
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(userResults) { user ->
