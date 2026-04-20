@@ -1,21 +1,16 @@
 package com.apex.asg.ui.screens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +25,16 @@ import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.KiriAIViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+// ─────────────────────────────────────────────────────────────────────────────
+// IMPORTANT: In your Activity / MainActivity, you MUST add:
+//
+//   WindowCompat.setDecorFitsSystemWindows(window, false)
+//
+// This allows Compose to handle insets (status bar, nav bar, IME/keyboard)
+// itself instead of the system doing it — which is what causes the floating
+// input bar bug you were seeing.
+// ─────────────────────────────────────────────────────────────────────────────
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AIAgentScreen(
@@ -40,11 +45,10 @@ fun AIAgentScreen(
     val messages = vm.messages
     val listState = androidx.compose.foundation.lazy.rememberLazyListState()
     val context = androidx.compose.ui.platform.LocalContext.current
-    
-    // File Picker
+
     val selectedFileUri by vm.selectedFileUri.collectAsState()
     val selectedFileName by vm.selectedFileName.collectAsState()
-    
+
     val filePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
         contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
     ) { uri ->
@@ -57,34 +61,45 @@ fun AIAgentScreen(
         }
     }
 
-    Scaffold(
-        containerColor = Color.Transparent,
-        topBar = {
+    // ── FIX: Do NOT use Scaffold for this layout. Instead, use a plain Box/Column
+    // with manual inset handling. Scaffold's internal padding logic fights with
+    // imePadding() and causes the input bar to render mid-screen.
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            // statusBarsPadding handles the top notch/status bar
+            .statusBarsPadding()
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+
+            // ── Top bar (manual, replaces Scaffold topBar) ──────────────────
             CenterAlignedTopAppBar(
-                title = { 
-                    Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
+                title = {
+                    Text(
+                        "KIRI AI",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = TextPrimary,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 2.sp
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.Transparent
+                )
             )
-        },
-        modifier = Modifier.fillMaxSize()
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = padding.calculateTopPadding())
-        ) {
+
+            // ── Specialization chips ─────────────────────────────────────────
             SpecializationSelector(
                 selected = vm.currentSpecialization.collectAsState().value,
                 onSelected = { vm.setSpecialization(it) }
             )
 
-            // Chat content area
+            // ── Chat messages — takes all remaining space ────────────────────
             Box(modifier = Modifier.weight(1f)) {
                 if (messages.isEmpty()) {
                     KiriEmptyState()
@@ -104,14 +119,17 @@ fun AIAgentScreen(
                 }
             }
 
-            // Input area moved INSIDE the main Column for robust weighting/keyboard handling
-            // Using the user's recommended 'pixel-perfect' structure for zero gap look
+            // ── Input bar — pinned at bottom, ABOVE keyboard ─────────────────
+            // Key insight: imePadding() here (at the Column item level, not inside
+            // the bar itself) correctly pushes the bar up when the keyboard opens,
+            // because it's part of the normal vertical flow — not fighting Scaffold.
             KiriInputBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .navigationBarsPadding() // Handled here to ensure it sticks correctly above gesture bar
-                    .imePadding() // This makes it stick to keyboard dynamically
-                    .padding(bottom = 2.dp), // Minimal professional gap
+                    // imePadding() lifts the bar above the software keyboard
+                    .imePadding()
+                    // navigationBarsPadding() handles gesture nav bar / home indicator
+                    .navigationBarsPadding(),
                 text = textState,
                 onTextChange = { textState = it },
                 selectedFileName = selectedFileName,
@@ -126,11 +144,15 @@ fun AIAgentScreen(
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// KiriInputBar — cleaned up, no extra padding modifiers inside
+// All inset handling is done by the CALLER (AIAgentScreen above)
+// ─────────────────────────────────────────────────────────────────────────────
 @Composable
 fun KiriInputBar(
     modifier: Modifier = Modifier,
-    text: String, 
-    onTextChange: (String) -> Unit, 
+    text: String,
+    onTextChange: (String) -> Unit,
     onSend: () -> Unit,
     onAttachClick: () -> Unit,
     selectedFileName: String?,
@@ -139,14 +161,14 @@ fun KiriInputBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 4.dp) // Tightened for better viewport usage
+            .padding(horizontal = 12.dp, vertical = 8.dp)
             .background(
                 color = Color.White.copy(alpha = 0.98f),
                 shape = RoundedCornerShape(28.dp)
             )
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
-        // Attachment Preview
+        // Attachment preview chip
         if (selectedFileName != null) {
             Surface(
                 color = OrangePrimary.copy(alpha = 0.1f),
@@ -158,15 +180,35 @@ fun KiriInputBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
-                    Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
-                    IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
-                        Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
+                    Icon(
+                        Icons.Default.Description,
+                        contentDescription = null,
+                        tint = OrangePrimary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Text(
+                        selectedFileName,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = OrangePrimary,
+                        maxLines = 1,
+                        modifier = Modifier.weight(1f)
+                    )
+                    IconButton(
+                        onClick = onCancelAttachment,
+                        modifier = Modifier.size(20.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = "Remove attachment",
+                            tint = OrangePrimary,
+                            modifier = Modifier.size(14.dp)
+                        )
                     }
                 }
             }
         }
 
+        // Text field row
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -178,14 +220,14 @@ fun KiriInputBar(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = 4.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 if (text.isEmpty()) {
                     Text(
                         "MESSAGE / LOG",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TextSecondary.copy(alpha = 0.6f)
+                        color = TextSecondary.copy(alpha = 0.5f)
                     )
                 }
                 androidx.compose.foundation.text.BasicTextField(
@@ -193,7 +235,9 @@ fun KiriInputBar(
                     onValueChange = onTextChange,
                     modifier = Modifier.fillMaxWidth(),
                     textStyle = MaterialTheme.typography.bodyMedium.copy(color = TextPrimary),
-                    cursorBrush = SolidColor(OrangePrimary)
+                    cursorBrush = SolidColor(OrangePrimary),
+                    // Allow multi-line but cap visible lines for clean look
+                    maxLines = 5
                 )
             }
 
@@ -204,13 +248,21 @@ fun KiriInputBar(
                 Icon(
                     Icons.AutoMirrored.Filled.Send,
                     contentDescription = "Send",
-                    tint = if (text.isNotBlank()) OrangePrimary else TextSecondary.copy(alpha = 0.3f),
+                    tint = if (text.isNotBlank() || selectedFileName != null)
+                        OrangePrimary
+                    else
+                        TextSecondary.copy(alpha = 0.3f),
                     modifier = Modifier.size(24.dp)
                 )
             }
         }
     }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Unchanged components below — KiriEmptyState, KiriMessageBubble,
+// SpecializationSelector are correct as-is
+// ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 fun KiriEmptyState() {
@@ -249,7 +301,9 @@ fun KiriEmptyState() {
 fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
     val isUser = msg.role == "user"
     Box(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         contentAlignment = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
     ) {
         Column(
@@ -259,7 +313,11 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
                 text = if (isUser) "YOU" else "KIRI AI",
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                 color = if (isUser) OrangePrimary else TextSecondary,
-                modifier = Modifier.padding(bottom = 6.dp, start = if (isUser) 0.dp else 12.dp, end = if (isUser) 12.dp else 0.dp)
+                modifier = Modifier.padding(
+                    bottom = 6.dp,
+                    start = if (isUser) 0.dp else 12.dp,
+                    end = if (isUser) 12.dp else 0.dp
+                )
             )
             Surface(
                 color = if (isUser) OrangePrimary else Color.White,
@@ -306,12 +364,12 @@ fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
             ElevatedFilterChip(
                 selected = isSelected,
                 onClick = { onSelected(option) },
-                label = { 
+                label = {
                     Text(
                         text = option,
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                    ) 
+                    )
                 },
                 colors = FilterChipDefaults.elevatedFilterChipColors(
                     selectedContainerColor = OrangePrimary,
@@ -325,4 +383,3 @@ fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
         }
     }
 }
-
