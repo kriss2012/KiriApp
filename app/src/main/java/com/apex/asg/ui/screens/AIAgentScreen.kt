@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,23 +73,26 @@ fun AIAgentScreen(
             )
         },
         bottomBar = {
-            KiriInputBar(
-                text = textState,
-                onTextChange = { textState = it },
-                selectedFileName = selectedFileName,
-                onAttachClick = { filePickerLauncher.launch("*/*") },
-                onCancelAttachment = { vm.clearFileSelection() },
-                onSend = {
-                    vm.sendMessage(textState, context)
-                    textState = ""
-                }
-            )
-        }
+            Column(modifier = Modifier.navigationBarsPadding().imePadding()) {
+                KiriInputBar(
+                    text = textState,
+                    onTextChange = { textState = it },
+                    selectedFileName = selectedFileName,
+                    onAttachClick = { filePickerLauncher.launch("*/*") },
+                    onCancelAttachment = { vm.clearFileSelection() },
+                    onSend = {
+                        vm.sendMessage(textState, context)
+                        textState = ""
+                    }
+                )
+            }
+        },
+        modifier = Modifier.fillMaxSize()
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(top = padding.calculateTopPadding())
         ) {
             SpecializationSelector(
                 selected = vm.currentSpecialization.collectAsState().value,
@@ -104,8 +108,8 @@ fun AIAgentScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     state = listState,
-                    contentPadding = PaddingValues(top = 8.dp, bottom = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(messages) { msg ->
                         KiriMessageBubble(msg)
@@ -125,73 +129,77 @@ fun KiriInputBar(
     selectedFileName: String?,
     onCancelAttachment: () -> Unit
 ) {
-    Surface(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .navigationBarsPadding()
-            .imePadding(),
-        color = Color.Transparent
+            .padding(16.dp)
+            .background(
+                color = Color.White.copy(alpha = 0.98f),
+                shape = RoundedCornerShape(28.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .background(
-                    color = Color.White.copy(alpha = 0.95f),
-                    shape = RoundedCornerShape(24.dp)
-                )
-                .padding(8.dp)
-        ) {
-            // Attachment Preview
-            if (selectedFileName != null) {
-                Surface(
-                    color = OrangePrimary.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(12.dp),
-                    modifier = Modifier.padding(bottom = 8.dp)
+        // Attachment Preview
+        if (selectedFileName != null) {
+            Surface(
+                color = OrangePrimary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.padding(bottom = 8.dp, top = 8.dp, start = 8.dp)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
-                        Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
-                        IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
-                            Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
-                        }
+                    Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
+                    Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
+                    IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
+                        Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
                     }
                 }
             }
+        }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                OutlinedTextField(
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onAttachClick) {
+                Icon(Icons.Default.Add, contentDescription = "Attach", tint = TextPrimary)
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                if (text.isEmpty()) {
+                    Text(
+                        "MESSAGE / LOG",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextSecondary.copy(alpha = 0.6f)
+                    )
+                }
+                androidx.compose.foundation.text.BasicTextField(
                     value = text,
                     onValueChange = onTextChange,
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
-                    leadingIcon = { 
-                        IconButton(onClick = onAttachClick) {
-                            Icon(Icons.Default.Add, contentDescription = null, tint = TextPrimary) 
-                        }
-                    },
-                    shape = RoundedCornerShape(50),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = BorderColor.copy(alpha = 0.1f),
-                        unfocusedContainerColor = BorderColor.copy(alpha = 0.1f),
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    )
+                    modifier = Modifier.fillMaxWidth(),
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(color = TextPrimary),
+                    cursorBrush = SolidColor(OrangePrimary)
                 )
-                Spacer(Modifier.width(8.dp))
-                FloatingActionButton(
-                    onClick = onSend,
-                    containerColor = OrangePrimary,
-                    contentColor = Color.White,
-                    shape = CircleShape,
-                    modifier = Modifier.size(48.dp),
-                    elevation = FloatingActionButtonDefaults.elevation(0.dp)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null, modifier = Modifier.size(20.dp))
-                }
+            }
+
+            IconButton(
+                onClick = onSend,
+                enabled = text.isNotBlank() || selectedFileName != null
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.Send,
+                    contentDescription = "Send",
+                    tint = if (text.isNotBlank()) OrangePrimary else TextSecondary.copy(alpha = 0.3f),
+                    modifier = Modifier.size(24.dp)
+                )
             }
         }
     }
@@ -233,44 +241,46 @@ fun KiriEmptyState() {
 @Composable
 fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
     val isUser = msg.role == "user"
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
+    Box(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        contentAlignment = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
     ) {
-        Text(
-            text = if (isUser) "YOU" else "KIRI AI",
-            style = MaterialTheme.typography.labelSmall,
-            color = if (isUser) OrangePrimary else TextSecondary,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-        Surface(
-            color = if (isUser) OrangePrimary else Color.White.copy(alpha = 0.9f),
-            shape = RoundedCornerShape(
-                topStart = if (isUser) 20.dp else 4.dp,
-                topEnd = if (isUser) 4.dp else 20.dp,
-                bottomStart = 20.dp,
-                bottomEnd = 20.dp
-            ),
-            border = if (!isUser) BorderStroke(1.dp, BorderColor.copy(alpha = 0.5f)) else null,
-            shadowElevation = if (isUser) 4.dp else 2.dp,
-            modifier = if (isUser) Modifier else Modifier.padding(end = 40.dp)
+        Column(
+            horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
         ) {
-            val bubbleModifier = if (isUser) {
-                Modifier.background(
-                    Brush.linearGradient(
-                        colors = listOf(OrangePrimary, Color(0xFFE04F0A))
-                    )
-                )
-            } else Modifier
-
             Text(
-                text = msg.content,
-                modifier = bubbleModifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (isUser) Color.White else TextPrimary,
-                lineHeight = 22.sp
+                text = if (isUser) "YOU" else "KIRI AI",
+                style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                color = if (isUser) OrangePrimary else TextSecondary,
+                modifier = Modifier.padding(bottom = 6.dp, start = if (isUser) 0.dp else 12.dp, end = if (isUser) 12.dp else 0.dp)
             )
+            Surface(
+                color = if (isUser) OrangePrimary else Color.White,
+                shape = RoundedCornerShape(
+                    topStart = 20.dp,
+                    topEnd = 20.dp,
+                    bottomStart = if (isUser) 20.dp else 4.dp,
+                    bottomEnd = if (isUser) 4.dp else 20.dp
+                ),
+                shadowElevation = 2.dp,
+                modifier = Modifier.widthIn(max = 300.dp)
+            ) {
+                val bubbleModifier = if (isUser) {
+                    Modifier.background(
+                        Brush.linearGradient(
+                            colors = listOf(OrangePrimary, Color(0xFFE04F0A))
+                        )
+                    )
+                } else Modifier
+
+                Text(
+                    text = msg.content,
+                    modifier = bubbleModifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isUser) Color.White else TextPrimary,
+                    lineHeight = 22.sp
+                )
+            }
         }
     }
 }
@@ -279,26 +289,30 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
 fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
     val options = listOf("GENERAL", "TECH", "LEGAL", "GTM")
     androidx.compose.foundation.lazy.LazyRow(
-        modifier = Modifier.fillMaxWidth().background(Color.Transparent).padding(horizontal = 16.dp, vertical = 2.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(options) { option ->
             val isSelected = selected == option
-            FilterChip(
+            ElevatedFilterChip(
                 selected = isSelected,
                 onClick = { onSelected(option) },
-                label = { Text(option, style = MaterialTheme.typography.labelSmall) },
-                colors = FilterChipDefaults.filterChipColors(
+                label = { 
+                    Text(
+                        text = option,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                    ) 
+                },
+                colors = FilterChipDefaults.elevatedFilterChipColors(
                     selectedContainerColor = OrangePrimary,
                     selectedLabelColor = Color.White,
-                    containerColor = Color.White
+                    containerColor = Color.White,
+                    labelColor = TextSecondary
                 ),
-                border = FilterChipDefaults.filterChipBorder(
-                    enabled = true,
-                    selected = isSelected,
-                    borderColor = BorderColor,
-                    selectedBorderColor = OrangePrimary
-                ),
+                elevation = FilterChipDefaults.elevatedFilterChipElevation(elevation = 2.dp),
                 shape = RoundedCornerShape(20.dp)
             )
         }
