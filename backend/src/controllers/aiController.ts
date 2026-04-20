@@ -123,7 +123,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       content: msg.content || "..."
     }));
 
-    const MODEL = "google/gemini-pro-1.5"; // Switched to Pro 1.5 for higher stability with OpenRouter proxy
+    const MODEL = "google/gemini-2.0-flash-001"; // Verified stable slug for OpenRouter
 
     // Construct payload with Prepending to the first message
     const chatMessages: any[] = [];

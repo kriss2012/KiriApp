@@ -105,30 +105,30 @@ fun AIAgentScreen(
             }
 
             // Input area moved INSIDE the main Column for robust weighting/keyboard handling
-            Column(
+            // Using the user's recommended 'pixel-perfect' structure for zero gap look
+            KiriInputBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .navigationBarsPadding()
-                    .imePadding()
-            ) {
-                KiriInputBar(
-                    text = textState,
-                    onTextChange = { textState = it },
-                    selectedFileName = selectedFileName,
-                    onAttachClick = { filePickerLauncher.launch("*/*") },
-                    onCancelAttachment = { vm.clearFileSelection() },
-                    onSend = {
-                        vm.sendMessage(textState, context)
-                        textState = ""
-                    }
-                )
-            }
+                    .navigationBarsPadding() // Handled here to ensure it sticks correctly above gesture bar
+                    .imePadding() // This makes it stick to keyboard dynamically
+                    .padding(bottom = 2.dp), // Minimal professional gap
+                text = textState,
+                onTextChange = { textState = it },
+                selectedFileName = selectedFileName,
+                onAttachClick = { filePickerLauncher.launch("*/*") },
+                onCancelAttachment = { vm.clearFileSelection() },
+                onSend = {
+                    vm.sendMessage(textState, context)
+                    textState = ""
+                }
+            )
         }
     }
 }
 
 @Composable
 fun KiriInputBar(
+    modifier: Modifier = Modifier,
     text: String, 
     onTextChange: (String) -> Unit, 
     onSend: () -> Unit,
@@ -137,9 +137,9 @@ fun KiriInputBar(
     onCancelAttachment: () -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(horizontal = 12.dp, vertical = 4.dp) // Tightened for better viewport usage
             .background(
                 color = Color.White.copy(alpha = 0.98f),
                 shape = RoundedCornerShape(28.dp)
