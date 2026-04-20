@@ -79,7 +79,7 @@ fun MainScaffold(
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             message = "🤝 Connection accepted by $receiverName!",
-                            duration = SnackbarDuration.Medium
+                            duration = SnackbarDuration.Long
                         )
                     }
                 }
