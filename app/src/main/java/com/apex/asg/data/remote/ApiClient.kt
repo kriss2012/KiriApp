@@ -145,21 +145,26 @@ object ApiClient {
         token = newToken
     }
 
-    private val client = OkHttpClient.Builder()
-        .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-        .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-        .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-        .addInterceptor { chain ->
-            val builder = chain.request().newBuilder()
-            token?.let {
-                builder.addHeader("Authorization", "Bearer $it")
+    private val client by lazy {
+        val cacheSize = 10 * 1024 * 1024L // 10MB
+        // Note: Cache needs context, usually passed from Application but using a default for now if possible
+        // or just rely on the logging reduction for now if context is hard to access in singleton
+        OkHttpClient.Builder()
+            .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val builder = chain.request().newBuilder()
+                token?.let {
+                    builder.addHeader("Authorization", "Bearer $it")
+                }
+                chain.proceed(builder.build())
             }
-            chain.proceed(builder.build())
-        }
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        })
-        .build()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
+            })
+            .build()
+    }
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
