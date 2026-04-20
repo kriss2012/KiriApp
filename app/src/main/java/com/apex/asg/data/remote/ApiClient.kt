@@ -71,6 +71,12 @@ interface ASGApiService {
     @GET("chat/history/{user1}/{user2}")
     suspend fun getChatHistory(@Path("user1") user1: String, @Path("user2") user2: String): List<MessageDto>
 
+    @GET("chat/list")
+    suspend fun getConversations(): List<ConversationResponse>
+
+    @GET("chat/search")
+    suspend fun searchUsers(@retrofit2.http.Query("query") query: String): List<UserDto>
+
     @POST("chat/send")
     suspend fun sendMessage(@Body request: SendMessageRequest): MessageDto
 

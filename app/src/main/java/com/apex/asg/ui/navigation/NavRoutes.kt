@@ -13,7 +13,7 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Onboarding : Screen("onboarding")
     object Home : Screen("home", "Home", Icons.Default.Home)
     object Search : Screen("search", "Search", Icons.Default.Search)
-    object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.SmartToy)
+    object Chats : Screen("chats", "Chats", Icons.Default.Chat)
     object Repository : Screen("repository", "Community", Icons.Default.Group)
     object Events : Screen("events", "Events", Icons.Default.CalendarMonth)
     object Profile : Screen("profile", "Profile", Icons.Default.Person)
@@ -28,13 +28,14 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Chat : Screen("chat/{receiverId}") {
         fun createRoute(receiverId: String) = "chat/$receiverId"
     }
+    object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.SmartToy)
     object Jobs : Screen("jobs", "Jobs")
 }
 
 val BottomNavItems = listOf(
     Screen.Home,
     Screen.Search,
-    Screen.AIAgent,
+    Screen.Chats,
     Screen.Repository,
     Screen.Profile
 )

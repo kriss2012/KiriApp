@@ -105,6 +105,17 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
         
+        composable(Screen.Chats.route) {
+            ChatsScreen(
+                onNavigateToChat = { receiverId -> 
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
+                },
+                onNavigateToAI = {
+                    navController.navigate(Screen.AIAgent.route)
+                }
+            )
+        }
+
         composable(Screen.AIAgent.route) {
             AIAgentScreen(onBack = { navController.popBackStack() })
         }

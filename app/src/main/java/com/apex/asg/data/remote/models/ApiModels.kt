@@ -184,6 +184,12 @@ data class MessageDto(
     val isRead: Boolean
 )
 
+data class ConversationResponse(
+    val otherUser: UserDto,
+    val lastMessage: MessageDto,
+    val unreadCount: Int
+)
+
 data class CreateEventRequest(
     val title: String,
     val description: String,

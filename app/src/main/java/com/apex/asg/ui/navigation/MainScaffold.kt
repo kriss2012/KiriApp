@@ -28,11 +28,11 @@ fun MainScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    // Hide bottom bar on specific screens (Chat and AI Agent) to avoid overlap and keyboard issues
-    val isChatScreen = currentRoute?.contains("chat", ignoreCase = true) == true || 
-                       currentRoute?.contains("ai", ignoreCase = true) == true
+    // Hide bottom bar on actual messaging screens (Individual Chat and AI Agent) 
+    val isChatSubScreen = currentRoute?.startsWith("chat/") == true || 
+                          currentRoute == Screen.AIAgent.route
                        
-    val showBottomBar = currentRoute in BottomNavItems.map { it.route } && !isChatScreen
+    val showBottomBar = currentRoute in BottomNavItems.map { it.route } && !isChatSubScreen
     
     Scaffold(
         containerColor = Color.Transparent,
