@@ -42,6 +42,17 @@ class NotificationViewModel : ViewModel() {
         }
     }
 
+    fun markAllAsRead(userId: String) {
+        viewModelScope.launch {
+            try {
+                ApiClient.service.markAllNotificationsAsRead(userId)
+                fetchNotifications(userId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
     fun acceptConnection(notificationId: String, connectionId: String, userId: String) {
         viewModelScope.launch {
             try {
