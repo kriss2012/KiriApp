@@ -35,6 +35,9 @@ import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.viewmodels.ProfileState
 import com.apex.asg.ui.viewmodels.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.ui.platform.LocalLifecycleOwner
 
 @Composable
 fun ProfileScreen(
@@ -49,9 +52,20 @@ fun ProfileScreen(
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(userId) {
-        if (userId.isNotEmpty()) {
-            viewModel.fetchProfile(userId)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    
+    // Refresh data on every Resume (e.g. when coming back from Edit)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                if (userId.isNotEmpty()) {
+                    viewModel.fetchProfile(userId)
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 

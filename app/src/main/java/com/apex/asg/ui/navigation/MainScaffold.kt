@@ -47,9 +47,17 @@ fun MainScaffold(
             SocketHandler.setSocket(AppConfig.SOCKET_URL)
             SocketHandler.establishConnection()
             
-            // Wait for connection and then join room
-            SocketHandler.getSocket()?.on(io.socket.client.Socket.EVENT_CONNECT) {
-                SocketHandler.joinRoom("user_$userId")
+            val socket = SocketHandler.getSocket()
+            val roomName = "user_$userId"
+            
+            // Join immediately if already connected
+            if (socket?.connected() == true) {
+                SocketHandler.joinRoom(roomName)
+            }
+            
+            // Also join on every future connection Event
+            socket?.on(io.socket.client.Socket.EVENT_CONNECT) {
+                SocketHandler.joinRoom(roomName)
             }
             
             // Unified Global Alert Hub

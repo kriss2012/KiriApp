@@ -42,6 +42,8 @@ class ProfileViewModel : ViewModel() {
         year: String? = null,
         phoneNumber: String? = null,
         website: String? = null,
+        githubUrl: String? = null,
+        linkedInUrl: String? = null,
         services: List<String> = emptyList()
     ) {
         viewModelScope.launch {
@@ -57,6 +59,8 @@ class ProfileViewModel : ViewModel() {
                 year?.let { profileData["year"] = it }
                 phoneNumber?.let { profileData["phoneNumber"] = it }
                 website?.let { profileData["website"] = it }
+                githubUrl?.let { profileData["githubUrl"] = it }
+                linkedInUrl?.let { profileData["linkedInUrl"] = it }
                 profileData["services"] = services
 
                 val updatedUser = ApiClient.service.updateProfile(

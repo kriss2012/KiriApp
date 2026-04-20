@@ -41,7 +41,10 @@ fun EditProfileScreen(
     var year by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
     var website by remember { mutableStateOf("") }
+    var githubUrl by remember { mutableStateOf("") }
+    var linkedInUrl by remember { mutableStateOf("") }
     var servicesStr by remember { mutableStateOf("") }
+    var isSaving by remember { mutableStateOf(false) }
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
@@ -60,7 +63,16 @@ fun EditProfileScreen(
             year = user.year ?: ""
             phoneNumber = user.phoneNumber ?: ""
             website = user.website ?: ""
+            githubUrl = user.githubUrl ?: ""
+            linkedInUrl = user.linkedInUrl ?: ""
             servicesStr = user.services.joinToString(", ")
+        }
+    }
+
+    LaunchedEffect(uiState) {
+        if (isSaving && uiState is ProfileState.Success) {
+            onBack()
+            isSaving = false
         }
     }
 
@@ -90,6 +102,8 @@ fun EditProfileScreen(
             EditField(label = "Bio", value = bio, onValueChange = { bio = it }, singleLine = false)
             EditField(label = "PhoneNumber", value = phoneNumber, onValueChange = { phoneNumber = it })
             EditField(label = "Website", value = website, onValueChange = { website = it })
+            EditField(label = "GitHub URL", value = githubUrl, onValueChange = { githubUrl = it })
+            EditField(label = "LinkedIn URL", value = linkedInUrl, onValueChange = { linkedInUrl = it })
             EditField(label = "Services (comma separated)", value = servicesStr, onValueChange = { servicesStr = it })
             
             Divider(color = BorderColor.copy(alpha = 0.5f), thickness = 1.dp)
@@ -113,10 +127,13 @@ fun EditProfileScreen(
                         year = year,
                         phoneNumber = phoneNumber,
                         website = website,
+                        githubUrl = githubUrl,
+                        linkedInUrl = linkedInUrl,
                         services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                     )
-                    onBack()
+                    isSaving = true
                 },
+                enabled = !isSaving,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
