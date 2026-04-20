@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:pathData="M30,80 L54,28 L78,80 L68,80 L54,48 L40,80 Z"
+        android:strokeAlpha="1"
+        android:fillAlpha="1">
+        <gradient
+            android:startY="28"
+            android:startX="54"
+            android:endY="80"
+            android:endX="54"
+            android:type="linear">
+            <item android:offset="0" android:color="#FFF26522" /> <!-- APEX Orange -->
+            <item android:offset="1" android:color="#FFED1C24" /> <!-- Industrial Red -->
+        </gradient>
+    </path>
+</vector>
