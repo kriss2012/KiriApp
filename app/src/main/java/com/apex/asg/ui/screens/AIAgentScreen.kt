@@ -58,18 +58,16 @@ fun AIAgentScreen(
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { 
-                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
-                    }
+                    Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent)
             )
         },
         bottomBar = {
@@ -233,16 +231,31 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Surface(
-            color = if (isUser) OrangePrimary else Color.White,
-            shape = RoundedCornerShape(12.dp),
-            border = if (!isUser) BorderStroke(1.dp, BorderColor) else null,
-            shadowElevation = if (isUser) 4.dp else 1.dp
+            color = if (isUser) OrangePrimary else Color.White.copy(alpha = 0.9f),
+            shape = RoundedCornerShape(
+                topStart = if (isUser) 20.dp else 4.dp,
+                topEnd = if (isUser) 4.dp else 20.dp,
+                bottomStart = 20.dp,
+                bottomEnd = 20.dp
+            ),
+            border = if (!isUser) BorderStroke(1.dp, BorderColor.copy(alpha = 0.5f)) else null,
+            shadowElevation = if (isUser) 4.dp else 2.dp,
+            modifier = if (isUser) Modifier else Modifier.padding(end = 40.dp)
         ) {
+            val bubbleModifier = if (isUser) {
+                Modifier.background(
+                    Brush.linearGradient(
+                        colors = listOf(OrangePrimary, Color(0xFFE04F0A))
+                    )
+                )
+            } else Modifier
+
             Text(
                 text = msg.content,
-                modifier = Modifier.padding(16.dp),
+                modifier = bubbleModifier.padding(horizontal = 16.dp, vertical = 12.dp),
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (isUser) Color.White else TextPrimary
+                color = if (isUser) Color.White else TextPrimary,
+                lineHeight = 22.sp
             )
         }
     }
