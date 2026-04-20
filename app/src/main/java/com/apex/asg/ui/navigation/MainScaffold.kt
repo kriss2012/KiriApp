@@ -1,20 +1,19 @@
 package com.apex.asg.ui.navigation
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -29,76 +28,135 @@ fun MainScaffold(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val showBottomBar = currentRoute in BottomNavItems.map { it.route }
+    // Hide bottom bar on specific screens (Chat and AI Agent) to avoid overlap and keyboard issues
+    val isChatScreen = currentRoute?.contains("chat", ignoreCase = true) == true || 
+                       currentRoute?.contains("ai", ignoreCase = true) == true
+                       
+    val showBottomBar = currentRoute in BottomNavItems.map { it.route } && !isChatScreen
+    
+    // Detect keyboard visibility
+    val isKeyboardOpen = WindowInsets.ime.getBottom(androidx.compose.ui.platform.LocalDensity.current) > 0
 
     Scaffold(
-        bottomBar = {
-            if (showBottomBar) {
+        containerColor = BgCream,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+    ) { padding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Main Content
+            content(padding)
+
+            // Floating Bottom Navigation
+            // Auto-hide when keyboard is open to avoid overlap and shifting
+            AnimatedVisibility(
+                visible = showBottomBar && !isKeyboardOpen,
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .navigationBarsPadding() // Keep above gesture line
+                    .padding(bottom = 24.dp)
+            ) {
                 ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
             }
-        },
-        containerColor = BgCream,
-        content = content
-    )
+        }
+    }
 }
 
 @Composable
 fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
-    Box(
+    Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp),
-        contentAlignment = Alignment.Center
+            .padding(horizontal = 20.dp)
+            .height(64.dp)
+            .wrapContentWidth(),
+        shape = RoundedCornerShape(32.dp),
+        color = Color.White.copy(alpha = 0.85f),
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+        shadowElevation = 8.dp
     ) {
-        Surface(
+        Row(
             modifier = Modifier
-                .height(58.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(29.dp),
-            color = Color.White.copy(alpha = 0.65f),
-            shadowElevation = 0.dp,
-            border = BorderStroke(1.dp, Color.White.copy(alpha = 0.4f))
+                .padding(horizontal = 8.dp)
+                .fillMaxHeight(),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BottomNavItems.forEach { screen ->
-                    val selected = currentRoute == screen.route
-                    val isAI = screen == Screen.AIAgent
-                    
-                    IconButton(
-                        onClick = {
-                            if (currentRoute != screen.route) {
-                                navController.navigate(screen.route) {
-                                    popUpTo(Screen.Home.route) { saveState = true }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        },
-                        modifier = Modifier.size(if (isAI) 50.dp else 40.dp)
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = screen.icon!!,
-                                contentDescription = screen.title,
-                                modifier = Modifier.size(if (isAI) 28.dp else 22.dp),
-                                tint = if (selected) OrangePrimary else TextSecondary.copy(alpha = 0.6f)
-                            )
-                            if (selected && !isAI) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(4.dp)
-                                        .clip(CircleShape)
-                                        .background(OrangePrimary)
-                                        .padding(top = 2.dp)
-                                )
+            BottomNavItems.forEach { screen ->
+                val selected = currentRoute == screen.route
+                
+                NavigationTab(
+                    screen = screen,
+                    selected = selected,
+                    onClick = {
+                        if (currentRoute != screen.route) {
+                            navController.navigate(screen.route) {
+                                popUpTo(Screen.Home.route) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         }
                     }
-                }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun NavigationTab(
+    screen: Screen,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (selected) OrangePrimary.copy(alpha = 0.15f) else Color.Transparent,
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        label = "tabBackground"
+    )
+    
+    val iconColor by animateColorAsState(
+        targetValue = if (selected) OrangePrimary else TextSecondary.copy(alpha = 0.7f),
+        label = "iconColor"
+    )
+
+    Surface(
+        onClick = onClick,
+        color = backgroundColor,
+        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier
+            .height(48.dp)
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = screen.icon!!,
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),
+                tint = iconColor
+            )
+            
+            AnimatedVisibility(
+                visible = selected,
+                enter = fadeIn() + scaleIn(),
+                exit = fadeOut() + scaleOut()
+            ) {
+                Text(
+                    text = screen.title,
+                    modifier = Modifier.padding(start = 8.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = OrangePrimary,
+                    maxLines = 1
+                )
             }
         }
     }
