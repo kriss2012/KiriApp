@@ -121,63 +121,73 @@ fun KiriInputBar(
     selectedFileName: String?,
     onCancelAttachment: () -> Unit
 ) {
-    Column(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .navigationBarsPadding() // Space for system bar when nav bar hidden
-            .imePadding() // Slide up with keyboard
+            .navigationBarsPadding()
+            .imePadding(),
+        color = Color.Transparent
     ) {
-        // Attachment Preview
-        if (selectedFileName != null) {
-            Surface(
-                color = OrangePrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.padding(bottom = 8.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .background(
+                    color = Color.White.copy(alpha = 0.95f),
+                    shape = RoundedCornerShape(24.dp)
+                )
+                .padding(8.dp)
+        ) {
+            // Attachment Preview
+            if (selectedFileName != null) {
+                Surface(
+                    color = OrangePrimary.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 ) {
-                    Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
-                    Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
-                    IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
-                        Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(Icons.Default.Description, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(16.dp))
+                        Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = OrangePrimary, maxLines = 1)
+                        IconButton(onClick = onCancelAttachment, modifier = Modifier.size(16.dp)) {
+                            Icon(Icons.Default.Close, contentDescription = null, tint = OrangePrimary)
+                        }
                     }
                 }
             }
-        }
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = text,
-                onValueChange = onTextChange,
-                modifier = Modifier.weight(1f),
-                placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
-                leadingIcon = { 
-                    IconButton(onClick = onAttachClick) {
-                        Icon(Icons.Default.Add, contentDescription = null, tint = TextPrimary) 
-                    }
-                },
-                shape = RoundedCornerShape(50),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = BorderColor.copy(alpha = 0.3f),
-                    unfocusedContainerColor = BorderColor.copy(alpha = 0.3f),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = onTextChange,
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text("MESSAGE / LOG", style = MaterialTheme.typography.bodyMedium, color = TextSecondary) },
+                    leadingIcon = { 
+                        IconButton(onClick = onAttachClick) {
+                            Icon(Icons.Default.Add, contentDescription = null, tint = TextPrimary) 
+                        }
+                    },
+                    shape = RoundedCornerShape(50),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = BorderColor.copy(alpha = 0.1f),
+                        unfocusedContainerColor = BorderColor.copy(alpha = 0.1f),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent
+                    )
                 )
-            )
-            Spacer(Modifier.width(12.dp))
-            FloatingActionButton(
-                onClick = onSend,
-                containerColor = BorderColor.copy(alpha = 0.5f),
-                contentColor = TextPrimary,
-                shape = CircleShape,
-                modifier = Modifier.size(56.dp),
-                elevation = FloatingActionButtonDefaults.elevation(0.dp)
-            ) {
-                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
+                Spacer(Modifier.width(8.dp))
+                FloatingActionButton(
+                    onClick = onSend,
+                    containerColor = OrangePrimary,
+                    contentColor = Color.White,
+                    shape = CircleShape,
+                    modifier = Modifier.size(48.dp),
+                    elevation = FloatingActionButtonDefaults.elevation(0.dp)
+                ) {
+                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null, modifier = Modifier.size(20.dp))
+                }
             }
         }
     }
