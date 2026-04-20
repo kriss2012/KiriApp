@@ -5,7 +5,7 @@ import { Role } from '@prisma/client';
 export const getProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.params['userId'];
-    const requesterId = (req as any).user?.id;
+    const requesterId = (req as any).user?.id || (req as any).user?.userId;
 
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
@@ -81,10 +81,19 @@ export const getProfile = async (req: Request, res: Response) => {
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.params['userId'];
+    const requesterId = (req as any).user?.id || (req as any).user?.userId;
+
+    // Security: Only allow users to update their own profile (or ADMIN)
+    if (requesterId !== userId && (req as any).user?.role !== 'ADMIN') {
+        return res.status(403).json({ message: 'Unauthorized: You can only update your own profile.' });
+    }
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
     const { fullName, bio, skills, avatarUrl, department, college, year, section, role, githubUrl, linkedInUrl, intent, preferredLanguage, phoneNumber, website, services } = req.body;
+
+    // Robustness: Ensure role matches Enum casing (Prisma is strict)
+    const normalizedRole = role ? role.toString().toUpperCase() : undefined;
 
     const user = await prisma.user.update({
       where: { id: userId },
@@ -97,7 +106,7 @@ export const updateProfile = async (req: Request, res: Response) => {
         college,
         year,
         section,
-        role,
+        role: normalizedRole as any,
         githubUrl,
         linkedInUrl,
         intent,
