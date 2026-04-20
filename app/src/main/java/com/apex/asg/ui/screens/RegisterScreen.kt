@@ -144,7 +144,6 @@ fun RegisterScreen(
                     }
                 }
             }
-04:20:15:46:58:123
             // Invitation Code for protected roles
             val protectedRolesSet = setOf("ADMIN", "SPOC", "MENTOR", "INVESTOR")
             if (protectedRolesSet.contains(selectedRole)) {
