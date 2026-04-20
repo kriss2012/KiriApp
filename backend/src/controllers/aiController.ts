@@ -123,16 +123,21 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       content: msg.content || "..."
     }));
 
+    const MODEL = "google/gemini-pro-1.5"; // Switched to Pro 1.5 for higher stability with OpenRouter proxy
+
+    // Construct payload with Prepending to the first message
     const chatMessages: any[] = [];
     
-    // Construct payload with Prepending to the first message
-    if (historyTurns.length > 0) {
-        const firstTurn = historyTurns[0];
+    // Safety check: Filter out any historyTurns that might have broken content
+    const sanitizedHistory = historyTurns.filter(turn => turn.content && turn.content.trim().length > 0);
+
+    if (sanitizedHistory.length > 0) {
+        const firstTurn = sanitizedHistory[0];
         if (firstTurn) {
             // Prepend instructions to the very first historical message
             firstTurn.content = `${systemPromptPrefix}\n\nUser Input: ${firstTurn.content}`;
         }
-        chatMessages.push(...historyTurns);
+        chatMessages.push(...sanitizedHistory);
         
         // Add current message
         chatMessages.push({ role: "user", content: content || "Proceed with further analysis." });
@@ -144,9 +149,12 @@ export const chatWithKiri = async (req: Request, res: Response) => {
         });
     }
 
+    // Double-verify that NO turn in chatMessages has empty content before sending
+    const finalValidMessages = chatMessages.filter(m => m.content && m.content !== "");
+
     // Multimodal support for the LAST message only (if file present)
-    if (fileData && mimeType && chatMessages.length > 0) {
-      const lastMsg = chatMessages[chatMessages.length - 1];
+    if (fileData && mimeType && finalValidMessages.length > 0) {
+      const lastMsg = finalValidMessages[finalValidMessages.length - 1];
       const textContent = typeof lastMsg.content === 'string' ? lastMsg.content : "Document Analysis";
       
       lastMsg.content = [
@@ -165,7 +173,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: MODEL,
-        messages: chatMessages,
+        messages: finalValidMessages,
         temperature: 0.6,
         max_tokens: 1500,
         repetition_penalty: 1.1

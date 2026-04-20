@@ -72,8 +72,45 @@ fun AIAgentScreen(
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = Color.Transparent)
             )
         },
-        bottomBar = {
-            Column(modifier = Modifier.navigationBarsPadding().imePadding()) {
+        modifier = Modifier.fillMaxSize()
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = padding.calculateTopPadding())
+        ) {
+            SpecializationSelector(
+                selected = vm.currentSpecialization.collectAsState().value,
+                onSelected = { vm.setSpecialization(it) }
+            )
+
+            // Chat content area
+            Box(modifier = Modifier.weight(1f)) {
+                if (messages.isEmpty()) {
+                    KiriEmptyState()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        state = listState,
+                        contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(messages) { msg ->
+                            KiriMessageBubble(msg)
+                        }
+                    }
+                }
+            }
+
+            // Input area moved INSIDE the main Column for robust weighting/keyboard handling
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .imePadding()
+            ) {
                 KiriInputBar(
                     text = textState,
                     onTextChange = { textState = it },
@@ -85,39 +122,6 @@ fun AIAgentScreen(
                         textState = ""
                     }
                 )
-            }
-        },
-        modifier = Modifier.fillMaxSize()
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = padding.calculateTopPadding(),
-                    bottom = padding.calculateBottomPadding()
-                )
-        ) {
-            SpecializationSelector(
-                selected = vm.currentSpecialization.collectAsState().value,
-                onSelected = { vm.setSpecialization(it) }
-            )
-
-            if (messages.isEmpty()) {
-                KiriEmptyState()
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    state = listState,
-                    contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(messages) { msg ->
-                        KiriMessageBubble(msg)
-                    }
-                }
             }
         }
     }
