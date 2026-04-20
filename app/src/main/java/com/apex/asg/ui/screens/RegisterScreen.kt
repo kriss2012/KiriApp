@@ -39,6 +39,9 @@ fun RegisterScreen(
     var college by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
     var section by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var website by remember { mutableStateOf("") }
+    var servicesStr by remember { mutableStateOf("") }
     
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -92,18 +95,31 @@ fun RegisterScreen(
                 onValueChange = { email = it },
                 label = { Text("Email Address *") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                isError = email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches(),
+                supportingText = {
+                    if (email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                      Text("Please enter a valid email", color = Color.Red)
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            var passwordVisible by remember { mutableStateOf(false) }
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Password *") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
-                visualTransformation = PasswordVisualTransformation()
+                visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    val image = if (passwordVisible) androidx.compose.material.icons.Icons.Default.Visibility else androidx.compose.material.icons.Icons.Default.VisibilityOff
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(image, contentDescription = null)
+                    }
+                }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -124,6 +140,33 @@ fun RegisterScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Professional Details (Optional)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
+            
+            OutlinedTextField(
+                value = phoneNumber,
+                onValueChange = { phoneNumber = it },
+                label = { Text("Phone Number") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = website,
+                onValueChange = { website = it },
+                label = { Text("Website / Portfolio") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = servicesStr,
+                onValueChange = { servicesStr = it },
+                label = { Text("Services (comma separated)") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
 
             if (selectedRole == "STUDENT") {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -238,7 +281,10 @@ fun RegisterScreen(
                                 department = department.takeIf { it.isNotBlank() },
                                 college = college.takeIf { it.isNotBlank() },
                                 year = year.takeIf { it.isNotBlank() },
-                                section = section.takeIf { it.isNotBlank() }
+                                section = section.takeIf { it.isNotBlank() },
+                                phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
+                                website = website.takeIf { it.isNotBlank() },
+                                services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                             )
                             val response = ApiClient.service.register(request)
                             
@@ -255,7 +301,13 @@ fun RegisterScreen(
                         }
                     }
                 },
-                enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty() && fullName.isNotEmpty() && selectedRole.isNotEmpty() && department.isNotEmpty()
+                enabled = !isLoading && 
+                          email.isNotEmpty() && 
+                          android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
+                          password.isNotEmpty() && 
+                          fullName.isNotEmpty() && 
+                          selectedRole.isNotEmpty() && 
+                          department.isNotEmpty()
             )
 
             Spacer(modifier = Modifier.height(16.dp))

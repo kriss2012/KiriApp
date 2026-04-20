@@ -70,6 +70,9 @@ model User {
   expertise        String[]   // e.g. ["FINTECH", "UI", "BLOCKCHAIN"]
   mentorSessions   MentorSession[] @relation("MentorSessions")
   founderSessions  MentorSession[] @relation("FounderSessions")
+  phoneNumber      String?
+  website          String?
+  services         String[]   // For Service Providers / Founders
 }
 
 model MentorSession {

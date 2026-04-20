@@ -70,6 +70,15 @@ export const acceptRequest = async (req: Request, res: Response) => {
       'REQUEST'
     );
 
+    // Create System Message in Chat
+    await prisma.message.create({
+      data: {
+        senderId: connection.receiverId, // System messages can be from the accepter
+        receiverId: connection.senderId,
+        content: `🤝 Connection accepted! You can now see each other's full profile and chat freely.`
+      }
+    });
+
     // Log Activity for NAAC
     await createActivity(connection.receiverId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.sender.fullName}.`, 25);
     await createActivity(connection.senderId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.receiver.fullName}.`, 25);

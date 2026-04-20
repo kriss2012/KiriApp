@@ -39,6 +39,9 @@ fun EditProfileScreen(
     var department by remember { mutableStateOf("") }
     var college by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var website by remember { mutableStateOf("") }
+    var servicesStr by remember { mutableStateOf("") }
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
@@ -55,6 +58,9 @@ fun EditProfileScreen(
             department = user.department ?: ""
             college = user.college ?: ""
             year = user.year ?: ""
+            phoneNumber = user.phoneNumber ?: ""
+            website = user.website ?: ""
+            servicesStr = user.services.joinToString(", ")
         }
     }
 
@@ -82,6 +88,12 @@ fun EditProfileScreen(
         ) {
             EditField(label = "Full Name", value = fullName, onValueChange = { fullName = it })
             EditField(label = "Bio", value = bio, onValueChange = { bio = it }, singleLine = false)
+            EditField(label = "PhoneNumber", value = phoneNumber, onValueChange = { phoneNumber = it })
+            EditField(label = "Website", value = website, onValueChange = { website = it })
+            EditField(label = "Services (comma separated)", value = servicesStr, onValueChange = { servicesStr = it })
+            
+            Divider(color = BorderColor.copy(alpha = 0.5f), thickness = 1.dp)
+            
             EditField(label = "Role", value = role, onValueChange = { role = it })
             EditField(label = "Department", value = department, onValueChange = { department = it })
             EditField(label = "College", value = college, onValueChange = { college = it })
@@ -98,7 +110,10 @@ fun EditProfileScreen(
                         bio = bio,
                         department = department,
                         college = college,
-                        year = year
+                        year = year,
+                        phoneNumber = phoneNumber,
+                        website = website,
+                        services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                     )
                     onBack()
                 },

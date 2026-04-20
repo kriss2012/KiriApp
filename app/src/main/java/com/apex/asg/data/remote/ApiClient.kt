@@ -378,7 +378,10 @@ data class RegisterRequest(
     val department: String? = null,
     val college: String? = null,
     val year: String? = null,
-    val section: String? = null
+    val section: String? = null,
+    val phoneNumber: String? = null,
+    val website: String? = null,
+    val services: List<String>? = null
 )
 
 data class AuthResponse(
@@ -398,7 +401,10 @@ data class UserDto(
     val section: String? = null,
     val avatarUrl: String? = null,
     val canCreateEvents: Boolean = false,
-    val points: Int = 100
+    val points: Int = 100,
+    val phoneNumber: String? = null,
+    val website: String? = null,
+    val services: List<String> = emptyList()
 )
 
 data class NotificationDto(

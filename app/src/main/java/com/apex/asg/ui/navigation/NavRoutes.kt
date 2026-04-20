@@ -25,7 +25,9 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
         fun createRoute(userId: String) = "public_profile/$userId"
     }
     object Connections : Screen("connections", "Connections", Icons.Default.Link)
-    object Chat : Screen("chat", "Chat")
+    object Chat : Screen("chat/{receiverId}") {
+        fun createRoute(receiverId: String) = "chat/$receiverId"
+    }
     object Jobs : Screen("jobs", "Jobs")
 }
 

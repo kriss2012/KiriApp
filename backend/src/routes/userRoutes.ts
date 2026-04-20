@@ -11,11 +11,13 @@ import {
     verifyActivity
 } from '../controllers/userController.js';
 
+import { authenticate } from '../middlewares/auth.js';
+
 const router = Router();
 
 router.get('/', searchUsers);
-router.get('/profile/:userId', getProfile);
-router.put('/profile/:userId', updateProfile);
+router.get('/profile/:userId', authenticate, getProfile);
+router.put('/profile/:userId', authenticate, updateProfile);
 router.put('/toggle-access/:userId', toggleEventAccess);
 router.get('/verified', getAllVerifiedUsers);
 router.get('/activities/:userId', getActivities);

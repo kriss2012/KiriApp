@@ -16,6 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
 
+import com.apex.asg.data.remote.SocketHandler
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,10 @@ class MainActivity : ComponentActivity() {
         // Restore session
         val sessionManager = SessionManager.getInstance(this)
         ApiClient.setToken(sessionManager.getToken())
+
+        // Init Sockets
+        SocketHandler.setSocket("https://asgapp.onrender.com")
+        SocketHandler.establishConnection()
 
         setContent {
             ASGAppTheme {
@@ -40,5 +46,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    override fun onDestroy() {
+        super.onDestroy()
+        SocketHandler.closeConnection()
     }
 }

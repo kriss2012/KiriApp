@@ -5,9 +5,12 @@ import { Role } from '@prisma/client';
 export const getProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.params['userId'];
+    const requesterId = (req as any).user?.id;
+
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -27,6 +30,9 @@ export const getProfile = async (req: Request, res: Response) => {
         avatarUrl: true,
         githubUrl: true,
         linkedInUrl: true,
+        phoneNumber: true,
+        website: true,
+        services: true,
         intent: true,
         preferredLanguage: true,
         createdAt: true
@@ -35,6 +41,35 @@ export const getProfile = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Mask sensitive info if not the owner and not connected
+    if (requesterId && requesterId !== userId) {
+      const connection = await prisma.connection.findFirst({
+        where: {
+          OR: [
+            { senderId: requesterId, receiverId: userId },
+            { senderId: userId, receiverId: requesterId }
+          ],
+          status: 'ACCEPTED'
+        }
+      });
+
+      if (!connection) {
+        // Mask it
+        return res.status(200).json({
+          ...user,
+          email: "Connect to view",
+          phoneNumber: "Connect to view"
+        });
+      }
+    } else if (!requesterId) {
+      // Unauthenticated - mask sensitive info
+      return res.status(200).json({
+        ...user,
+        email: "Connect to view",
+        phoneNumber: "Connect to view"
+      });
     }
 
     res.status(200).json(user);
@@ -49,7 +84,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
-    const { fullName, bio, skills, avatarUrl, department, college, year, section, role, githubUrl, linkedInUrl, intent, preferredLanguage } = req.body;
+    const { fullName, bio, skills, avatarUrl, department, college, year, section, role, githubUrl, linkedInUrl, intent, preferredLanguage, phoneNumber, website, services } = req.body;
 
     const user = await prisma.user.update({
       where: { id: userId },
@@ -66,7 +101,10 @@ export const updateProfile = async (req: Request, res: Response) => {
         githubUrl,
         linkedInUrl,
         intent,
-        preferredLanguage
+        preferredLanguage,
+        phoneNumber,
+        website,
+        services
       }
     });
 

@@ -32,14 +32,20 @@ class ChatViewModel : ViewModel() {
         }
     }
 
+    fun addMessageLocally(message: MessageDto) {
+        val currentState = _uiState.value
+        if (currentState is ChatState.Success) {
+            _uiState.value = ChatState.Success(currentState.messages + message)
+        }
+    }
+
     fun sendMessage(senderId: String, receiverId: String, content: String) {
         viewModelScope.launch {
             try {
-                ApiClient.service.sendMessage(SendMessageRequest(senderId, receiverId, content))
-                // Refresh local history
-                fetchHistory(senderId, receiverId) 
+                val response = ApiClient.service.sendMessage(SendMessageRequest(senderId, receiverId, content))
+                addMessageLocally(response)
             } catch (e: Exception) {
-                // Handle silent failure or update UI with error
+                _uiState.value = ChatState.Error("Message failed to send: ${e.message}")
             }
         }
     }

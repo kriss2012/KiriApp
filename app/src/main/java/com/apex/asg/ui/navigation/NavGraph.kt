@@ -113,7 +113,10 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
             PublicProfileScreen(
                 userId = userId,
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToChat = { receiverId -> 
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
+                }
             )
         }
         
@@ -152,8 +155,12 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        composable(Screen.Chat.route) {
-            ChatScreen()
+        composable(Screen.Chat.route) { backStackEntry ->
+            val receiverId = backStackEntry.arguments?.getString("receiverId") ?: ""
+            ChatScreen(
+                receiverId = receiverId,
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Jobs.route) {

@@ -32,7 +32,18 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun updateProfile(userId: String, fullName: String, role: String, bio: String? = null, department: String? = null, college: String? = null, year: String? = null) {
+    fun updateProfile(
+        userId: String, 
+        fullName: String, 
+        role: String, 
+        bio: String? = null, 
+        department: String? = null, 
+        college: String? = null, 
+        year: String? = null,
+        phoneNumber: String? = null,
+        website: String? = null,
+        services: List<String> = emptyList()
+    ) {
         viewModelScope.launch {
             _uiState.value = ProfileState.Loading
             try {
@@ -44,6 +55,9 @@ class ProfileViewModel : ViewModel() {
                 department?.let { profileData["department"] = it }
                 college?.let { profileData["college"] = it }
                 year?.let { profileData["year"] = it }
+                phoneNumber?.let { profileData["phoneNumber"] = it }
+                website?.let { profileData["website"] = it }
+                profileData["services"] = services
 
                 val updatedUser = ApiClient.service.updateProfile(
                     userId = userId,

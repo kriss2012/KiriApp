@@ -19,16 +19,13 @@ import investorRoutes from './routes/investorRoutes.js';
 import mentorRoutes from './routes/mentorRoutes.js';
 import inviteRoutes from './routes/inviteRoutes.js';
 
+import { initSocket } from './utils/socket.js';
+
 dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-});
+initSocket(httpServer);
 
 // Middleware
 app.use(cors());
@@ -47,28 +44,14 @@ app.use('/api/events', eventRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/connections', connectionRoutes);
+app.use('/api/pitch', pitchRoutes);
+app.use('/api/match', matchRoutes);
+app.use('/api/investor', investorRoutes);
+app.use('/api/mentor', mentorRoutes);
+app.use('/api/invite', inviteRoutes);
 
 app.get('/', (req, res) => {
   res.send('ASG Community API is running...');
-});
-
-// Socket.io
-io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
-
-  socket.on('join_room', (roomId) => {
-    socket.join(roomId);
-    console.log(`User ${socket.id} joined room ${roomId}`);
-  });
-
-  socket.on('send_message', (data) => {
-    // data: { roomId, senderId, content }
-    io.to(data.roomId).emit('receive_message', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
 });
 
 const PORT = process.env.PORT || 5000;

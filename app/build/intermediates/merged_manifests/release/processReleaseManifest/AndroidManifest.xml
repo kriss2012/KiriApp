@@ -58,7 +58,8 @@
         <activity
             android:name="com.apex.asg.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.ASGApp" >
+            android:theme="@style/Theme.ASGApp"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <!-- Needs to be explicitly declared on P+ -->
         <uses-library

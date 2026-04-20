@@ -110,4 +110,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // Socket.io for Real-time
+    implementation("io.socket:socket.io-client:2.1.0")
+
 }

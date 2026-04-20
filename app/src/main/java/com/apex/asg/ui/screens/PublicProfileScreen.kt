@@ -10,7 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,7 +34,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun PublicProfileScreen(
     userId: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onNavigateToChat: (String) -> Unit
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -126,7 +129,7 @@ fun PublicProfileScreen(
                         }
                     } else if (connectionStatus == "ACCEPTED") {
                         Button(
-                            onClick = { /* Navigate to Chat */ },
+                            onClick = { onNavigateToChat(userId) },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
                             shape = RoundedCornerShape(12.dp)
@@ -137,76 +140,143 @@ fun PublicProfileScreen(
                         }
                     } else if (connectionStatus == "PENDING") {
                         Button(
-                            onClick = { },
+                            onClick = { onNavigateToChat(userId) }, // Allow messaging during pending (Request)
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = false,
-                            colors = ButtonDefaults.buttonColors(containerColor = BorderColor),
+                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
                             shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text("Request Pending")
+                            Icon(Icons.Default.Email, null)
+                            Spacer(Modifier.width(8.dp))
+                            Text("Message Request")
                         }
                     } else {
                         Button(
-                            onClick = { 
-                                isPending = true
-                                coroutineScope.launch {
-                                    try {
-                                        ApiClient.service.sendConnectionRequest(
-                                            mapOf("senderId" to currentUserId, "receiverId" to userId)
-                                        )
-                                        connectionStatus = "PENDING"
-                                    } catch (e: Exception) {
-                                        isPending = false
-                                    }
-                                }
-                            },
+                            onClick = { onNavigateToChat(userId) }, // messaging triggers connecting now
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = !isPending,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isPending) BorderColor else OrangePrimary
-                            ),
+                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
                             shape = RoundedCornerShape(12.dp)
                         ) {
                             Icon(Icons.Default.PersonAdd, null)
                             Spacer(Modifier.width(8.dp))
-                            Text("Connect with ${u.fullName.split(" ")[0]}")
+                            Text("Connect & Message")
                         }
                     }
                     
                     Spacer(Modifier.height(32.dp))
                     
-                    ProfileSection("About", u.bio ?: "No bio provided")
+                    Spacer(Modifier.height(32.dp))
                     
-                    Spacer(Modifier.height(16.dp))
+                    if (u.bio != null) {
+                        ProfileSection("Expertise & About", u.bio)
+                    }
+
+                    if (u.services.isNotEmpty()) {
+                        Spacer(Modifier.height(24.dp))
+                        ServicesSection(u.services)
+                    }
                     
-                    // Contact Info (Blurred if not connected)
+                    Spacer(Modifier.height(24.dp))
+                    
+                    // Contact & Links Card
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                        shape = RoundedCornerShape(24.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                     ) {
-                        Column(Modifier.padding(16.dp)) {
-                            Text("Contact Info", fontWeight = FontWeight.Bold, color = TextPrimary)
-                            Spacer(Modifier.height(8.dp))
-                            if (connectionStatus == "ACCEPTED" || userId == currentUserId) {
-                                Text("Email: ${u.email}", style = MaterialTheme.typography.bodyMedium)
-                            } else {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(40.dp)
-                                        .background(BorderColor.copy(alpha = 0.2f), RoundedCornerShape(8.dp)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text("Connect to view contact info", color = TextSecondary, fontSize = 12.sp)
-                                }
+                        Column(Modifier.padding(20.dp)) {
+                            Text("Professional Details", fontWeight = FontWeight.Black, color = TextPrimary, fontSize = 16.sp)
+                            Spacer(Modifier.height(16.dp))
+                            
+                            DetailItem(Icons.Default.Email, "Email", u.email)
+                            DetailItem(androidx.compose.material.icons.Icons.Default.Phone, "Phone", u.phoneNumber ?: "Not provided")
+                            
+                            if (u.website != null) {
+                                Divider(Modifier.padding(vertical = 12.dp), color = BorderColor.copy(alpha = 0.5f))
+                                DetailItem(androidx.compose.material.icons.Icons.Default.Language, "Website", u.website, isLink = true)
                             }
                         }
                     }
 
-                    Spacer(Modifier.height(100.dp))
+                    Spacer(Modifier.height(120.dp))
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ServicesSection(services: List<String>) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text("Services Offered", fontWeight = FontWeight.Bold, color = TextPrimary, style = MaterialTheme.typography.titleSmall)
+        Spacer(Modifier.height(12.dp))
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            services.forEach { service ->
+                Surface(
+                    color = OrangePrimary.copy(alpha = 0.08f),
+                    shape = RoundedCornerShape(12.dp),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, OrangePrimary.copy(alpha = 0.2f))
+                ) {
+                    Text(
+                        text = service,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        color = OrangePrimary,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun FlowRow(
+    modifier: Modifier = Modifier,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    content: @Composable () -> Unit
+) {
+    androidx.compose.foundation.layout.FlowRow(
+        modifier = modifier,
+        horizontalArrangement = horizontalArrangement,
+        verticalArrangement = verticalArrangement
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, value: String, isLink: Boolean = false) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(CircleShape)
+                .background(if (isLink) Color(0xFFE3F2FD) else Color(0xFFF5F5F5)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isLink) Color(0xFF1976D2) else TextSecondary)
+        }
+        Spacer(Modifier.width(16.dp))
+        Column {
+            Text(label, color = TextSecondary, fontSize = 12.sp)
+            Text(
+                text = value,
+                color = if (isLink) Color(0xFF1976D2) else TextPrimary,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 14.sp
+            )
         }
     }
 }
