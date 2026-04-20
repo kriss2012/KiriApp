@@ -6,7 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = "google/gemini-2.0-flash-001"; // Updated to fixed model slug
+const PRIMARY_MODEL = "google/gemini-2.0-flash-001";
+const FALLBACK_MODEL = "meta-llama/llama-3.3-70b-instruct";
 
 export const getAiHistory = async (req: Request, res: Response) => {
   try {
@@ -123,8 +124,6 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       content: msg.content || "..."
     }));
 
-    const MODEL = "google/gemini-2.0-flash-001"; // Verified stable slug for OpenRouter
-
     // Construct payload with Prepending to the first message
     const chatMessages: any[] = [];
     
@@ -168,28 +167,52 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       ];
     }
 
-    // 5. Call OpenRouter with Hardened Settings
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: MODEL,
-        messages: finalValidMessages,
-        temperature: 0.6,
-        max_tokens: 1500,
-        repetition_penalty: 1.1
-      },
-      {
-        headers: {
-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "https://apexstartupgroup.com",
-          "X-Title": "ASG Community Platform",
-          "Content-Type": "application/json"
-        },
-        timeout: 50000 // 50s for heavy vision tasks
-      }
-    );
+    // 5. Calling OpenRouter with Fallback Logic
+    const modelsToTry = [PRIMARY_MODEL, FALLBACK_MODEL];
+    let lastError = null;
+    let aiResponseText = "";
 
-    const aiResponseText = response.data.choices[0].message.content || "I'm having trouble generating a response.";
+    for (const model of modelsToTry) {
+        try {
+            console.log(`[AI] Attempting request with model: ${model}`);
+            const response = await axios.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                {
+                    model: model,
+                    messages: finalValidMessages,
+                    temperature: 0.6,
+                    max_tokens: 1500,
+                    repetition_penalty: 1.1
+                },
+                {
+                    headers: {
+                        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                        "HTTP-Referer": "https://apexstartupgroup.com",
+                        "X-Title": "ASG Community Platform",
+                        "Content-Type": "application/json"
+                    },
+                    timeout: 40000 // 40s per attempt
+                }
+            );
+
+            if (response.data?.choices?.[0]?.message?.content) {
+                aiResponseText = response.data.choices[0].message.content;
+                console.log(`[AI] Success with model: ${model}`);
+                break; // Exit loop on success
+            } else {
+                throw new Error("Empty response from provider");
+            }
+        } catch (err: any) {
+            lastError = err;
+            console.warn(`[AI] Model ${model} failed:`, err.response?.data || err.message);
+            // Continue to next model
+        }
+    }
+
+    if (!aiResponseText) {
+        console.error("AI Exhaustion: All models failed.", lastError?.response?.data || lastError?.message);
+        return res.status(500).json({ error: "Kiri is currently overwhelmed. Please try again in a few moments." });
+    }
 
     // 6. Save messages to DB
     await prisma.aiMessage.create({
