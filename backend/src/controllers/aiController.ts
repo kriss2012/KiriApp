@@ -127,8 +127,11 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     
     // Construct payload with Prepending to the first message
     if (historyTurns.length > 0) {
-        // Prepend instructions to the very first historical message
-        historyTurns[0].content = `${systemPromptPrefix}\n\nUser Input: ${historyTurns[0].content}`;
+        const firstTurn = historyTurns[0];
+        if (firstTurn) {
+            // Prepend instructions to the very first historical message
+            firstTurn.content = `${systemPromptPrefix}\n\nUser Input: ${firstTurn.content}`;
+        }
         chatMessages.push(...historyTurns);
         
         // Add current message
