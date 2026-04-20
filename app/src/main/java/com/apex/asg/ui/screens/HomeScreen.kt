@@ -28,6 +28,7 @@ import com.apex.asg.ui.components.AIStatusChip
 import com.apex.asg.ui.components.ASGIconBadge
 import com.apex.asg.ui.components.SectionHeader
 import com.apex.asg.ui.theme.*
+import com.apex.asg.ui.components.ClickableUrlText
 import androidx.compose.runtime.collectAsState
 
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -127,7 +128,7 @@ fun HomeContent(
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
         item { 
             UpcomingEventsSection(
-                events, 
+                events = events, 
                 userRole = user.role,
                 onNavigateToEvents = onNavigateToEvents,
                 onNavigateToAddEvent = onNavigateToAddEvent
@@ -399,14 +400,20 @@ fun UpcomingEventsSection(
                         style = MaterialTheme.typography.bodySmall, 
                         color = TextSecondary
                     )
-                      } else {
+                }
+            } else {
                 events.forEach { event ->
                     EventItemCard(
                         event = event,
                         onClick = onNavigateToEvents
                     )
                 }
-    @Composable
+            }
+        }
+    }
+}
+
+@Composable
 fun EventItemCard(event: EventDto, onClick: () -> Unit) {
     val dateParts = event.date.split("T").first().split("-")
     val month = when(dateParts.getOrNull(1)) {
@@ -484,12 +491,6 @@ fun EventItemCard(event: EventDto, onClick: () -> Unit) {
                     )
                 }
             }
-        }
-    }
-}
- }
-}
-          }
         }
     }
 }

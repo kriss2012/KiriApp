@@ -1,3 +1,6 @@
+import { Request, Response } from 'express';
+import { prisma } from '../utils/prisma.js';
+import { createNotification } from './notificationController.js';
 import { emitToUser } from '../utils/socket.js';
 
 export const sendMessage = async (req: Request, res: Response) => {
@@ -92,7 +95,7 @@ export const getConversations = async (req: Request, res: Response) => {
         // Group by user pair
         const convosMap = new Map();
 
-        messages.forEach(msg => {
+        messages.forEach((msg: any) => {
             const otherUser = msg.senderId === userId ? msg.receiver : msg.sender;
             if (!otherUser) return;
 

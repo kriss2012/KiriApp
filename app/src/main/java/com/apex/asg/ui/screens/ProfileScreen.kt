@@ -1,5 +1,7 @@
 package com.apex.asg.ui.screens
 
+import com.apex.asg.ui.components.ClickableUrlText
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -134,7 +136,12 @@ fun ProfileContent(
                         user.website?.let {
                             ResourceRow("🌐 Website", it)
                         }
-                        // Note: These URLs will be clickable thanks to ClickableUrlText
+                        user.githubUrl?.let {
+                            ResourceRow("💻 GitHub", it)
+                        }
+                        user.linkedInUrl?.let {
+                            ResourceRow("🔗 LinkedIn", it)
+                        }
                     }
                 }
             }
@@ -163,7 +170,6 @@ fun ProfileContent(
     }
 }
 
-import com.apex.asg.ui.components.ClickableUrlText
 
 @Composable
 fun ResourceRow(label: String, url: String) {

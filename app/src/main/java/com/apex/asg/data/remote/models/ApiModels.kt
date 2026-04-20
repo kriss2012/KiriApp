@@ -227,6 +227,8 @@ data class RegisterRequest(
     val section: String? = null,
     val phoneNumber: String? = null,
     val website: String? = null,
+    val githubUrl: String? = null,
+    val linkedInUrl: String? = null,
     val services: List<String>? = null,
     val inviteCode: String? = null
 )
@@ -251,6 +253,8 @@ data class UserDto(
     val points: Int = 100,
     val phoneNumber: String? = null,
     val website: String? = null,
+    val githubUrl: String? = null,
+    val linkedInUrl: String? = null,
     val services: List<String> = emptyList()
 )
 
