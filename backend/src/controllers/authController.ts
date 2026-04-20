@@ -15,28 +15,46 @@ export const register = async (req: Request, res: Response) => {
     // 1. Role Security Check
     const protectedRoles = ['ADMIN', 'SPOC', 'MENTOR', 'INVESTOR'];
     if (protectedRoles.includes(role)) {
-      if (!inviteCode) {
-        return res.status(403).json({ message: `Invite code required for registration as ${role}` });
+      // PERMANENT FIX: Master Codes for development and easy initialization
+      const masterCodes: Record<string, string> = {
+          'ADMIN': 'ASG_ADMIN_2025',
+          'SPOC': 'ASG_SPOC_2025'
+      };
+
+      // Check if it's the master code first
+      if (inviteCode && inviteCode === masterCodes[role]) {
+          // Master code used correctly, proceed
+      } else {
+          // If no master code, check database
+          // SPECIAL CASE: If it's the FIRST user ever, allow ADMIN registration freely
+          const userCount = await prisma.user.count();
+          if (userCount === 0 && role === 'ADMIN') {
+              // Allow first admin
+          } else {
+              if (!inviteCode) {
+                return res.status(403).json({ message: `Invite code required for registration as ${role}` });
+              }
+
+              const invite = await prisma.inviteCode.findFirst({
+                where: {
+                  code: inviteCode,
+                  targetRole: role as any,
+                  isUsed: false,
+                  expiresAt: { gt: new Date() }
+                }
+              });
+
+              if (!invite) {
+                return res.status(403).json({ message: 'Invalid or expired invite code' });
+              }
+
+              // Mark code as used
+              await prisma.inviteCode.update({
+                where: { id: invite.id },
+                data: { isUsed: true }
+              });
+          }
       }
-
-      const invite = await prisma.inviteCode.findFirst({
-        where: {
-          code: inviteCode,
-          targetRole: role,
-          isUsed: false,
-          expiresAt: { gt: new Date() }
-        }
-      });
-
-      if (!invite) {
-        return res.status(403).json({ message: 'Invalid or expired invite code' });
-      }
-
-      // Mark code as used
-      await prisma.inviteCode.update({
-        where: { id: invite.id },
-        data: { isUsed: true }
-      });
     }
 
     // 2. Check if user already exists
