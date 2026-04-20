@@ -45,6 +45,7 @@ fun RegisterScreen(
     var phoneNumber by remember { mutableStateOf("") }
     var website by remember { mutableStateOf("") }
     var servicesStr by remember { mutableStateOf("") }
+    var inviteCode by remember { mutableStateOf("") }
     
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -142,6 +143,24 @@ fun RegisterScreen(
                         Text(roleLabel, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
+            }
+04:20:15:46:58:123
+            // Invitation Code for protected roles
+            val protectedRolesSet = setOf("ADMIN", "SPOC", "MENTOR", "INVESTOR")
+            if (protectedRolesSet.contains(selectedRole)) {
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = inviteCode,
+                    onValueChange = { inviteCode = it },
+                    label = { Text("Invitation Code (Required) *") },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = OrangePrimary,
+                        unfocusedBorderColor = OrangePrimary.copy(alpha = 0.5f)
+                    ),
+                    placeholder = { Text("Enter the code provided by ASG Admin") }
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -287,7 +306,8 @@ fun RegisterScreen(
                                 section = section.takeIf { it.isNotBlank() },
                                 phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
                                 website = website.takeIf { it.isNotBlank() },
-                                services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                                services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() },
+                                inviteCode = inviteCode.takeIf { it.isNotBlank() }
                             )
                             val response = ApiClient.service.register(request)
                             
@@ -310,7 +330,8 @@ fun RegisterScreen(
                           password.isNotEmpty() && 
                           fullName.isNotEmpty() && 
                           selectedRole.isNotEmpty() && 
-                          department.isNotEmpty()
+                          department.isNotEmpty() &&
+                          (!setOf("ADMIN", "SPOC", "MENTOR", "INVESTOR").contains(selectedRole) || inviteCode.isNotBlank())
             )
 
             Spacer(modifier = Modifier.height(16.dp))

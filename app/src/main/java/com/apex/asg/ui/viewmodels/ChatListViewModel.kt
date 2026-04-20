@@ -20,24 +20,24 @@ class ChatListViewModel : ViewModel() {
     private val _searchResults = MutableStateFlow<List<UserDto>>(emptyList())
     val searchResults: StateFlow<List<UserDto>> = _searchResults
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     fun fetchChatHub() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                // Fetch Peer-to-Peer conversations
-                val conList = ApiClient.service.getConversations()
-                _conversations.value = conList
+                // Fetch Peer Conversations
+                val convos = ApiClient.service.getConversations()
+                _conversations.value = convos
 
-                // Fetch latest AI message
+                // Fetch Latest AI message for the pinned card
                 val aiHistory = ApiClient.service.getAiHistory()
                 if (aiHistory.isNotEmpty()) {
-                    _aiLatest.value = aiHistory.last()
+                    _aiLatest.value = aiHistory.first()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -49,16 +49,18 @@ class ChatListViewModel : ViewModel() {
 
     fun searchUsers(query: String) {
         _searchQuery.value = query
-        if (query.length < 2) {
+        if (query.isBlank()) {
             _searchResults.value = emptyList()
             return
         }
-        
+
         viewModelScope.launch {
             try {
                 val results = ApiClient.service.searchUsers(query)
                 _searchResults.value = results
-            } catch (e: Exception) {}
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

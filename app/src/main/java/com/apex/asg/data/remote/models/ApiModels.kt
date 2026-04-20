@@ -224,7 +224,8 @@ data class RegisterRequest(
     val section: String? = null,
     val phoneNumber: String? = null,
     val website: String? = null,
-    val services: List<String>? = null
+    val services: List<String>? = null,
+    val inviteCode: String? = null
 )
 
 data class AuthResponse(
