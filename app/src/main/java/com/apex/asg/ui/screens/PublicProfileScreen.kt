@@ -28,6 +28,7 @@ import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
 import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.theme.*
+import com.apex.asg.ui.components.ClickableUrlText
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -271,12 +272,23 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
         Spacer(Modifier.width(16.dp))
         Column {
             Text(label, color = TextSecondary, fontSize = 12.sp)
-            Text(
-                text = value,
-                color = if (isLink) Color(0xFF1976D2) else TextPrimary,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp
-            )
+            if (isLink) {
+                ClickableUrlText(
+                    text = value,
+                    style = androidx.compose.ui.text.TextStyle(
+                        color = Color(0xFF1976D2),
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp
+                    )
+                )
+            } else {
+                Text(
+                    text = value,
+                    color = TextPrimary,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp
+                )
+            }
         }
     }
 }
@@ -286,6 +298,9 @@ fun ProfileSection(title: String, content: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(title, fontWeight = FontWeight.Bold, color = TextPrimary, style = MaterialTheme.typography.titleSmall)
         Spacer(Modifier.height(8.dp))
-        Text(content, color = TextSecondary, style = MaterialTheme.typography.bodyMedium, lineHeight = 20.sp)
+        ClickableUrlText(
+            text = content,
+            style = MaterialTheme.typography.bodyMedium.copy(color = TextSecondary, lineHeight = 20.sp)
+        )
     }
 }
