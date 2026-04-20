@@ -40,26 +40,33 @@ fun MainScaffold(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
 
-    // Initialize Socket.io globally
-    LaunchedEffect(userId) {
+    // Initialize and maintain Socket.io connectivity
+    DisposableEffect(userId, lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                if (!userId.isNullOrEmpty()) {
+                    SocketHandler.setSocket(AppConfig.SOCKET_URL)
+                    SocketHandler.establishConnection()
+                    val roomName = "user_$userId"
+                    
+                    // Force join on resume to ensure we are listening
+                    if (SocketHandler.getSocket()?.connected() == true) {
+                        SocketHandler.joinRoom(roomName)
+                    }
+                    
+                    SocketHandler.getSocket()?.on(io.socket.client.Socket.EVENT_CONNECT) {
+                        SocketHandler.joinRoom(roomName)
+                    }
+                }
+            }
+        }
+        
+        lifecycleOwner.lifecycle.addObserver(observer)
+
         if (!userId.isNullOrEmpty()) {
-            SocketHandler.setSocket(AppConfig.SOCKET_URL)
-            SocketHandler.establishConnection()
-            
-            val socket = SocketHandler.getSocket()
-            val roomName = "user_$userId"
-            
-            // Join immediately if already connected
-            if (socket?.connected() == true) {
-                SocketHandler.joinRoom(roomName)
-            }
-            
-            // Also join on every future connection Event
-            socket?.on(io.socket.client.Socket.EVENT_CONNECT) {
-                SocketHandler.joinRoom(roomName)
-            }
-            
             // Unified Global Alert Hub
             SocketHandler.setupGlobalListeners(
                 onNotification = { data ->
@@ -92,6 +99,10 @@ fun MainScaffold(
                     }
                 }
             )
+        }
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
