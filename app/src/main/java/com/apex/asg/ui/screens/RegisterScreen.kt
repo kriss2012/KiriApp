@@ -58,7 +58,8 @@ fun RegisterScreen(
         "MENTOR" to "👨‍🏫 Mentor",
         "INVESTOR" to "💼 Investor",
         "SERVICE_PROVIDER" to "🛠 Service Provider",
-        "SPOC" to "🏢 College Committee (SPOC)"
+        "SPOC" to "🏢 College Committee (SPOC)",
+        "ADMIN" to "🛡️ Platform Admin"
     )
 
     Scaffold(containerColor = BgCream) { padding ->
@@ -203,7 +204,7 @@ fun RegisterScreen(
                 }
             }
 
-            if (selectedRole == "STUDENT" || selectedRole == "SPOC") {
+            if (selectedRole == "STUDENT" || selectedRole == "SPOC" || selectedRole == "ADMIN") {
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 var expanded by remember { mutableStateOf(false) }
@@ -260,22 +261,24 @@ fun RegisterScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedTextField(
-                        value = year,
-                        onValueChange = { year = it },
-                        label = { Text("Year (1-4)") },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    OutlinedTextField(
-                        value = section,
-                        onValueChange = { section = it },
-                        label = { Text("Section (S1/S2)") },
-                        modifier = Modifier.weight(1f),
-                        shape = RoundedCornerShape(12.dp)
-                    )
+                if (selectedRole == "STUDENT") {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(
+                            value = year,
+                            onValueChange = { year = it },
+                            label = { Text("Year (1-4)") },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        OutlinedTextField(
+                            value = section,
+                            onValueChange = { section = it },
+                            label = { Text("Section (S1/S2)") },
+                            modifier = Modifier.weight(1f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
                 }
             }
 
