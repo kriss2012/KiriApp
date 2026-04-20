@@ -1,3 +1,4 @@
+import { Router } from 'express';
 import { sendMessage, getChatHistory, getConversations, searchUsers } from '../controllers/chatController.js';
 import { authenticate } from '../middlewares/auth.js';
 
