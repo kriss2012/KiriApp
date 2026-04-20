@@ -29,7 +29,7 @@ import com.apex.asg.ui.theme.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.UserDto
+import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.viewmodels.ProfileState
 import com.apex.asg.ui.viewmodels.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext

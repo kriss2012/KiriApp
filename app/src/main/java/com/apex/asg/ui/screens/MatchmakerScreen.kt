@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.MatchViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.apex.asg.data.remote.MatchSuggestionDto
+import com.apex.asg.data.remote.models.MatchSuggestionDto
 
 @Composable
 fun MatchmakerScreen(vm: MatchViewModel = viewModel()) {

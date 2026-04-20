@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.ActivityDto
+import com.apex.asg.data.remote.models.ActivityDto
 import kotlinx.coroutines.launch
 
 @Composable

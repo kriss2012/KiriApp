@@ -22,11 +22,11 @@
   <testFixturesSourceProviders>
   </testFixturesSourceProviders>
   <artifact
-      classOutputs="build\intermediates\javac\release\compileReleaseJavaWithJavac\classes;build\tmp\kotlin-classes\release;build\tmp\kapt3\classes\release;build\kotlinToolingMetadata;build\intermediates\hilt\component_classes\release;build\intermediates\compile_and_runtime_not_namespaced_r_class_jar\release\processReleaseResources\R.jar"
+      classOutputs="build\intermediates\javac\release\compileReleaseJavaWithJavac\classes;build\tmp\kotlin-classes\release;build\kotlinToolingMetadata;build\intermediates\hilt\component_classes\release;build\generated\ksp\release\resources;build\intermediates\compile_and_runtime_not_namespaced_r_class_jar\release\processReleaseResources\R.jar"
       type="MAIN"
       applicationId="com.apex.asg"
-      generatedSourceFolders="build\generated\source\kapt\release;build\generated\ap_generated_sources\release\out"
+      generatedSourceFolders="build\generated\ksp\release\java;build\generated\ksp\release\kotlin;build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
-      desugaredMethodsFiles="C:\Users\krishna\.gradle\caches\8.10.2\transforms\2a6032605aca63e4e1c2e71ba112a98d\transformed\D8BackportedDesugaredMethods.txt">
+      desugaredMethodsFiles="C:\Users\krishna\.gradle\caches\8.10.2\transforms\98a38dd18e587101c265337c52c4d4aa\transformed\D8BackportedDesugaredMethods.txt">
   </artifact>
 </variant>

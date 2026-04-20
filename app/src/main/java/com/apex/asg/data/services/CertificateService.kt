@@ -7,7 +7,7 @@ import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import android.widget.Toast
-import com.apex.asg.data.remote.ActivityDto
+import com.apex.asg.data.remote.models.ActivityDto
 import java.io.File
 import java.io.FileOutputStream
 

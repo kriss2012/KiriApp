@@ -3,8 +3,8 @@ package com.apex.asg.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.CreateEventRequest
-import com.apex.asg.data.remote.EventDto
+import com.apex.asg.data.remote.models.CreateEventRequest
+import com.apex.asg.data.remote.models.EventDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

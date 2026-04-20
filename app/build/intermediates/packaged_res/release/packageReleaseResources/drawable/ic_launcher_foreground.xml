@@ -14,8 +14,8 @@
             android:endY="80"
             android:endX="54"
             android:type="linear">
-            <item android:offset="0" android:color="#FFFF8A00" />
-            <item android:offset="1" android:color="#FFFF2D00" />
+            <item android:offset="0" android:color="#FFF26522" /> <!-- APEX Orange -->
+            <item android:offset="1" android:color="#FFED1C24" /> <!-- Industrial Red -->
         </gradient>
     </path>
 </vector>

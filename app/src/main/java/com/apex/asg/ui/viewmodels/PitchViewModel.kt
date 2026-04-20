@@ -4,8 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.PitchDto
-import com.apex.asg.data.remote.CreatePitchRequest
+import com.apex.asg.data.remote.models.*
 import kotlinx.coroutines.launch
 
 class PitchViewModel : ViewModel() {

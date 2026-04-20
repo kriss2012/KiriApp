@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
 import com.apex.asg.data.remote.models.MessageDto
 import com.apex.asg.data.remote.models.SendMessageRequest
+import com.apex.asg.data.remote.SocketHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,6 +53,6 @@ class ChatViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        SocketHandler.disconnect()
+        SocketHandler.closeConnection()
     }
 }

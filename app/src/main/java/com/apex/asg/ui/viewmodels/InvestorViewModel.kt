@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.InvestorPitchDto
-import com.apex.asg.data.remote.MarketTrendDto
+import com.apex.asg.data.remote.models.InvestorPitchDto
+import com.apex.asg.data.remote.models.MarketTrendDto
 import kotlinx.coroutines.launch
 
 class InvestorViewModel : ViewModel() {

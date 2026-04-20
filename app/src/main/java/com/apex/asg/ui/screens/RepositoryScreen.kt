@@ -26,7 +26,7 @@ import com.apex.asg.ui.components.ASGTagChip
 import com.apex.asg.ui.theme.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.apex.asg.data.remote.UserDto
+import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.viewmodels.RepositoryState
 import com.apex.asg.ui.viewmodels.RepositoryViewModel
 

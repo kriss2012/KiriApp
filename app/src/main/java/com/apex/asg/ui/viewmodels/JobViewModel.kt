@@ -3,8 +3,8 @@ package com.apex.asg.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.CreateJobRequest
-import com.apex.asg.data.remote.JobDto
+import com.apex.asg.data.remote.models.CreateJobRequest
+import com.apex.asg.data.remote.models.JobDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

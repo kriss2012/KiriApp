@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.InvestorViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.apex.asg.data.remote.InvestorPitchDto
+import com.apex.asg.data.remote.models.InvestorPitchDto
 
 @Composable
 fun InvestorDashboardScreen(vm: InvestorViewModel = viewModel()) {

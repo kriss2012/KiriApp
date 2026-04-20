@@ -1904,6 +1904,45 @@ library {
     value: 1
   }
 }
+library {
+  maven_library {
+    groupId: "io.socket"
+    artifactId: "socket.io-client"
+    version: "2.1.0"
+  }
+  digests {
+    sha256: "\314\311\002B\2724\227\031\303\347\3033bnE\006\003% \336;R\257J\300\021\316\360(\227}n"
+  }
+  repo_index {
+    value: 1
+  }
+}
+library {
+  maven_library {
+    groupId: "io.socket"
+    artifactId: "engine.io-client"
+    version: "2.1.0"
+  }
+  digests {
+    sha256: "\204\273\224\244\033\v\321\366\365v(\004\354\300K6&\3039z\242\317\274\"\332\272n\260b.\345u"
+  }
+  repo_index {
+    value: 1
+  }
+}
+library {
+  maven_library {
+    groupId: "org.json"
+    artifactId: "json"
+    version: "20090211"
+  }
+  digests {
+    sha256: "\005[\341\020\245p\371\315\243\353\250\327\n\000o\364lw\240H\274g\206\205$\207\222\021\304\2133\n"
+  }
+  repo_index {
+    value: 1
+  }
+}
 library_dependencies {
   library_dep_index: 1
   library_dep_index: 2
@@ -3224,6 +3263,16 @@ library_dependencies {
   library_dep_index: 20
   library_dep_index: 0
 }
+library_dependencies {
+  library_index: 162
+  library_dep_index: 163
+  library_dep_index: 164
+}
+library_dependencies {
+  library_index: 163
+  library_dep_index: 102
+  library_dep_index: 164
+}
 module_dependencies {
   module_name: "base"
   dependency_index: 0
@@ -3253,6 +3302,7 @@ module_dependencies {
   dependency_index: 158
   dependency_index: 160
   dependency_index: 161
+  dependency_index: 162
 }
 repositories {
   maven_repo {

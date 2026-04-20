@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,7 +23,7 @@ import com.apex.asg.ui.theme.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.MessageDto
+import com.apex.asg.data.remote.models.MessageDto
 import com.apex.asg.ui.viewmodels.ChatState
 import com.apex.asg.ui.viewmodels.ChatViewModel
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +31,8 @@ import androidx.compose.runtime.*
 
 import org.json.JSONObject
 import com.apex.asg.data.remote.SocketHandler
+import com.apex.asg.data.remote.ApiClient
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +74,8 @@ fun ChatScreen(
                             senderId = senderId,
                             receiverId = currentUserId,
                             content = content,
-                            createdAt = java.util.Date().toString()
+                            createdAt = java.util.Date().toString(),
+                            isRead = false
                         )
                     )
                 }

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.PitchViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.apex.asg.data.remote.PitchDto
+import com.apex.asg.data.remote.models.PitchDto
 
 @Composable
 fun InnovationPitchesScreen(vm: PitchViewModel = viewModel()) {

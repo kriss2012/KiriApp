@@ -20,6 +20,9 @@ import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
 import com.apex.asg.data.remote.models.RegisterRequest
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -23,7 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.ConnectionDto
+import com.apex.asg.data.remote.models.ConnectionDto
+import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.ConnectionsState
 import com.apex.asg.ui.viewmodels.ConnectionsViewModel
@@ -124,7 +125,7 @@ fun ConnectionsScreen(
 
 @Composable
 fun ConnectionItem(
-    user: com.apex.asg.data.remote.UserDto,
+    user: UserDto,
     isRequest: Boolean,
     onAccept: () -> Unit
 ) {

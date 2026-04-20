@@ -22,7 +22,7 @@ import com.apex.asg.ui.theme.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.JobDto
+import com.apex.asg.data.remote.models.JobDto
 import com.apex.asg.ui.viewmodels.JobState
 import com.apex.asg.ui.viewmodels.JobViewModel
 import androidx.compose.ui.platform.LocalContext

@@ -22,13 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.NotificationDto
+import com.apex.asg.data.remote.models.NotificationDto
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.NotificationState
 import com.apex.asg.ui.viewmodels.NotificationViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, com.google.accompanist.permissions.ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun NotificationScreen(
     onBack: () -> Unit,
@@ -44,7 +47,7 @@ fun NotificationScreen(
 
     // Notification Permission Handling
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-        val permissionState = com.google.accompanist.permissions.rememberPermissionState(
+        val permissionState = rememberPermissionState(
             android.Manifest.permission.POST_NOTIFICATIONS
         )
         LaunchedEffect(Unit) {

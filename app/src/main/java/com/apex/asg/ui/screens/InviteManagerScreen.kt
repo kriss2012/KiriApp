@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
-import com.apex.asg.data.remote.InviteCodeDto
+import com.apex.asg.data.remote.models.InviteCodeDto
 
 @Composable
 fun InviteManagerScreen() {

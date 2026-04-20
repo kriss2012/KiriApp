@@ -17,7 +17,7 @@ import com.apex.asg.ui.components.ASGPrimaryButton
 import com.apex.asg.ui.theme.*
 import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.LoginRequest
+import com.apex.asg.data.remote.models.LoginRequest
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.launch
 

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
-import com.apex.asg.data.remote.ProjectArtifactDto
+import com.apex.asg.data.remote.models.ProjectArtifactDto
 
 @Composable
 fun ProjectDetailScreen(projectName: String) {

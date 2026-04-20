@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.UserResponse
+import com.apex.asg.data.remote.models.UserResponse
 import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.launch
 
