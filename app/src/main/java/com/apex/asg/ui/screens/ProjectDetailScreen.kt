@@ -78,7 +78,10 @@ fun AIInsightCard(insight: String) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.Top) {
             Icon(Icons.Default.Info, null, tint = BluePrimary, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(12.dp))
-            Text(insight, style = MaterialTheme.typography.bodySmall, color = TextPrimary, lineHeight = 18.sp)
+            ClickableUrlText(
+                text = insight,
+                style = MaterialTheme.typography.bodySmall.copy(color = TextPrimary, lineHeight = 18.sp)
+            )
         }
     }
 }
