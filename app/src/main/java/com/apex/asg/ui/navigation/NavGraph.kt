@@ -145,7 +145,16 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
 
         composable(Screen.Notifications.route) {
             NotificationScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToChat = { receiverId -> 
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
+                },
+                onNavigateToProfile = { userId ->
+                    navController.navigate(Screen.PublicProfile.createRoute(userId))
+                },
+                onNavigateToEvents = {
+                    navController.navigate(Screen.Events.route)
+                }
             )
         }
 
