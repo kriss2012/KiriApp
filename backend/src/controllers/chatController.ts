@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { prisma } from '../utils/prisma.js';
+import type { Request, Response } from 'express';
+import prisma from '../utils/prisma.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../utils/socket.js';
 
