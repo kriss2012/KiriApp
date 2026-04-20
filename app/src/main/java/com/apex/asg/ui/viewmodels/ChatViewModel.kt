@@ -3,8 +3,8 @@ package com.apex.asg.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apex.asg.data.remote.ApiClient
-import com.apex.asg.data.remote.MessageDto
-import com.apex.asg.data.remote.SendMessageRequest
+import com.apex.asg.data.remote.models.MessageDto
+import com.apex.asg.data.remote.models.SendMessageRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,5 +48,10 @@ class ChatViewModel : ViewModel() {
                 _uiState.value = ChatState.Error("Message failed to send: ${e.message}")
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        SocketHandler.disconnect()
     }
 }

@@ -68,15 +68,12 @@ fun SplashScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.scale(scale.value).alpha(alpha.value)
         ) {
-            Box(modifier = Modifier.size(60.dp, 50.dp)) {
-                // Triangle SVG representation
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .size(40.dp)
-                        .background(OrangePrimary, shape = androidx.compose.ui.graphics.RectangleShape) // Simplified triangle for now
-                )
-            }
+            Icon(
+                painter = androidx.compose.ui.res.painterResource(id = com.apex.asg.R.drawable.ic_launcher_foreground),
+                contentDescription = null,
+                modifier = Modifier.size(80.dp),
+                tint = Color.Unspecified
+            )
             Text(
                 "APEX",
                 style = MaterialTheme.typography.headlineLarge,

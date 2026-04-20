@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         ApiClient.setToken(sessionManager.getToken())
 
         // Init Sockets
-        SocketHandler.setSocket("https://asgapp.onrender.com")
+        SocketHandler.setSocket(com.apex.asg.utils.AppConfig.SOCKET_URL)
         SocketHandler.establishConnection()
 
         setContent {

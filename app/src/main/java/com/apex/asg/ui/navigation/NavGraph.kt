@@ -55,7 +55,7 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
             SplashScreen(
                 onJoinCommunity = { navController.navigate(Screen.Register.route) },
                 onLaunchpad = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://apexstartupgroup.com"))
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.apex.asg.utils.AppConfig.WEBSITE_URL))
                     context.startActivity(intent)
                 },
                 onSignIn = { navController.navigate(Screen.Login.route) }
