@@ -67,9 +67,10 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
     ) {
         Text(
             "Community Discovery",
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Black,
-            color = TextPrimary
+            color = TextPrimary,
+            letterSpacing = (-0.5).sp
         )
         Text(
             "Find and connect with fellow students and mentors in Jalgaon",
