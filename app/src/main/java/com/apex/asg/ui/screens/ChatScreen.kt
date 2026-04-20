@@ -61,13 +61,12 @@ fun ChatScreen(
             
             // Socket Integration
             SocketHandler.joinRoom(roomId)
-            SocketHandler.getSocket()?.on("receive_message") { args ->
-                val data = args[0] as JSONObject
-                val senderId = data.getString("senderId")
+            SocketHandler.listenForMessages { data ->
+                val senderId = data.optString("senderId")
                 
                 // Only add if it's from the other person (to avoid double entry)
                 if (senderId != currentUserId) {
-                    val content = data.getString("content")
+                    val content = data.optString("content")
                     viewModel.addMessageLocally(
                         MessageDto(
                             id = System.currentTimeMillis().toString(),
@@ -155,8 +154,16 @@ fun ChatScreen(
                                     onClick = {
                                         coroutineScope.launch {
                                             try {
-                                                ApiClient.service.acceptConnectionRequest(mapOf("receiverId" to currentUserId, "senderId" to receiverId))
-                                                connectionStatus = "ACCEPTED"
+                                                // PERMANENT FIX: Send the actual Connection ID instead of raw user IDs
+                                                val connections = ApiClient.service.getUserConnections(currentUserId)
+                                                val existing = connections.find { 
+                                                    (it.senderId == currentUserId && it.receiverId == receiverId) || 
+                                                    (it.senderId == receiverId && it.receiverId == currentUserId)
+                                                }
+                                                existing?.let {
+                                                    ApiClient.service.acceptConnectionRequest(mapOf("connectionId" to it.id))
+                                                    connectionStatus = "ACCEPTED"
+                                                }
                                             } catch (e: Exception) {}
                                         }
                                     }

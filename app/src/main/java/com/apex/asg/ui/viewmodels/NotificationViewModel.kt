@@ -63,7 +63,9 @@ class NotificationViewModel : ViewModel() {
                 // 3. Refresh list
                 fetchNotifications(userId)
             } catch (e: Exception) {
-                // Handle error
+                // Log the real error for debugging
+                println("Accept Connection Error: ${e.message}")
+                _uiState.value = NotificationState.Error("Failed to accept connection: ${e.message}")
             }
         }
     }

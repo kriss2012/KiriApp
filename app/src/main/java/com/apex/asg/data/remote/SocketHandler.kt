@@ -41,6 +41,22 @@ object SocketHandler {
         mSocket?.emit("join_room", roomId)
     }
 
+    fun listenForNotifications(onNewNotification: (JSONObject) -> Unit) {
+        mSocket?.off("new_notification")
+        mSocket?.on("new_notification") { args ->
+            val data = args[0] as JSONObject
+            onNewNotification(data)
+        }
+    }
+
+    fun listenForMessages(onNewMessage: (JSONObject) -> Unit) {
+        mSocket?.off("receive_message")
+        mSocket?.on("receive_message") { args ->
+            val data = args[0] as JSONObject
+            onNewMessage(data)
+        }
+    }
+
     fun sendMessage(roomId: String, senderId: String, receiverId: String, content: String) {
         val data = JSONObject().apply {
             put("roomId", roomId)

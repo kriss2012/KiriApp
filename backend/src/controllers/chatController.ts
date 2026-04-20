@@ -1,6 +1,4 @@
-import type { Request, Response } from 'express';
-import prisma from '../utils/prisma.js';
-import { createNotification } from './notificationController.js';
+import { emitToUser } from '../utils/socket.js';
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
@@ -33,8 +31,14 @@ export const sendMessage = async (req: Request, res: Response) => {
     }
 
     const message = await prisma.message.create({
-      data: { senderId, receiverId, content }
+      data: { senderId, receiverId, content },
+      include: { sender: true, receiver: true }
     });
+
+    // PERMANENT FIX: Emit real-time message
+    emitToUser(receiverId, 'receive_message', message);
+    // Also emit to sender (to sync multiple devices if needed, or acknowledge)
+    emitToUser(senderId, 'receive_message', message);
 
     res.status(201).json(message);
   } catch (error: any) {

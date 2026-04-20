@@ -20,13 +20,56 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.apex.asg.ui.theme.*
 
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import com.apex.asg.data.SessionManager
+import com.apex.asg.data.remote.SocketHandler
+import com.apex.asg.utils.AppConfig
+import kotlinx.coroutines.launch
+
 @Composable
 fun MainScaffold(
     navController: NavHostController = rememberNavController(),
     content: @Composable (PaddingValues) -> Unit
 ) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val userId = sessionManager.getUserId()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    // Initialize Socket.io globally
+    LaunchedEffect(userId) {
+        if (!userId.isNullOrEmpty()) {
+            SocketHandler.setSocket(AppConfig.SOCKET_URL)
+            SocketHandler.establishConnection()
+            SocketHandler.joinRoom("user_$userId")
+            
+            // Listen for Global Notifications
+            SocketHandler.listenForNotifications { data ->
+                val title = data.optString("title", "New Alert")
+                val content = data.optString("content", "")
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "🔔 $title: $content",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+            }
+
+            // Listen for Connection Acceptances
+            SocketHandler.listenForNotifications { data ->
+                if (data.optString("type") == "REQUEST") {
+                    scope.launch {
+                        snackbarHostState.showSnackbar("🤝 Someone wants to connect!")
+                    }
+                }
+            }
+        }
+    }
 
     // Hide bottom bar on actual messaging screens (Individual Chat and AI Agent) 
     val isChatSubScreen = currentRoute?.startsWith("chat/") == true || 
@@ -36,7 +79,8 @@ fun MainScaffold(
     
     Scaffold(
         containerColor = Color.Transparent,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Surface(
             modifier = Modifier.fillMaxSize(),

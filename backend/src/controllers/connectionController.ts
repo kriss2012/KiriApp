@@ -47,13 +47,17 @@ export const sendRequest = async (req: Request, res: Response) => {
   }
 };
 
+import { emitToUser } from '../utils/socket.js';
+
 export const acceptRequest = async (req: Request, res: Response) => {
   try {
-    const { connectionId, requestId } = req.body;
-    const id = connectionId || requestId;
+    const { connectionId, requestId, id: bodyId } = req.body;
+    const id = connectionId || requestId || bodyId;
+
+    console.log('Accepting Connection Request:', { id, body: req.body });
 
     if (!id) {
-      return res.status(400).json({ message: 'connectionId or requestId is required' });
+      return res.status(400).json({ message: 'connectionId, requestId, or id is required' });
     }
 
     const connection = await prisma.connection.update({
@@ -62,18 +66,22 @@ export const acceptRequest = async (req: Request, res: Response) => {
       include: { sender: true, receiver: true }
     });
 
-    // Notify sender
-    await createNotification(
+    // Notify sender via real-time and DB
+    const notif = await createNotification(
       connection.senderId,
       'Connection Accepted!',
       `${connection.receiver.fullName} accepted your connection request.`,
-      'REQUEST'
+      'REQUEST',
+      connection.id
     );
+
+    // REAL-TIME emission
+    emitToUser(connection.senderId, 'connection_accepted', connection);
 
     // Create System Message in Chat
     await prisma.message.create({
       data: {
-        senderId: connection.receiverId, // System messages can be from the accepter
+        senderId: connection.receiverId,
         receiverId: connection.senderId,
         content: `🤝 Connection accepted! You can now see each other's full profile and chat freely.`
       }
@@ -85,6 +93,7 @@ export const acceptRequest = async (req: Request, res: Response) => {
 
     res.status(200).json({ message: 'Connection accepted successfully', connection });
   } catch (error: any) {
+    console.error('Accept Connection Error:', error);
     if (error.code === 'P2025') {
         return res.status(404).json({ message: 'Connection record not found' });
     }

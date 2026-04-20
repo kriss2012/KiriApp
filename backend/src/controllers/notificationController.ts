@@ -55,9 +55,11 @@ export const markAllAsRead = async (req: Request, res: Response) => {
   }
 };
 
+import { emitToUser } from '../utils/socket.js';
+
 export const createNotification = async (userId: string, title: string, content: string, type: string, relatedId: string | null = null) => {
   try {
-    return await prisma.notification.create({
+    const notification = await prisma.notification.create({
       data: {
         userId,
         title,
@@ -66,6 +68,11 @@ export const createNotification = async (userId: string, title: string, content:
         relatedId: relatedId ?? null
       }
     });
+
+    // PERMANENT FIX: Emit real-time notification
+    emitToUser(userId, 'new_notification', notification);
+
+    return notification;
   } catch (error) {
     console.error('Failed to create notification:', error);
   }
