@@ -10,7 +10,7 @@ import com.apex.asg.utils.AppConfig
 import java.util.concurrent.TimeUnit
 
 interface ASGApiService {
-    @POST("users/register")
+    @POST("auth/register")
     suspend fun register(@Body request: RegisterRequest): AuthResponse
 
     @POST("auth/login")
