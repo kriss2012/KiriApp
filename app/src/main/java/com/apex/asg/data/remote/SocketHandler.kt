@@ -72,6 +72,13 @@ object SocketHandler {
         }
     }
 
+    fun listenForMessages(onMessage: (JSONObject) -> Unit) {
+        mSocket?.on("receive_message") { args ->
+            val data = args[0] as JSONObject
+            onMessage(data)
+        }
+    }
+
     fun sendMessage(roomId: String, senderId: String, receiverId: String, content: String) {
         val data = JSONObject().apply {
             put("roomId", roomId)
