@@ -133,6 +133,13 @@ fun JobCard(job: JobDto) {
                 }
             }
             
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            ClickableUrlText(
+                text = job.description,
+                style = MaterialTheme.typography.bodySmall.copy(color = TextSecondary, lineHeight = 18.sp)
+            )
+            
             Divider(modifier = Modifier.padding(vertical = 12.dp), color = BorderColor)
             
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
