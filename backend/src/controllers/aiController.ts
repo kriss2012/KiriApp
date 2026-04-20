@@ -107,6 +107,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     }
 
     // 5. Construct Kiri's context and messages
+    // 5. Construct Kiri's context and messages
     const systemPrompt = `You are Kiri, the Agentic Orchestrator of the ASG Community. 
     You help regional startups and students innovate.
     
@@ -133,16 +134,20 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     - Encourage networking and connection requests within the ASG community.
     - Always act as a supportive 'Second Brain'.`;
 
+    // Map history to OpenAI format correctly
+    const formattedHistory = history.reverse().map((msg: any) => ({
+      role: msg.role === 'assistant' ? 'assistant' : 'user',
+      content: msg.content || "..."
+    }));
+
+    // Construct final payload
     const chatMessages = [
       { role: "system", content: systemPrompt },
-      ...history.reverse().map((msg: any) => ({
-        role: msg.role,
-        content: msg.content
-      }))
+      ...formattedHistory
     ];
 
-    // Multimodal payload construction
-    let currentMessageContent: any = content || "Continue analysis.";
+    // Multimodal payload construction for current message
+    let currentMessageContent: any = content || "Proceed with analysis.";
     if (fileData && mimeType) {
       currentMessageContent = [
         { type: "text", text: content || "Analyze this document." },
@@ -163,7 +168,8 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       {
         model: MODEL,
         messages: chatMessages,
-        route: "fallback" // Ensure fallback if provider hits issues
+        temperature: 0.7,
+        max_tokens: 1000
       },
       {
         headers: {
@@ -172,7 +178,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
           "X-Title": "ASG Community Platform",
           "Content-Type": "application/json"
         },
-        timeout: 30000 // 30s timeout
+        timeout: 45000 // 45s timeout for vision
       }
     );
 
