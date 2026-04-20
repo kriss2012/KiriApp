@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.data.remote.models.ProjectArtifactDto
 
+import com.apex.asg.ui.components.ClickableUrlText
+
 @Composable
 fun ProjectDetailScreen(projectName: String) {
     Scaffold(
