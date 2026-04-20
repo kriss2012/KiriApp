@@ -53,11 +53,10 @@ fun NotificationScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                }
             )
         },
-        containerColor = BgCream
+        containerColor = Color.Transparent
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (val state = uiState) {

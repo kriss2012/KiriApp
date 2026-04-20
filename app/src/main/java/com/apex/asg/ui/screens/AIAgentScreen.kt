@@ -52,7 +52,7 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
     }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = Color.Transparent,
         topBar = {
             TopAppBar(
                 title = { 
@@ -60,7 +60,7 @@ fun AIAgentScreen(vm: KiriAIViewModel = viewModel()) {
                         Text("KIRI AI", style = MaterialTheme.typography.labelLarge, color = TextPrimary, fontWeight = FontWeight.Black, letterSpacing = 2.sp) 
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
         bottomBar = {
@@ -118,7 +118,8 @@ fun KiriInputBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .padding(bottom = 80.dp)
+            .navigationBarsPadding() // Space for system bar when nav bar hidden
+            .imePadding() // Slide up with keyboard
     ) {
         // Attachment Preview
         if (selectedFileName != null) {

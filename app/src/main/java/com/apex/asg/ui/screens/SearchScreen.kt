@@ -62,7 +62,7 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(Color.Transparent)
             .padding(top = 24.dp, start = 24.dp, end = 24.dp)
     ) {
         Text(

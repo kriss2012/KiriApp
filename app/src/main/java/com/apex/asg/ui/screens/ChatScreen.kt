@@ -62,7 +62,13 @@ fun ChatScreen(viewModel: ChatViewModel = viewModel()) {
             )
         },
         bottomBar = {
-            Surface(color = Color.White, shadowElevation = 8.dp) {
+            Surface(
+                color = Color.White, 
+                shadowElevation = 8.dp,
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .imePadding()
+            ) {
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 8.dp)

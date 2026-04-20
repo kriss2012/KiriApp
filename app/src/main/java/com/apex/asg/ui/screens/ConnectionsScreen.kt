@@ -56,11 +56,10 @@ fun ConnectionsScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                }
             )
         },
-        containerColor = BgCream
+        containerColor = Color.Transparent
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             TabRow(

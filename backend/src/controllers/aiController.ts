@@ -142,7 +142,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     ];
 
     // Multimodal payload construction
-    let currentMessageContent: any = content;
+    let currentMessageContent: any = content || "Continue analysis.";
     if (fileData && mimeType) {
       currentMessageContent = [
         { type: "text", text: content || "Analyze this document." },
@@ -162,7 +162,8 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: MODEL,
-        messages: chatMessages
+        messages: chatMessages,
+        route: "fallback" // Ensure fallback if provider hits issues
       },
       {
         headers: {
@@ -170,18 +171,19 @@ export const chatWithKiri = async (req: Request, res: Response) => {
           "HTTP-Referer": "https://apexstartupgroup.com",
           "X-Title": "ASG Community Platform",
           "Content-Type": "application/json"
-        }
+        },
+        timeout: 30000 // 30s timeout
       }
     );
 
-    const aiResponseText = response.data.choices[0].message.content;
+    const aiResponseText = response.data.choices[0].message.content || "I'm having trouble generating a response.";
 
     // 6. Save messages to DB
     await prisma.aiMessage.create({
       data: { 
         userId, 
         conversationId: conversation.id,
-        content: content || "[Analyzed Document]", 
+        content: content || (fileData ? "[Analyzed Document]" : "Strategy Session"), 
         role: "user" 
       }
     });
@@ -202,11 +204,12 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     });
 
     // Award Innovation Points for discovery
-    await createActivity(userId, 'AI_SESSION', `Strategy Session (${specialization})`, `Consulted Kiri AI regarding ${specialization.toLowerCase()} strategies.`, 15);
+    const specLabel = specialization || "GENERAL";
+    await createActivity(userId, 'AI_SESSION', `Strategy Session (${specLabel})`, `Consulted Kiri AI regarding ${specLabel.toLowerCase()} strategies.`, 15);
 
     res.json(savedAiMsg);
   } catch (error: any) {
-    console.error("AI Error:", error.response?.data || error.message);
+    console.error("AI Error Detailed:", error.response?.data || error.message);
     res.status(500).json({ error: "Kiri is having trouble thinking. Please try again later." });
   }
 };
@@ -227,7 +230,7 @@ export const updateSpecialization = async (req: Request, res: Response) => {
 
     const updated = await prisma.conversation.update({
       where: { id: latestConversation.id },
-      data: { specialization } as any
+      data: { specialization }
     });
 
     res.json(updated);

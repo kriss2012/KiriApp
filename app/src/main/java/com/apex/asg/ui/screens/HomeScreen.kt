@@ -60,7 +60,7 @@ fun HomeScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = BgCream,
+        containerColor = Color.Transparent,
         bottomBar = { Spacer(Modifier.height(0.dp)) } // Padding in MainScaffold
     ) { padding ->
         Box(
@@ -113,7 +113,7 @@ fun HomeContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(Color.Transparent)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
         item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
