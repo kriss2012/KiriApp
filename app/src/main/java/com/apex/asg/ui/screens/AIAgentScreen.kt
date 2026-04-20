@@ -99,10 +99,13 @@ fun AIAgentScreen(
                 KiriEmptyState()
             } else {
                 LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     state = listState,
-                    modifier = Modifier.weight(1f).padding(horizontal = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(vertical = 24.dp)
+                    contentPadding = PaddingValues(top = 8.dp, bottom = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(messages) { msg ->
                         KiriMessageBubble(msg)
@@ -276,8 +279,8 @@ fun KiriMessageBubble(msg: com.apex.asg.ui.viewmodels.KiriMessage) {
 fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
     val options = listOf("GENERAL", "TECH", "LEGAL", "GTM")
     androidx.compose.foundation.lazy.LazyRow(
-        modifier = Modifier.fillMaxWidth().background(Color.Transparent).padding(horizontal = 24.dp, vertical = 2.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth().background(Color.Transparent).padding(horizontal = 16.dp, vertical = 2.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(options) { option ->
             val isSelected = selected == option

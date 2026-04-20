@@ -107,50 +107,47 @@ export const chatWithKiri = async (req: Request, res: Response) => {
     }
 
     // 5. Construct Kiri's context and messages
-    // 5. Construct Kiri's context and messages
-    const systemPrompt = `You are Kiri, the Agentic Orchestrator of the ASG Community. 
-    You help regional startups and students innovate.
-    
-    LANGUAGE PROTOCOL: ${langInstruction}
-    
+    const systemPromptPrefix = `[SYSTEM INSTRUCTIONS: You are Kiri, the Agentic Orchestrator of the ASG Community. 
+    LANGUAGE: ${langInstruction}
     SPECIALIZATION: ${specialization}
-    RESEARCH PROTOCOL: ${specializationContext}
-    
-    ACTIVE ECOSYSTEM MEMBERS (Suggestion Context):
-    ${mentorContext}
-    
-    MISSION: If the user needs help in a specific field, suggest contacting one of the members listed above by name if their skills match.
-    BEHAVIOR: Be professional, premium, and focused on regional impact.
-    
-    Current User Context:
-    Name: ${userProfile?.fullName}
-    Role: ${userProfile?.role}
-    College: ${userProfile?.college}
-    Department: ${userProfile?.department}
-    
-    Guidelines:
-    - Be concise, analytical, and professional.
-    - Give specific advice tailored to the Jalgaon ecosystem when possible.
-    - Encourage networking and connection requests within the ASG community.
-    - Always act as a supportive 'Second Brain'.`;
+    MISSION: ${specializationContext}
+    ECOSYSTEM: ${mentorContext}]
 
-    // Map history to OpenAI format correctly
-    const formattedHistory = history.reverse().map((msg: any) => ({
+    CONTEXT: User Name: ${userProfile?.fullName}, Role: ${userProfile?.role}, College: ${userProfile?.college}.
+
+    `;
+
+    // Map history to safe User/Assistant turns
+    const historyTurns = history.reverse().map((msg: any) => ({
       role: msg.role === 'assistant' ? 'assistant' : 'user',
       content: msg.content || "..."
     }));
 
-    // Construct final payload
-    const chatMessages = [
-      { role: "system", content: systemPrompt },
-      ...formattedHistory
-    ];
+    const chatMessages: any[] = [];
+    
+    // Construct payload with Prepending to the first message
+    if (historyTurns.length > 0) {
+        // Prepend instructions to the very first historical message
+        historyTurns[0].content = `${systemPromptPrefix}\n\nUser Input: ${historyTurns[0].content}`;
+        chatMessages.push(...historyTurns);
+        
+        // Add current message
+        chatMessages.push({ role: "user", content: content || "Proceed with further analysis." });
+    } else {
+        // First ever message: Prepend to the current prompt
+        chatMessages.push({ 
+            role: "user", 
+            content: `${systemPromptPrefix}\n\nUser Input: ${content || "Analyze the current state and introduce yourself."}` 
+        });
+    }
 
-    // Multimodal payload construction for current message
-    let currentMessageContent: any = content || "Proceed with analysis.";
-    if (fileData && mimeType) {
-      currentMessageContent = [
-        { type: "text", text: content || "Analyze this document." },
+    // Multimodal support for the LAST message only (if file present)
+    if (fileData && mimeType && chatMessages.length > 0) {
+      const lastMsg = chatMessages[chatMessages.length - 1];
+      const textContent = typeof lastMsg.content === 'string' ? lastMsg.content : "Document Analysis";
+      
+      lastMsg.content = [
+        { type: "text", text: textContent },
         {
           type: "image_url",
           image_url: {
@@ -160,16 +157,15 @@ export const chatWithKiri = async (req: Request, res: Response) => {
       ];
     }
 
-    chatMessages.push({ role: "user", content: currentMessageContent });
-
-    // 5. Call OpenRouter
+    // 5. Call OpenRouter with Hardened Settings
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         model: MODEL,
         messages: chatMessages,
-        temperature: 0.7,
-        max_tokens: 1000
+        temperature: 0.6,
+        max_tokens: 1500,
+        repetition_penalty: 1.1
       },
       {
         headers: {
@@ -178,7 +174,7 @@ export const chatWithKiri = async (req: Request, res: Response) => {
           "X-Title": "ASG Community Platform",
           "Content-Type": "application/json"
         },
-        timeout: 45000 // 45s timeout for vision
+        timeout: 50000 // 50s for heavy vision tasks
       }
     );
 
