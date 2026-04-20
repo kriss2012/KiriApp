@@ -61,18 +61,10 @@ fun AIAgentScreen(
         }
     }
 
-    // ── FIX: Do NOT use Scaffold for this layout. Instead, use a plain Box/Column
-    // with manual inset handling. Scaffold's internal padding logic fights with
-    // imePadding() and causes the input bar to render mid-screen.
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            // statusBarsPadding handles the top notch/status bar
-            .statusBarsPadding()
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            // ── Top bar (manual, replaces Scaffold topBar) ──────────────────
+    Scaffold(
+        containerColor = Color.Transparent,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0), // Crucial: handle insets manually to avoid double-padding
+        topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
@@ -92,7 +84,36 @@ fun AIAgentScreen(
                     containerColor = Color.Transparent
                 )
             )
-
+        },
+        bottomBar = {
+            // ── Input bar — pinned at bottom, ABOVE keyboard ─────────────────
+            // Applying imePadding here within the Scaffold slot ensures perfect docking
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .imePadding()
+                    .navigationBarsPadding()
+            ) {
+                KiriInputBar(
+                    text = textState,
+                    onTextChange = { textState = it },
+                    selectedFileName = selectedFileName,
+                    onAttachClick = { filePickerLauncher.launch("*/*") },
+                    onCancelAttachment = { vm.clearFileSelection() },
+                    onSend = {
+                        vm.sendMessage(textState, context)
+                        textState = ""
+                    }
+                )
+            }
+        },
+        modifier = Modifier.fillMaxSize().statusBarsPadding()
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = padding.calculateTopPadding(), bottom = padding.calculateBottomPadding())
+        ) {
             // ── Specialization chips ─────────────────────────────────────────
             SpecializationSelector(
                 selected = vm.currentSpecialization.collectAsState().value,
@@ -118,28 +139,6 @@ fun AIAgentScreen(
                     }
                 }
             }
-
-            // ── Input bar — pinned at bottom, ABOVE keyboard ─────────────────
-            // Key insight: imePadding() here (at the Column item level, not inside
-            // the bar itself) correctly pushes the bar up when the keyboard opens,
-            // because it's part of the normal vertical flow — not fighting Scaffold.
-            KiriInputBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    // imePadding() lifts the bar above the software keyboard
-                    .imePadding()
-                    // navigationBarsPadding() handles gesture nav bar / home indicator
-                    .navigationBarsPadding(),
-                text = textState,
-                onTextChange = { textState = it },
-                selectedFileName = selectedFileName,
-                onAttachClick = { filePickerLauncher.launch("*/*") },
-                onCancelAttachment = { vm.clearFileSelection() },
-                onSend = {
-                    vm.sendMessage(textState, context)
-                    textState = ""
-                }
-            )
         }
     }
 }

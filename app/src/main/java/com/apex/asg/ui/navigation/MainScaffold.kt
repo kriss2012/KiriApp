@@ -34,9 +34,6 @@ fun MainScaffold(
                        
     val showBottomBar = currentRoute in BottomNavItems.map { it.route } && !isChatScreen
     
-    // Detect keyboard visibility
-    val isKeyboardOpen = WindowInsets.ime.getBottom(androidx.compose.ui.platform.LocalDensity.current) > 0
-
     Scaffold(
         containerColor = Color.Transparent,
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
@@ -50,9 +47,8 @@ fun MainScaffold(
                 content(padding)
 
                 // Floating Bottom Navigation
-                // Auto-hide when keyboard is open to avoid overlap and shifting
                 AnimatedVisibility(
-                    visible = showBottomBar && !isKeyboardOpen,
+                    visible = showBottomBar,
                     enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
                     exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
                     modifier = Modifier
