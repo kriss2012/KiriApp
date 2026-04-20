@@ -28,6 +28,8 @@ import com.apex.asg.ui.viewmodels.JobViewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.*
 
+import com.apex.asg.ui.components.ClickableUrlText
+
 @Composable
 fun JobBoardScreen(viewModel: JobViewModel = viewModel()) {
     val context = LocalContext.current
