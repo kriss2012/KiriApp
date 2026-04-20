@@ -63,7 +63,9 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Transparent)
-            .padding(top = 24.dp, start = 24.dp, end = 24.dp)
+            .statusBarsPadding()
+            .padding(horizontal = 24.dp)
+            .padding(top = 16.dp)
     ) {
         Text(
             "Community Discovery",

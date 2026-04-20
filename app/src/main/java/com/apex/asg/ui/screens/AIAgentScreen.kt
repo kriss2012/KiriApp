@@ -92,7 +92,10 @@ fun AIAgentScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = padding.calculateTopPadding())
+                .padding(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding()
+                )
         ) {
             SpecializationSelector(
                 selected = vm.currentSpecialization.collectAsState().value,
