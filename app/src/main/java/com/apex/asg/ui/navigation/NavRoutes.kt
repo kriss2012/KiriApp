@@ -30,6 +30,7 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     }
     object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.SmartToy)
     object Jobs : Screen("jobs", "Jobs")
+    object AddEvent : Screen("add_event", "Add Event")
 }
 
 val BottomNavItems = listOf(

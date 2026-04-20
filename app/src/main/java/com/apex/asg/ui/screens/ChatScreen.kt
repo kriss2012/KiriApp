@@ -32,6 +32,7 @@ import androidx.compose.runtime.*
 import org.json.JSONObject
 import com.apex.asg.data.remote.SocketHandler
 import com.apex.asg.data.remote.ApiClient
+import com.apex.asg.ui.components.ClickableUrlText
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -335,12 +336,14 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
                 ),
                 shadowElevation = 0.5.dp
             ) {
-                Text(
+                ClickableUrlText(
                     text = message.content,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
-                    color = if (isFromMe) Color.White else TextPrimary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    lineHeight = 20.sp
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = if (isFromMe) Color.White else TextPrimary,
+                        lineHeight = 20.sp
+                    ),
+                    linkColor = if (isFromMe) Color.White else OrangePrimary
                 )
             }
             if (timeStr.isNotEmpty()) {

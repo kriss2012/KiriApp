@@ -42,5 +42,8 @@ export const getIO = () => {
 export const emitToUser = (userId: string, event: string, data: any) => {
     if (io) {
         io.to(`user_${userId}`).emit(event, data);
+        console.log(`[Socket] Emitted event '${event}' to room 'user_${userId}'`);
+    } else {
+        console.warn(`[Socket] Warning: io not initialized. Event '${event}' not sent to user_${userId}.`);
     }
 };

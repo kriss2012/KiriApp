@@ -22,6 +22,8 @@ fun SectionHeader(
     title: String,
     actionText: String,
     onActionClick: () -> Unit,
+    secondaryActionText: String? = null,
+    onSecondaryActionClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -36,12 +38,23 @@ fun SectionHeader(
             style = MaterialTheme.typography.titleSmall,
             color = TextPrimary
         )
-        Text(
-            text = actionText,
-            style = MaterialTheme.typography.labelSmall,
-            color = OrangePrimary,
-            modifier = Modifier.clickable { onActionClick() }
-        )
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            secondaryActionText?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = OrangePrimary,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { onSecondaryActionClick() }
+                )
+            }
+            Text(
+                text = actionText,
+                style = MaterialTheme.typography.labelSmall,
+                color = OrangePrimary,
+                modifier = Modifier.clickable { onActionClick() }
+            )
+        }
     }
 }
 

@@ -41,19 +41,34 @@ object SocketHandler {
         mSocket?.emit("join_room", roomId)
     }
 
-    fun listenForNotifications(onNewNotification: (JSONObject) -> Unit) {
-        mSocket?.off("new_notification")
-        mSocket?.on("new_notification") { args ->
-            val data = args[0] as JSONObject
-            onNewNotification(data)
-        }
-    }
+    /**
+     * PERMANENT FIX: Consolidated global listeners to prevent overwrites.
+     */
+    fun setupGlobalListeners(
+        onNotification: (JSONObject) -> Unit,
+        onMessage: (JSONObject) -> Unit,
+        onConnectionAccepted: (JSONObject) -> Unit
+    ) {
+        mSocket?.let { socket ->
+            // Clear existing to avoid leaks/duplicates
+            socket.off("new_notification")
+            socket.off("receive_message")
+            socket.off("connection_accepted")
 
-    fun listenForMessages(onNewMessage: (JSONObject) -> Unit) {
-        mSocket?.off("receive_message")
-        mSocket?.on("receive_message") { args ->
-            val data = args[0] as JSONObject
-            onNewMessage(data)
+            socket.on("new_notification") { args ->
+                val data = args[0] as JSONObject
+                onNotification(data)
+            }
+
+            socket.on("receive_message") { args ->
+                val data = args[0] as JSONObject
+                onMessage(data)
+            }
+
+            socket.on("connection_accepted") { args ->
+                val data = args[0] as JSONObject
+                onConnectionAccepted(data)
+            }
         }
     }
 

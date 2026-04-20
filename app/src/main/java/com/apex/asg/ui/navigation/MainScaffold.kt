@@ -46,28 +46,44 @@ fun MainScaffold(
         if (!userId.isNullOrEmpty()) {
             SocketHandler.setSocket(AppConfig.SOCKET_URL)
             SocketHandler.establishConnection()
-            SocketHandler.joinRoom("user_$userId")
             
-            // Listen for Global Notifications
-            SocketHandler.listenForNotifications { data ->
-                val title = data.optString("title", "New Alert")
-                val content = data.optString("content", "")
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = "🔔 $title: $content",
-                        duration = SnackbarDuration.Short
-                    )
-                }
+            // Wait for connection and then join room
+            SocketHandler.getSocket()?.on(io.socket.client.Socket.EVENT_CONNECT) {
+                SocketHandler.joinRoom("user_$userId")
             }
-
-            // Listen for Connection Acceptances
-            SocketHandler.listenForNotifications { data ->
-                if (data.optString("type") == "REQUEST") {
+            
+            // Unified Global Alert Hub
+            SocketHandler.setupGlobalListeners(
+                onNotification = { data ->
+                    val title = data.optString("title", "New Alert")
+                    val content = data.optString("content", "")
                     scope.launch {
-                        snackbarHostState.showSnackbar("🤝 Someone wants to connect!")
+                        snackbarHostState.showSnackbar(
+                            message = "🔔 $title: $content",
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                },
+                onMessage = { data ->
+                    val senderId = data.optJSONObject("sender")?.optString("fullName") ?: "Someone"
+                    val content = data.optString("content", "sent a message")
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "💬 $senderId: $content",
+                            duration = SnackbarDuration.Short
+                        )
+                    }
+                },
+                onConnectionAccepted = { data ->
+                    val receiverName = data.optJSONObject("receiver")?.optString("fullName") ?: "User"
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "🤝 Connection accepted by $receiverName!",
+                            duration = SnackbarDuration.Medium
+                        )
                     }
                 }
-            }
+            )
         }
     }
 

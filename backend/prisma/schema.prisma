@@ -187,6 +187,7 @@ model Event {
   description String
   date        DateTime
   location    String
+  imageUrl    String?  // Banner image for the event
   type        String   @default("GENERAL")
   ownerId     String
   owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])

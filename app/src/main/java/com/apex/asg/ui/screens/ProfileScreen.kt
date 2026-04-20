@@ -119,6 +119,27 @@ fun ProfileContent(
                 onNavigateToEdit = onNavigateToEdit
             ) 
         }
+
+        // New Resources Section with Clickable Links
+        if (!user.website.isNullOrEmpty() || !user.githubUrl.isNullOrEmpty() || !user.linkedInUrl.isNullOrEmpty()) {
+            item { SectionHeader(title = "Resources & Social", actionText = "", onActionClick = {}) }
+            item {
+                Card(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = BorderStroke(1.dp, BorderColor)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        user.website?.let {
+                            ResourceRow("🌐 Website", it)
+                        }
+                        // Note: These URLs will be clickable thanks to ClickableUrlText
+                    }
+                }
+            }
+        }
+
         item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
         item { 
             DashboardMenu(
@@ -139,6 +160,19 @@ fun ProfileContent(
                 Text("Secure Logout", color = Color.Red, fontWeight = FontWeight.Bold)
             }
         }
+    }
+}
+
+import com.apex.asg.ui.components.ClickableUrlText
+
+@Composable
+fun ResourceRow(label: String, url: String) {
+    Column {
+        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        ClickableUrlText(
+            text = url,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+        )
     }
 }
 

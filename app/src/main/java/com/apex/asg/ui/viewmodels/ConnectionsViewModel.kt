@@ -22,6 +22,13 @@ class ConnectionsViewModel : ViewModel() {
     val uiState: StateFlow<ConnectionsState> = _uiState.asStateFlow()
 
     fun fetchConnections(userId: String) {
+        // PERMANENT FIX: Listen for real-time acceptance to keep list fresh
+        com.apex.asg.data.remote.SocketHandler.setupGlobalListeners(
+            onNotification = {},
+            onMessage = {},
+            onConnectionAccepted = { fetchConnections(userId) }
+        )
+
         viewModelScope.launch {
             _uiState.value = ConnectionsState.Loading
             try {

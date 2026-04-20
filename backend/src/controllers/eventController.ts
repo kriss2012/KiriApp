@@ -16,9 +16,11 @@ export const createEvent = async (req: Request, res: Response) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (!user.canCreateEvents && user.role !== 'ADMIN') {
+    if (!user.canCreateEvents && user.role !== 'ADMIN' && user.role !== 'SPOC') {
       return res.status(403).json({ message: 'You do not have permission to create events. Please contact an admin.' });
     }
+
+    const { imageUrl } = req.body;
 
     const event = await prisma.event.create({
       data: {
@@ -26,6 +28,7 @@ export const createEvent = async (req: Request, res: Response) => {
         description,
         date: new Date(date),
         location,
+        imageUrl,
         type: type || 'GENERAL',
         ownerId
       }

@@ -186,5 +186,9 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         composable(Screen.Jobs.route) {
             JobBoardScreen()
         }
+
+        composable(Screen.AddEvent.route) {
+            AddEventScreen(onBack = { navController.popBackStack() })
+        }
     }
 }

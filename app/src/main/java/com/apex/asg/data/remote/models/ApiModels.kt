@@ -196,6 +196,7 @@ data class CreateEventRequest(
     val date: String,
     val location: String,
     val ownerId: String,
+    val imageUrl: String? = null,
     val type: String = "GENERAL"
 )
 
@@ -204,6 +205,8 @@ data class EventDto(
     val title: String,
     val description: String,
     val date: String,
+    val location: String,
+    val imageUrl: String? = null,
     val type: String? = null
 )
 

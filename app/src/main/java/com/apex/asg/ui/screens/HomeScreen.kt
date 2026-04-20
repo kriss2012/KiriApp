@@ -45,7 +45,8 @@ fun HomeScreen(
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToRepository: () -> Unit = {},
-    onNavigateToEvents: () -> Unit = {}
+    onNavigateToEvents: () -> Unit = {},
+    onNavigateToAddEvent: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -82,7 +83,8 @@ fun HomeScreen(
                         onNavigateToNotifications = onNavigateToNotifications,
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToRepository = onNavigateToRepository,
-                        onNavigateToEvents = onNavigateToEvents
+                        onNavigateToEvents = onNavigateToEvents,
+                        onNavigateToAddEvent = onNavigateToAddEvent
                     )
                 }
                 is HomeState.Error -> {
@@ -108,7 +110,8 @@ fun HomeContent(
     onNavigateToNotifications: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToRepository: () -> Unit,
-    onNavigateToEvents: () -> Unit
+    onNavigateToEvents: () -> Unit,
+    onNavigateToAddEvent: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -122,7 +125,14 @@ fun HomeContent(
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
         item { InnovationHubCard(onNavigateToHub = { /* TODO: onNavigateToHub */ }) }
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
-        item { UpcomingEventsSection(events, onNavigateToEvents = onNavigateToEvents) }
+        item { 
+            UpcomingEventsSection(
+                events, 
+                userRole = user.role,
+                onNavigateToEvents = onNavigateToEvents,
+                onNavigateToAddEvent = onNavigateToAddEvent
+            ) 
+        }
     }
 }
 
@@ -357,9 +367,20 @@ fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
 }
 
 @Composable
-fun UpcomingEventsSection(events: List<EventDto>, onNavigateToEvents: () -> Unit) {
+fun UpcomingEventsSection(
+    events: List<EventDto>, 
+    userRole: String,
+    onNavigateToEvents: () -> Unit,
+    onNavigateToAddEvent: () -> Unit
+) {
     Column {
-        SectionHeader(title = "Upcoming Events", actionText = "See all", onActionClick = onNavigateToEvents)
+        SectionHeader(
+            title = "Upcoming Events", 
+            actionText = "See all", 
+            onActionClick = onNavigateToEvents,
+            secondaryActionText = if (userRole == "ADMIN" || userRole == "SPOC") "Add" else null,
+            onSecondaryActionClick = onNavigateToAddEvent
+        )
         Column(
             modifier = Modifier.padding(horizontal = 14.dp),
             verticalArrangement = Arrangement.spacedBy(7.dp)
@@ -378,57 +399,97 @@ fun UpcomingEventsSection(events: List<EventDto>, onNavigateToEvents: () -> Unit
                         style = MaterialTheme.typography.bodySmall, 
                         color = TextSecondary
                     )
-                }
-            } else {
+                      } else {
                 events.forEach { event ->
                     EventItemCard(
-                        day = event.date.split("-").lastOrNull() ?: "01",
-                        month = "Apr",
-                        title = event.title,
-                        location = "Jalgaon, MH",
-                        tag = "Live",
-                        tagBg = OrangeLight,
-                        tagText = OrangeDark
+                        event = event,
+                        onClick = onNavigateToEvents
+                    )
+                }
+    @Composable
+fun EventItemCard(event: EventDto, onClick: () -> Unit) {
+    val dateParts = event.date.split("T").first().split("-")
+    val month = when(dateParts.getOrNull(1)) {
+        "01" -> "Jan"
+        "02" -> "Feb"
+        "03" -> "Mar"
+        "04" -> "Apr"
+        "05" -> "May"
+        "06" -> "Jun"
+        "07" -> "Jul"
+        "08" -> "Aug"
+        "09" -> "Sep"
+        "10" -> "Oct"
+        "11" -> "Nov"
+        "12" -> "Dec"
+        else -> "Apr"
+    }
+    val day = dateParts.lastOrNull() ?: "15"
+
+    Card(
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, BorderColor)
+    ) {
+        Column {
+            // Banner if exists
+            if (!event.imageUrl.isNullOrBlank()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(130.dp)
+                        .background(Color.LightGray)
+                ) {
+                    Text(
+                        "🖼️ Banner Tap to view", 
+                        modifier = Modifier.align(Alignment.Center), 
+                        color = Color.White,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+            
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(42.dp, 46.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(OrangeLight),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(day, style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black)
+                        Text(month.uppercase(), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold, fontSize = 8.sp)
+                    }
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(event.title, style = MaterialTheme.typography.bodyMedium, color = TextPrimary, fontWeight = FontWeight.Bold, maxLines = 1)
+                    Text(event.location, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                }
+                Surface(
+                    color = BluePrimary.copy(alpha = 0.1f), 
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "Live", 
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), 
+                        style = MaterialTheme.typography.labelSmall, 
+                        color = BluePrimary, 
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
         }
     }
 }
-
-@Composable
-fun EventItemCard(day: String, month: String, title: String, location: String, tag: String, tagBg: Color, tagText: Color) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(34.dp, 38.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(OrangeLight),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(day, style = MaterialTheme.typography.titleMedium, color = OrangePrimary, fontWeight = FontWeight.Black, lineHeight = 14.sp)
-                    Text(month.uppercase(), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold, fontSize = 7.sp)
-                }
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(location, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
-            }
-            Surface(color = tagBg, shape = RoundedCornerShape(6.dp)) {
-                Text(tag, modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp), style = MaterialTheme.typography.labelSmall, color = tagText, fontWeight = FontWeight.Bold, fontSize = 8.sp)
-            }
+ }
+}
+          }
         }
     }
 }
