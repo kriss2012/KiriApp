@@ -51,6 +51,9 @@ interface ASGApiService {
     @retrofit2.http.PATCH("notifications/{id}/read")
     suspend fun markNotificationAsRead(@Path("id") id: String): NotificationDto
 
+    @retrofit2.http.PATCH("notifications/mark-all-read/{userId}")
+    suspend fun markAllNotificationsAsRead(@Path("userId") userId: String): Map<String, String>
+
     // Connections
     @POST("connections/send")
     suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
