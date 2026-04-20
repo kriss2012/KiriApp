@@ -28,16 +28,31 @@ import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.NotificationState
 import com.apex.asg.ui.viewmodels.NotificationViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, com.google.accompanist.permissions.ExperimentalPermissionsApi::class)
 @Composable
 fun NotificationScreen(
     onBack: () -> Unit,
+    onNavigateToChat: (String) -> Unit,
+    onNavigateToProfile: (String) -> Unit,
+    onNavigateToEvents: () -> Unit,
     viewModel: NotificationViewModel = viewModel()
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
+
+    // Notification Permission Handling
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        val permissionState = com.google.accompanist.permissions.rememberPermissionState(
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
+        LaunchedEffect(Unit) {
+            if (!permissionState.status.isGranted) {
+                permissionState.launchPermissionRequest()
+            }
+        }
+    }
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
@@ -53,10 +68,17 @@ fun NotificationScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
+                },
+                actions = {
+                    if (uiState is NotificationState.Success && (uiState as NotificationState.Success).notifications.any { !it.isRead }) {
+                        TextButton(onClick = { viewModel.markAllAsRead(userId) }) {
+                            Text("Mark all read", color = OrangePrimary, style = MaterialTheme.typography.labelMedium)
+                        }
+                    }
                 }
             )
         },
-        containerColor = Color.Transparent
+        containerColor = BgCream
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (val state = uiState) {
@@ -71,7 +93,14 @@ fun NotificationScreen(
                             notifications = state.notifications,
                             userId = userId,
                             onMarkRead = { id -> viewModel.markAsRead(id, userId) },
-                            onAccept = { notifId, connId -> viewModel.acceptConnection(notifId, connId, userId) }
+                            onAccept = { notifId, connId -> viewModel.acceptConnection(notifId, connId, userId) },
+                            onNavigate = { type, relatedId ->
+                                when (type) {
+                                    "MESSAGE" -> relatedId?.let { onNavigateToChat(it) }
+                                    "REQUEST" -> relatedId?.let { onNavigateToProfile(it) }
+                                    "EVENT" -> onNavigateToEvents()
+                                }
+                            }
                         )
                     }
                 }
@@ -88,17 +117,21 @@ fun NotificationList(
     notifications: List<NotificationDto>,
     userId: String,
     onMarkRead: (String) -> Unit,
-    onAccept: (String, String) -> Unit
+    onAccept: (String, String) -> Unit,
+    onNavigate: (String, String?) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(notifications) { notification ->
+        items(notifications, key = { it.id }) { notification ->
             NotificationItem(
                 notification = notification, 
-                onClick = { onMarkRead(notification.id) },
+                onClick = { 
+                    onMarkRead(notification.id)
+                    onNavigate(notification.type, notification.relatedId)
+                },
                 onAccept = { connId -> onAccept(notification.id, connId) },
                 onDecline = { onMarkRead(notification.id) }
             )
@@ -130,7 +163,7 @@ fun NotificationItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { if (!notification.isRead && notification.type != "REQUEST") onClick() },
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (notification.isRead) Color.White.copy(alpha = 0.6f) else Color.White
@@ -166,15 +199,15 @@ fun NotificationItem(
                         lineHeight = 14.sp
                     )
                     Text(
-                        text = notification.createdAt.take(10), // Simple date extraction
+                        text = getRelativeTime(notification.createdAt),
                         style = MaterialTheme.typography.labelSmall,
                         color = TextSecondary.copy(alpha = 0.5f),
-                        fontSize = 8.sp,
+                        fontSize = 10.sp,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
 
-                if (!notification.isRead && notification.type != "REQUEST") {
+                if (!notification.isRead) {
                     Box(
                         modifier = Modifier
                             .size(8.dp)
@@ -215,6 +248,17 @@ fun NotificationItem(
     }
 }
 
+fun getRelativeTime(dateStr: String): String {
+    return try {
+        // Simple relative time logic for demo
+        val parts = dateStr.split("T")
+        if (parts.size > 1) {
+            val time = parts[1].substring(0, 5)
+            "at $time"
+        } else "Recent"
+    } catch (e: Exception) { "Just now" }
+}
+
 @Composable
 fun EmptyNotifications(modifier: Modifier = Modifier) {
     Column(
@@ -222,13 +266,24 @@ fun EmptyNotifications(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
-            Icons.Default.Notifications,
+            Icons.Default.NotificationsNone,
             contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = TextSecondary.copy(alpha = 0.3f)
+            modifier = Modifier.size(80.dp),
+            tint = TextSecondary.copy(alpha = 0.1f)
         )
         Spacer(Modifier.height(16.dp))
-        Text("No related data found", style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
-        Text("We'll alert you when something happens!", style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f))
+        Text(
+            "You're all caught up!", 
+            style = MaterialTheme.typography.titleMedium, 
+            fontWeight = FontWeight.Bold,
+            color = TextPrimary
+        )
+        Text(
+            "We'll alert you when something happens.", 
+            style = MaterialTheme.typography.bodySmall, 
+            color = TextSecondary.copy(alpha = 0.7f),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+        Spacer(Modifier.height(24.dp))
     }
 }
