@@ -47,11 +47,11 @@ class JobViewModel : ViewModel() {
         }
     }
 
-    fun postJob(title: String, description: String, location: String?, type: String, posterId: String, onComplete: (Boolean) -> Unit) {
+    fun postJob(context: android.content.Context, title: String, description: String, location: String?, type: String, posterId: String, onComplete: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
                 ApiClient.service.createJob(CreateJobRequest(title, description, location, type, posterId))
-                fetchJobs() // Refresh
+                fetchJobs(context) // Refresh after successful post
                 onComplete(true)
             } catch (e: Exception) {
                 onComplete(false)
