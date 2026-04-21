@@ -23,6 +23,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.models.EventDto
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.apex.asg.ui.viewmodels.*
 import androidx.compose.ui.platform.LocalContext
 
