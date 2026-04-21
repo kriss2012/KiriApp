@@ -40,6 +40,14 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
 
     fun performSearch() {
         coroutineScope.launch {
+            // Load from cache first for immediate offline view if no query
+            if (searchQuery.isEmpty() && selectedCategory == "ALL") {
+                val cached = com.apex.asg.data.CacheManager.getCache(context, "search_results_all", object : com.google.gson.reflect.TypeToken<List<UserResponse>>() {})
+                if (cached != null && userResults.isEmpty()) {
+                    userResults = cached.filter { it.id != currentUserId }
+                }
+            }
+
             isLoading = true
             try {
                 val results = ApiClient.service.getUsers(
@@ -47,8 +55,16 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
                     role = if (selectedCategory != "ALL") selectedCategory else null
                 )
                 userResults = results.filter { it.id != currentUserId }
+                
+                // Cache the "ALL" results for offline discovery
+                if (searchQuery.isEmpty() && selectedCategory == "ALL") {
+                    com.apex.asg.data.CacheManager.saveCache(context, "search_results_all", results)
+                }
             } catch (e: Exception) {
-                userResults = emptyList()
+                // Keep cached results if network fails
+                if (userResults.isEmpty()) {
+                    userResults = emptyList()
+                }
             }
             isLoading = false
         }
