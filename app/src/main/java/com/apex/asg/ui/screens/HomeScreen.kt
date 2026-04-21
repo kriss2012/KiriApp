@@ -55,8 +55,8 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(userId) {
-        if (userId.isNotEmpty()) {
-            viewModel.loadHomeData(userId)
+        if (!userId.isNullOrEmpty()) {
+            viewModel.loadHomeData(context, userId)
         }
     }
 
