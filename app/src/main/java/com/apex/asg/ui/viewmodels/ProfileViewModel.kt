@@ -80,15 +80,18 @@ class ProfileViewModel : ViewModel() {
                 )
                 
                 // PERMANENT SYNC: Save to Cache AND SessionManager
-                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", updatedUser)
+                val cacheSuccess = com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", updatedUser)
                 val sessionManager = com.apex.asg.data.SessionManager.getInstance(context)
                 sessionManager.saveUserName(updatedUser.fullName)
                 sessionManager.saveUserRole(updatedUser.role)
                 sessionManager.setCanCreateEvents(updatedUser.canCreateEvents)
                 
+                // Final Emit
                 _uiState.value = ProfileState.Success(updatedUser)
             } catch (e: Exception) {
-                _uiState.value = ProfileState.Error(e.message ?: "Failed to update profile")
+                val errorMsg = e.message ?: "Failed to update profile"
+                _uiState.value = ProfileState.Error(errorMsg)
+                // Also update logger if possible, but state is enough for UI feedback
             }
         }
     }
