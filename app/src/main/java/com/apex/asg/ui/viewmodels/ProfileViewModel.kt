@@ -20,19 +20,30 @@ class ProfileViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<ProfileState>(ProfileState.Idle)
     val uiState: StateFlow<ProfileState> = _uiState.asStateFlow()
 
-    fun fetchProfile(userId: String) {
+    fun fetchProfile(context: android.content.Context, userId: String) {
         viewModelScope.launch {
-            _uiState.value = ProfileState.Loading
+            // Offline view first
+            val cached = com.apex.asg.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+            if (cached != null) {
+                _uiState.value = ProfileState.Success(cached)
+            } else {
+                _uiState.value = ProfileState.Loading
+            }
+
             try {
                 val user = ApiClient.service.getProfile(userId)
+                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", user)
                 _uiState.value = ProfileState.Success(user)
             } catch (e: Exception) {
-                _uiState.value = ProfileState.Error(e.message ?: "Failed to fetch profile")
+                if (_uiState.value !is ProfileState.Success) {
+                    _uiState.value = ProfileState.Error(e.message ?: "Failed to fetch profile")
+                }
             }
         }
     }
 
     fun updateProfile(
+        context: android.content.Context,
         userId: String, 
         fullName: String, 
         role: String, 
@@ -67,6 +78,14 @@ class ProfileViewModel : ViewModel() {
                     userId = userId,
                     profileData = profileData
                 )
+                
+                // PERMANENT SYNC: Save to Cache AND SessionManager
+                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", updatedUser)
+                val sessionManager = com.apex.asg.data.SessionManager.getInstance(context)
+                sessionManager.saveUserName(updatedUser.fullName)
+                sessionManager.saveUserRole(updatedUser.role)
+                sessionManager.setCanCreateEvents(updatedUser.canCreateEvents)
+                
                 _uiState.value = ProfileState.Success(updatedUser)
             } catch (e: Exception) {
                 _uiState.value = ProfileState.Error(e.message ?: "Failed to update profile")
