@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import androidx.compose.runtime.collectAsState
-
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.models.EventDto
@@ -77,57 +76,16 @@ fun EventsScreen(
                 Text("Upcoming Events", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
             }
 
-        // Tabs
-        LazyRow(
-            modifier = Modifier.padding(0.dp, 5.dp, 0.dp, 10.dp),
-            contentPadding = PaddingValues(horizontal = 14.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
-        ) {
-            items(tabs) { tab ->
-                val isSelected = selectedTab == tab
-                Column(
-                    modifier = Modifier.clickable { selectedTab = tab },
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = tab,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = if (isSelected) OrangePrimary else TextSecondary,
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                    )
-                    if (isSelected) {
-                        Box(
-                            modifier = Modifier
-                                .padding(top = 4.dp)
-                                .height(2.dp)
-                                .width(20.dp)
-                                .background(OrangePrimary)
-                        )
-                    }
-                }
-            }
-        }
-
-        Box(modifier = Modifier.fillMaxSize()) {
-            when (val state = uiState) {
-                is EventsState.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = OrangePrimary
-                    )
-                }
-                is EventsState.Success -> {
-                    val filteredEvents = if (selectedTab == "All") state.events else state.events.filter { it.title.contains(selectedTab, ignoreCase = true) }
-                    
-                    if (filteredEvents.isEmpty()) {
-                        Text("No related data found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
-                    } else {
-                        EventsList(filteredEvents)
-                    }
-                }
-                is EventsState.Error -> {
+            // Tabs
+            LazyRow(
+                modifier = Modifier.padding(0.dp, 5.dp, 0.dp, 10.dp),
+                contentPadding = PaddingValues(horizontal = 14.dp),
+                horizontalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                items(tabs) { tab ->
+                    val isSelected = selectedTab == tab
                     Column(
-                        modifier = Modifier.align(Alignment.Center),
+                        modifier = Modifier.clickable { selectedTab = tab },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
