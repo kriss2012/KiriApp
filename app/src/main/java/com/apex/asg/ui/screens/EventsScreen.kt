@@ -43,27 +43,36 @@ fun EventsScreen(
         viewModel.fetchEvents(context)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(BgCream)
-            .padding(bottom = 20.dp)
-    ) {
-        // Header
-        Row(
-            modifier = Modifier.padding(18.dp, 10.dp).fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("Upcoming Events", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
+    Scaffold(
+        containerColor = BgCream,
+        floatingActionButton = {
             if (sessionManager.canCreateEvents()) {
-                IconButton(onClick = { 
-                    navController.navigate(com.apex.asg.ui.navigation.Screen.AddEvent.route)
-                }) {
-                    Text("+", fontSize = 24.sp, color = OrangePrimary, fontWeight = FontWeight.Black)
-                }
+                ExtendedFloatingActionButton(
+                    onClick = { navController.navigate(com.apex.asg.ui.navigation.Screen.AddEvent.route) },
+                    containerColor = OrangePrimary,
+                    contentColor = Color.White,
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text = { Text("Broadcast Event", fontWeight = FontWeight.Bold) },
+                    shape = RoundedCornerShape(16.dp)
+                )
             }
         }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .background(BgCream)
+                .padding(bottom = 20.dp)
+        ) {
+            // Header
+            Row(
+                modifier = Modifier.padding(18.dp, 10.dp).fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Upcoming Events", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
+            }
 
         // Tabs
         LazyRow(
