@@ -24,14 +24,25 @@ class JobViewModel : ViewModel() {
         fetchJobs()
     }
 
-    fun fetchJobs() {
+    fun fetchJobs(context: android.content.Context) {
         viewModelScope.launch {
-            _uiState.value = JobState.Loading
+            // Load from cache first for immediate offline view
+            val cached = com.apex.asg.data.CacheManager.getCache(context, "jobs_list", object : com.google.gson.reflect.TypeToken<List<JobDto>>() {})
+            if (cached != null) {
+                _uiState.value = JobState.Success(cached)
+            } else {
+                _uiState.value = JobState.Loading
+            }
+
             try {
                 val jobs = ApiClient.service.getJobs()
+                // Save to cache
+                com.apex.asg.data.CacheManager.saveCache(context, "jobs_list", jobs)
                 _uiState.value = JobState.Success(jobs)
             } catch (e: Exception) {
-                _uiState.value = JobState.Error(e.message ?: "Failed to fetch jobs")
+                if (_uiState.value !is JobState.Success) {
+                    _uiState.value = JobState.Error(e.message ?: "Failed to fetch jobs")
+                }
             }
         }
     }
