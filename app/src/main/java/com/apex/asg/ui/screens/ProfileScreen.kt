@@ -57,9 +57,9 @@ fun ProfileScreen(
     // Refresh data on every Resume (e.g. when coming back from Edit)
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
                 if (userId.isNotEmpty()) {
-                    viewModel.fetchProfile(userId)
+                    viewModel.fetchProfile(context, userId)
                 }
             }
         }
