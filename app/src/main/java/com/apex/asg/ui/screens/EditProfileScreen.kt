@@ -118,6 +118,7 @@ fun EditProfileScreen(
             Button(
                 onClick = {
                     viewModel.updateProfile(
+                        context = context,
                         userId = userId,
                         fullName = fullName,
                         role = role,
