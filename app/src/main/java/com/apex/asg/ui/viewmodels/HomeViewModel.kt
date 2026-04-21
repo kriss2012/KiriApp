@@ -20,15 +20,31 @@ class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState.asStateFlow()
 
-    fun loadHomeData(userId: String) {
+    fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
-            _uiState.value = HomeState.Loading
+            // First, try to load from cache for immediate offline view
+            val cachedUser = com.apex.asg.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+            val cachedEvents = com.apex.asg.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+            
+            if (cachedUser != null && cachedEvents != null) {
+                _uiState.value = HomeState.Success(cachedUser, cachedEvents)
+            } else {
+                _uiState.value = HomeState.Loading
+            }
+
             try {
                 val user = ApiClient.service.getProfile(userId)
-                val events = ApiClient.service.getEvents()
-                _uiState.value = HomeState.Success(user, events.take(3))
+                val events = ApiClient.service.getEvents().take(3)
+                
+                // SAVE to cache for next time
+                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", user)
+                com.apex.asg.data.CacheManager.saveCache(context, "home_events", events)
+                
+                _uiState.value = HomeState.Success(user, events)
             } catch (e: Exception) {
-                _uiState.value = HomeState.Error(e.message ?: "Failed to load home data")
+                if (_uiState.value !is HomeState.Success) {
+                    _uiState.value = HomeState.Error(e.message ?: "Failed to load home data")
+                }
             }
         }
     }
