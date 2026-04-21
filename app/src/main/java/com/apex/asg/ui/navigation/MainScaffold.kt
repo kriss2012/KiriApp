@@ -70,33 +70,18 @@ fun MainScaffold(
             // Unified Global Alert Hub
             SocketHandler.setupGlobalListeners(
                 onNotification = { data ->
-                    val title = data.optString("title", "New Alert")
+                    val title = data.optString("title", "ASG Alert")
                     val content = data.optString("content", "")
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = "🔔 $title: $content",
-                            duration = SnackbarDuration.Short
-                        )
-                    }
+                    com.apex.asg.utils.NotificationHelper.showNotification(context, title, content)
                 },
                 onMessage = { data ->
-                    val senderId = data.optJSONObject("sender")?.optString("fullName") ?: "Someone"
-                    val content = data.optString("content", "sent a message")
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = "💬 $senderId: $content",
-                            duration = SnackbarDuration.Short
-                        )
-                    }
+                    val senderName = data.optJSONObject("sender")?.optString("fullName") ?: "New Message"
+                    val content = data.optString("content", "")
+                    com.apex.asg.utils.NotificationHelper.showNotification(context, senderName, content)
                 },
                 onConnectionAccepted = { data ->
-                    val receiverName = data.optJSONObject("receiver")?.optString("fullName") ?: "User"
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = "🤝 Connection accepted by $receiverName!",
-                            duration = SnackbarDuration.Long
-                        )
-                    }
+                    val receiverName = data.optJSONObject("receiver")?.optString("fullName") ?: "ASG Community"
+                    com.apex.asg.utils.NotificationHelper.showNotification(context, "Connection Accepted", "You are now connected with $receiverName!")
                 }
             )
         }
