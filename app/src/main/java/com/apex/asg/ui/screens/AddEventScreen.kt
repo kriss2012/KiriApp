@@ -108,25 +108,15 @@ fun AddEventScreen(onBack: () -> Unit) {
             Button(
                 onClick = {
                     if (title.isNotEmpty() && date.isNotEmpty()) {
-                        isSubmitting = true
-                        scope.launch {
-                            try {
-                                val request = CreateEventRequest(
-                                    title = title,
-                                    description = description,
-                                    date = date,
-                                    location = location,
-                                    ownerId = userId,
-                                    imageUrl = if (imageUrl.isBlank()) null else imageUrl
-                                )
-                                ApiClient.service.createEvent(context, request)
-                                onBack() // Go back after success
-                            } catch (e: Exception) {
-                                // Handle error
-                            } finally {
-                                isSubmitting = false
-                            }
-                        }
+                        viewModel.createEvent(
+                            context = context,
+                            title = title,
+                            description = description,
+                            date = date,
+                            location = location,
+                            ownerId = userId
+                        )
+                        onBack() // Navigate back immediately as ViewModel handles loading/state
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
