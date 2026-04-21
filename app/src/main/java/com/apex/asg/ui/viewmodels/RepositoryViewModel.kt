@@ -21,17 +21,29 @@ class RepositoryViewModel : ViewModel() {
     val uiState: StateFlow<RepositoryState> = _uiState.asStateFlow()
 
     init {
-        fetchVerifiedUsers()
+        // Fetch is now initiated by the screen with context for caching support
     }
 
-    fun fetchVerifiedUsers() {
+    fun fetchVerifiedUsers(context: android.content.Context) {
         viewModelScope.launch {
-            _uiState.value = RepositoryState.Loading
+            // Offline view first
+            val cached = com.apex.asg.data.CacheManager.getCache(context, "verified_users", object : com.google.gson.reflect.TypeToken<List<UserDto>>() {})
+            if (cached != null) {
+                _uiState.value = RepositoryState.Success(cached)
+            } else {
+                _uiState.value = RepositoryState.Loading
+            }
+
             try {
                 val users = ApiClient.service.getVerifiedUsers()
+                // Update Cache
+                com.apex.asg.data.CacheManager.saveCache(context, "verified_users", users)
                 _uiState.value = RepositoryState.Success(users)
             } catch (e: Exception) {
-                _uiState.value = RepositoryState.Error(e.message ?: "Failed to fetch users")
+                // If we have cached data, stay in Success state. Otherwise show error.
+                if (_uiState.value !is RepositoryState.Success) {
+                    _uiState.value = RepositoryState.Error(e.message ?: "Failed to fetch users")
+                }
             }
         }
     }
