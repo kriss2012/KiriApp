@@ -17,6 +17,11 @@ import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
 
 import com.apex.asg.data.remote.SocketHandler
+import com.apex.asg.utils.NotificationHelper
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -29,9 +34,17 @@ class MainActivity : ComponentActivity() {
         val sessionManager = SessionManager.getInstance(this)
         ApiClient.setToken(sessionManager.getToken())
 
-        // Init Sockets
+        // Init Sockets & Notifications
+        NotificationHelper.createNotificationChannel(this)
         SocketHandler.setSocket(com.apex.asg.utils.AppConfig.SOCKET_URL)
         SocketHandler.establishConnection()
+        
+        // Request Notification Permission (Android 13+)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                registerForActivityResult(ActivityResultContracts.RequestPermission()) {}.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
 
         setContent {
             ASGAppTheme {
