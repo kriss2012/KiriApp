@@ -119,7 +119,7 @@ fun AddEventScreen(onBack: () -> Unit) {
                                     ownerId = userId,
                                     imageUrl = if (imageUrl.isBlank()) null else imageUrl
                                 )
-                                ApiClient.service.createEvent(request)
+                                ApiClient.service.createEvent(context, request)
                                 onBack() // Go back after success
                             } catch (e: Exception) {
                                 // Handle error
