@@ -94,7 +94,7 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(state.message, color = Color.Red, fontSize = 14.sp)
-                        Button(onClick = { viewModel.loadHomeData(userId) }) {
+                        Button(onClick = { viewModel.loadHomeData(context, userId) }) {
                             Text("Retry")
                         }
                     }
