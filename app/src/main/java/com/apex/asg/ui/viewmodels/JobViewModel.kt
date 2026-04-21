@@ -21,7 +21,7 @@ class JobViewModel : ViewModel() {
     val uiState: StateFlow<JobState> = _uiState.asStateFlow()
 
     init {
-        fetchJobs()
+        // Fetch is now initiated by the screen with context
     }
 
     fun fetchJobs(context: android.content.Context) {
