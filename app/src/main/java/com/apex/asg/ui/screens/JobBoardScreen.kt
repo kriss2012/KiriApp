@@ -73,7 +73,7 @@ fun JobBoardScreen(
                 is JobState.Error -> {
                     Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(state.message, color = Color.Red, fontSize = 14.sp)
-                        Button(onClick = { viewModel.fetchJobs() }) {
+                        Button(onClick = { viewModel.fetchJobs(context) }) {
                             Text("Retry")
                         }
                     }
