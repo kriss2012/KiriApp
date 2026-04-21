@@ -104,7 +104,7 @@ fun ProfileScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(state.message, color = Color.Red, fontSize = 14.sp)
-                        Button(onClick = { viewModel.fetchProfile(userId) }) {
+                        Button(onClick = { viewModel.fetchProfile(context, userId) }) {
                             Text("Retry")
                         }
                     }
