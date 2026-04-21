@@ -59,7 +59,7 @@ fun NotificationScreen(
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
-            viewModel.fetchNotifications(userId)
+            viewModel.fetchNotifications(context, userId)
         }
     }
 
@@ -74,7 +74,7 @@ fun NotificationScreen(
                 },
                 actions = {
                     if (uiState is NotificationState.Success && (uiState as NotificationState.Success).notifications.any { !it.isRead }) {
-                        TextButton(onClick = { viewModel.markAllAsRead(userId) }) {
+                        TextButton(onClick = { viewModel.markAllAsRead(context, userId) }) {
                             Text("Mark all read", color = OrangePrimary, style = MaterialTheme.typography.labelMedium)
                         }
                     }
@@ -95,8 +95,8 @@ fun NotificationScreen(
                         NotificationList(
                             notifications = state.notifications,
                             userId = userId,
-                            onMarkRead = { id -> viewModel.markAsRead(id, userId) },
-                            onAccept = { notifId, connId -> viewModel.acceptConnection(notifId, connId, userId) },
+                            onMarkRead = { id -> viewModel.markAsRead(context, id, userId) },
+                            onAccept = { notifId, connId -> viewModel.acceptConnection(context, notifId, connId, userId) },
                             onNavigate = { type, relatedId ->
                                 when (type) {
                                     "MESSAGE" -> relatedId?.let { onNavigateToChat(it) }
