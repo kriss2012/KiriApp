@@ -48,7 +48,7 @@ fun EditProfileScreen(
 
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
-            viewModel.fetchProfile(userId)
+            viewModel.fetchProfile(context, userId)
         }
     }
 
