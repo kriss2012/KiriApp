@@ -21,14 +21,25 @@ class EventsViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<EventsState>(EventsState.Idle)
     val uiState: StateFlow<EventsState> = _uiState.asStateFlow()
 
-    fun fetchEvents() {
+    fun fetchEvents(context: android.content.Context) {
         viewModelScope.launch {
-            _uiState.value = EventsState.Loading
+            // Load from cache for immediate offline view
+            val cached = com.apex.asg.data.CacheManager.getCache(context, "events_list", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+            if (cached != null) {
+                _uiState.value = EventsState.Success(cached)
+            } else {
+                _uiState.value = EventsState.Loading
+            }
+
             try {
                 val events = ApiClient.service.getEvents()
+                // Save to cache
+                com.apex.asg.data.CacheManager.saveCache(context, "events_list", events)
                 _uiState.value = EventsState.Success(events)
             } catch (e: Exception) {
-                _uiState.value = EventsState.Error(e.message ?: "Failed to fetch events")
+                if (_uiState.value !is EventsState.Success) {
+                    _uiState.value = EventsState.Error(e.message ?: "Failed to fetch events")
+                }
             }
         }
     }
