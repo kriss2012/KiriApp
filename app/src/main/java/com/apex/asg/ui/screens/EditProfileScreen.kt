@@ -46,6 +46,9 @@ fun EditProfileScreen(
     var servicesStr by remember { mutableStateOf("") }
     var isSaving by remember { mutableStateOf(false) }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
             viewModel.fetchProfile(context, userId)
@@ -53,7 +56,9 @@ fun EditProfileScreen(
     }
 
     LaunchedEffect(uiState) {
-        if (uiState is ProfileState.Success) {
+        // ONLY populate fields if we are NOT currently saving
+        // This prevents the "Success" emit during save from overwriting the local edited state before navigation
+        if (uiState is ProfileState.Success && !isSaving) {
             val user = (uiState as ProfileState.Success).user
             fullName = user.fullName
             bio = user.bio ?: ""
@@ -67,16 +72,25 @@ fun EditProfileScreen(
             linkedInUrl = user.linkedInUrl ?: ""
             servicesStr = user.services.joinToString(", ")
         }
+        
+        if (uiState is ProfileState.Error) {
+            scope.launch {
+                snackbarHostState.showSnackbar((uiState as ProfileState.Error).message)
+            }
+            isSaving = false
+        }
     }
 
     LaunchedEffect(uiState) {
         if (isSaving && uiState is ProfileState.Success) {
+            android.widget.Toast.makeText(context, "Profile Updated Successfully!", android.widget.Toast.LENGTH_SHORT).show()
             onBack()
             isSaving = false
         }
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text("Edit Profile", fontWeight = FontWeight.Bold) },
@@ -117,6 +131,7 @@ fun EditProfileScreen(
 
             Button(
                 onClick = {
+                    val cleanServices = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                     viewModel.updateProfile(
                         context = context,
                         userId = userId,
@@ -130,7 +145,7 @@ fun EditProfileScreen(
                         website = website,
                         githubUrl = githubUrl,
                         linkedInUrl = linkedInUrl,
-                        services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+                        services = cleanServices
                     )
                     isSaving = true
                 },
@@ -141,7 +156,7 @@ fun EditProfileScreen(
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
             ) {
-                if (uiState is ProfileState.Loading) {
+                if (isSaving && uiState is ProfileState.Loading) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
                     Text("Save Changes", fontSize = 16.sp, fontWeight = FontWeight.Bold)
