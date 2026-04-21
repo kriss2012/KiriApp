@@ -54,11 +54,21 @@ fun ProfileScreen(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     
-    // Refresh data on every Resume (e.g. when coming back from Edit)
+    // Fetch data when screen is composed or userId changes
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            viewModel.fetchProfile(context, userId)
+        }
+    }
+
+    // Still refresh on Resume, but only once per resume event
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                if (userId.isNotEmpty()) {
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // We could add a timestamp check here to prevent rapid multiple refreshes
+                // but fetchProfile already has its own internal state management.
+                // However, let's only refresh if we aren't already loading.
+                if (userId.isNotEmpty() && uiState !is ProfileState.Loading) {
                     viewModel.fetchProfile(context, userId)
                 }
             }
