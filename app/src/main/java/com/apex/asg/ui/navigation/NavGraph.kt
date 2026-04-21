@@ -132,7 +132,7 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
         
         composable(Screen.Events.route) {
-            EventsScreen()
+            EventsScreen(navController = navController)
         }
         
         composable(Screen.Profile.route) {
@@ -184,7 +184,7 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         }
 
         composable(Screen.Jobs.route) {
-            JobBoardScreen()
+            JobBoardScreen(navController = navController)
         }
 
         composable(Screen.AddEvent.route) {
