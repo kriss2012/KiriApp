@@ -21,10 +21,15 @@ import com.apex.asg.data.remote.ApiClient
 import com.apex.asg.data.remote.models.CreateEventRequest
 import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.apex.asg.ui.viewmodels.EventsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEventScreen(onBack: () -> Unit) {
+fun AddEventScreen(
+    onBack: () -> Unit,
+    viewModel: EventsViewModel = viewModel()
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
