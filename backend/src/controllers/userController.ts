@@ -95,6 +95,8 @@ export const updateProfile = async (req: Request, res: Response) => {
     // Robustness: Ensure role matches Enum casing (Prisma is strict)
     const normalizedRole = role ? role.toString().toUpperCase() : undefined;
 
+    console.log(`[UpdateProfile] Updating user ${userId} with data:`, req.body);
+
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
@@ -116,6 +118,8 @@ export const updateProfile = async (req: Request, res: Response) => {
         services
       }
     });
+
+    console.log(`[UpdateProfile] Successfully updated user ${userId}`);
 
     res.status(200).json(user);
   } catch (error: any) {
