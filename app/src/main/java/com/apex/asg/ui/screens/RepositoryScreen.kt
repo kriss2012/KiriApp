@@ -39,6 +39,12 @@ fun RepositoryScreen(
     val filters = listOf("All", "STUDENT", "FOUNDER", "INVESTOR", "MENTOR", "SPOC", "ADMIN")
     val uiState by viewModel.uiState.collectAsState()
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchVerifiedUsers(context)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -99,7 +105,19 @@ fun RepositoryScreen(
                     RepositoryContent(filteredUsers, onNavigateToProfile)
                 }
                 is RepositoryState.Error -> {
-                    Text(state.message, color = Color.Red, modifier = Modifier.align(Alignment.Center))
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, color = Color.Red, style = MaterialTheme.typography.bodySmall)
+                        Spacer(Modifier.height(8.dp))
+                        Button(
+                            onClick = { viewModel.fetchVerifiedUsers(context) },
+                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                        ) {
+                            Text("Retry", color = Color.White)
+                        }
+                    }
                 }
             }
         }
