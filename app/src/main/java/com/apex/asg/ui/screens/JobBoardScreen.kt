@@ -31,11 +31,18 @@ import androidx.compose.runtime.*
 import com.apex.asg.ui.components.ClickableUrlText
 
 @Composable
-fun JobBoardScreen(viewModel: JobViewModel = viewModel()) {
+fun JobBoardScreen(
+    navController: androidx.navigation.NavController,
+    viewModel: JobViewModel = viewModel()
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userRole = sessionManager.getUserRole() ?: "STUDENT"
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchJobs(context)
+    }
 
     Scaffold(
         containerColor = BgCream,
