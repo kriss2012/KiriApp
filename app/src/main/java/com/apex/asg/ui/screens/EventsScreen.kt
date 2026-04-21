@@ -130,13 +130,55 @@ fun EventsScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.message, color = Color.Red, fontSize = 14.sp)
-                        Button(onClick = { viewModel.fetchEvents() }) {
-                            Text("Retry")
+                        Text(
+                            text = tab,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = if (isSelected) OrangePrimary else TextSecondary,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                        )
+                        if (isSelected) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(top = 4.dp)
+                                    .height(2.dp)
+                                    .width(20.dp)
+                                    .background(OrangePrimary)
+                            )
                         }
                     }
                 }
-                else -> {}
+            }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                when (val state = uiState) {
+                    is EventsState.Loading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = OrangePrimary
+                        )
+                    }
+                    is EventsState.Success -> {
+                        val filteredEvents = if (selectedTab == "All") state.events else state.events.filter { it.title.contains(selectedTab, ignoreCase = true) }
+                        
+                        if (filteredEvents.isEmpty()) {
+                            Text("No related data found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                        } else {
+                            EventsList(filteredEvents)
+                        }
+                    }
+                    is EventsState.Error -> {
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(state.message, color = Color.Red, fontSize = 14.sp)
+                            Button(onClick = { viewModel.fetchEvents(context) }) {
+                                Text("Retry")
+                            }
+                        }
+                    }
+                    else -> {}
+                }
             }
         }
     }
