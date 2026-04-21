@@ -27,7 +27,10 @@ import com.apex.asg.ui.viewmodels.*
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-fun EventsScreen(viewModel: EventsViewModel = viewModel()) {
+fun EventsScreen(
+    navController: androidx.navigation.NavController,
+    viewModel: EventsViewModel = viewModel()
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
@@ -37,7 +40,7 @@ fun EventsScreen(viewModel: EventsViewModel = viewModel()) {
     val tabs = listOf("All", "Hackathon", "Competition", "Workshop", "Seminar")
 
     LaunchedEffect(Unit) {
-        viewModel.fetchEvents()
+        viewModel.fetchEvents(context)
     }
 
     Column(
@@ -54,8 +57,10 @@ fun EventsScreen(viewModel: EventsViewModel = viewModel()) {
         ) {
             Text("Upcoming Events", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
             if (sessionManager.canCreateEvents()) {
-                IconButton(onClick = { /* TODO: Open Create Event Dialog */ }) {
-                    Text("+", fontSize = 24.sp, color = OrangePrimary, fontWeight = FontWeight.Bold)
+                IconButton(onClick = { 
+                    navController.navigate(com.apex.asg.ui.navigation.Screen.AddEvent.route)
+                }) {
+                    Text("+", fontSize = 24.sp, color = OrangePrimary, fontWeight = FontWeight.Black)
                 }
             }
         }
