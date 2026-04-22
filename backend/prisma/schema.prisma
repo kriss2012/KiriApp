@@ -192,16 +192,18 @@ model Message {
 }
 
 model Event {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  date        DateTime
-  location    String
-  imageUrl    String?  // Banner image for the event
-  type        String   @default("GENERAL")
-  ownerId     String
-  owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])
-  createdAt   DateTime @default(now())
+  id               String   @id @default(uuid())
+  title            String
+  description      String
+  date             DateTime
+  location         String
+  imageUrl         String?  // Banner image for the event
+  type             String   @default("GENERAL")
+  registrationLink String?  // Link to Google Form etc.
+  prize            String?  // Prize details
+  ownerId          String
+  owner            User     @relation("EventsCreated", fields: [ownerId], references: [id])
+  createdAt        DateTime @default(now())
 
   @@index([ownerId])
   @@index([date])
