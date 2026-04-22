@@ -24,6 +24,8 @@ import com.apex.asg.ui.components.ASGPrimaryButton
 import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun SplashScreen(
@@ -63,27 +65,30 @@ fun SplashScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // ASG Logo Component
+        // ASG Premium Logo Component
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.scale(scale.value).alpha(alpha.value)
         ) {
             Icon(
-                painter = androidx.compose.ui.res.painterResource(id = com.apex.asg.R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                modifier = Modifier.size(80.dp),
+                painter = painterResource(id = com.apex.asg.R.drawable.ic_launcher_foreground),
+                contentDescription = "ASG Logo",
+                modifier = Modifier.size(110.dp),
                 tint = Color.Unspecified
             )
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "APEX",
+                "ASG PLATFORM",
                 style = MaterialTheme.typography.headlineLarge,
                 color = TextPrimary,
-                letterSpacing = (-0.5).sp
+                fontWeight = FontWeight.Black,
+                letterSpacing = (-1).sp
             )
             Text(
-                "STARTUP GROUP",
+                "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
                 color = TextSecondary,
+                fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
         }
