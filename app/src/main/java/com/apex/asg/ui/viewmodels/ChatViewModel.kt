@@ -21,14 +21,32 @@ class ChatViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<ChatState>(ChatState.Loading)
     val uiState: StateFlow<ChatState> = _uiState.asStateFlow()
 
-    fun fetchHistory(user1: String, user2: String) {
+    fun fetchHistory(context: android.content.Context, user1: String, user2: String) {
         viewModelScope.launch {
-            _uiState.value = ChatState.Loading
+            val cacheKey = "chat_${user1}_${user2}"
+            // 1. Load from cache for immediate offline view
+            val cached = com.apex.asg.data.CacheManager.getCache(
+                context, 
+                cacheKey, 
+                object : com.google.gson.reflect.TypeToken<List<MessageDto>>() {}
+            )
+            if (cached != null) {
+                _uiState.value = ChatState.Success(cached)
+            } else {
+                _uiState.value = ChatState.Loading
+            }
+
+            // 2. Refresh from network
             try {
                 val history = ApiClient.service.getChatHistory(user1, user2)
+                // Update cache
+                com.apex.asg.data.CacheManager.saveCache(context, cacheKey, history)
                 _uiState.value = ChatState.Success(history)
             } catch (e: Exception) {
-                _uiState.value = ChatState.Error(e.message ?: "Failed to fetch chat history")
+                // Keep cached data visible if already showing success
+                if (_uiState.value !is ChatState.Success) {
+                    _uiState.value = ChatState.Error("Offline: Cannot load new messages.")
+                }
             }
         }
     }

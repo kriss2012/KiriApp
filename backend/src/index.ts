@@ -20,6 +20,7 @@ import mentorRoutes from './routes/mentorRoutes.js';
 import inviteRoutes from './routes/inviteRoutes.js';
 
 import { initSocket } from './utils/socket.js';
+import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 
 dotenv.config();
 
@@ -34,8 +35,11 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Global Rate Limiter (Security Guard Principle)
+app.use('/api', apiLimiter);
+
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/chat', chatRoutes);

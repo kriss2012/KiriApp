@@ -119,6 +119,9 @@ model Notification {
   relatedId String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model Connection {
@@ -132,6 +135,8 @@ model Connection {
   updatedAt   DateTime         @updatedAt
 
   @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 model AiMessage {
@@ -168,6 +173,8 @@ model Job {
   posterId    String
   poster      User     @relation("JobsPosted", fields: [posterId], references: [id])
   createdAt   DateTime @default(now())
+
+  @@index([posterId])
 }
 
 model Message {
@@ -179,6 +186,9 @@ model Message {
   receiver    User     @relation("MessagesReceived", fields: [receiverId], references: [id])
   isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
+
+  @@index([senderId, receiverId])
+  @@index([createdAt])
 }
 
 model Event {
@@ -192,6 +202,9 @@ model Event {
   ownerId     String
   owner       User     @relation("EventsCreated", fields: [ownerId], references: [id])
   createdAt   DateTime @default(now())
+
+  @@index([ownerId])
+  @@index([date])
 }
 
 model Pitch {

@@ -58,7 +58,7 @@ fun ChatScreen(
 
     LaunchedEffect(currentUserId, receiverId) {
         if (currentUserId.isNotEmpty()) {
-            viewModel.fetchHistory(currentUserId, receiverId)
+            viewModel.fetchHistory(context, currentUserId, receiverId)
             
             // Socket Integration
             SocketHandler.joinRoom(roomId)

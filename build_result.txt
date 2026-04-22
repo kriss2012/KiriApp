@@ -62,3 +62,12 @@ w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/a
 > Task :app:dexBuilderRelease
 > Task :app:mergeReleaseGlobalSynthetics UP-TO-DATE
 > Task :app:mergeDexRelease
+> Task :app:compileReleaseArtProfile
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect UP-TO-DATE
+> Task :app:lintVitalReportRelease UP-TO-DATE
+> Task :app:lintVitalRelease
+> Task :app:assembleRelease
+
+BUILD SUCCESSFUL in 3m 57s
+50 actionable tasks: 13 executed, 37 up-to-date
