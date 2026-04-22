@@ -200,6 +200,21 @@ data class CreateEventRequest(
     val type: String = "GENERAL"
 )
 
+// Typed request to avoid Retrofit wildcard serialization errors
+data class UpdateProfileRequest(
+    val fullName: String,
+    val role: String,
+    val bio: String? = null,
+    val department: String? = null,
+    val college: String? = null,
+    val year: String? = null,
+    val phoneNumber: String? = null,
+    val website: String? = null,
+    val githubUrl: String? = null,
+    val linkedInUrl: String? = null,
+    val services: List<String> = emptyList()
+)
+
 data class EventDto(
     val id: String,
     val title: String,
