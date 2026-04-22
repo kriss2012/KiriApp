@@ -3,7 +3,7 @@ import { createNotification } from './notificationController.js';
 import { createActivity } from './aiController.js';
 export const createEvent = async (req, res) => {
     try {
-        const { title, description, date, location, type, ownerId } = req.body;
+        const { title, description, date, location, type, ownerId, registrationLink, prize } = req.body;
         // Check if the user has permission to create events
         const user = await prisma.user.findUnique({
             where: { id: ownerId }
@@ -22,18 +22,21 @@ export const createEvent = async (req, res) => {
                 date: new Date(date),
                 location,
                 imageUrl,
+                registrationLink,
+                prize,
                 type: type || 'GENERAL',
                 ownerId
             }
         });
-        // Notify all verified users about the new event
-        const allUsers = await prisma.user.findMany({
+        // Notify all verified users about the new event (Async - Point 4)
+        prisma.user.findMany({
             where: { isVerified: true },
             select: { id: true }
-        });
-        await Promise.all(allUsers.map(u => createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT')));
-        // Record Innovation Activity for NAAC
-        await createActivity(ownerId, 'EVENT_JOIN', 'Organized Event', `Organized "${title}" on ${date}.`, 50);
+        }).then(allUsers => {
+            allUsers.forEach(u => createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT', event.id));
+        }).catch(e => console.error("Async Event Notification Error:", e));
+        // Record Innovation Activity for NAAC (Async - Point 4)
+        createActivity(ownerId, 'EVENT_JOIN', 'Organized Event', `Organized "${title}" on ${date}.`, 50);
         res.status(201).json(event);
     }
     catch (error) {
@@ -95,7 +98,7 @@ export const updateEvent = async (req, res) => {
         if (typeof eventId !== 'string') {
             return res.status(400).json({ message: 'Invalid Event ID' });
         }
-        const { title, description, date, location, type } = req.body;
+        const { title, description, date, location, type, imageUrl, registrationLink, prize } = req.body;
         const event = await prisma.event.update({
             where: { id: eventId },
             data: {
@@ -103,7 +106,10 @@ export const updateEvent = async (req, res) => {
                 description,
                 ...(date ? { date: new Date(date) } : {}),
                 location,
-                type
+                type,
+                imageUrl,
+                registrationLink,
+                prize
             }
         });
         res.status(200).json(event);
