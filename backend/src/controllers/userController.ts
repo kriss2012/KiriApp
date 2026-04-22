@@ -95,7 +95,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     // Robustness: Ensure role matches Enum casing (Prisma is strict)
     const normalizedRole = role ? role.toString().toUpperCase() : undefined;
 
-    console.log(`[UpdateProfile] Updating user ${userId} with data:`, req.body);
+    console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
 
     const user = await prisma.user.update({
       where: { id: userId },
@@ -116,13 +116,45 @@ export const updateProfile = async (req: Request, res: Response) => {
         phoneNumber,
         website,
         services
+      },
+      // Explicit select — returns the same field set as getProfile so the
+      // Android DTO deserializes correctly and canCreateEvents is always present.
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        role: true,
+        studentLevel: true,
+        department: true,
+        college: true,
+        year: true,
+        section: true,
+        isVerified: true,
+        canCreateEvents: true,
+        bio: true,
+        skills: true,
+        avatarUrl: true,
+        githubUrl: true,
+        linkedInUrl: true,
+        phoneNumber: true,
+        website: true,
+        services: true,
+        intent: true,
+        preferredLanguage: true,
+        createdAt: true
       }
     });
 
-    console.log(`[UpdateProfile] Successfully updated user ${userId}`);
+    console.log(`[UpdateProfile] ✅ Successfully updated user ${userId} — name: "${user.fullName}", role: "${user.role}"`);
 
     res.status(200).json(user);
   } catch (error: any) {
+    // Log Prisma-specific error codes for faster debugging
+    if (error?.code) {
+      console.error(`[UpdateProfile] ❌ Prisma error P${error.code} for user ${req.params['userId']}:`, error.meta ?? error.message);
+    } else {
+      console.error(`[UpdateProfile] ❌ Unexpected error:`, error);
+    }
     res.status(500).json({ message: 'Error updating profile', error: error.message });
   }
 };
