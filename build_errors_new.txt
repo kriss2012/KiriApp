@@ -15,3 +15,42 @@
 > Task :app:processDebugManifestForPackage UP-TO-DATE
 > Task :app:processDebugResources UP-TO-DATE
 > Task :app:kspDebugKotlin UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+.\gradlew.bat : e: 
+file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:20:49 
+Unresolved reference 'PullToRefreshBox'.
+At line:1 char:1
++ .\gradlew.bat compileDebugKotlin --daemon 2>&1 | Out-File -FilePath b ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (e: file:///C:/U...lToRefreshBox'.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+e: 
+file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:72:9 
+Unresolved reference 'PullToRefreshBox'.
+e: 
+file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:85:21 
+@Composable invocations can only happen from the context of a @Composable function
+e: 
+file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:93:21 
+@Composable invocations can only happen from the context of a @Composable function
+e: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:105
+:21 @Composable invocations can only happen from the context of a @Composable function
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing 
+org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 30s
+15 actionable tasks: 1 executed, 14 up-to-date
