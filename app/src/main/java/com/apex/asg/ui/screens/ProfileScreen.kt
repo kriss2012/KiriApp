@@ -17,7 +17,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +39,7 @@ import com.apex.asg.ui.viewmodels.ProfileState
 import com.apex.asg.ui.viewmodels.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext
 
-@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
@@ -60,34 +61,38 @@ fun ProfileScreen(
         }
     }
 
-    // Pull-to-refresh state — isRefreshing tracks ongoing network call
-    val isRefreshing = uiState is ProfileState.Loading
+    // Pull-to-refresh state (Material3 1.2.x API)
     val pullToRefreshState = rememberPullToRefreshState()
+    if (pullToRefreshState.isRefreshing) {
+        LaunchedEffect(true) {
+            if (userId.isNotEmpty()) viewModel.fetchProfile(context, userId)
+        }
+    }
+    // Stop the indicator once the network call resolves
+    if (uiState !is ProfileState.Loading) {
+        LaunchedEffect(uiState) {
+            pullToRefreshState.endRefresh()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = BgCream,
         bottomBar = { Spacer(Modifier.height(0.dp)) }
     ) { padding ->
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = {
-                if (userId.isNotEmpty()) viewModel.fetchProfile(context, userId)
-            },
-            state = pullToRefreshState,
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
             when (val state = uiState) {
                 is ProfileState.Loading -> {
-                    // Show spinner only on initial load (no cached data yet)
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                            color = OrangePrimary
-                        )
-                    }
+                    // Show spinner only on first load (no cached data visible yet)
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center),
+                        color = OrangePrimary
+                    )
                 }
                 is ProfileState.Success -> {
                     ProfileContent(
@@ -102,24 +107,29 @@ fun ProfileScreen(
                     )
                 }
                 is ProfileState.Error -> {
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Column(
-                            modifier = Modifier.align(Alignment.Center),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Spacer(Modifier.height(8.dp))
+                        Button(
+                            onClick = { viewModel.fetchProfile(context, userId) },
+                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
                         ) {
-                            Text(state.message, color = Color.Red, fontSize = 14.sp)
-                            Spacer(Modifier.height(8.dp))
-                            Button(
-                                onClick = { viewModel.fetchProfile(context, userId) },
-                                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
-                            ) {
-                                Text("Retry", color = Color.White)
-                            }
+                            Text("Retry", color = Color.White)
                         }
                     }
                 }
                 else -> {}
             }
+
+            // Pull-to-refresh indicator overlaid at top
+            PullToRefreshContainer(
+                state = pullToRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter),
+                contentColor = OrangePrimary
+            )
         }
     }
 }
