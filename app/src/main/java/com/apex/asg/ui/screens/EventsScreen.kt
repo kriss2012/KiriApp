@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.apex.asg.ui.viewmodels.*
 import androidx.compose.ui.platform.LocalContext
+import com.apex.asg.ui.components.ErrorDialog
+import com.apex.asg.ui.components.SuccessDialog
 
 @Composable
 fun EventsScreen(
@@ -40,9 +42,19 @@ fun EventsScreen(
 
     var selectedTab by remember { mutableStateOf("All") }
     val tabs = listOf("All", "Hackathon", "Competition", "Workshop", "Seminar")
+    
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.fetchEvents(context)
+    }
+
+    LaunchedEffect(uiState) {
+        if (uiState is EventsState.Error) {
+            errorMessage = (uiState as EventsState.Error).message
+            showErrorDialog = true
+        }
     }
 
     Scaffold(
@@ -54,7 +66,10 @@ fun EventsScreen(
                 || userRole == "ADMIN"
             if (canBroadcast) {
                 ExtendedFloatingActionButton(
-                    onClick = { navController.navigate(com.apex.asg.ui.navigation.Screen.AddEvent.route) },
+                    onClick = { 
+                        android.widget.Toast.makeText(context, "Opening Broadcast Window...", android.widget.Toast.LENGTH_SHORT).show()
+                        navController.navigate("add_event") 
+                    },
                     containerColor = OrangePrimary,
                     contentColor = Color.White,
                     icon = { Icon(Icons.Default.Add, contentDescription = null) },
@@ -142,6 +157,14 @@ fun EventsScreen(
                     else -> {}
                 }
             }
+        }
+
+        if (showErrorDialog) {
+            ErrorDialog(
+                title = "Events Error",
+                message = errorMessage,
+                onDismiss = { showErrorDialog = false }
+            )
         }
     }
 }

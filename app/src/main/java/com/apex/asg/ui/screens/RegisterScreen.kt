@@ -315,7 +315,9 @@ fun RegisterScreen(
                             
                             sessionManager.saveToken(response.token)
                             sessionManager.saveUserId(response.user.id)
+                            sessionManager.saveUserName(response.user.fullName)
                             sessionManager.saveUserRole(response.user.role)
+                            sessionManager.setCanCreateEvents(response.user.canCreateEvents)
                             ApiClient.setToken(response.token)
 
                             isLoading = false

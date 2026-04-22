@@ -23,6 +23,9 @@ import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.ui.viewmodels.EventsViewModel
+import com.apex.asg.ui.viewmodels.EventsState
+import com.apex.asg.ui.components.ErrorDialog
+import com.apex.asg.ui.components.SuccessDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,6 +44,31 @@ fun AddEventScreen(
     var location by remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
     var isSubmitting by remember { mutableStateOf(false) }
+    
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState) {
+        when (uiState) {
+            is EventsState.Success -> {
+                if (isSubmitting) {
+                    showSuccessDialog = true
+                    isSubmitting = false
+                }
+            }
+            is EventsState.Error -> {
+                if (isSubmitting) {
+                    errorMessage = (uiState as EventsState.Error).message
+                    showErrorDialog = true
+                    isSubmitting = false
+                }
+            }
+            else -> {}
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -112,7 +140,14 @@ fun AddEventScreen(
 
             Button(
                 onClick = {
-                    if (title.isNotEmpty() && date.isNotEmpty()) {
+                    if (title.isBlank()) {
+                        errorMessage = "Please enter an event title."
+                        showErrorDialog = true
+                    } else if (date.isBlank()) {
+                        errorMessage = "Please enter an event date."
+                        showErrorDialog = true
+                    } else {
+                        isSubmitting = true
                         viewModel.createEvent(
                             context = context,
                             title = title,
@@ -121,7 +156,6 @@ fun AddEventScreen(
                             location = location,
                             ownerId = userId
                         )
-                        onBack() // Navigate back immediately as ViewModel handles loading/state
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -135,6 +169,24 @@ fun AddEventScreen(
                     Text("Broadcast Event", fontWeight = FontWeight.Bold, color = Color.White)
                 }
             }
+        }
+
+        if (showErrorDialog) {
+            ErrorDialog(
+                title = "Submission Failed",
+                message = errorMessage,
+                onDismiss = { showErrorDialog = false }
+            )
+        }
+
+        if (showSuccessDialog) {
+            SuccessDialog(
+                message = "Your event has been broadcasted to the community!",
+                onDismiss = {
+                    showSuccessDialog = false
+                    onBack()
+                }
+            )
         }
     }
 }

@@ -105,10 +105,9 @@ fun LoginScreen(
                             // Save to session
                             sessionManager.saveToken(response.token)
                             sessionManager.saveUserId(response.user.id)
+                            sessionManager.saveUserName(response.user.fullName)
                             sessionManager.saveUserRole(response.user.role)
-                            
-                            // Check if admin/event creator (In real app, this might come from profile)
-                            sessionManager.setCanCreateEvents(response.user.role == "ADMIN")
+                            sessionManager.setCanCreateEvents(response.user.canCreateEvents)
                             
                             // Set token for future API calls
                             ApiClient.setToken(response.token)

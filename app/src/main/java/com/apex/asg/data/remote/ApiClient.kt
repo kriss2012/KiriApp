@@ -32,7 +32,7 @@ interface ASGApiService {
     suspend fun getProfile(@Path("userId") userId: String): UserDto
 
     @PUT("users/profile/{userId}")
-    suspend fun updateProfile(@Path("userId") userId: String, @Body request: com.apex.asg.data.remote.models.UpdateProfileRequest): UserDto
+    suspend fun updateProfile(@Path("userId") userId: String, @Body request: UpdateProfileRequest): UserDto
 
     @PUT("users/toggle-access/{userId}")
     suspend fun toggleAccess(@Path("userId") userId: String, @Body data: Map<String, Boolean>): Map<String, String>
@@ -52,10 +52,10 @@ interface ASGApiService {
 
     // Connections
     @POST("connections/send")
-    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
+    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, String>
 
     @POST("connections/accept")
-    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
+    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, String>
 
     @GET("connections/{userId}")
     suspend fun getUserConnections(@Path("userId") userId: String): List<ConnectionDto>
@@ -88,7 +88,7 @@ interface ASGApiService {
     suspend fun sendAiMessage(@Body request: AiMessageRequest): AiMessageResponse
 
     @PUT("ai/specialization")
-    suspend fun updateSpecialization(@Body request: Map<String, String>): Map<String, Any>
+    suspend fun updateSpecialization(@Body request: Map<String, String>): Map<String, String>
 
     @GET("users/activities/{userId}")
     suspend fun getActivities(@Path("userId") userId: String): List<ActivityDto>
@@ -104,7 +104,7 @@ interface ASGApiService {
     suspend fun createPitch(@Body request: CreatePitchRequest): PitchDto
 
     @POST("pitches/back")
-    suspend fun backPitch(@Body request: Map<String, String>): Map<String, Any>
+    suspend fun backPitch(@Body request: Map<String, String>): Map<String, String>
 
     @GET("match/suggestions")
     suspend fun getMatchSuggestions(): List<MatchSuggestionDto>

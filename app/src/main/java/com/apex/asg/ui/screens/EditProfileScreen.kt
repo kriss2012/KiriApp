@@ -21,6 +21,9 @@ import com.apex.asg.data.SessionManager
 import com.apex.asg.ui.theme.*
 import com.apex.asg.ui.viewmodels.ProfileState
 import com.apex.asg.ui.viewmodels.ProfileViewModel
+import com.apex.asg.ui.components.ErrorDialog
+import com.apex.asg.ui.components.SuccessDialog
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +48,9 @@ fun EditProfileScreen(
     var linkedInUrl by remember { mutableStateOf("") }
     var servicesStr by remember { mutableStateOf("") }
     var isSaving by remember { mutableStateOf(false) }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,21 +61,14 @@ fun EditProfileScreen(
     }
 
     // Single unified effect — Compose only runs one LaunchedEffect per key.
-    // Having two with the same key (uiState) silently drops the first one.
     LaunchedEffect(uiState) {
         when (val state = uiState) {
             is ProfileState.Success -> {
                 if (isSaving) {
-                    // Save was confirmed — toast and navigate back
-                    android.widget.Toast.makeText(
-                        context,
-                        "Profile Updated Successfully!",
-                        android.widget.Toast.LENGTH_SHORT
-                    ).show()
+                    showSuccessDialog = true
                     isSaving = false
-                    onBack()
                 } else {
-                    // Initial fetch succeeded — populate fields only if not mid-save
+                    // Initial fetch population
                     fullName = state.user.fullName
                     bio = state.user.bio ?: ""
                     role = state.user.role
@@ -84,14 +83,11 @@ fun EditProfileScreen(
                 }
             }
             is ProfileState.Error -> {
-                // Show persistent snackbar so user reads the error before retrying
-                snackbarHostState.showSnackbar(
-                    message = state.message,
-                    duration = SnackbarDuration.Long
-                )
+                errorMessage = state.message
+                showErrorDialog = true
                 isSaving = false
             }
-            else -> { /* Loading / Idle — no action */ }
+            else -> {}
         }
     }
 
@@ -168,6 +164,24 @@ fun EditProfileScreen(
                     Text("Save Changes", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
+        }
+
+        if (showErrorDialog) {
+            ErrorDialog(
+                title = "Profile Update Failed",
+                message = errorMessage,
+                onDismiss = { showErrorDialog = false }
+            )
+        }
+
+        if (showSuccessDialog) {
+            SuccessDialog(
+                message = "Your profile changes have been saved successfully!",
+                onDismiss = {
+                    showSuccessDialog = false
+                    onBack()
+                }
+            )
         }
     }
 }

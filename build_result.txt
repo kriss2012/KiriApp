@@ -1,70 +1,52 @@
-﻿> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+﻿> Task :app:buildKotlinToolingMetadata UP-TO-DATE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :app:checkDebugAarMetadata UP-TO-DATE
-> Task :app:generateDebugResValues UP-TO-DATE
-> Task :app:mapDebugSourceSetPaths UP-TO-DATE
-> Task :app:generateDebugResources UP-TO-DATE
-> Task :app:mergeDebugResources UP-TO-DATE
-> Task :app:packageDebugResources UP-TO-DATE
-> Task :app:parseDebugLocalResources UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
-> Task :app:processDebugMainManifest UP-TO-DATE
-> Task :app:processDebugManifest UP-TO-DATE
-> Task :app:processDebugManifestForPackage UP-TO-DATE
-> Task :app:processDebugResources UP-TO-DATE
-> Task :app:javaPreCompileDebug UP-TO-DATE
-> Task :app:mergeDebugShaders UP-TO-DATE
-> Task :app:compileDebugShaders NO-SOURCE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets UP-TO-DATE
-> Task :app:compressDebugAssets UP-TO-DATE
-> Task :app:desugarDebugFileDependencies UP-TO-DATE
-> Task :app:checkDebugDuplicateClasses UP-TO-DATE
-> Task :app:mergeExtDexDebug UP-TO-DATE
-> Task :app:mergeLibDexDebug UP-TO-DATE
-> Task :app:mergeDebugJniLibFolders UP-TO-DATE
-> Task :app:mergeDebugNativeLibs NO-SOURCE
-> Task :app:stripDebugDebugSymbols NO-SOURCE
-> Task :app:validateSigningDebug UP-TO-DATE
-> Task :app:writeDebugAppMetadata UP-TO-DATE
-> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
-> Task :app:kspDebugKotlin
-> Task :app:compileDebugKotlin
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AddEventScreen.kt:51:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:105:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:129:13 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/JobBoardScreen.kt:150:13 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NotificationScreen.kt:72:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/NotificationScreen.kt:155:36 'val Icons.Filled.Chat: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Chat.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:mergeReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :app:processReleaseResources UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
+> Task :app:desugarReleaseFileDependencies UP-TO-DATE
+> Task :app:mergeReleaseStartupProfile UP-TO-DATE
+> Task :app:mergeExtDexRelease UP-TO-DATE
+> Task :app:mergeReleaseArtProfile UP-TO-DATE
+> Task :app:mergeReleaseShaders UP-TO-DATE
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets UP-TO-DATE
+> Task :app:compressReleaseAssets UP-TO-DATE
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:optimizeReleaseResources UP-TO-DATE
+> Task :app:collectReleaseDependencies UP-TO-DATE
+> Task :app:sdkReleaseDependencyData UP-TO-DATE
+> Task :app:validateSigningRelease UP-TO-DATE
+> Task :app:writeReleaseAppMetadata UP-TO-DATE
+> Task :app:writeReleaseSigningConfigVersions UP-TO-DATE
+> Task :app:kspReleaseKotlin
+> Task :app:compileReleaseKotlin
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AddEventScreen.kt:79:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:101:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:125:13 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
 w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:361:36 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RegisterScreen.kt:158:48 'fun outlinedTextFieldColors(focusedTextColor: Color = ..., unfocusedTextColor: Color = ..., disabledTextColor: Color = ..., errorTextColor: Color = ..., containerColor: Color = ..., errorContainerColor: Color = ..., cursorColor: Color = ..., errorCursorColor: Color = ..., selectionColors: TextSelectionColors = ..., focusedBorderColor: Color = ..., unfocusedBorderColor: Color = ..., disabledBorderColor: Color = ..., errorBorderColor: Color = ..., focusedLeadingIconColor: Color = ..., unfocusedLeadingIconColor: Color = ..., disabledLeadingIconColor: Color = ..., errorLeadingIconColor: Color = ..., focusedTrailingIconColor: Color = ..., unfocusedTrailingIconColor: Color = ..., disabledTrailingIconColor: Color = ..., errorTrailingIconColor: Color = ..., focusedLabelColor: Color = ..., unfocusedLabelColor: Color = ..., disabledLabelColor: Color = ..., errorLabelColor: Color = ..., focusedPlaceholderColor: Color = ..., unfocusedPlaceholderColor: Color = ..., disabledPlaceholderColor: Color = ..., errorPlaceholderColor: Color = ..., focusedSupportingTextColor: Color = ..., unfocusedSupportingTextColor: Color = ..., disabledSupportingTextColor: Color = ..., errorSupportingTextColor: Color = ..., focusedPrefixColor: Color = ..., unfocusedPrefixColor: Color = ..., disabledPrefixColor: Color = ..., errorPrefixColor: Color = ..., focusedSuffixColor: Color = ..., unfocusedSuffixColor: Color = ..., disabledSuffixColor: Color = ..., errorSuffixColor: Color = ...): TextFieldColors' is deprecated. Renamed to `OutlinedTextFieldDefaults.colors` with additional parameters tocontrol container color based on state.
 w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:205:32 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
-
-> Task :app:compileDebugJavaWithJavac
-> Task :app:hiltAggregateDepsDebug UP-TO-DATE
-
-> Task :app:hiltJavaCompileDebug
-.\gradlew.bat : Note: C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\generated\hilt\component_sources\debug\co
-m\apex\asg\Hilt_ASGApplication.java uses or overrides a deprecated API.
-At line:1 char:1
-+ .\gradlew.bat assembleDebug --daemon -x test 2>&1 | Out-File -FilePat ...
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Note: C:\Users\...deprecated API.:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-Note: Recompile with -Xlint:deprecation for details.
-
-> Task :app:processDebugJavaRes
-> Task :app:mergeDebugJavaResource
-> Task :app:transformDebugClassesWithAsm
-> Task :app:dexBuilderDebug
-> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
-> Task :app:mergeProjectDexDebug
-> Task :app:packageDebug
-> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
-> Task :app:assembleDebug
-
-BUILD SUCCESSFUL in 2m 56s
-38 actionable tasks: 10 executed, 28 up-to-date
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:127:76 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:190:56 'fun textFieldColors(focusedTextColor: Color = ..., unfocusedTextColor: Color = ..., disabledTextColor: Color = ..., errorTextColor: Color = ..., containerColor: Color = ..., errorContainerColor: Color = ..., cursorColor: Color = ..., errorCursorColor: Color = ..., selectionColors: TextSelectionColors = ..., focusedIndicatorColor: Color = ..., unfocusedIndicatorColor: Color = ..., disabledIndicatorColor: Color = ..., errorIndicatorColor: Color = ..., focusedLeadingIconColor: Color = ..., unfocusedLeadingIconColor: Color = ..., disabledLeadingIconColor: Color = ..., errorLeadingIconColor: Color = ..., focusedTrailingIconColor: Color = ..., unfocusedTrailingIconColor: Color = ..., disabledTrailingIconColor: Color = ..., errorTrailingIconColor: Color = ..., focusedLabelColor: Color = ..., unfocusedLabelColor: Color = ..., disabledLabelColor: Color = ..., errorLabelColor: Color = ..., focusedPlaceholderColor: Color = ..., unfocusedPlaceholderColor: Color = ..., disabledPlaceholderColor: Color = ..., errorPlaceholderColor: Color = ..., focusedSupportingTextColor: Color = ..., unfocusedSupportingTextColor: Color = ..., disabledSupportingTextColor: Color = ..., errorSupportingTextColor: Color = ..., focusedPrefixColor: Color = ..., unfocusedPrefixColor: Color = ..., disabledPrefixColor: Color = ..., errorPrefixColor: Color = ..., focusedSuffixColor: Color = ..., unfocusedSuffixColor: Color = ..., disabledSuffixColor: Color = ..., errorSuffixColor: Color = ...): TextFieldColors' is deprecated. Renamed to `TextFieldDefaults.colors` with additional parameters to controlcontainer color based on state.
+w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:211:48 'val Icons.Filled.Send: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Send.
