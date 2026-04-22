@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-36:12
-INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-36:12
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
+INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
+INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
+INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
 MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\6f093deb6cbd0b15cfd6706d45e9075d\transformed\maps-compose-4.3.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\737ec0b6c55148eda625353c50dadaa1\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\f66aef716f2f3f76ac1be3bf8e8ce19d\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
@@ -141,9 +141,15 @@ MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Us
 MERGED from [com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\krishna\.gradle\caches\8.10.2\transforms\8c7421f72b1f110f04cbcc9db2256951\transformed\transport-backend-cct-3.1.8\AndroidManifest.xml:25:5-67
 	android:name
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:6:5-77
+MERGED from [com.google.firebase:firebase-messaging:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\1c66bfc548ac1f3b26100bb8e9ad397d\transformed\firebase-messaging-23.4.0\AndroidManifest.xml:23:5-77
+MERGED from [com.google.firebase:firebase-messaging:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\1c66bfc548ac1f3b26100bb8e9ad397d\transformed\firebase-messaging-23.4.0\AndroidManifest.xml:23:5-77
+	android:name
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:6:22-74
 application
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:7:5-34:19
-INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:7:5-34:19
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:8:5-35:19
+INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:8:5-35:19
 MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\6c0b5c634d4d64500c81495aadd78381\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\6c0b5c634d4d64500c81495aadd78381\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
 MERGED from [com.google.firebase:firebase-messaging-ktx:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\c75704bf91e34ecf5876fc7193dcaa5a\transformed\firebase-messaging-ktx-23.4.0\AndroidManifest.xml:22:5-30:19
@@ -207,53 +213,53 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\ca
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\5b5966d637d38e53bd698beda0f03966\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:16:9-35
 	android:label
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:13:9-41
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:14:9-41
 	android:fullBackupContent
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:11:9-54
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:12:9-54
 	android:roundIcon
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:14:9-54
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:15:9-54
 	tools:targetApi
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-29
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:18:9-29
 	android:icon
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:12:9-43
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:13:9-43
 	android:allowBackup
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:9:9-35
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:16:9-44
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-44
 	android:dataExtractionRules
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:10:9-65
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:11:9-65
 	android:name
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:8:9-39
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:9:9-39
 activity#com.apex.asg.SplashActivity
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:18:9-27:20
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:19:9-28:20
 	android:exported
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:20:13-36
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:21:13-36
 	android:theme
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:21:13-48
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-48
 	android:name
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:19:13-43
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:20:13-43
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-26:29
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:23:13-27:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:23:17-69
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:24:17-69
 	android:name
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:23:25-66
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:24:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:25:17-77
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:25:27-74
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:26:27-74
 activity#com.apex.asg.MainActivity
-ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:28:9-33:20
+ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:29:9-34:20
 	android:windowSoftInputMode
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:32:13-55
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:33:13-55
 	android:exported
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:30:13-36
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:31:13-36
 	android:theme
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:31:13-48
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:32:13-48
 	android:name
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:29:13-41
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:30:13-41
 uses-sdk
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
@@ -552,10 +558,6 @@ ADDED from [com.google.firebase:firebase-messaging-ktx:23.4.0] C:\Users\krishna\
 		ADDED from [com.google.firebase:firebase-messaging-ktx:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\c75704bf91e34ecf5876fc7193dcaa5a\transformed\firebase-messaging-ktx-23.4.0\AndroidManifest.xml:28:17-82
 	android:name
 		ADDED from [com.google.firebase:firebase-messaging-ktx:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\c75704bf91e34ecf5876fc7193dcaa5a\transformed\firebase-messaging-ktx-23.4.0\AndroidManifest.xml:27:17-129
-uses-permission#android.permission.POST_NOTIFICATIONS
-ADDED from [com.google.firebase:firebase-messaging:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\1c66bfc548ac1f3b26100bb8e9ad397d\transformed\firebase-messaging-23.4.0\AndroidManifest.xml:23:5-77
-	android:name
-		ADDED from [com.google.firebase:firebase-messaging:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\1c66bfc548ac1f3b26100bb8e9ad397d\transformed\firebase-messaging-23.4.0\AndroidManifest.xml:23:22-74
 uses-permission#android.permission.WAKE_LOCK
 ADDED from [com.google.firebase:firebase-messaging:23.4.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\1c66bfc548ac1f3b26100bb8e9ad397d\transformed\firebase-messaging-23.4.0\AndroidManifest.xml:24:5-68
 MERGED from [com.google.android.gms:play-services-cloud-messaging:17.1.0] C:\Users\krishna\.gradle\caches\8.10.2\transforms\967f0f44f0df9dc0c142c86b4048d94b\transformed\play-services-cloud-messaging-17.1.0\AndroidManifest.xml:9:5-68
