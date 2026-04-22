@@ -34,20 +34,18 @@ export const createEvent = async (req: Request, res: Response) => {
       }
     });
 
-    // Notify all verified users about the new event
-    const allUsers = await prisma.user.findMany({
+    // Notify all verified users about the new event (Async - Point 4)
+    prisma.user.findMany({
       where: { isVerified: true },
       select: { id: true }
-    });
+    }).then(allUsers => {
+      allUsers.forEach(u => 
+        createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT', event.id)
+      );
+    }).catch(e => console.error("Async Event Notification Error:", e));
 
-    await Promise.all(
-      allUsers.map(u => 
-        createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT')
-      )
-    );
-
-    // Record Innovation Activity for NAAC
-    await createActivity(ownerId, 'EVENT_JOIN', 'Organized Event', `Organized "${title}" on ${date}.`, 50);
+    // Record Innovation Activity for NAAC (Async - Point 4)
+    createActivity(ownerId, 'EVENT_JOIN', 'Organized Event', `Organized "${title}" on ${date}.`, 50);
 
     res.status(201).json(event);
   } catch (error: any) {
