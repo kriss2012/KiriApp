@@ -64,6 +64,19 @@ class ProfileViewModel : ViewModel() {
         services: List<String> = emptyList()
     ) {
         viewModelScope.launch {
+            // --- Client-side validation ---
+            if (fullName.isBlank()) {
+                _uiState.value = ProfileState.Error("Full Name cannot be empty.")
+                return@launch
+            }
+            val urlFields = mapOf("Website" to website, "GitHub URL" to githubUrl, "LinkedIn URL" to linkedInUrl)
+            for ((label, url) in urlFields) {
+                if (!url.isNullOrBlank() && !url.startsWith("http://") && !url.startsWith("https://")) {
+                    _uiState.value = ProfileState.Error("$label must start with https://")
+                    return@launch
+                }
+            }
+
             _uiState.value = ProfileState.Loading
             try {
                 // Use typed DTO — fixes the Retrofit wildcard serialization crash
@@ -83,18 +96,25 @@ class ProfileViewModel : ViewModel() {
 
                 val updatedUser = ApiClient.service.updateProfile(userId, request)
 
-                // Persist to cache so it survives offline
-                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", updatedUser)
-
-                // Sync session so Dashboard header & FAB reflect changes immediately
+                // Sync session BEFORE emitting success so Dashboard header
+                // reflects name changes on the same navigation frame
                 val sessionManager = com.apex.asg.data.SessionManager.getInstance(context)
                 sessionManager.saveUserName(updatedUser.fullName)
                 sessionManager.saveUserRole(updatedUser.role)
                 sessionManager.setCanCreateEvents(updatedUser.canCreateEvents)
 
+                // Persist to cache so it survives offline
+                com.apex.asg.data.CacheManager.saveCache(context, "profile_$userId", updatedUser)
+
                 _uiState.value = ProfileState.Success(updatedUser)
             } catch (e: Exception) {
-                _uiState.value = ProfileState.Error(e.message ?: "Failed to update profile")
+                val friendlyMessage = when {
+                    e.message?.contains("403") == true -> "Permission denied. You can only edit your own profile."
+                    e.message?.contains("404") == true -> "User not found. Please log in again."
+                    e.message?.contains("Unable to resolve host") == true -> "No internet connection."
+                    else -> e.message ?: "Failed to update profile"
+                }
+                _uiState.value = ProfileState.Error(friendlyMessage)
             }
         }
     }
