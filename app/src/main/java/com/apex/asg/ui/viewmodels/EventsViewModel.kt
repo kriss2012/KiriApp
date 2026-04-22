@@ -44,12 +44,22 @@ class EventsViewModel : ViewModel() {
         }
     }
 
-    fun createEvent(context: android.content.Context, title: String, description: String, date: String, location: String, ownerId: String) {
+    fun createEvent(
+        context: android.content.Context, 
+        title: String, 
+        description: String, 
+        date: String, 
+        location: String, 
+        ownerId: String,
+        imageUrl: String? = null,
+        registrationLink: String? = null,
+        prize: String? = null
+    ) {
         viewModelScope.launch {
             _uiState.value = EventsState.Loading
             try {
                 ApiClient.service.createEvent(
-                    CreateEventRequest(title, description, date, location, ownerId)
+                    CreateEventRequest(title, description, date, location, ownerId, imageUrl, "GENERAL", registrationLink, prize)
                 )
                 fetchEvents(context) // Refresh list after successful creation
             } catch (e: Exception) {
