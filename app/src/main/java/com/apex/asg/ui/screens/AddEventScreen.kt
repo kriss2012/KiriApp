@@ -43,6 +43,8 @@ fun AddEventScreen(
     var date by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
+    var registrationLink by remember { mutableStateOf("") }
+    var prize by remember { mutableStateOf("") }
     var isSubmitting by remember { mutableStateOf(false) }
     
     var showErrorDialog by remember { mutableStateOf(false) }
@@ -136,6 +138,24 @@ fun AddEventScreen(
                 shape = RoundedCornerShape(12.dp)
             )
 
+            OutlinedTextField(
+                value = registrationLink,
+                onValueChange = { registrationLink = it },
+                label = { Text("Registration Link (Google Form etc.)") },
+                placeholder = { Text("https://forms.gle/...") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            OutlinedTextField(
+                value = prize,
+                onValueChange = { prize = it },
+                label = { Text("Prizes / Rewards (Optional)") },
+                placeholder = { Text("e.g. 50k Cash Prize, Certificates") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
             Spacer(Modifier.height(16.dp))
 
             Button(
@@ -154,7 +174,10 @@ fun AddEventScreen(
                             description = description,
                             date = date,
                             location = location,
-                            ownerId = userId
+                            ownerId = userId,
+                            imageUrl = imageUrl.ifBlank { null },
+                            registrationLink = registrationLink.ifBlank { null },
+                            prize = prize.ifBlank { null }
                         )
                     }
                 },
