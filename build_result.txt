@@ -40,13 +40,8 @@
 > Task :app:writeReleaseAppMetadata UP-TO-DATE
 > Task :app:writeReleaseSigningConfigVersions UP-TO-DATE
 > Task :app:kspReleaseKotlin
+
 > Task :app:compileReleaseKotlin
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/AddEventScreen.kt:79:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:101:44 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/EditProfileScreen.kt:125:13 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ProfileScreen.kt:361:36 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RegisterScreen.kt:158:48 'fun outlinedTextFieldColors(focusedTextColor: Color = ..., unfocusedTextColor: Color = ..., disabledTextColor: Color = ..., errorTextColor: Color = ..., containerColor: Color = ..., errorContainerColor: Color = ..., cursorColor: Color = ..., errorCursorColor: Color = ..., selectionColors: TextSelectionColors = ..., focusedBorderColor: Color = ..., unfocusedBorderColor: Color = ..., disabledBorderColor: Color = ..., errorBorderColor: Color = ..., focusedLeadingIconColor: Color = ..., unfocusedLeadingIconColor: Color = ..., disabledLeadingIconColor: Color = ..., errorLeadingIconColor: Color = ..., focusedTrailingIconColor: Color = ..., unfocusedTrailingIconColor: Color = ..., disabledTrailingIconColor: Color = ..., errorTrailingIconColor: Color = ..., focusedLabelColor: Color = ..., unfocusedLabelColor: Color = ..., disabledLabelColor: Color = ..., errorLabelColor: Color = ..., focusedPlaceholderColor: Color = ..., unfocusedPlaceholderColor: Color = ..., disabledPlaceholderColor: Color = ..., errorPlaceholderColor: Color = ..., focusedSupportingTextColor: Color = ..., unfocusedSupportingTextColor: Color = ..., disabledSupportingTextColor: Color = ..., errorSupportingTextColor: Color = ..., focusedPrefixColor: Color = ..., unfocusedPrefixColor: Color = ..., disabledPrefixColor: Color = ..., errorPrefixColor: Color = ..., focusedSuffixColor: Color = ..., unfocusedSuffixColor: Color = ..., disabledSuffixColor: Color = ..., errorSuffixColor: Color = ...): TextFieldColors' is deprecated. Renamed to `OutlinedTextFieldDefaults.colors` with additional parameters tocontrol container color based on state.
-w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/RepositoryScreen.kt:205:32 'val Icons.Filled.ArrowForward: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowForward.
 w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:127:76 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
 w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:190:56 'fun textFieldColors(focusedTextColor: Color = ..., unfocusedTextColor: Color = ..., disabledTextColor: Color = ..., errorTextColor: Color = ..., containerColor: Color = ..., errorContainerColor: Color = ..., cursorColor: Color = ..., errorCursorColor: Color = ..., selectionColors: TextSelectionColors = ..., focusedIndicatorColor: Color = ..., unfocusedIndicatorColor: Color = ..., disabledIndicatorColor: Color = ..., errorIndicatorColor: Color = ..., focusedLeadingIconColor: Color = ..., unfocusedLeadingIconColor: Color = ..., disabledLeadingIconColor: Color = ..., errorLeadingIconColor: Color = ..., focusedTrailingIconColor: Color = ..., unfocusedTrailingIconColor: Color = ..., disabledTrailingIconColor: Color = ..., errorTrailingIconColor: Color = ..., focusedLabelColor: Color = ..., unfocusedLabelColor: Color = ..., disabledLabelColor: Color = ..., errorLabelColor: Color = ..., focusedPlaceholderColor: Color = ..., unfocusedPlaceholderColor: Color = ..., disabledPlaceholderColor: Color = ..., errorPlaceholderColor: Color = ..., focusedSupportingTextColor: Color = ..., unfocusedSupportingTextColor: Color = ..., disabledSupportingTextColor: Color = ..., errorSupportingTextColor: Color = ..., focusedPrefixColor: Color = ..., unfocusedPrefixColor: Color = ..., disabledPrefixColor: Color = ..., errorPrefixColor: Color = ..., focusedSuffixColor: Color = ..., unfocusedSuffixColor: Color = ..., disabledSuffixColor: Color = ..., errorSuffixColor: Color = ...): TextFieldColors' is deprecated. Renamed to `TextFieldDefaults.colors` with additional parameters to controlcontainer color based on state.
 w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/apex/asg/ui/screens/ChatScreen.kt:211:48 'val Icons.Filled.Send: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Send.
@@ -55,12 +50,12 @@ w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/a
 > Task :app:hiltAggregateDepsRelease UP-TO-DATE
 > Task :app:hiltJavaCompileRelease UP-TO-DATE
 > Task :app:generateReleaseLintVitalReportModel
-> Task :app:processReleaseJavaRes
-> Task :app:mergeReleaseJavaResource
+> Task :app:processReleaseJavaRes UP-TO-DATE
+> Task :app:mergeReleaseJavaResource UP-TO-DATE
 > Task :app:transformReleaseClassesWithAsm
-> Task :app:lintVitalAnalyzeRelease
 > Task :app:dexBuilderRelease
 > Task :app:mergeReleaseGlobalSynthetics UP-TO-DATE
+> Task :app:lintVitalAnalyzeRelease
 > Task :app:mergeDexRelease
 > Task :app:compileReleaseArtProfile
 > Task :app:packageRelease
@@ -69,5 +64,5 @@ w: file:///C:/Users/krishna/AndroidStudioProjects/ASGApp/app/src/main/java/com/a
 > Task :app:lintVitalRelease
 > Task :app:assembleRelease
 
-BUILD SUCCESSFUL in 3m 57s
-50 actionable tasks: 13 executed, 37 up-to-date
+BUILD SUCCESSFUL in 1m 31s
+50 actionable tasks: 11 executed, 39 up-to-date
