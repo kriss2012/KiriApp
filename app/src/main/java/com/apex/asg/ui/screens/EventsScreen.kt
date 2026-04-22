@@ -48,7 +48,11 @@ fun EventsScreen(
     Scaffold(
         containerColor = BgCream,
         floatingActionButton = {
-            if (sessionManager.canCreateEvents()) {
+            val userRole = sessionManager.getUserRole() ?: ""
+            val canBroadcast = sessionManager.canCreateEvents() 
+                || userRole == "SPOC" 
+                || userRole == "ADMIN"
+            if (canBroadcast) {
                 ExtendedFloatingActionButton(
                     onClick = { navController.navigate(com.apex.asg.ui.navigation.Screen.AddEvent.route) },
                     containerColor = OrangePrimary,
