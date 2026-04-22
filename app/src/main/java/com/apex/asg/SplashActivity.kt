@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import kotlinx.coroutines.delay
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,30 +65,26 @@ fun SplashScreen(onFinish: () -> Unit) {
                 .alpha(alphaAnim.value)
                 .scale(scaleAnim.value)
         ) {
-            // Simulated Logo Mark (The Orange A)
-            Surface(
-                modifier = Modifier.size(100.dp),
-                color = OrangePrimary,
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text("A", color = Color.White, fontSize = 60.sp, fontWeight = FontWeight.Black)
-                }
-            }
+            Image(
+                painter = painterResource(id = com.apex.asg.R.drawable.asg_logo_new),
+                contentDescription = "ASG Logo",
+                modifier = Modifier.size(180.dp)
+            )
             
-            Spacer(Modifier.height(24.dp))
+            Spacer(Modifier.height(16.dp))
             
             Text(
-                "APEX",
-                style = MaterialTheme.typography.displaySmall,
+                "ASG PLATFORM",
+                style = MaterialTheme.typography.headlineLarge,
                 color = TextPrimary,
                 fontWeight = FontWeight.Black,
-                letterSpacing = 4.sp
+                letterSpacing = (-1).sp
             )
             Text(
-                "STARTUP GROUP",
+                "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
                 color = TextSecondary,
+                fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
         }

@@ -38,19 +38,8 @@ fun SplashScreen(
     val buttonOffset = remember { Animatable(50f) }
 
     LaunchedEffect(true) {
-        launch {
-            scale.animateTo(
-                targetValue = 1f,
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
-        }
-        launch {
-            alpha.animateTo(1f, animationSpec = tween(1000))
-        }
-        delay(300)
+        // Reduced delays and removed logo animations for seamless transition
+        delay(100) 
         launch {
             buttonOffset.animateTo(0f, animationSpec = tween(500))
         }
@@ -65,16 +54,15 @@ fun SplashScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        // ASG Premium Logo Component
+        // ASG Premium Logo Component (Static to avoid double animation)
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.scale(scale.value).alpha(alpha.value)
+            modifier = Modifier
         ) {
-            Icon(
-                painter = painterResource(id = com.apex.asg.R.drawable.ic_launcher_foreground),
+            Image(
+                painter = painterResource(id = com.apex.asg.R.drawable.asg_logo_new),
                 contentDescription = "ASG Logo",
-                modifier = Modifier.size(110.dp),
-                tint = Color.Unspecified
+                modifier = Modifier.size(150.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(

@@ -2,8 +2,8 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Center the premium logo with appropriate padding for adaptive icon safe zone -->
     <item
-        android:drawable="@drawable/logo_main"
+        android:drawable="@drawable/asg_logo_new"
         android:gravity="center"
-        android:width="82dp"
-        android:height="82dp" />
+        android:width="96dp"
+        android:height="96dp" />
 </layer-list>
