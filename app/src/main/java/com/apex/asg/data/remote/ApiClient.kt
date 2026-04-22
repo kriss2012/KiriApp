@@ -32,7 +32,7 @@ interface ASGApiService {
     suspend fun getProfile(@Path("userId") userId: String): UserDto
 
     @PUT("users/profile/{userId}")
-    suspend fun updateProfile(@Path("userId") userId: String, @Body profileData: Map<String, Any?>): UserDto
+    suspend fun updateProfile(@Path("userId") userId: String, @Body request: com.apex.asg.data.remote.models.UpdateProfileRequest): UserDto
 
     @PUT("users/toggle-access/{userId}")
     suspend fun toggleAccess(@Path("userId") userId: String, @Body data: Map<String, Boolean>): Map<String, String>
