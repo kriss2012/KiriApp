@@ -29,6 +29,9 @@ import com.apex.asg.ui.viewmodels.*
 import androidx.compose.ui.platform.LocalContext
 import com.apex.asg.ui.components.ErrorDialog
 import com.apex.asg.ui.components.SuccessDialog
+import com.apex.asg.ui.navigation.Screen
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun EventsScreen(
@@ -140,7 +143,7 @@ fun EventsScreen(
                         if (filteredEvents.isEmpty()) {
                             Text("No related data found", modifier = Modifier.align(Alignment.Center), style = MaterialTheme.typography.bodySmall, color = TextSecondary)
                         } else {
-                            EventsList(filteredEvents)
+                            EventsList(filteredEvents, navController)
                         }
                     }
                     is EventsState.Error -> {
@@ -170,7 +173,7 @@ fun EventsScreen(
 }
 
 @Composable
-fun EventsList(events: List<EventDto>) {
+fun EventsList(events: List<EventDto>, navController: androidx.navigation.NavController) {
     LazyColumn(
         modifier = Modifier.padding(horizontal = 14.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -210,6 +213,14 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column {
+            if (!event.imageUrl.isNullOrEmpty()) {
+                AsyncImage(
+                    model = event.imageUrl,
+                    contentDescription = "Event Banner",
+                    modifier = Modifier.fillMaxWidth().height(120.dp).clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Row(
                 modifier = Modifier.padding(14.dp),
                 verticalAlignment = Alignment.Top,

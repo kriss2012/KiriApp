@@ -124,13 +124,13 @@ fun EventDetailsScreen(
 
                 // Date & Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = OrangePrimary, size = 20.dp)
+                    Icon(Icons.Default.DateRange, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(event.date, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
                 }
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = OrangePrimary, size = 20.dp)
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(event.location, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
                 }

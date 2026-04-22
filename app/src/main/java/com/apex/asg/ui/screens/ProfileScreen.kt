@@ -266,11 +266,11 @@ fun ProfileHeroSection(
 
             Spacer(Modifier.height(24.dp))
 
-            // Real Stats Row (Placeholder for actual metrics later)
+            // Real Stats Row (Permanent Fix)
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBox("0", "Events")
-                StatBox("0", "Connections")
-                StatBox("0", "Score")
+                StatBox(user.eventsCount.toString(), "Events")
+                StatBox(user.connectionsCount.toString(), "Connections")
+                StatBox(user.points.toString(), "Score")
             }
         }
     }

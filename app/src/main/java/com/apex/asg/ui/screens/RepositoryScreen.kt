@@ -59,12 +59,13 @@ fun RepositoryScreen(
                 .background(
                     Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08)))
                 )
-                .padding(horizontal = 24.dp, vertical = 28.dp)
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .padding(horizontal = 24.dp, vertical = 20.dp)
         ) {
             Column {
                 Text(
                     "Community",
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.headlineLarge,
                     color = Color.White,
                     fontWeight = FontWeight.Black
                 )

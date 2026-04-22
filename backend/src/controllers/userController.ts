@@ -11,37 +11,50 @@ export const getProfile = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        role: true,
-        studentLevel: true,
-        department: true,
-        college: true,
-        year: true,
-        section: true,
-        isVerified: true,
-        canCreateEvents: true,
-        bio: true,
-        skills: true,
-        avatarUrl: true,
-        githubUrl: true,
-        linkedInUrl: true,
-        phoneNumber: true,
-        website: true,
-        services: true,
-        intent: true,
-        preferredLanguage: true,
-        createdAt: true
-      }
-    });
+    const [user, eventsCount, sentAccepted, receivedAccepted] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          role: true,
+          studentLevel: true,
+          department: true,
+          college: true,
+          year: true,
+          section: true,
+          isVerified: true,
+          canCreateEvents: true,
+          bio: true,
+          skills: true,
+          avatarUrl: true,
+          githubUrl: true,
+          linkedInUrl: true,
+          phoneNumber: true,
+          website: true,
+          services: true,
+          intent: true,
+          preferredLanguage: true,
+          points: true,
+          createdAt: true
+        }
+      }),
+      prisma.event.count({ where: { ownerId: userId } }),
+      prisma.connection.count({ where: { senderId: userId, status: 'ACCEPTED' } }),
+      prisma.connection.count({ where: { receiverId: userId, status: 'ACCEPTED' } })
+    ]);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    const connectionsCount = sentAccepted + receivedAccepted;
+    const profileResponse = {
+      ...user,
+      eventsCount,
+      connectionsCount
+    };
 
     // Mask sensitive info if not the owner and not connected
     if (requesterId && requesterId !== userId) {
@@ -58,7 +71,7 @@ export const getProfile = async (req: Request, res: Response) => {
       if (!connection) {
         // Mask it
         return res.status(200).json({
-          ...user,
+          ...profileResponse,
           email: "Connect to view",
           phoneNumber: "Connect to view"
         });
@@ -66,13 +79,13 @@ export const getProfile = async (req: Request, res: Response) => {
     } else if (!requesterId) {
       // Unauthenticated - mask sensitive info
       return res.status(200).json({
-        ...user,
+        ...profileResponse,
         email: "Connect to view",
         phoneNumber: "Connect to view"
       });
     }
 
-    res.status(200).json(user);
+    res.status(200).json(profileResponse);
   } catch (error: any) {
     res.status(500).json({ message: 'Error fetching profile', error: error.message });
   }
