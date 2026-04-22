@@ -51,15 +51,29 @@ fun RepositoryScreen(
             .background(BgCream)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        // Premium Header
-        Column(
+        // Premium Gradient Header — matches ProfileHeroSection design token
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 24.dp, vertical = 32.dp)
+                .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
+                .background(
+                    Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08)))
+                )
+                .padding(horizontal = 24.dp, vertical = 28.dp)
         ) {
-            Text("Community", style = MaterialTheme.typography.displaySmall, color = TextPrimary, fontWeight = FontWeight.Black)
-            Text("Network of Jalgaon's brightest minds", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+            Column {
+                Text(
+                    "Community",
+                    style = MaterialTheme.typography.displaySmall,
+                    color = Color.White,
+                    fontWeight = FontWeight.Black
+                )
+                Text(
+                    "Network of Jalgaon's brightest minds",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White.copy(alpha = 0.8f)
+                )
+            }
         }
 
         Spacer(Modifier.height(8.dp))
