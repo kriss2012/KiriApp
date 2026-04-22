@@ -32,8 +32,8 @@ export const sendRequest = async (req: Request, res: Response) => {
       include: { sender: true }
     });
 
-    // Create Notification for receiver
-    await createNotification(
+    // Create Notification for receiver (Async - Point 4)
+    createNotification(
       receiverId,
       'New Connection Request',
       `${connection.sender.fullName} wants to connect with you.`,
@@ -66,8 +66,9 @@ export const acceptRequest = async (req: Request, res: Response) => {
       include: { sender: true, receiver: true }
     });
 
+    // SIDE EFFECTS (Async - Point 4 Kitchen Analogy)
     // Notify sender via real-time and DB
-    const notif = await createNotification(
+    createNotification(
       connection.senderId,
       'Connection Accepted!',
       `${connection.receiver.fullName} accepted your connection request.`,
@@ -79,17 +80,17 @@ export const acceptRequest = async (req: Request, res: Response) => {
     emitToUser(connection.senderId, 'connection_accepted', connection);
 
     // Create System Message in Chat
-    await prisma.message.create({
+    prisma.message.create({
       data: {
         senderId: connection.receiverId,
         receiverId: connection.senderId,
         content: `🤝 Connection accepted! You can now see each other's full profile and chat freely.`
       }
-    });
+    }).catch(e => console.error("Async Message Error:", e));
 
     // Log Activity for NAAC
-    await createActivity(connection.receiverId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.sender.fullName}.`, 25);
-    await createActivity(connection.senderId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.receiver.fullName}.`, 25);
+    createActivity(connection.receiverId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.sender.fullName}.`, 25);
+    createActivity(connection.senderId, 'CONNECTION', 'New Mentor/Peer Connection', `Connected with ${connection.receiver.fullName}.`, 25);
 
     res.status(200).json({ message: 'Connection accepted successfully', connection });
   } catch (error: any) {
