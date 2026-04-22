@@ -178,15 +178,12 @@ fun EventsList(events: List<EventDto>) {
         item { Text("ACTIVE EVENTS", style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontWeight = FontWeight.Bold, letterSpacing = 1.sp, modifier = Modifier.padding(vertical = 5.dp)) }
         items(events) { event ->
             EventDetailCard(
-                day = event.date.split("-").lastOrNull() ?: "01",
-                month = "EVENT", 
-                title = event.title,
-                organizer = "Community Event",
-                location = event.description.take(20) + "...", 
-                type = event.type ?: "General",
-                typeBg = OrangeLight,
-                typeText = OrangeDark,
-                prize = "TBD"
+                event = event,
+                onDetailsClick = {
+                    val gson = com.google.gson.Gson()
+                    val eventJson = gson.toJson(event)
+                    navController.navigate(Screen.EventDetails.createRoute(eventJson))
+                }
             )
         }
     }
@@ -194,9 +191,19 @@ fun EventsList(events: List<EventDto>) {
 
 
 @Composable
-fun EventDetailCard(day: String, month: String, title: String, organizer: String, location: String, type: String, typeBg: Color, typeText: Color, prize: String) {
+fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
+    val day = event.date.split("-").lastOrNull() ?: "01"
+    val month = "EVENT"
+    val title = event.title
+    val organizer = "Community Event"
+    val location = event.description.take(30) + "..."
+    val type = event.type ?: "General"
+    val typeBg = OrangeLight
+    val typeText = OrangeDark
+    val prize = event.prize ?: "TBD"
+
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onDetailsClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(1.dp, BorderColor),
@@ -242,7 +249,7 @@ fun EventDetailCard(day: String, month: String, title: String, organizer: String
             ) {
                 Text("Prize: $prize", style = MaterialTheme.typography.bodySmall, color = GreenSuccess, fontWeight = FontWeight.Bold)
                 Button(
-                    onClick = { },
+                    onClick = { onDetailsClick() },
                     modifier = Modifier.height(34.dp),
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),

@@ -190,5 +190,13 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
         composable(Screen.AddEvent.route) {
             AddEventScreen(onBack = { navController.popBackStack() })
         }
+
+        composable(Screen.EventDetails.route) { backStackEntry ->
+            val eventJson = backStackEntry.arguments?.getString("eventJson") ?: ""
+            EventDetailsScreen(
+                navController = navController,
+                eventJson = eventJson
+            )
+        }
     }
 }

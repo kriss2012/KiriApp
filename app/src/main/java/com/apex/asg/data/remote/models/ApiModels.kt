@@ -197,7 +197,9 @@ data class CreateEventRequest(
     val location: String,
     val ownerId: String,
     val imageUrl: String? = null,
-    val type: String = "GENERAL"
+    val type: String = "GENERAL",
+    val registrationLink: String? = null,
+    val prize: String? = null
 )
 
 // Typed request to avoid Retrofit wildcard serialization errors
@@ -222,7 +224,9 @@ data class EventDto(
     val date: String,
     val location: String,
     val imageUrl: String? = null,
-    val type: String? = null
+    val type: String? = null,
+    val registrationLink: String? = null,
+    val prize: String? = null
 )
 
 data class LoginRequest(
