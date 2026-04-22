@@ -17,6 +17,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,10 +37,8 @@ import com.apex.asg.data.remote.models.UserDto
 import com.apex.asg.ui.viewmodels.ProfileState
 import com.apex.asg.ui.viewmodels.ProfileViewModel
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.compose.ui.platform.LocalLifecycleOwner
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = viewModel(),
@@ -52,49 +52,42 @@ fun ProfileScreen(
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    
-    // Fetch data when screen is composed or userId changes
+    // Stable initial fetch — only re-runs when userId actually changes.
+    // No DisposableEffect ON_RESUME observer to prevent infinite request loops.
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
             viewModel.fetchProfile(context, userId)
         }
     }
 
-    // Still refresh on Resume, but only once per resume event
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                // We could add a timestamp check here to prevent rapid multiple refreshes
-                // but fetchProfile already has its own internal state management.
-                // However, let's only refresh if we aren't already loading.
-                if (userId.isNotEmpty() && uiState !is ProfileState.Loading) {
-                    viewModel.fetchProfile(context, userId)
-                }
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
+    // Pull-to-refresh state — isRefreshing tracks ongoing network call
+    val isRefreshing = uiState is ProfileState.Loading
+    val pullToRefreshState = rememberPullToRefreshState()
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = BgCream,
         bottomBar = { Spacer(Modifier.height(0.dp)) }
     ) { padding ->
-        Box(
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                if (userId.isNotEmpty()) viewModel.fetchProfile(context, userId)
+            },
+            state = pullToRefreshState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
             when (val state = uiState) {
                 is ProfileState.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = OrangePrimary
-                    )
+                    // Show spinner only on initial load (no cached data yet)
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = OrangePrimary
+                        )
+                    }
                 }
                 is ProfileState.Success -> {
                     ProfileContent(
@@ -109,13 +102,19 @@ fun ProfileScreen(
                     )
                 }
                 is ProfileState.Error -> {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(state.message, color = Color.Red, fontSize = 14.sp)
-                        Button(onClick = { viewModel.fetchProfile(context, userId) }) {
-                            Text("Retry")
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Column(
+                            modifier = Modifier.align(Alignment.Center),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(state.message, color = Color.Red, fontSize = 14.sp)
+                            Spacer(Modifier.height(8.dp))
+                            Button(
+                                onClick = { viewModel.fetchProfile(context, userId) },
+                                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                            ) {
+                                Text("Retry", color = Color.White)
+                            }
                         }
                     }
                 }
