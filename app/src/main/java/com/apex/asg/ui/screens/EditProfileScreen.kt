@@ -56,37 +56,44 @@ fun EditProfileScreen(
         }
     }
 
+    // Single unified effect — Compose only runs one LaunchedEffect per key.
+    // Having two with the same key (uiState) silently drops the first one.
     LaunchedEffect(uiState) {
-        // ONLY populate fields if we are NOT currently saving
-        // This prevents the "Success" emit during save from overwriting the local edited state before navigation
-        if (uiState is ProfileState.Success && !isSaving) {
-            val user = (uiState as ProfileState.Success).user
-            fullName = user.fullName
-            bio = user.bio ?: ""
-            role = user.role
-            department = user.department ?: ""
-            college = user.college ?: ""
-            year = user.year ?: ""
-            phoneNumber = user.phoneNumber ?: ""
-            website = user.website ?: ""
-            githubUrl = user.githubUrl ?: ""
-            linkedInUrl = user.linkedInUrl ?: ""
-            servicesStr = user.services.joinToString(", ")
-        }
-        
-        if (uiState is ProfileState.Error) {
-            scope.launch {
-                snackbarHostState.showSnackbar((uiState as ProfileState.Error).message)
+        when (val state = uiState) {
+            is ProfileState.Success -> {
+                if (isSaving) {
+                    // Save was confirmed — toast and navigate back
+                    android.widget.Toast.makeText(
+                        context,
+                        "Profile Updated Successfully!",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    isSaving = false
+                    onBack()
+                } else {
+                    // Initial fetch succeeded — populate fields only if not mid-save
+                    fullName = state.user.fullName
+                    bio = state.user.bio ?: ""
+                    role = state.user.role
+                    department = state.user.department ?: ""
+                    college = state.user.college ?: ""
+                    year = state.user.year ?: ""
+                    phoneNumber = state.user.phoneNumber ?: ""
+                    website = state.user.website ?: ""
+                    githubUrl = state.user.githubUrl ?: ""
+                    linkedInUrl = state.user.linkedInUrl ?: ""
+                    servicesStr = state.user.services.joinToString(", ")
+                }
             }
-            isSaving = false
-        }
-    }
-
-    LaunchedEffect(uiState) {
-        if (isSaving && uiState is ProfileState.Success) {
-            android.widget.Toast.makeText(context, "Profile Updated Successfully!", android.widget.Toast.LENGTH_SHORT).show()
-            onBack()
-            isSaving = false
+            is ProfileState.Error -> {
+                // Show persistent snackbar so user reads the error before retrying
+                snackbarHostState.showSnackbar(
+                    message = state.message,
+                    duration = SnackbarDuration.Long
+                )
+                isSaving = false
+            }
+            else -> { /* Loading / Idle — no action */ }
         }
     }
 
