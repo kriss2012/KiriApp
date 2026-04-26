@@ -1,0 +1,89 @@
+package com.kiriplatform.app.utils
+
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import io.github.fletchmckee.liquid.liquid
+import io.github.fletchmckee.liquid.rememberLiquidState
+
+fun Modifier.glassmorphism(
+    enabled: Boolean = true,
+    cornerRadius: Dp = 32.dp,
+    alpha: Float = 0.15f
+): Modifier = composed {
+    if (!enabled) return@composed this.border(
+        width = 1.dp,
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+        shape = RoundedCornerShape(cornerRadius)
+    )
+
+    val liquidState = rememberLiquidState()
+    
+    this
+        .clip(RoundedCornerShape(cornerRadius))
+        .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = alpha))
+        .liquid(liquidState) {
+            this.frost = 16.dp
+            this.refraction = 0.1f
+            this.saturation = 0.7f
+        }
+        .border(
+            width = 1.dp,
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    Color.White.copy(alpha = 0.3f),
+                    Color.White.copy(alpha = 0.05f)
+                )
+            ),
+            shape = RoundedCornerShape(cornerRadius)
+        )
+}
+
+fun Modifier.shimmer(
+    visible: Boolean = true,
+    showGradient: Boolean = true
+): Modifier = composed {
+    if (!visible) return@composed this
+    
+    val transition = rememberInfiniteTransition(label = "shimmer")
+    val translateAnim by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1500f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "shimmer"
+    )
+
+    val shimmerColors = listOf(
+        Color.LightGray.copy(alpha = 0.6f),
+        Color.LightGray.copy(alpha = 0.2f),
+        Color.LightGray.copy(alpha = 0.6f),
+    )
+
+    val brush = Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim, y = translateAnim)
+    )
+
+    if (showGradient) {
+        this.background(brush)
+    } else {
+        this
+    }
+}

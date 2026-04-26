@@ -1,7 +1,7 @@
 <variant
     name="release"
     useSupportLibraryVectorDrawables="true"
-    package="com.apex.asg"
+    package="com.kiriplatform.app"
     minSdkVersion="26"
     targetSdkVersion="34"
     mergedManifest="build\intermediates\merged_manifest\release\processReleaseMainManifest\AndroidManifest.xml"
@@ -24,7 +24,7 @@
   <artifact
       classOutputs="build\intermediates\javac\release\compileReleaseJavaWithJavac\classes;build\tmp\kotlin-classes\release;build\kotlinToolingMetadata;build\intermediates\hilt\component_classes\release;build\generated\ksp\release\resources;build\intermediates\compile_and_runtime_not_namespaced_r_class_jar\release\processReleaseResources\R.jar"
       type="MAIN"
-      applicationId="com.apex.asg"
+      applicationId="com.kiriplatform.app"
       generatedSourceFolders="build\generated\ksp\release\java;build\generated\ksp\release\kotlin;build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
       desugaredMethodsFiles="C:\Users\krishna\.gradle\caches\8.10.2\transforms\98a38dd18e587101c265337c52c4d4aa\transformed\D8BackportedDesugaredMethods.txt">
