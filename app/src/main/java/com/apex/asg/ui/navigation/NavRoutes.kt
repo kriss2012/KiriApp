@@ -34,6 +34,10 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object EventDetails : Screen("event_details/{eventJson}") {
         fun createRoute(eventJson: String) = "event_details/${java.net.URLEncoder.encode(eventJson, "UTF-8")}"
     }
+    object InnovationHub : Screen("innovation_hub", "Innovation Hub")
+    object MindsetDiscovery : Screen("mindset_discovery", "Mindset Discovery")
+    object LiveInput : Screen("live_input", "AI Persona")
+    object CommitteeManagement : Screen("committee_management", "Committee")
 }
 
 val BottomNavItems = listOf(
