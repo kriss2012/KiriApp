@@ -18,6 +18,8 @@ import matchRoutes from './routes/matchRoutes.js';
 import investorRoutes from './routes/investorRoutes.js';
 import mentorRoutes from './routes/mentorRoutes.js';
 import inviteRoutes from './routes/inviteRoutes.js';
+import aalRoutes from './routes/aalRoutes.js';
+import boardRoutes from './routes/boardRoutes.js';
 
 import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
@@ -52,6 +54,8 @@ app.use('/api/match', matchRoutes);
 app.use('/api/investor', investorRoutes);
 app.use('/api/mentor', mentorRoutes);
 app.use('/api/invite', inviteRoutes);
+app.use('/api/aal', aalRoutes);
+app.use('/api/board', boardRoutes);
 
 app.get('/', (req, res) => {
   res.send('ASG Community API is running...');
