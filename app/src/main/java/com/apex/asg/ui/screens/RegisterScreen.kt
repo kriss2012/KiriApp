@@ -53,6 +53,9 @@ fun RegisterScreen(
     var phoneNumber by remember { mutableStateOf("") }
     var inviteCode by remember { mutableStateOf("") }
     var autoEnrollAal by remember { mutableStateOf(true) }
+    var skills by remember { mutableStateOf("") }
+    var bio by remember { mutableStateOf("") }
+    var expertise by remember { mutableStateOf("") }
     
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -92,6 +95,8 @@ fun RegisterScreen(
                 StepCircle(2, currentStep)
                 HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 2) OrangePrimary else Color.LightGray)
                 StepCircle(3, currentStep)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 3) OrangePrimary else Color.LightGray)
+                StepCircle(4, currentStep)
             }
             
             Spacer(Modifier.height(32.dp))
@@ -119,6 +124,12 @@ fun RegisterScreen(
                         phoneNumber = phoneNumber, onPhoneChange = { phoneNumber = it },
                         autoEnroll = autoEnrollAal, onAutoEnrollChange = { autoEnrollAal = it }
                     )
+                    4 -> PersonaStep(
+                        role = selectedRole,
+                        bio = bio, onBioChange = { bio = it },
+                        skills = skills, onSkillsChange = { skills = it },
+                        expertise = expertise, onExpertiseChange = { expertise = it }
+                    )
                 }
             }
 
@@ -132,7 +143,7 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
-                    if (currentStep < 3) {
+                    if (currentStep < 4) {
                         currentStep++
                     } else {
                         isLoading = true
@@ -151,8 +162,10 @@ fun RegisterScreen(
                                     section = section.takeIf { it.isNotBlank() },
                                     phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
                                     inviteCode = inviteCode.takeIf { it.isNotBlank() },
-                                    aalAutoEnroll = autoEnrollAal
+                                    aalAutoEnroll = autoEnrollAal,
+                                    services = skills.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                                 )
+                                // We'll update the bio/expertise in a separate profile call or extend the request
                                 val response = ApiClient.service.register(request)
                                 
                                 sessionManager.saveToken(response.token)
@@ -178,7 +191,7 @@ fun RegisterScreen(
                 if (isLoading) {
                     CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
                 } else {
-                    Text(if (currentStep == 3) "Complete Onboarding" else "Continue →", fontWeight = FontWeight.Bold)
+                    Text(if (currentStep == 4) "Finalize Account" else "Next Step →", fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -300,5 +313,45 @@ fun DetailStep(
         
         OutlinedTextField(department, onDeptChange, label = { Text("Department") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
         OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+    }
+}
+
+@Composable
+fun PersonaStep(
+    role: String,
+    bio: String, onBioChange: (String) -> Unit,
+    skills: String, onSkillsChange: (String) -> Unit,
+    expertise: String, onExpertiseChange: (String) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        
+        OutlinedTextField(
+            value = bio,
+            onValueChange = onBioChange,
+            label = { Text("Short Bio / Intent") },
+            placeholder = { Text("e.g. Building an EdTech startup for rural students...") },
+            modifier = Modifier.fillMaxWidth().height(120.dp),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        OutlinedTextField(
+            value = skills,
+            onValueChange = onSkillsChange,
+            label = { Text(if (role == "STUDENT") "Skills (React, Python, etc.)" else "Services Provided") },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(12.dp)
+        )
+
+        if (role != "STUDENT") {
+            OutlinedTextField(
+                value = expertise,
+                onValueChange = onExpertiseChange,
+                label = { Text("Primary Expertise (Fintech, AI, etc.)") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+        }
     }
 }
