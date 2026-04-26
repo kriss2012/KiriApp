@@ -26,7 +26,8 @@ class ConnectionsViewModel : ViewModel() {
         com.apex.asg.data.remote.SocketHandler.setupGlobalListeners(
             onNotification = {},
             onMessage = {},
-            onConnectionAccepted = { fetchConnections(userId) }
+            onConnectionAccepted = { fetchConnections(userId) },
+            onMatchSuggested = {}
         )
 
         viewModelScope.launch {
