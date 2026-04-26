@@ -198,5 +198,24 @@ fun ASGNavGraph(navController: NavHostController = rememberNavController()) {
                 eventJson = eventJson
             )
         }
+
+        composable(Screen.InnovationHub.route) {
+            InnovationHubScreen(onNavigate = { route -> navController.navigate(route) })
+        }
+
+        composable(Screen.MindsetDiscovery.route) {
+            MindsetDiscoveryScreen(
+                onBack = { navController.popBackStack() },
+                onComplete = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.LiveInput.route) {
+            LiveInputScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable(Screen.CommitteeManagement.route) {
+            CommitteeManagementScreen(onBack = { navController.popBackStack() })
+        }
     }
 }
