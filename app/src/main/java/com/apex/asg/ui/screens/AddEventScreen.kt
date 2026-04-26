@@ -42,6 +42,8 @@ fun AddEventScreen(
     var description by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
+    var coordinatorName by remember { mutableStateOf("") }
+    var coordinatorPhone by remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
     var registrationLink by remember { mutableStateOf("") }
     var prize by remember { mutableStateOf("") }
@@ -130,12 +132,35 @@ fun AddEventScreen(
             )
 
             OutlinedTextField(
-                value = imageUrl,
-                onValueChange = { imageUrl = it },
-                label = { Text("Banner Image URL") },
-                placeholder = { Text("https://example.com/banner.jpg") },
+                value = coordinatorName,
+                onValueChange = { coordinatorName = it },
+                label = { Text("Coordinator Name") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
+            )
+
+            OutlinedTextField(
+                value = coordinatorPhone,
+                onValueChange = { coordinatorPhone = it },
+                label = { Text("Coordinator Phone (Optional)") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            OutlinedTextField(
+                value = imageUrl,
+                onValueChange = { imageUrl = it },
+                label = { Text("Banner Image URL (Delete text to remove image)") },
+                placeholder = { Text("https://example.com/banner.jpg") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                trailingIcon = {
+                    if (imageUrl.isNotBlank()) {
+                        IconButton(onClick = { imageUrl = "" }) {
+                            Icon(androidx.compose.material.icons.Icons.Default.Close, "Clear Image")
+                        }
+                    }
+                }
             )
 
             OutlinedTextField(
@@ -175,6 +200,8 @@ fun AddEventScreen(
                             date = date,
                             location = location,
                             ownerId = userId,
+                            coordinatorName = coordinatorName.ifBlank { "ASG Coordinator" },
+                            coordinatorPhone = coordinatorPhone.ifBlank { null },
                             imageUrl = imageUrl.ifBlank { null },
                             registrationLink = registrationLink.ifBlank { null },
                             prize = prize.ifBlank { null }
