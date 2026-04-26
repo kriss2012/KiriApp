@@ -1,28 +1,30 @@
 package com.apex.asg.ui.screens
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.apex.asg.ui.components.ASGPrimaryButton
+import androidx.compose.ui.unit.sp
 import com.apex.asg.ui.theme.*
 import com.apex.asg.data.SessionManager
 import com.apex.asg.data.remote.ApiClient
 import com.apex.asg.data.remote.models.RegisterRequest
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,324 +35,268 @@ fun RegisterScreen(
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
+    val scope = rememberCoroutineScope()
+    
+    var currentStep by remember { mutableIntStateOf(1) }
+    
+    // Form Data
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
     var selectedRole by remember { mutableStateOf("STUDENT") }
-    var studentLevel by remember { mutableStateOf<String?>(null) }
+    var rollNumber by remember { mutableStateOf("") }
+    var studentLevel by remember { mutableStateOf("R1") }
     var department by remember { mutableStateOf("") }
     var college by remember { mutableStateOf("") }
     var year by remember { mutableStateOf("") }
     var section by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
-    var website by remember { mutableStateOf("") }
-    var servicesStr by remember { mutableStateOf("") }
     var inviteCode by remember { mutableStateOf("") }
+    var autoEnrollAal by remember { mutableStateOf(true) }
     
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    val coroutineScope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
 
-    val roles = listOf(
-        "STUDENT" to "🎓 Student",
-        "FOUNDER" to "🚀 Founder",
-        "MENTOR" to "👨‍🏫 Mentor",
-        "INVESTOR" to "💼 Investor",
-        "SERVICE_PROVIDER" to "🛠 Service Provider",
-        "SPOC" to "🏢 College Committee (SPOC)",
-        "ADMIN" to "🛡️ Platform Admin"
-    )
-
-    Scaffold(containerColor = BgCream) { padding ->
+    Scaffold(
+        containerColor = BgCream,
+        topBar = {
+            TopAppBar(
+                title = { Text("Student Onboarding", fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    if (currentStep > 1) {
+                        IconButton(onClick = { currentStep-- }) {
+                            Icon(Icons.Default.ArrowBack, null)
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+            )
+        }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(24.dp)
-                .verticalScroll(scrollState),
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Join ASG Community",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Black,
-                color = TextPrimary
-            )
-            Text(
-                text = "Create an account to start your journey",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary
-            )
-            
-            Spacer(modifier = Modifier.height(32.dp))
-
-            OutlinedTextField(
-                value = fullName,
-                onValueChange = { fullName = it },
-                label = { Text("Full Name *") },
+            // Step Indicator
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email Address *") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                isError = email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches(),
-                supportingText = {
-                    if (email.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                      Text("Please enter a valid email", color = Color.Red)
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            var passwordVisible by remember { mutableStateOf(false) }
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password *") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                visualTransformation = if (passwordVisible) androidx.compose.ui.text.input.VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    val image = if (passwordVisible) androidx.compose.material.icons.Icons.Default.Visibility else androidx.compose.material.icons.Icons.Default.VisibilityOff
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(image, contentDescription = null)
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text("Select Your Role *", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
-            
-            Column {
-                roles.forEach { (roleKey, roleLabel) ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedRole = roleKey }
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RadioButton(selected = selectedRole == roleKey, onClick = { selectedRole = roleKey })
-                        Text(roleLabel, style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                StepCircle(1, currentStep)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 1) OrangePrimary else Color.LightGray)
+                StepCircle(2, currentStep)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 2) OrangePrimary else Color.LightGray)
+                StepCircle(3, currentStep)
             }
-            // Invitation Code for protected roles
-            val protectedRolesSet = setOf("ADMIN", "SPOC", "MENTOR", "INVESTOR")
-            if (protectedRolesSet.contains(selectedRole)) {
-                Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = inviteCode,
-                    onValueChange = { inviteCode = it },
-                    label = { Text("Invitation Code (Required) *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = OrangePrimary,
-                        unfocusedBorderColor = OrangePrimary.copy(alpha = 0.5f)
-                    ),
-                    placeholder = { Text("Enter the code provided by ASG Admin") }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Text("Professional Details (Optional)", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
             
-            OutlinedTextField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                label = { Text("Phone Number") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = website,
-                onValueChange = { website = it },
-                label = { Text("Website / Portfolio") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = servicesStr,
-                onValueChange = { servicesStr = it },
-                label = { Text("Services (comma separated)") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
+            Spacer(Modifier.height(32.dp))
 
-            if (selectedRole == "STUDENT") {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("Student Level", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, modifier = Modifier.align(Alignment.Start))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    listOf("R1", "R2", "R3", "R4", "R5").forEach { level ->
-                        FilterChip(
-                            selected = studentLevel == level,
-                            onClick = { studentLevel = level },
-                            label = { Text(level) }
-                        )
-                    }
-                }
-            }
-
-            if (selectedRole == "STUDENT" || selectedRole == "SPOC" || selectedRole == "ADMIN") {
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                var expanded by remember { mutableStateOf(false) }
-                val jalgaonColleges = listOf(
-                    "GH Raisoni Institute of Engineering & Business Management, Jalgaon",
-                    "Government College of Engineering, Jalgaon (GCOEJ)",
-                    "SSBT's College of Engineering & Technology, Bambhori",
-                    "KBC North Maharashtra University (KBCNMU)",
-                    "Moolji Jaitha College (MJ College)",
-                    "KCES's College of Engineering and Management (COEM)",
-                    "Godavari College of Engineering",
-                    "Shri Gulabrao Deokar College of Engineering (SGDCOE)",
-                    "Pratibha College of Education",
-                    "DNCVP's College of Social Work",
-                    "Nuton Maratha College",
-                    "Other / Outsider"
-                )
-
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
-                ) {
-                    OutlinedTextField(
-                        value = college,
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text("College Name") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                        modifier = Modifier.fillMaxWidth().menuAnchor(),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors()
+            AnimatedContent(targetState = currentStep, label = "stepTransition") { step ->
+                when (step) {
+                    1 -> AccountStep(
+                        fullName = fullName, onFullNameChange = { fullName = it },
+                        email = email, onEmailChange = { email = it },
+                        password = password, onPasswordChange = { password = it }
                     )
-
-                    ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        jalgaonColleges.forEach { collegeName ->
-                            DropdownMenuItem(
-                                text = { Text(collegeName) },
-                                onClick = {
-                                    college = collegeName
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = department,
-                    onValueChange = { department = it },
-                    label = { Text("Department *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp)
-                )
-                if (selectedRole == "STUDENT") {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedTextField(
-                            value = year,
-                            onValueChange = { year = it },
-                            label = { Text("Year (1-4)") },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        OutlinedTextField(
-                            value = section,
-                            onValueChange = { section = it },
-                            label = { Text("Section (S1/S2)") },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                    }
+                    2 -> RoleStep(
+                        selectedRole = selectedRole,
+                        onRoleChange = { selectedRole = it },
+                        inviteCode = inviteCode,
+                        onInviteCodeChange = { inviteCode = it }
+                    )
+                    3 -> DetailStep(
+                        role = selectedRole,
+                        rollNumber = rollNumber, onRollChange = { rollNumber = it },
+                        college = college, onCollegeChange = { college = it },
+                        department = department, onDeptChange = { department = it },
+                        year = year, onYearChange = { year = it },
+                        section = section, onSectionChange = { section = it },
+                        phoneNumber = phoneNumber, onPhoneChange = { phoneNumber = it },
+                        autoEnroll = autoEnrollAal, onAutoEnrollChange = { autoEnrollAal = it }
+                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(24.dp))
 
             if (errorMessage != null) {
-                Text(text = errorMessage!!, color = Color.Red, style = MaterialTheme.typography.labelSmall)
-                Spacer(modifier = Modifier.height(8.dp))
+                Text(errorMessage!!, color = Color.Red, style = MaterialTheme.typography.labelSmall)
+                Spacer(Modifier.height(8.dp))
             }
 
-            ASGPrimaryButton(
-                text = if (isLoading) "Creating Account..." else "Register",
+            Button(
                 onClick = {
-                    isLoading = true
-                    errorMessage = null
-                    coroutineScope.launch {
-                        try {
-                            val request = RegisterRequest(
-                                email = email.trim(),
-                                password = password.trim(),
-                                fullName = fullName.trim(),
-                                role = selectedRole,
-                                studentLevel = studentLevel,
-                                department = department.takeIf { it.isNotBlank() },
-                                college = college.takeIf { it.isNotBlank() },
-                                year = year.takeIf { it.isNotBlank() },
-                                section = section.takeIf { it.isNotBlank() },
-                                phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
-                                website = website.takeIf { it.isNotBlank() },
-                                services = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() },
-                                inviteCode = inviteCode.takeIf { it.isNotBlank() }
-                            )
-                            val response = ApiClient.service.register(request)
-                            
-                            sessionManager.saveToken(response.token)
-                            sessionManager.saveUserId(response.user.id)
-                            sessionManager.saveUserName(response.user.fullName)
-                            sessionManager.saveUserRole(response.user.role)
-                            sessionManager.setCanCreateEvents(response.user.canCreateEvents)
-                            ApiClient.setToken(response.token)
+                    if (currentStep < 3) {
+                        currentStep++
+                    } else {
+                        isLoading = true
+                        scope.launch {
+                            try {
+                                val request = RegisterRequest(
+                                    email = email.trim(),
+                                    password = password.trim(),
+                                    fullName = fullName.trim(),
+                                    role = selectedRole,
+                                    studentLevel = studentLevel,
+                                    rollNumber = rollNumber.takeIf { it.isNotBlank() },
+                                    department = department.takeIf { it.isNotBlank() },
+                                    college = college.takeIf { it.isNotBlank() },
+                                    year = year.takeIf { it.isNotBlank() },
+                                    section = section.takeIf { it.isNotBlank() },
+                                    phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
+                                    inviteCode = inviteCode.takeIf { it.isNotBlank() },
+                                    aalAutoEnroll = autoEnrollAal
+                                )
+                                val response = ApiClient.service.register(request)
+                                
+                                sessionManager.saveToken(response.token)
+                                sessionManager.saveUserId(response.user.id)
+                                sessionManager.saveUserName(response.user.fullName)
+                                sessionManager.saveUserRole(response.user.role)
+                                ApiClient.setToken(response.token)
 
-                            isLoading = false
-                            onRegisterSuccess()
-                        } catch (e: Exception) {
-                            isLoading = false
-                            errorMessage = e.message ?: "Registration failed"
+                                onRegisterSuccess()
+                            } catch (e: Exception) {
+                                errorMessage = e.message ?: "Registration failed"
+                            } finally {
+                                isLoading = false
+                            }
                         }
                     }
                 },
-                enabled = !isLoading && 
-                          email.isNotEmpty() && 
-                          android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-                          password.isNotEmpty() && 
-                          fullName.isNotEmpty() && 
-                          selectedRole.isNotEmpty() && 
-                          department.isNotEmpty() &&
-                          (!setOf("ADMIN", "SPOC", "MENTOR", "INVESTOR").contains(selectedRole) || inviteCode.isNotBlank())
-            )
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                enabled = !isLoading
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                } else {
+                    Text(if (currentStep == 3) "Complete Onboarding" else "Continue →", fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.height(16.dp))
+@Composable
+fun StepCircle(step: Int, currentStep: Int) {
+    val isCompleted = currentStep > step
+    val isActive = currentStep == step
+    
+    Box(
+        modifier = Modifier
+            .size(32.dp)
+            .clip(CircleShape)
+            .background(if (isCompleted || isActive) OrangePrimary else Color.LightGray),
+        contentAlignment = Alignment.Center
+    ) {
+        if (isCompleted) {
+            Icon(Icons.Default.Check, null, tint = Color.White, modifier = Modifier.size(16.dp))
+        } else {
+            Text(step.toString(), color = if (isActive) Color.White else Color.DarkGray, fontWeight = FontWeight.Bold)
+        }
+    }
+}
 
-            Row {
-                Text("Already have an account? ", color = TextSecondary)
-                Text(
-                    "Sign In",
-                    color = OrangePrimary,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { onNavigateToLogin() }
-                )
+@Composable
+fun AccountStep(
+    fullName: String, onFullNameChange: (String) -> Unit,
+    email: String, onEmailChange: (String) -> Unit,
+    password: String, onPasswordChange: (String) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        var passVisible by remember { mutableStateOf(false) }
+        OutlinedTextField(
+            password, onPasswordChange, 
+            label = { Text("Password *") }, 
+            modifier = Modifier.fillMaxWidth(), 
+            shape = RoundedCornerShape(12.dp),
+            visualTransformation = if (passVisible) androidx.compose.ui.text.input.VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { passVisible = !passVisible }) {
+                    Icon(if (passVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff, null)
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun RoleStep(
+    selectedRole: String, onRoleChange: (String) -> Unit,
+    inviteCode: String, onInviteCodeChange: (String) -> Unit
+) {
+    val roles = listOf("STUDENT" to "🎓 Student", "FOUNDER" to "🚀 Founder", "MENTOR" to "👨‍🏫 Mentor", "SPOC" to "🏢 SPOC")
+    
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        roles.forEach { (key, label) ->
+            Card(
+                modifier = Modifier.fillMaxWidth().clickable { onRoleChange(key) },
+                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) OrangePrimary.copy(alpha = 0.1f) else Color.White),
+                border = androidx.compose.foundation.BorderStroke(2.dp, if (selectedRole == key) OrangePrimary else Color.Transparent)
+            ) {
+                Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(selectedRole == key, onClick = { onRoleChange(key) })
+                    Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+        if (selectedRole != "STUDENT") {
+            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        }
+    }
+}
+
+@Composable
+fun DetailStep(
+    role: String,
+    rollNumber: String, onRollChange: (String) -> Unit,
+    college: String, onCollegeChange: (String) -> Unit,
+    department: String, onDeptChange: (String) -> Unit,
+    year: String, onYearChange: (String) -> Unit,
+    section: String, onSectionChange: (String) -> Unit,
+    phoneNumber: String, onPhoneChange: (String) -> Unit,
+    autoEnroll: Boolean, onAutoEnrollChange: (Boolean) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Professional Identity", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        
+        if (role == "STUDENT") {
+            OutlinedTextField(rollNumber, onRollChange, label = { Text("Roll Number / PRN") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+            
+            var expanded by remember { mutableStateOf(false) }
+            ExposedDropdownMenuBox(expanded, { expanded = !expanded }) {
+                OutlinedTextField(college, {}, readOnly = true, label = { Text("Institution") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) }, modifier = Modifier.fillMaxWidth().menuAnchor(), shape = RoundedCornerShape(12.dp))
+                ExposedDropdownMenu(expanded, { expanded = false }) {
+                    listOf("GH Raisoni Jalgaon", "GCOE Jalgaon", "SSBT Bambhori", "KBCNMU", "Other").forEach {
+                        DropdownMenuItem(text = { Text(it) }, onClick = { onCollegeChange(it); expanded = false })
+                    }
+                }
             }
             
-            Spacer(modifier = Modifier.height(40.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(year, onYearChange, label = { Text("Year") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(12.dp))
+                OutlinedTextField(section, onSectionChange, label = { Text("Section") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(12.dp))
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = OrangePrimary))
+                Text("Enroll in AI Launchpad Internship", style = MaterialTheme.typography.bodyMedium)
+            }
         }
+        
+        OutlinedTextField(department, onDeptChange, label = { Text("Department") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
     }
 }
