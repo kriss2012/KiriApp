@@ -82,6 +82,10 @@ fun MainScaffold(
                 onConnectionAccepted = { data ->
                     val receiverName = data.optJSONObject("receiver")?.optString("fullName") ?: "ASG Community"
                     com.apex.asg.utils.NotificationHelper.showNotification(context, "Connection Accepted", "You are now connected with $receiverName!")
+                },
+                onMatchSuggested = { data ->
+                    val reason = data.optString("matchReason", "The AI Agent found a new resource for you.")
+                    com.apex.asg.utils.NotificationHelper.showNotification(context, "New Resource Match 🚀", reason)
                 }
             )
         }
