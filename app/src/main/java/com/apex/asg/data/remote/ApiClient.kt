@@ -136,6 +136,38 @@ interface ASGApiService {
 
     @GET("invite/list")
     suspend fun getInvites(): List<InviteCodeDto>
+
+    // --- AAL & Ecosystem New Endpoints ---
+
+    @GET("aal/onboarding/{userId}")
+    suspend fun getAalOnboarding(@Path("userId") userId: Int): AalOnboardingDto
+
+    @GET("aal/activities/{userId}")
+    suspend fun getAalActivities(@Path("userId") userId: Int): List<AalActivityDto>
+
+    @POST("aal/activities/submit")
+    suspend fun submitAalActivity(@Body request: AalActivityDto): AalActivityDto
+
+    @GET("aal/institutions")
+    suspend fun getInstitutions(): List<InstitutionDto>
+
+    @GET("aal/events/aal")
+    suspend fun getAalEvents(): List<AalEventDto>
+
+    @POST("aal/events/register")
+    suspend fun registerForEvent(@Body request: EventRegistrationDto): EventRegistrationDto
+
+    @POST("aal/live-inputs")
+    suspend fun submitLiveInput(@Body request: LiveInputDto): LiveInputDto
+
+    @GET("aal/matches/{userId}")
+    suspend fun getAiMatches(@Path("userId") userId: Int): List<AiResourceMatchDto>
+
+    @GET("aal/board")
+    suspend fun getEcosystemBoard(): List<EcosystemBoardDto>
+
+    @GET("aal/jobs-projects")
+    suspend fun getJobsProjects(): List<JobProjectDto>
 }
 
 object ApiClient {
