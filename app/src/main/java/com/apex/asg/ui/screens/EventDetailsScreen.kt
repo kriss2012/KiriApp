@@ -9,6 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -76,21 +78,26 @@ fun EventDetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .background(Color.LightGray)
+                    .background(Color.Black)
             ) {
                 if (!event.imageUrl.isNullOrEmpty()) {
                     AsyncImage(
                         model = event.imageUrl,
                         contentDescription = "Event Banner",
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Crop,
+                        error = androidx.compose.ui.graphics.painter.ColorPainter(Color.DarkGray),
+                        placeholder = androidx.compose.ui.graphics.painter.ColorPainter(Color.Gray)
                     )
                 } else {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("No Banner Image", color = Color.Gray)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("🖼️", fontSize = 48.sp)
+                            Text("No Banner Image Provided", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
+                        }
                     }
                 }
             }
@@ -133,6 +140,34 @@ fun EventDetailsScreen(
                     Icon(Icons.Default.LocationOn, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
                     Text(event.location, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+                }
+
+                Spacer(Modifier.height(16.dp))
+                
+                // Coordinator Section
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                        Spacer(Modifier.height(8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.Person, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = TextPrimary)
+                        }
+                        if (!event.coordinatorPhone.isNullOrEmpty()) {
+                            Spacer(Modifier.height(4.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Phone, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                                Spacer(Modifier.width(8.dp))
+                                Text(event.coordinatorPhone!!, style = MaterialTheme.typography.bodySmall, color = BluePrimary)
+                            }
+                        }
+                    }
                 }
 
                 if (!event.prize.isNullOrEmpty()) {
