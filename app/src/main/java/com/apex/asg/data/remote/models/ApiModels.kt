@@ -276,7 +276,9 @@ data class UserDto(
     val linkedInUrl: String? = null,
     val services: List<String> = emptyList(),
     val eventsCount: Int = 0,
-    val connectionsCount: Int = 0
+    val connectionsCount: Int = 0,
+    val digitalPersona: String? = null,
+    val userCategory: String? = null
 )
 
 data class NotificationDto(
