@@ -5,7 +5,11 @@ import { createActivity } from './aiController.js';
 
 export const createEvent = async (req: Request, res: Response) => {
   try {
-    const { title, description, date, location, type, ownerId, registrationLink, prize } = req.body;
+    const { 
+      title, description, date, location, type, 
+      ownerId, registrationLink, prize, 
+      coordinatorName, coordinatorPhone, hostInstitutionId 
+    } = req.body;
 
     // Check if the user has permission to create events
     const user = await prisma.user.findUnique({
@@ -31,6 +35,9 @@ export const createEvent = async (req: Request, res: Response) => {
         imageUrl,
         registrationLink,
         prize,
+        coordinatorName,
+        coordinatorPhone,
+        hostInstitutionId,
         type: type || 'GENERAL',
         ownerId
       }
@@ -112,7 +119,11 @@ export const updateEvent = async (req: Request, res: Response) => {
     if (typeof eventId !== 'string') {
       return res.status(400).json({ message: 'Invalid Event ID' });
     }
-    const { title, description, date, location, type, imageUrl, registrationLink, prize } = req.body;
+    const { 
+      title, description, date, location, type, 
+      imageUrl, registrationLink, prize,
+      coordinatorName, coordinatorPhone, hostInstitutionId
+    } = req.body;
 
     const event = await prisma.event.update({
       where: { id: eventId },
@@ -124,7 +135,10 @@ export const updateEvent = async (req: Request, res: Response) => {
         type,
         imageUrl,
         registrationLink,
-        prize
+        prize,
+        coordinatorName,
+        coordinatorPhone,
+        hostInstitutionId
       }
     });
 
