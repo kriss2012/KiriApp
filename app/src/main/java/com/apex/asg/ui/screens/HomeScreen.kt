@@ -81,6 +81,8 @@ fun HomeScreen(
                     HomeContent(
                         user = state.user, 
                         events = state.upcomingEvents,
+                        aalOnboarding = state.aalOnboarding,
+                        aalActivities = state.aalActivities,
                         onNavigateToNotifications = onNavigateToNotifications,
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToRepository = onNavigateToRepository,
@@ -108,6 +110,8 @@ fun HomeScreen(
 fun HomeContent(
     user: UserDto, 
     events: List<EventDto>,
+    aalOnboarding: AalOnboardingDto?,
+    aalActivities: List<AalActivityDto>,
     onNavigateToNotifications: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToRepository: () -> Unit,
@@ -122,6 +126,12 @@ fun HomeContent(
     ) {
         item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
         item { GreetingSection(userName = user.fullName) }
+        
+        // AAL Internship Progress
+        if (aalOnboarding != null) {
+            item { AalInternshipCard(aalOnboarding, aalActivities) }
+        }
+
         item { InnovationProgressCard(points = user.points) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
         item { InnovationHubCard(onNavigateToHub = { /* TODO: onNavigateToHub */ }) }
