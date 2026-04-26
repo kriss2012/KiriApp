@@ -33,8 +33,7 @@ import androidx.compose.runtime.collectAsState
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.apex.asg.data.SessionManager
-import com.apex.asg.data.remote.models.EventDto
-import com.apex.asg.data.remote.models.UserDto
+import com.apex.asg.data.remote.models.*
 import com.apex.asg.ui.viewmodels.HomeState
 import com.apex.asg.ui.viewmodels.HomeViewModel
 import androidx.compose.ui.platform.LocalContext
@@ -47,7 +46,8 @@ fun HomeScreen(
     onNavigateToSearch: () -> Unit = {},
     onNavigateToRepository: () -> Unit = {},
     onNavigateToEvents: () -> Unit = {},
-    onNavigateToAddEvent: () -> Unit = {}
+    onNavigateToAddEvent: () -> Unit = {},
+    onNavigateToAal: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -87,7 +87,8 @@ fun HomeScreen(
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToRepository = onNavigateToRepository,
                         onNavigateToEvents = onNavigateToEvents,
-                        onNavigateToAddEvent = onNavigateToAddEvent
+                        onNavigateToAddEvent = onNavigateToAddEvent,
+                        onNavigateToAal = onNavigateToAal
                     )
                 }
                 is HomeState.Error -> {
@@ -116,7 +117,8 @@ fun HomeContent(
     onNavigateToSearch: () -> Unit,
     onNavigateToRepository: () -> Unit,
     onNavigateToEvents: () -> Unit,
-    onNavigateToAddEvent: () -> Unit
+    onNavigateToAddEvent: () -> Unit,
+    onNavigateToAal: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -129,12 +131,12 @@ fun HomeContent(
         
         // AAL Internship Progress
         if (aalOnboarding != null) {
-            item { AalInternshipCard(aalOnboarding, aalActivities) }
+            item { AalInternshipCard(aalOnboarding, aalActivities, onClick = onNavigateToAal) }
         }
 
         item { InnovationProgressCard(points = user.points) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
-        item { InnovationHubCard(onNavigateToHub = { /* TODO: onNavigateToHub */ }) }
+        item { InnovationHubCard(onNavigateToHub = { /* Handled in MainScaffold */ }) }
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
         item { 
             UpcomingEventsSection(
@@ -143,6 +145,71 @@ fun HomeContent(
                 onNavigateToEvents = onNavigateToEvents,
                 onNavigateToAddEvent = onNavigateToAddEvent
             ) 
+        }
+    }
+}
+
+@Composable
+fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivityDto>, onClick: () -> Unit) {
+    val completedCount = activities.count { it.status == ActivityStatus.VERIFIED }
+    
+    Card(
+        modifier = Modifier
+            .padding(14.dp, 8.dp)
+            .fillMaxWidth()
+            .clickable { onClick() },
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Black),
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.1f))
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text("AAL INTERNSHIP", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f), letterSpacing = 2.sp)
+                    Text("AI Launchpad Progress", style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black)
+                }
+                Surface(
+                    color = OrangePrimary,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        onboarding.lmsStatus.name,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+            
+            Spacer(Modifier.height(16.dp))
+            
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    "$completedCount / 7",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.Black
+                )
+                LinearProgressIndicator(
+                    progress = { completedCount / 7f },
+                    modifier = Modifier.weight(1f).height(10.dp).clip(CircleShape),
+                    color = OrangePrimary,
+                    trackColor = Color.White.copy(alpha = 0.1f),
+                    strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
+                )
+            }
+            
+            Spacer(Modifier.height(12.dp))
+            Text(
+                "Keep submitting activities to unlock your AI Certification.",
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White.copy(alpha = 0.6f)
+            )
         }
     }
 }
