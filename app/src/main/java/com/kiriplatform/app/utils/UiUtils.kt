@@ -24,7 +24,9 @@ fun Modifier.glassmorphism(
     cornerRadius: Dp = 32.dp,
     alpha: Float = 0.15f
 ): Modifier = composed {
-    if (!enabled) return@composed this.border(
+    val isSupported = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU
+    
+    if (!enabled || !isSupported) return@composed this.border(
         width = 1.dp,
         color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
         shape = RoundedCornerShape(cornerRadius)

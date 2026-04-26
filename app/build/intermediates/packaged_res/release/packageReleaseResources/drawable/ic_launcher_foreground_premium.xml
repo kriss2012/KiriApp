@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Center the premium logo with appropriate padding for adaptive icon safe zone -->
     <item
-        android:drawable="@drawable/asg_logo_new"
+        android:drawable="@drawable/kiri_logo_vector"
         android:gravity="center"
         android:width="96dp"
         android:height="96dp" />

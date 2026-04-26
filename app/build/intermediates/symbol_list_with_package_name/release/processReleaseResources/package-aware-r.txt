@@ -1,4 +1,4 @@
-com.apex.asg
+com.kiriplatform.app
 anim fragment_fast_out_extra_slow_in
 animator fragment_close_enter
 animator fragment_close_exit
@@ -32,6 +32,7 @@ attr exitAnim
 attr font
 attr fontProviderAuthority
 attr fontProviderCerts
+attr fontProviderFallbackQuery
 attr fontProviderFetchStrategy
 attr fontProviderFetchTimeout
 attr fontProviderPackage
@@ -128,7 +129,6 @@ dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
 drawable abc_vector_test
-drawable asg_logo_new
 drawable common_full_open_on_phone
 drawable common_google_signin_btn_icon_dark
 drawable common_google_signin_btn_icon_dark_focused
@@ -159,6 +159,7 @@ drawable ic_call_decline_low
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_launcher_foreground_premium
+drawable kiri_logo_vector
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low
@@ -224,6 +225,7 @@ id browser_actions_menu_items
 id browser_actions_menu_view
 id chronometer
 id coil_request_manager
+id compose_prefetch_scheduler
 id compose_view_saveable_id_tag
 id consume_window_insets_tag
 id dark
@@ -231,6 +233,7 @@ id dialog_button
 id edit_text_id
 id forever
 id fragment_container_view_tag
+id hide_graphics_layer_in_inspector_tag
 id hide_ime_id
 id hide_in_inspector_tag
 id hybrid
@@ -276,6 +279,7 @@ id text
 id text2
 id time
 id title
+id view_tree_disjoint_parent
 id view_tree_lifecycle_owner
 id view_tree_on_back_pressed_dispatcher_owner
 id view_tree_saved_state_registry_owner
@@ -301,6 +305,7 @@ mipmap ic_launcher_round
 raw firebase_common_keep
 string androidx_startup
 string app_name
+string autofill
 string call_notification_answer_action
 string call_notification_answer_video_action
 string call_notification_decline_action
@@ -396,11 +401,13 @@ string m3c_tooltip_long_press_label
 string m3c_tooltip_pane_description
 string navigation_menu
 string not_selected
-string off
-string on
 string range_end
 string range_start
 string selected
+string snackbar_pane_title
+string state_empty
+string state_off
+string state_on
 string status_bar_notification_info_overflow
 string switch_role
 string tab
@@ -408,7 +415,6 @@ string template_percent
 string tooltip_description
 string tooltip_label
 style DialogWindowTheme
-style FloatingDialogTheme
 style FloatingDialogWindowTheme
 style TextAppearance_Compat_Notification
 style TextAppearance_Compat_Notification_Info
@@ -416,6 +422,7 @@ style TextAppearance_Compat_Notification_Line2
 style TextAppearance_Compat_Notification_Time
 style TextAppearance_Compat_Notification_Title
 style Theme_ASGApp
+style Theme_KiriApp
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
 styleable ActivityNavigator android_name action data dataPattern targetPackage
@@ -424,7 +431,7 @@ styleable AnimatedStateListDrawableItem android_id android_drawable
 styleable AnimatedStateListDrawableTransition android_drawable android_toId android_fromId android_reversible
 styleable Capability queryPatterns shortcutMatchRequired
 styleable ColorStateListItem android_color android_alpha android_lStar alpha lStar
-styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
+styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFallbackQuery fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery fontProviderSystemFontFamily
 styleable FontFamilyFont android_font android_fontWeight android_fontStyle android_ttcIndex android_fontVariationSettings font fontStyle fontVariationSettings fontWeight ttcIndex
 styleable Fragment android_name android_id android_tag
 styleable FragmentContainerView android_name android_tag

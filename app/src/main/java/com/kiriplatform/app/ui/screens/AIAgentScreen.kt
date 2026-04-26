@@ -26,6 +26,7 @@ import com.kiriplatform.app.ui.viewmodels.KiriAIViewModel
 import com.kiriplatform.app.utils.glassmorphism
 import com.kiriplatform.app.utils.shimmer
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.BorderStroke
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.kiriplatform.app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.kiriplatform.app"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -114,5 +114,5 @@ dependencies {
     implementation("io.socket:socket.io-client:2.1.0")
 
     // Premium UI Effects
-    implementation("io.github.fletchmckee:liquid:1.1.0")
+    implementation("io.github.fletchmckee.liquid:liquid:1.1.0")
 }

@@ -33,15 +33,15 @@ enum class AppTheme(
     AMBER(
         lightScheme = lightColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = BgCream),
         darkScheme = darkColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = Color(0xFF1F1A0D))
-    );
+    )
+}
 
-    fun ColorScheme.toAmoled(): ColorScheme {
-        return this.copy(
-            background = AmoledBlack,
-            surface = AmoledSurface,
-            surfaceContainer = AmoledSurface
-        )
-    }
+fun ColorScheme.toAmoled(): ColorScheme {
+    return this.copy(
+        background = AmoledBlack,
+        surface = AmoledSurface,
+        surfaceContainer = AmoledSurface
+    )
 }
 
 @Composable

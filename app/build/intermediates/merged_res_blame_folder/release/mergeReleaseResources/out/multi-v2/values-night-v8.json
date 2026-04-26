@@ -1,16 +1,16 @@
 {
     "logs": [
         {
-            "outputFile": "com.apex.asg.app-mergeReleaseResources-63:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.kiriplatform.app-mergeReleaseResources-57:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "C:\\Users\\krishna\\AndroidStudioProjects\\ASGApp\\app\\src\\main\\res\\values-night\\themes.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
-                        "startOffsets": "55",
+                        "startOffsets": "57",
                         "endColumns": "83",
-                        "endOffsets": "134"
+                        "endOffsets": "136"
                     },
                     "to": {
                         "startLines": "2",

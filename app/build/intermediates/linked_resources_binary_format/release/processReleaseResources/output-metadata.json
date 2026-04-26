@@ -4,7 +4,7 @@
     "type": "LINKED_RESOURCES_BINARY_FORMAT",
     "kind": "Directory"
   },
-  "applicationId": "com.apex.asg",
+  "applicationId": "com.kiriplatform.app",
   "variantName": "release",
   "elements": [
     {

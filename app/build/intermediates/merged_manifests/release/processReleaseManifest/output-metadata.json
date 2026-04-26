@@ -4,7 +4,7 @@
     "type": "MERGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.apex.asg",
+  "applicationId": "com.kiriplatform.app",
   "variantName": "release",
   "elements": [
     {
