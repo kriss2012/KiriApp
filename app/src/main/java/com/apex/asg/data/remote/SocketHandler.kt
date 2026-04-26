@@ -47,13 +47,15 @@ object SocketHandler {
     fun setupGlobalListeners(
         onNotification: (JSONObject) -> Unit,
         onMessage: (JSONObject) -> Unit,
-        onConnectionAccepted: (JSONObject) -> Unit
+        onConnectionAccepted: (JSONObject) -> Unit,
+        onMatchSuggested: (JSONObject) -> Unit
     ) {
         mSocket?.let { socket ->
             // Clear existing to avoid leaks/duplicates
             socket.off("new_notification")
             socket.off("receive_message")
             socket.off("connection_accepted")
+            socket.off("match_suggested")
 
             socket.on("new_notification") { args ->
                 val data = args[0] as JSONObject
@@ -68,6 +70,11 @@ object SocketHandler {
             socket.on("connection_accepted") { args ->
                 val data = args[0] as JSONObject
                 onConnectionAccepted(data)
+            }
+
+            socket.on("match_suggested") { args ->
+                val data = args[0] as JSONObject
+                onMatchSuggested(data)
             }
         }
     }
