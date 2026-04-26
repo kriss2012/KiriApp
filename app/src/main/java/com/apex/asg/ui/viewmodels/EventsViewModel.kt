@@ -32,7 +32,13 @@ class EventsViewModel : ViewModel() {
             }
 
             try {
-                val events = ApiClient.service.getEvents()
+                val rawEvents = ApiClient.service.getEvents()
+                
+                // --- AUTO-REMOVAL LOGIC (Expiry) ---
+                // Filtering events to only show those occurring today or in the future
+                val today = java.time.LocalDate.now().toString()
+                val events = rawEvents.filter { it.date >= today }
+                
                 // Save to cache
                 com.apex.asg.data.CacheManager.saveCache(context, "events_list", events)
                 _uiState.value = EventsState.Success(events)
@@ -51,6 +57,8 @@ class EventsViewModel : ViewModel() {
         date: String, 
         location: String, 
         ownerId: String,
+        coordinatorName: String,
+        coordinatorPhone: String? = null,
         imageUrl: String? = null,
         registrationLink: String? = null,
         prize: String? = null
@@ -59,7 +67,19 @@ class EventsViewModel : ViewModel() {
             _uiState.value = EventsState.Loading
             try {
                 ApiClient.service.createEvent(
-                    CreateEventRequest(title, description, date, location, ownerId, imageUrl, "GENERAL", registrationLink, prize)
+                    CreateEventRequest(
+                        title = title, 
+                        description = description, 
+                        date = date, 
+                        location = location, 
+                        ownerId = ownerId, 
+                        coordinatorName = coordinatorName,
+                        coordinatorPhone = coordinatorPhone,
+                        imageUrl = imageUrl, 
+                        type = "GENERAL", 
+                        registrationLink = registrationLink, 
+                        prize = prize
+                    )
                 )
                 fetchEvents(context) // Refresh list after successful creation
             } catch (e: Exception) {
