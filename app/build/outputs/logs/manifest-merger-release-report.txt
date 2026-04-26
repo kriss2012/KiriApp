@@ -227,7 +227,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\ca
 	android:allowBackup
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-44
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-45
 	android:dataExtractionRules
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:11:9-65
 	android:name
@@ -237,7 +237,7 @@ ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidMan
 	android:exported
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:21:13-36
 	android:theme
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-48
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-49
 	android:name
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:20:13-43
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER

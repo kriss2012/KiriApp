@@ -15,7 +15,7 @@ object AppConfig {
     /**
      * The official community website.
      */
-    const val WEBSITE_URL = "https://apexstartupgroup.com"
+    const val WEBSITE_URL = "https://kiriorg.netlify.app/"
 
     /**
      * Timeout configuration for network requests (in seconds).

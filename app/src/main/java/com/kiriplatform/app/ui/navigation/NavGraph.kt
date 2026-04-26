@@ -54,7 +54,7 @@ fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
         composable(Screen.Splash.route) {
             SplashScreen(
                 onJoinCommunity = { navController.navigate(Screen.Register.route) },
-                onLaunchpad = {
+                onOrganization = {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL))
                     context.startActivity(intent)
                 },

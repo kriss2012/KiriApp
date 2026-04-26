@@ -44,11 +44,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ASGApp" >
+        android:theme="@style/Theme.KiriApp" >
         <activity
             android:name="com.kiriplatform.app.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.ASGApp" >
+            android:theme="@style/Theme.KiriApp" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

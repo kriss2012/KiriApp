@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 @Composable
 fun SplashScreen(
     onJoinCommunity: () -> Unit,
-    onLaunchpad: () -> Unit,
+    onOrganization: () -> Unit,
     onSignIn: () -> Unit
 ) {
     val scale = remember { Animatable(0.6f) }
@@ -167,7 +167,7 @@ fun SplashScreen(
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Button(
-                    onClick = onLaunchpad,
+                    onClick = onOrganization,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
@@ -179,7 +179,7 @@ fun SplashScreen(
                     )
                 ) {
                     Text(
-                        "KIRI AI Launchpad →",
+                        "KIRI Organization →",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.ExtraBold
                     )

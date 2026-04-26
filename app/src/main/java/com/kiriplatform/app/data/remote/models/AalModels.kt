@@ -3,7 +3,7 @@ package com.kiriplatform.app.data.remote.models
 import com.google.gson.annotations.SerializedName
 
 /**
- * Data structures for APEX AI Launchpad (AAL) and ASG Ecosystem.
+ * Data structures for APEX Kiri Organization (AAL) and ASG Ecosystem.
  * Mapped from the asg_aal_datastructure.md documentation.
  */
 
@@ -70,7 +70,7 @@ enum class ApprovalStatus {
     PENDING, APPROVED, REJECTED
 }
 
-// --- 3. Apex AI Launchpad (AAL) & LMS ---
+// --- 3. Apex Kiri Organization (AAL) & LMS ---
 
 data class AalOnboardingDto(
     @SerializedName("aal_id") val aalId: Int,

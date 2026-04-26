@@ -37,7 +37,7 @@ fun InnovationHubScreen(
         HubItem("Mentorship", "Expert-led sprints", Icons.Default.DateRange, MaterialTheme.colorScheme.tertiary, "mentorship"),
         HubItem("Investor Intel", "Real-time KPI tracking", Icons.Default.TrendingUp, MaterialTheme.colorScheme.primary, "investor"),
         HubItem("IP Vault", "Institutional Repos", Icons.Default.Build, MaterialTheme.colorScheme.secondary, "vault"),
-        HubItem("Kiri Launchpad", "7 Core AI Activities", Icons.Default.RocketLaunch, MaterialTheme.colorScheme.primary, "launchpad"),
+        HubItem("Kiri Organization", "7 Core AI Activities", Icons.Default.RocketLaunch, MaterialTheme.colorScheme.primary, "organization"),
         HubItem("System Portal", "Network orchestration", Icons.Default.Settings, Color.Gray, "admin")
     )
 

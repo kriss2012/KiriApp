@@ -307,7 +307,7 @@ fun DetailStep(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = OrangePrimary))
-                Text("Enroll in AI Launchpad Internship", style = MaterialTheme.typography.bodyMedium)
+                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium)
             }
         }
         

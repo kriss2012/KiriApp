@@ -75,16 +75,16 @@
 45-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:15:9-54
 46        android:supportsRtl="true"
 46-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:16:9-35
-47        android:theme="@style/Theme.ASGApp" >
-47-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-44
+47        android:theme="@style/Theme.KiriApp" >
+47-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:17:9-45
 48        <activity
 48-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:19:9-28:20
 49            android:name="com.kiriplatform.app.SplashActivity"
 49-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:20:13-43
 50            android:exported="true"
 50-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:21:13-36
-51            android:theme="@style/Theme.ASGApp" >
-51-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-48
+51            android:theme="@style/Theme.KiriApp" >
+51-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:22:13-49
 52            <intent-filter>
 52-->C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:23:13-27:29
 53                <action android:name="android.intent.action.MAIN" />

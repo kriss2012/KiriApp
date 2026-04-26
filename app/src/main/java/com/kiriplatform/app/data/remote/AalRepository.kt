@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 
 /**
- * Repository for handling APEX AI Launchpad (AAL) and ASG Ecosystem data operations.
+ * Repository for handling APEX Kiri Organization (AAL) and ASG Ecosystem data operations.
  * Implements the "workings" for the data structures defined in documentation.
  * Now enhanced with Room caching for offline-first architecture (Data Vault).
  */
