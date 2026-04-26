@@ -39,6 +39,7 @@ fun InnovationHubScreen(
         HubItem("Mentorship", "Book expert sprints", Icons.Default.DateRange, GreenSuccess, "mentorship"),
         HubItem("Investor Intel", "High-potential KPIs", Icons.Default.TrendingUp, BluePrimary, "investor"),
         HubItem("IP Vault", "Manage Smart Repos", Icons.Default.Build, OrangePrimary, "vault"),
+        HubItem("AI Launchpad", "7 Activities to Scale", Icons.Default.RocketLaunch, OrangePrimary, "launchpad"),
         HubItem("SPOC Portal", "Institutional stats", Icons.Default.Settings, Color.Gray, "admin")
     )
 
