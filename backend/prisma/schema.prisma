@@ -4,19 +4,28 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-enum Role {
+// --- ENUMS ---
+
+enum UserCategory {
   STUDENT
-  FOUNDER
-  INVESTOR
-  MENTOR
-  SERVICE_PROVIDER
-  SPOC
-  ADMIN
+  NON_STUDENT
+  ALUMNI
+  FACULTY
 }
 
-enum StudentLevel {
+enum StakeholderType {
+  FOUNDER
+  SERVICE_PROVIDER
+  MENTOR
+  INVESTOR
+  INCUBATOR
+  GUEST
+}
+
+enum RepoCategory {
   R1
   R2
   R3
@@ -24,32 +33,73 @@ enum StudentLevel {
   R5
 }
 
-enum ConnectionStatus {
+enum ApprovalStatus {
   PENDING
-  ACCEPTED
+  APPROVED
+  REJECTED
 }
+
+enum PostType {
+  NEWS
+  WALL_OF_FAME
+  ASK
+  PRODUCT
+  ANNOUNCEMENT
+}
+
+enum InputFormat {
+  TEXT
+  VOICE
+  VIDEO
+  IMAGE
+}
+
+enum InputContext {
+  DAY_TO_DAY
+  ACHIEVEMENT
+  FAILURE
+  STUCK
+  ASK_FOR_HELP
+}
+
+enum MatchStatus {
+  SUGGESTED
+  ACCEPTED
+  REJECTED
+}
+
+// --- CORE MODELS ---
 
 model User {
   id               String        @id @default(uuid())
   email            String        @unique
   password         String
   fullName         String
-  role             Role          @default(STUDENT)
-  studentLevel     StudentLevel?
-  department       String?
-  college          String?
-  year             String?
-  section          String?
-  isVerified       Boolean       @default(false)
-  canCreateEvents  Boolean       @default(false)
+  userCategory     UserCategory  @default(STUDENT)
+  digitalPersona   String?       @map("digital_persona") // AI Generated summary
+  phoneNumber      String?       @unique
   avatarUrl        String?
   bio              String?
-  skills           String[]
-  points           Int           @default(100) // Welcome points
+  points           Int           @default(100)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
-  // Relationships
+  // Roles Mapping
+  stakeholderRoles StakeholderRole[]
+  
+  // R1-R5 Repositories
+  repositories     UserRepositoryMapping[]
+  
+  // AAL (Launchpad)
+  aalOnboarding    AalOnboarding?
+  aalActivities    AalActivity[]
+
+  // AI Brain
+  liveInputs       LiveInput[]
+  sentMatches      AiResourceMatch[] @relation("MatchSource")
+  receivedMatches  AiResourceMatch[] @relation("MatchTarget")
+
+  // Legacy/Functional Relationships
   jobsPosted       Job[]         @relation("JobsPosted")
   eventsCreated    Event[]       @relation("EventsCreated")
   messagesSent     Message[]     @relation("MessagesSent")
@@ -59,109 +109,189 @@ model User {
   sentRequests     Connection[]  @relation("SentRequests")
   receivedRequests Connection[]  @relation("ReceivedRequests")
   notifications    Notification[]
-  activities       Activity[]
   pitches          Pitch[]
   backedPitches    Backer[]
-  githubUrl        String?
-  linkedInUrl      String?
-  intent           String?   // "HIRING", "CO_FOUNDER", "INTERNSHIP", "MENTORSHIP"
-  preferredLanguage String?  @default("ENGLISH") // "ENGLISH", "MARATHI", "HINDI"
-  artifacts        ProjectArtifact[]
-  expertise        String[]   // e.g. ["FINTECH", "UI", "BLOCKCHAIN"]
-  mentorSessions   MentorSession[] @relation("MentorSessions")
-  founderSessions  MentorSession[] @relation("FounderSessions")
-  phoneNumber      String?
-  website          String?
-  services         String[]   // For Service Providers / Founders
+  boardPosts       EcosystemBoard[]
+  
+  // Committee membership
+  committees       InstitutionalCommittee[]
+
+  // Approval records (if this user is R5/SPOC)
+  approvals        UserRepositoryMapping[] @relation("ApprovedBy")
 }
 
-model MentorSession {
-  id          String   @id @default(uuid())
-  mentorId    String
-  mentor      User     @relation("MentorSessions", fields: [mentorId], references: [id])
-  founderId   String
-  founder     User     @relation("FounderSessions", fields: [founderId], references: [id])
-  topic       String
-  status      String   @default("PENDING") // PENDING, SCHEDULED, COMPLETED, CANCELLED
-  scheduledAt DateTime?
-  createdAt   DateTime @default(now())
+model StakeholderRole {
+  id       String          @id @default(uuid())
+  userId   String
+  user     User            @relation(fields: [userId], references: [id])
+  roleName StakeholderType
 }
 
-model ProjectArtifact {
+// --- INSTITUTIONAL HIERARCHY ---
+
+model Institution {
   id          String   @id @default(uuid())
-  title       String
-  description String?
-  url         String?  // Link to code/doc
-  summary     String?  // AI Generated Summary
+  name        String
+  spocUserId  String?
+  spoc        User?    @relation(fields: [spocUserId], references: [id])
+  committees  InstitutionalCommittee[]
+  repositories UserRepositoryMapping[]
+  events      Event[]  @relation("HostInstitution")
+}
+
+model InstitutionalCommittee {
+  id            String      @id @default(uuid())
+  institutionId String
+  institution   Institution @relation(fields: [institutionId], references: [id])
+  userId        String
+  user          User        @relation(fields: [userId], references: [id])
+  department    String
+  roleType      String      // 'FACULTY_REP' or 'STUDENT_REP'
+}
+
+model UserRepositoryMapping {
+  id             String         @id @default(uuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+  institutionId  String
+  institution    Institution    @relation(fields: [institutionId], references: [id])
+  repoCategory   RepoCategory
+  approvalStatus ApprovalStatus @default(PENDING)
+  approvedById   String?
+  approvedBy     User?          @relation("ApprovedBy", fields: [approvedById], references: [id])
+}
+
+// --- APEX AI LAUNCHPAD (AAL) ---
+
+model AalOnboarding {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  mindsetScore    Json?    @map("mindset_score")
+  lmsStatus       String   @default("ENROLLED") // 'ENROLLED', 'COMPLETED'
+  certificateUrl  String?  @map("certificate_url")
+  interviewStatus String   @default("PENDING")  // 'PENDING', 'PASSED', 'FAILED'
+}
+
+model AalActivity {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  activityNumber Int      @map("activity_number")
+  submissionUrl  String   @map("submission_url")
+  status         String   @default("SUBMITTED") // 'SUBMITTED', 'VERIFIED'
+  createdAt      DateTime @default(now())
+}
+
+// --- EVENTS & HACKATHONS ---
+
+model Event {
+  id                 String              @id @default(uuid())
+  title              String
+  description        String
+  date               DateTime
+  location           String
+  imageUrl           String?
+  type               String              @default("GENERAL") // 'MEETUP', 'HACKATHON', etc.
+  coordinatorName    String?
+  coordinatorPhone   String?
+  registrationLink   String?
+  prize              String?
+  hostInstitutionId  String?
+  hostInstitution    Institution?        @relation("HostInstitution", fields: [hostInstitutionId], references: [id])
+  ownerId            String
+  owner              User                @relation("EventsCreated", fields: [ownerId], references: [id])
+  qrBaseUrl          String?             @map("qr_base_url")
+  registrations      EventRegistration[]
+  teams              EventTeam[]
+  submissions        EventSubmission[]
+  judgingRecords     JudgingRecord[]
+  createdAt          DateTime            @default(now())
+}
+
+model EventRegistration {
+  id           String   @id @default(uuid())
+  eventId      String
+  event        Event    @relation(fields: [eventId], references: [id])
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  status       String   @default("REGISTERED") // 'REGISTERED', 'WAITLIST', 'ATTENDED'
+  formData     Json?    @map("form_data")
+  qrScannedAt  DateTime? @map("qr_scanned_at")
+  createdAt    DateTime @default(now())
+}
+
+model EventTeam {
+  id           String            @id @default(uuid())
+  eventId      String
+  event        Event             @relation(fields: [eventId], references: [id])
+  teamName     String            @map("team_name")
+  aiGenerated  Boolean           @default(false) @map("ai_generated")
+  submissions  EventSubmission[]
+  judgingRecords JudgingRecord[]
+}
+
+model EventSubmission {
+  id                   String   @id @default(uuid())
+  eventId              String
+  event                Event    @relation(fields: [eventId], references: [id])
+  teamId               String?
+  team                 EventTeam? @relation(fields: [teamId], references: [id])
+  documentUrl          String   @map("document_url")
+  geoLat               Decimal? @map("geo_lat")
+  geoLong              Decimal? @map("geo_long")
+  aiAuthenticityScore  Float?   @map("ai_authenticity_score")
+  createdAt            DateTime @default(now())
+}
+
+model JudgingRecord {
+  id            String     @id @default(uuid())
+  eventId       String
+  event         Event      @relation(fields: [eventId], references: [id])
+  teamId        String
+  team          EventTeam  @relation(fields: [teamId], references: [id])
+  judgeUserId   String?
+  isAiJudge     Boolean    @default(false) @map("is_ai_judge")
+  score         Float
+  feedback      String?
+  createdAt     DateTime   @default(now())
+}
+
+// --- AI CORE ---
+
+model LiveInput {
+  id          String      @id @default(uuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  createdAt   DateTime @default(now())
+  user        User        @relation(fields: [userId], references: [id])
+  formatType  InputFormat @map("format_type")
+  contentUrl  String      @map("content_url")
+  context     InputContext
+  aiProcessed Boolean     @default(false) @map("ai_processed")
+  createdAt   DateTime    @default(now())
 }
 
-model Activity {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  type      String   // "EVENT_JOIN", "CONNECTION", "AI_SESSION", "RECORD_CREATED"
-  title     String
-  content   String?
-  points    Int      @default(10)
-  createdAt DateTime @default(now())
+model AiResourceMatch {
+  id           String      @id @default(uuid())
+  sourceUserId String      @map("source_user_id")
+  sourceUser   User        @relation("MatchSource", fields: [sourceUserId], references: [id])
+  targetUserId String      @map("target_user_id")
+  targetUser   User        @relation("MatchTarget", fields: [targetUserId], references: [id])
+  matchReason  String      @map("match_reason")
+  status       MatchStatus @default(SUGGESTED)
+  createdAt    DateTime    @default(now())
 }
 
-model Notification {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  title     String
-  content   String
-  type      String   // "EVENT", "REQUEST", "MESSAGE", "SYSTEM"
-  relatedId String?
-  isRead    Boolean  @default(false)
-  createdAt DateTime @default(now())
+// --- ECOSYSTEM BOARD ---
 
-  @@index([userId])
-  @@index([createdAt])
-}
-
-model Connection {
-  id          String           @id @default(uuid())
-  status      ConnectionStatus @default(PENDING)
-  senderId    String
-  sender      User             @relation("SentRequests", fields: [senderId], references: [id])
-  receiverId  String
-  receiver    User             @relation("ReceivedRequests", fields: [receiverId], references: [id])
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  @@unique([senderId, receiverId])
-  @@index([senderId])
-  @@index([receiverId])
-}
-
-model AiMessage {
-  id             String        @id @default(uuid())
-  userId         String
-  user           User          @relation(fields: [userId], references: [id])
-  conversationId String?
-  conversation   Conversation? @relation(fields: [conversationId], references: [id])
-  content        String
-  role           String        // "user" or "assistant"
-  createdAt      DateTime      @default(now())
-}
-
-model Conversation {
-  id             String      @id @default(uuid())
-  userId         String
-  user           User        @relation(fields: [userId], references: [id])
-  title          String      @default("New Conversation")
-  model          String      @default("google/gemini-2.0-flash-001")
-  specialization String?     @default("GENERAL")
-  isArchived     Boolean     @default(false)
-  isPinned       Boolean     @default(false)
-  messages       AiMessage[]
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+model EcosystemBoard {
+  id           String   @id @default(uuid())
+  authorUserId String   @map("author_user_id")
+  author       User     @relation(fields: [authorUserId], references: [id])
+  postType     PostType @map("post_type")
+  title        String
+  description  String
+  mediaUrl     String?  @map("media_url")
+  createdAt    DateTime @default(now())
 }
 
 model Job {
@@ -169,12 +299,23 @@ model Job {
   title       String
   description String
   location    String?
-  type        String   @default("FULL_TIME")
+  type        String   @default("JOB") // 'JOB', 'INTERNSHIP', 'RESEARCH', 'CASE_STUDY'
   posterId    String
   poster      User     @relation("JobsPosted", fields: [posterId], references: [id])
+  status      String   @default("OPEN") // 'OPEN', 'CLOSED'
   createdAt   DateTime @default(now())
+}
 
-  @@index([posterId])
+// --- LEGACY/UTILITY MODELS ---
+
+model Connection {
+  id          String   @id @default(uuid())
+  status      String   @default("PENDING")
+  senderId    String
+  sender      User     @relation("SentRequests", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User     @relation("ReceivedRequests", fields: [receiverId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 model Message {
@@ -184,29 +325,38 @@ model Message {
   sender      User     @relation("MessagesSent", fields: [senderId], references: [id])
   receiverId  String
   receiver    User     @relation("MessagesReceived", fields: [receiverId], references: [id])
-  isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
-
-  @@index([senderId, receiverId])
-  @@index([createdAt])
 }
 
-model Event {
-  id               String   @id @default(uuid())
-  title            String
-  description      String
-  date             DateTime
-  location         String
-  imageUrl         String?  // Banner image for the event
-  type             String   @default("GENERAL")
-  registrationLink String?  // Link to Google Form etc.
-  prize            String?  // Prize details
-  ownerId          String
-  owner            User     @relation("EventsCreated", fields: [ownerId], references: [id])
-  createdAt        DateTime @default(now())
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  type      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
 
-  @@index([ownerId])
-  @@index([date])
+model AiMessage {
+  id             String        @id @default(uuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  conversationId String?
+  conversation   Conversation? @relation(fields: [conversationId], references: [id])
+  content        String
+  role           String
+  createdAt      DateTime      @default(now())
+}
+
+model Conversation {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  title     String      @default("New Conversation")
+  messages  AiMessage[]
+  createdAt DateTime    @default(now())
 }
 
 model Pitch {
@@ -215,15 +365,13 @@ model Pitch {
   description String
   problem     String
   solution    String
-  impact      String   // Regional Impact
+  impact      String
   fundingGoal Float
-  status      String   @default("OPEN") // OPEN, FUNDED, CLOSED
-  category    String   @default("TECH")
+  status      String   @default("OPEN")
   founderId   String
   founder     User     @relation(fields: [founderId], references: [id])
   backers     Backer[]
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model Backer {
@@ -234,15 +382,4 @@ model Backer {
   pitch     Pitch    @relation(fields: [pitchId], references: [id])
   points    Int      @default(10)
   createdAt DateTime @default(now())
-
-  @@unique([userId, pitchId])
-}
-
-model InviteCode {
-  id          String   @id @default(uuid())
-  code        String   @unique
-  targetRole  Role
-  isUsed      Boolean  @default(false)
-  expiresAt   DateTime
-  createdAt   DateTime @default(now())
 }
