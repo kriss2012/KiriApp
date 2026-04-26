@@ -1,14 +1,20 @@
 package com.apex.asg.data.remote
 
 import com.apex.asg.data.remote.models.*
+import com.apex.asg.data.local.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 /**
  * Repository for handling APEX AI Launchpad (AAL) and ASG Ecosystem data operations.
  * Implements the "workings" for the data structures defined in documentation.
+ * Now enhanced with Room caching for offline-first architecture (Data Vault).
  */
-class AalRepository(private val apiService: ASGApiService = ApiClient.service) {
+class AalRepository(
+    private val apiService: ASGApiService = ApiClient.service,
+    private val aalDao: AalDao
+) {
 
     /**
      * Fetches the AAL onboarding status for a user.
@@ -18,10 +24,23 @@ class AalRepository(private val apiService: ASGApiService = ApiClient.service) {
     }
 
     /**
-     * Fetches activities for a specific intern.
+     * Fetches activities for a specific intern with local caching.
      */
     fun getActivities(userId: Int): Flow<List<AalActivityDto>> = flow {
-        emit(apiService.getAalActivities(userId))
+        // 1. Emit from cache first
+        val cached = aalDao.getActivities(userId).map { it.toDto() }
+        if (cached.isNotEmpty()) emit(cached)
+
+        // 2. Fetch from network
+        try {
+            val remote = apiService.getAalActivities(userId)
+            // 3. Save to cache (Data Vault)
+            aalDao.insertActivities(remote.map { it.toEntity() })
+            // 4. Emit fresh data
+            emit(remote)
+        } catch (e: Exception) {
+            // Log or handle error, cache is already emitted
+        }
     }
 
     /**
@@ -71,13 +90,83 @@ class AalRepository(private val apiService: ASGApiService = ApiClient.service) {
      * Fetches the Ecosystem Board (News, Wall of Fame, Asks).
      */
     fun getBoard(): Flow<List<EcosystemBoardDto>> = flow {
-        emit(apiService.getEcosystemBoard())
+        val cached = aalDao.getBoardItems().map { it.toDto() }
+        if (cached.isNotEmpty()) emit(cached)
+
+        try {
+            val remote = apiService.getEcosystemBoard()
+            aalDao.insertBoardItems(remote.map { it.toEntity() })
+            emit(remote)
+        } catch (e: Exception) {}
     }
 
     /**
      * Fetches open Jobs and Research Projects.
      */
     fun getJobsAndProjects(): Flow<List<JobProjectDto>> = flow {
-        emit(apiService.getJobsProjects())
+        val cached = aalDao.getOpenJobs().map { it.toDto() }
+        if (cached.isNotEmpty()) emit(cached)
+
+        try {
+            val remote = apiService.getJobsProjects()
+            aalDao.insertJobs(remote.map { it.toEntity() })
+            emit(remote)
+        } catch (e: Exception) {}
     }
+
+    // --- Mappers for Data Transformation Layer ---
+
+    private fun AalActivityDto.toEntity() = AalActivityEntity(
+        activityId = activityId,
+        userId = userId,
+        activityNumber = activityNumber,
+        submissionUrl = submissionUrl,
+        status = status.name
+    )
+
+    private fun AalActivityEntity.toDto() = AalActivityDto(
+        activityId = activityId,
+        userId = userId,
+        activityNumber = activityNumber,
+        submissionUrl = submissionUrl,
+        status = ActivityStatus.valueOf(status)
+    )
+
+    private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
+        boardId = boardId,
+        authorUserId = authorUserId,
+        postType = postType.name,
+        title = title,
+        description = description,
+        mediaUrl = mediaUrl,
+        createdAt = createdAt
+    )
+
+    private fun EcosystemBoardEntity.toDto() = EcosystemBoardDto(
+        boardId = boardId,
+        authorUserId = authorUserId,
+        postType = PostType.valueOf(postType),
+        title = title,
+        description = description,
+        mediaUrl = mediaUrl,
+        createdAt = createdAt
+    )
+
+    private fun JobProjectDto.toEntity() = JobProjectEntity(
+        listingId = listingId,
+        postedBy = postedBy,
+        type = type.name,
+        title = title,
+        description = description,
+        status = status.name
+    )
+
+    private fun JobProjectEntity.toDto() = JobProjectDto(
+        listingId = listingId,
+        postedBy = postedBy,
+        type = JobType.valueOf(type),
+        title = title,
+        description = description,
+        status = JobStatus.valueOf(status)
+    )
 }
