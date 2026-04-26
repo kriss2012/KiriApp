@@ -1,0 +1,39 @@
+import type { Request, Response } from 'express';
+import prisma from '../utils/prisma.js';
+
+export const createBoardPost = async (req: Request, res: Response) => {
+  try {
+    const { authorUserId, postType, title, description, mediaUrl } = req.body;
+    const post = await prisma.ecosystemBoard.create({
+      data: {
+        authorUserId,
+        postType,
+        title,
+        description,
+        mediaUrl
+      }
+    });
+    res.status(201).json(post);
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error creating board post', error: error.message });
+  }
+};
+
+export const getBoardPosts = async (req: Request, res: Response) => {
+  try {
+    const posts = await prisma.ecosystemBoard.findMany({
+      include: {
+        author: {
+          select: {
+            fullName: true,
+            avatarUrl: true
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    res.status(200).json(posts);
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error fetching board posts', error: error.message });
+  }
+};
