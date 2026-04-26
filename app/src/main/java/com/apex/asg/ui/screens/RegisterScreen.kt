@@ -231,6 +231,7 @@ fun AccountStep(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoleStep(
     selectedRole: String, onRoleChange: (String) -> Unit,
@@ -258,6 +259,7 @@ fun RoleStep(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailStep(
     role: String,
