@@ -84,7 +84,7 @@ fun SplashScreen(onFinish: () -> Unit) {
                 .scale(scaleAnim.value)
         ) {
             Image(
-                painter = painterResource(id = com.kiriplatform.app.R.drawable.kiri_logo_vector),
+                painter = painterResource(id = com.kiriplatform.app.R.drawable.kiri_logo_vector_premium),
                 contentDescription = "Kiri Logo",
                 modifier = Modifier
                     .size(200.dp)

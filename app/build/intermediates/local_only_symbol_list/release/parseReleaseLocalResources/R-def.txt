@@ -6,7 +6,7 @@ array com_google_android_gms_fonts_certs_prod
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable ic_launcher_foreground_premium
-drawable kiri_logo_vector
+drawable kiri_logo_vector_premium
 font jetbrains_mono_regular
 mipmap ic_launcher
 mipmap ic_launcher_round

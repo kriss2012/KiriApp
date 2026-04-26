@@ -158,7 +158,7 @@ int drawable ic_call_decline_low 0x7f07001b
 int drawable ic_launcher_background 0x7f07001c
 int drawable ic_launcher_foreground 0x7f07001d
 int drawable ic_launcher_foreground_premium 0x7f07001e
-int drawable kiri_logo_vector 0x7f07001f
+int drawable kiri_logo_vector_premium 0x7f07001f
 int drawable notification_action_background 0x7f070020
 int drawable notification_bg 0x7f070021
 int drawable notification_bg_low 0x7f070022
