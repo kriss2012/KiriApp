@@ -244,6 +244,7 @@ data class RegisterRequest(
     val fullName: String,
     val role: String,
     val studentLevel: String? = null,
+    val rollNumber: String? = null,
     val department: String? = null,
     val college: String? = null,
     val year: String? = null,
@@ -253,7 +254,8 @@ data class RegisterRequest(
     val githubUrl: String? = null,
     val linkedInUrl: String? = null,
     val services: List<String>? = null,
-    val inviteCode: String? = null
+    val inviteCode: String? = null,
+    val aalAutoEnroll: Boolean = true
 )
 
 data class AuthResponse(
