@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.apex.asg"
+    package="com.kiriplatform.app"
     android:versionCode="1"
     android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="26"
-        android:targetSdkVersion="34" />
+        android:targetSdkVersion="35" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -28,13 +28,13 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="com.apex.asg.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.kiriplatform.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.apex.asg.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+    <uses-permission android:name="com.kiriplatform.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
 
     <application
-        android:name="com.apex.asg.ASGApplication"
+        android:name="com.kiriplatform.app.KiriApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -44,11 +44,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ASGApp" >
+        android:theme="@style/Theme.KiriApp" >
         <activity
-            android:name="com.apex.asg.SplashActivity"
+            android:name="com.kiriplatform.app.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.ASGApp" >
+            android:theme="@style/Theme.KiriApp" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,9 +56,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.apex.asg.MainActivity"
+            android:name="com.kiriplatform.app.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.ASGApp"
+            android:theme="@style/Theme.KiriApp"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <!-- Needs to be explicitly declared on P+ -->
@@ -170,13 +170,19 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.apex.asg.firebaseinitprovider"
+            android:authorities="com.kiriplatform.app.firebaseinitprovider"
             android:directBootAware="true"
             android:exported="false"
             android:initOrder="100" />
+
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
+            android:directBootAware="true"
+            android:exported="false" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
-            android:authorities="com.apex.asg.androidx-startup"
+            android:authorities="com.kiriplatform.app.androidx-startup"
             android:exported="false" >
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"
@@ -188,11 +194,6 @@
                 android:name="androidx.profileinstaller.ProfileInstallerInitializer"
                 android:value="androidx.startup" />
         </provider>
-
-        <service
-            android:name="androidx.room.MultiInstanceInvalidationService"
-            android:directBootAware="true"
-            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.gms.version"
