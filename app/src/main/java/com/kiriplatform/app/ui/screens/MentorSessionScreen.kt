@@ -20,10 +20,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.theme.*
 import com.kiriplatform.app.data.remote.models.MentorSessionDto
+import androidx.compose.material.icons.filled.ArrowBack
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MentorSessionScreen() {
-    Scaffold(containerColor = BgCream) { padding ->
+fun MentorSessionScreen(
+    onBack: () -> Unit = {}
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Mentorship", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+            )
+        },
+        containerColor = BgCream
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {

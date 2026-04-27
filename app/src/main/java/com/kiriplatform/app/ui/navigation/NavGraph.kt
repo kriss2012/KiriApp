@@ -85,7 +85,9 @@ fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
                 onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) },
                 onNavigateToSearch = { navController.navigate(Screen.Search.route) },
                 onNavigateToRepository = { navController.navigate(Screen.Repository.route) },
-                onNavigateToEvents = { navController.navigate(Screen.Events.route) }
+                onNavigateToEvents = { navController.navigate(Screen.Events.route) },
+                onNavigateToAddEvent = { navController.navigate(Screen.AddEvent.route) },
+                onNavigateToAal = { navController.navigate(Screen.Organization.route) }
             )
         }
         
@@ -216,6 +218,29 @@ fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
 
         composable(Screen.CommitteeManagement.route) {
             CommitteeManagementScreen(onBack = { navController.popBackStack() })
+        }
+
+        // Innovation Hub Sub-Routes
+        composable(Screen.Marketplace.route) {
+            InnovationPitchesScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Matchmaker.route) {
+            MatchmakerScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Mentorship.route) {
+            MentorSessionScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Investor.route) {
+            InvestorDashboardScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Vault.route) {
+            NAACRecordsScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Organization.route) {
+            AalOrganizationScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Admin.route) {
+            AdminDashboardScreen(onBack = { navController.popBackStack() })
         }
     }
 }

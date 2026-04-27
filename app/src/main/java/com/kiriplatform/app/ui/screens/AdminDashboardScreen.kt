@@ -19,10 +19,19 @@ import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.theme.*
 import com.kiriplatform.app.data.remote.ApiClient
 import com.kiriplatform.app.data.remote.models.ActivityDto
+import com.kiriplatform.app.data.SessionManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.icons.filled.ArrowBack
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminDashboardScreen(collegeName: String) {
+fun AdminDashboardScreen(
+    onBack: () -> Unit = {}
+) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val collegeName = sessionManager.getUserName() ?: "Regional Hub"
     var activities by remember { mutableStateOf<List<ActivityDto>>(emptyList()) }
     val scope = rememberCoroutineScope()
 
@@ -35,7 +44,18 @@ fun AdminDashboardScreen(collegeName: String) {
         }
     }
 
-    Scaffold(containerColor = BgCream) { padding ->
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("System Portal", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+            )
+        },
+        containerColor = BgCream
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {

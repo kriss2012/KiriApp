@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,8 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 
 import com.kiriplatform.app.data.services.CertificateService
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NAACRecordsScreen(vm: NAACViewModel = viewModel()) {
+fun NAACRecordsScreen(
+    onBack: () -> Unit = {},
+    vm: NAACViewModel = viewModel()
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
     val userId = sessionManager.getUserId() ?: ""
@@ -46,6 +51,15 @@ fun NAACRecordsScreen(vm: NAACViewModel = viewModel()) {
     }
 
     Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("IP Vault", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+            )
+        },
         containerColor = BgCream,
         floatingActionButton = {
             ExtendedFloatingActionButton(

@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,9 +24,24 @@ import com.kiriplatform.app.ui.viewmodels.MatchViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kiriplatform.app.data.remote.models.MatchSuggestionDto
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MatchmakerScreen(vm: MatchViewModel = viewModel()) {
-    Scaffold(containerColor = BgCream) { padding ->
+fun MatchmakerScreen(
+    onBack: () -> Unit = {},
+    vm: MatchViewModel = viewModel()
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Matchmaker", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+            )
+        },
+        containerColor = BgCream
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {

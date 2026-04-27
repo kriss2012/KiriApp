@@ -20,10 +20,26 @@ import com.kiriplatform.app.ui.theme.*
 import com.kiriplatform.app.ui.viewmodels.InvestorViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kiriplatform.app.data.remote.models.InvestorPitchDto
+import androidx.compose.material.icons.filled.ArrowBack
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InvestorDashboardScreen(vm: InvestorViewModel = viewModel()) {
-    Scaffold(containerColor = BgCream) { padding ->
+fun InvestorDashboardScreen(
+    onBack: () -> Unit = {},
+    vm: InvestorViewModel = viewModel()
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Investor Intel", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+            )
+        },
+        containerColor = BgCream
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
