@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName
 // --- 1. Core Users & Roles ---
 
 data class AalUserDto(
-    @SerializedName("user_id") val userId: Int,
+    @SerializedName("user_id") val userId: String,
     @SerializedName("full_name") val _fullName: String? = null,
     val email: String? = null,
     val phone: String? = null,
@@ -30,7 +30,7 @@ enum class UserCategory {
 
 data class StakeholderRoleDto(
     @SerializedName("role_mapping_id") val roleMappingId: Int,
-    @SerializedName("user_id") val userId: Int,
+    @SerializedName("user_id") val userId: String,
     @SerializedName("role_name") val _roleName: StakeholderRole? = StakeholderRole.GUEST
 ) {
     val roleName: StakeholderRole get() = _roleName ?: StakeholderRole.GUEST
@@ -66,7 +66,7 @@ enum class CommitteeRoleType {
 
 data class UserRepositoryDto(
     @SerializedName("repo_mapping_id") val repoMappingId: Int,
-    @SerializedName("user_id") val userId: Int,
+    @SerializedName("user_id") val userId: String,
     @SerializedName("institution_id") val institutionId: Int,
     @SerializedName("repo_category") val _repoCategory: RepoCategory? = RepoCategory.R1,
     @SerializedName("approval_status") val _approvalStatus: ApprovalStatus? = ApprovalStatus.PENDING,
@@ -88,7 +88,7 @@ enum class ApprovalStatus {
 
 data class AalOnboardingDto(
     @SerializedName("aal_id") val aalId: Int? = 0,
-    @SerializedName("user_id") val userId: Int? = 0,
+    @SerializedName("user_id") val userId: String? = null,
     @SerializedName("mindset_score") val mindsetScore: String? = null,
     @SerializedName("lms_status") val _lmsStatus: LmsStatus? = LmsStatus.ENROLLED,
     @SerializedName("certificate_url") val certificateUrl: String? = null,
@@ -108,7 +108,7 @@ enum class InterviewStatus {
 
 data class AalActivityDto(
     @SerializedName("activity_id") val activityId: Int? = 0,
-    @SerializedName("user_id") val userId: Int? = 0,
+    @SerializedName("user_id") val userId: String? = null,
     @SerializedName("activity_number") val activityNumber: Int? = 0,
     @SerializedName("submission_url") val submissionUrl: String? = null,
     @SerializedName("status") val _status: ActivityStatus? = ActivityStatus.SUBMITTED
