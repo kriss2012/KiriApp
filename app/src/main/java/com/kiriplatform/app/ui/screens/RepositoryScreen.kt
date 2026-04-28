@@ -199,7 +199,7 @@ fun StudentCard(user: UserDto, onClick: () -> Unit) {
                 Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
                 Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
                 if (!user.college.isNullOrEmpty()) {
-                    Text(user.college!!, style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f), fontSize = 8.sp)
+                    Text(user.college ?: "", style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f), fontSize = 8.sp)
                 }
             }
 
