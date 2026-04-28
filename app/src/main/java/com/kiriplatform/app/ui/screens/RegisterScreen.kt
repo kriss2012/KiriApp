@@ -132,8 +132,7 @@ fun RegisterScreen(
                     )
                 }
             }
-
-            Spacer(Modifier.weight(1f))
+            
             Spacer(Modifier.height(24.dp))
 
             if (errorMessage != null) {
@@ -149,6 +148,11 @@ fun RegisterScreen(
                         isLoading = true
                         scope.launch {
                             try {
+                                if (department.isBlank()) {
+                                    errorMessage = "Department is required."
+                                    isLoading = false
+                                    return@launch
+                                }
                                 val request = RegisterRequest(
                                     email = email.trim(),
                                     password = password.trim(),
@@ -167,14 +171,19 @@ fun RegisterScreen(
                                 )
                                 // We'll update the bio/expertise in a separate profile call or extend the request
                                 val response = ApiClient.service.register(request)
+                                val user = response.user
                                 
-                                sessionManager.saveToken(response.token)
-                                sessionManager.saveUserId(response.user.id)
-                                sessionManager.saveUserName(response.user.fullName)
-                                sessionManager.saveUserRole(response.user.role)
-                                ApiClient.setToken(response.token)
+                                if (user != null) {
+                                    sessionManager.saveToken(response.token)
+                                    sessionManager.saveUserId(user.id)
+                                    sessionManager.saveUserName(user.fullName)
+                                    sessionManager.saveUserRole(user.role)
+                                    ApiClient.setToken(response.token)
 
-                                onRegisterSuccess()
+                                    onRegisterSuccess()
+                                } else {
+                                    errorMessage = "Registration succeeded but user data is missing."
+                                }
                             } catch (e: Exception) {
                                 errorMessage = e.message ?: "Registration failed"
                             } finally {
@@ -311,7 +320,7 @@ fun DetailStep(
             }
         }
         
-        OutlinedTextField(department, onDeptChange, label = { Text("Department") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        OutlinedTextField(department, onDeptChange, label = { Text("Department *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
         OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
     }
 }

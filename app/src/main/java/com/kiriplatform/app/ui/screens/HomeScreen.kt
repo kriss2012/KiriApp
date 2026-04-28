@@ -141,7 +141,7 @@ fun HomeContent(
             item { AalInternshipCard(aalOnboarding, aalActivities, onClick = onNavigateToAal) }
         }
 
-        item { InnovationProgressCard(points = user.points) }
+        item { InnovationProgressCard(points = user.pointsCount) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
         item { InnovationHubCard(onNavigateToHub = { /* Handled in MainScaffold */ }) }
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
@@ -314,7 +314,9 @@ fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
 }
 
 @Composable
-fun GreetingSection(userName: String) {
+fun GreetingSection(userName: String?) {
+    val safeName = userName ?: "Innovator"
+    val displayName = safeName.split(" ").firstOrNull() ?: safeName
     Column(modifier = Modifier.padding(24.dp, 24.dp)) {
         val calendar = java.util.Calendar.getInstance()
         val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
@@ -324,7 +326,7 @@ fun GreetingSection(userName: String) {
             else -> "Planning ahead, 🌙"
         }
         Text(greeting, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-        Text(userName.split(" ").firstOrNull() ?: userName, style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black, fontSize = 36.sp)
+        Text(displayName, style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black, fontSize = 36.sp)
         Spacer(Modifier.height(12.dp))
         AIStatusChip()
     }

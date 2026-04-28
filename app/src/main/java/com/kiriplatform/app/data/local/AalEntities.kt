@@ -12,10 +12,10 @@ import com.kiriplatform.app.data.remote.models.*
 @Entity(tableName = "users_vault")
 data class AalUserEntity(
     @PrimaryKey val userId: Int,
-    val fullName: String,
-    val email: String,
+    val fullName: String? = "Kiri Member",
+    val email: String? = "",
     val phone: String?,
-    val userCategory: String,
+    val userCategory: String? = "STUDENT",
     val digitalPersona: String?,
     val lastSyncedAt: Long = System.currentTimeMillis()
 )
@@ -32,7 +32,7 @@ data class AalActivityEntity(
     @PrimaryKey val activityId: Int,
     val userId: Int,
     val activityNumber: Int,
-    val submissionUrl: String,
+    val submissionUrl: String?,
     val status: String,
     val syncedAt: Long = System.currentTimeMillis()
 )

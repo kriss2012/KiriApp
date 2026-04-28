@@ -219,11 +219,11 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\ca
 	android:fullBackupContent
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:12:9-54
 	android:roundIcon
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:15:9-54
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:15:9-52
 	tools:targetApi
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:18:9-29
 	android:icon
-		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:13:9-43
+		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:13:9-47
 	android:allowBackup
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme

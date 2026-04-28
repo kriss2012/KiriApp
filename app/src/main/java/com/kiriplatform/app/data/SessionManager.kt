@@ -17,24 +17,24 @@ class SessionManager private constructor(context: Context) {
         }
     }
 
-    fun saveToken(token: String) {
-        prefs.edit().putString("auth_token", token).apply()
+    fun saveToken(token: String?) {
+        token?.let { prefs.edit().putString("auth_token", it).apply() }
     }
 
     fun getToken(): String? {
         return prefs.getString("auth_token", null)
     }
 
-    fun saveUserId(userId: String) {
-        prefs.edit().putString("user_id", userId).apply()
+    fun saveUserId(userId: String?) {
+        userId?.let { prefs.edit().putString("user_id", it).apply() }
     }
 
     fun getUserId(): String? {
         return prefs.getString("user_id", null)
     }
 
-    fun saveUserRole(role: String) {
-        prefs.edit().putString("user_role", role).apply()
+    fun saveUserRole(role: String?) {
+        role?.let { prefs.edit().putString("user_role", it).apply() }
     }
 
     fun getUserRole(): String? {
@@ -57,8 +57,8 @@ class SessionManager private constructor(context: Context) {
         return getToken() != null
     }
 
-    fun saveUserName(name: String) {
-        prefs.edit().putString("user_name", name).apply()
+    fun saveUserName(name: String?) {
+        name?.let { prefs.edit().putString("user_name", it).apply() }
     }
 
     fun getUserName(): String? {

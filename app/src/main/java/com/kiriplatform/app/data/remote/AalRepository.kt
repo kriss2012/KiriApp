@@ -129,7 +129,7 @@ class AalRepository(
         userId = userId,
         activityNumber = activityNumber,
         submissionUrl = submissionUrl,
-        status = ActivityStatus.valueOf(status)
+        _status = ActivityStatus.valueOf(status)
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(

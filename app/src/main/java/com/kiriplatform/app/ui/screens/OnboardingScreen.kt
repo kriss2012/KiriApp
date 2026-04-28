@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
-import com.google.accompanist.flowlayout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -142,6 +143,7 @@ fun CollegeSelectionPage() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun InterestSelectionPage() {
     val interests = listOf("Content Creation", "Hackathons", "Fundraising", "Mentorship", "NAAC/NEP", "Events Organizing")
@@ -157,8 +159,8 @@ fun InterestSelectionPage() {
 
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            mainAxisSpacing = 8.dp,
-            crossAxisSpacing = 8.dp
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             interests.forEach { interest ->
                 val isSelected = selectedInterests.contains(interest)

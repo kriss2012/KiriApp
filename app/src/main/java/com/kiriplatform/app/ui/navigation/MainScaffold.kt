@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kiriplatform.app.ui.theme.*
+import com.kiriplatform.app.utils.glassmorphism
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -137,11 +138,11 @@ fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
         modifier = Modifier
             .padding(horizontal = 20.dp)
             .height(64.dp)
-            .wrapContentWidth(),
+            .wrapContentWidth()
+            .glassmorphism(cornerRadius = 32.dp, alpha = 0.85f),
         shape = RoundedCornerShape(32.dp),
-        color = Color.White.copy(alpha = 0.85f),
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
-        shadowElevation = 8.dp
+        color = Color.Transparent,
+        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
     ) {
         Row(
             modifier = Modifier

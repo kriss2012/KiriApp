@@ -18,14 +18,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
+fun KiriNavGraph(
+    navController: NavHostController = rememberNavController(),
+    hasToken: Boolean,
+    paddingValues: androidx.compose.foundation.layout.PaddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
+) {
     val context = LocalContext.current
-    val sessionManager = remember { SessionManager.getInstance(context) }
-    val hasToken = sessionManager.getToken() != null
     
     NavHost(
         navController = navController,
         startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route,
+        modifier = androidx.compose.ui.Modifier.padding(paddingValues),
         enterTransition = {
             androidx.compose.animation.slideInHorizontally(
                 initialOffsetX = { 1000 },

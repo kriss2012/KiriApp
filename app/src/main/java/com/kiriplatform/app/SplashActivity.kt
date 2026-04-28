@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.theme.*
-import com.kiriplatform.app.utils.glassmorphism
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
@@ -28,11 +27,9 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            KiriAppTheme(appTheme = AppTheme.OCEAN) {
-                SplashScreen {
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    finish()
-                }
+            SplashScreen {
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
             }
         }
     }
@@ -41,42 +38,27 @@ class SplashActivity : ComponentActivity() {
 @Composable
 fun SplashScreen(onFinish: () -> Unit) {
     var startAnimation by remember { mutableStateOf(false) }
-    
-    val scaleAnim = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.5f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        )
-    )
-    
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(1200)
+        animationSpec = tween(durationMillis = 1000)
+    )
+    val scaleAnim = animateFloatAsState(
+        targetValue = if (startAnimation) 1.1f else 0.8f,
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
     )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(2500)
+        delay(2000)
         onFinish()
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(BgCream),
         contentAlignment = Alignment.Center
     ) {
-        // Subtle background glow
-        Box(
-            modifier = Modifier
-                .size(400.dp)
-                .background(
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.05f), 
-                    RoundedCornerShape(200.dp)
-                )
-        )
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -84,41 +66,26 @@ fun SplashScreen(onFinish: () -> Unit) {
                 .scale(scaleAnim.value)
         ) {
             Image(
-                painter = painterResource(id = com.kiriplatform.app.R.drawable.kiri_logo_vector_premium),
+                painter = painterResource(id = com.kiriplatform.app.R.drawable.kiri_logo_new),
                 contentDescription = "Kiri Logo",
-                modifier = Modifier
-                    .size(200.dp)
-                    .glassmorphism(cornerRadius = 40.dp, alpha = 0.1f)
-                    .padding(24.dp)
+                modifier = Modifier.size(180.dp)
             )
             
-            Spacer(Modifier.height(32.dp))
+            Spacer(Modifier.height(16.dp))
             
             Text(
                 "KIRI PLATFORM",
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = TextPrimary,
                 fontWeight = FontWeight.Black,
                 letterSpacing = (-1).sp
             )
             Text(
-                "INTELLIGENT INNOVATION HUB",
+                "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
+                color = TextSecondary,
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 4.sp
-            )
-            
-            Spacer(Modifier.height(48.dp))
-            
-            // Loading Indicator
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(2.dp)
-                    .alpha(0.5f),
-                color = MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                letterSpacing = 2.sp
             )
         }
     }

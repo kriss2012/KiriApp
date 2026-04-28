@@ -102,18 +102,24 @@ fun LoginScreen(
                         try {
                             val response = ApiClient.service.login(LoginRequest(email.trim(), password.trim()))
                             
-                            // Save to session
-                            sessionManager.saveToken(response.token)
-                            sessionManager.saveUserId(response.user.id)
-                            sessionManager.saveUserName(response.user.fullName)
-                            sessionManager.saveUserRole(response.user.role)
-                            sessionManager.setCanCreateEvents(response.user.canCreateEvents)
-                            
-                            // Set token for future API calls
-                            ApiClient.setToken(response.token)
-                            
-                            isLoading = false
-                            onLoginSuccess()
+                            val user = response.user
+                            if (user != null) {
+                                // Save to session
+                                sessionManager.saveToken(response.token)
+                                sessionManager.saveUserId(user.id)
+                                sessionManager.saveUserName(user.fullName)
+                                sessionManager.saveUserRole(user.role)
+                                sessionManager.setCanCreateEvents(user.canCreateEvents)
+                                
+                                // Set token for future API calls
+                                ApiClient.setToken(response.token)
+                                
+                                isLoading = false
+                                onLoginSuccess()
+                            } else {
+                                isLoading = false
+                                errorMessage = "Invalid user data received"
+                            }
                         } catch (e: Exception) {
                             isLoading = false
                             errorMessage = e.message ?: "Authentication failed"

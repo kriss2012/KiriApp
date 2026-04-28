@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+            val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.hilt.navigation.compose.hiltViewModel()
             val uiState by mainViewModel.uiState.collectAsState()
             
             KiriAppTheme(
@@ -69,7 +69,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = androidx.compose.material3.MaterialTheme.colorScheme.background
                     ) {
-                        KiriNavGraph(navController = navController)
+                        KiriNavGraph(
+                            navController = navController,
+                            hasToken = sessionManager.getToken() != null,
+                            paddingValues = padding
+                        )
                     }
                 }
             }
