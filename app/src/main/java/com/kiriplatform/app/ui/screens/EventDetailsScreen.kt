@@ -164,7 +164,7 @@ fun EventDetailsScreen(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Phone, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text(event.coordinatorPhone!!, style = MaterialTheme.typography.bodySmall, color = BluePrimary)
+                                Text(event.coordinatorPhone ?: "", style = MaterialTheme.typography.bodySmall, color = BluePrimary)
                             }
                         }
                     }
@@ -184,7 +184,7 @@ fun EventDetailsScreen(
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = Color(0xFF2E7D32))
-                                Text(event.prize!!, style = MaterialTheme.typography.bodySmall, color = Color(0xFF1B5E20))
+                                Text(event.prize ?: "No Prize Info", style = MaterialTheme.typography.bodySmall, color = Color(0xFF1B5E20))
                             }
                         }
                     }
@@ -208,7 +208,7 @@ fun EventDetailsScreen(
                 Button(
                     onClick = {
                         if (!event.registrationLink.isNullOrEmpty()) {
-                            uriHandler.openUri(event.registrationLink!!)
+                            event.registrationLink?.let { uriHandler.openUri(it) }
                         } else {
                             android.widget.Toast.makeText(context, "Registration link not available", android.widget.Toast.LENGTH_SHORT).show()
                         }
