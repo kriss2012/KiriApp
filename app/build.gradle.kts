@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("com.google.gms.google-services")
+    // id("com.google.gms.google-services") // Moved to conditional apply below
 }
 
 android {
@@ -59,6 +59,11 @@ android {
         abortOnError = false
         checkReleaseBuilds = false
     }
+}
+
+// Only apply Google Services if the JSON file is present
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }
 
 dependencies {
