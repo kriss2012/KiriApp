@@ -9,13 +9,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.padding
 import com.kiriplatform.app.ui.screens.*
 import com.kiriplatform.app.data.SessionManager
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 
 @Composable
 fun KiriNavGraph(
@@ -28,7 +30,7 @@ fun KiriNavGraph(
     NavHost(
         navController = navController,
         startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route,
-        modifier = androidx.compose.ui.Modifier.padding(paddingValues),
+        modifier = Modifier.padding(paddingValues),
         enterTransition = {
             androidx.compose.animation.slideInHorizontally(
                 initialOffsetX = { 1000 },
