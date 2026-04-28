@@ -104,11 +104,13 @@ fun ConnectionsScreen(
                             ) {
                                 items(filteredList) { connection ->
                                     val otherUser = if (connection.senderId == userId) connection.receiver else connection.sender
-                                    ConnectionItem(
-                                        user = otherUser,
-                                        isRequest = selectedTab == 0,
-                                        onAccept = { viewModel.acceptRequest(connection.id, userId) }
-                                    )
+                                    otherUser?.let { user ->
+                                        ConnectionItem(
+                                            user = user,
+                                            isRequest = selectedTab == 0,
+                                            onAccept = { viewModel.acceptRequest(connection.id, userId) }
+                                        )
+                                    }
                                 }
                             }
                         }
