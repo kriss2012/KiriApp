@@ -70,12 +70,12 @@ fun ChatScreen(
                     val content = data.optString("content")
                     viewModel.addMessageLocally(
                         MessageDto(
-                            id = System.currentTimeMillis().toString(),
-                            senderId = senderId,
-                            receiverId = currentUserId,
-                            content = content,
-                            createdAt = java.util.Date().toString(),
-                            isRead = false
+                            _id = System.currentTimeMillis().toString(),
+                            _senderId = senderId,
+                            _receiverId = currentUserId,
+                            _content = content,
+                            _createdAt = java.util.Date().toString(),
+                            _isRead = false
                         )
                     )
                 }
