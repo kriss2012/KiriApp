@@ -119,7 +119,7 @@ fun PitchCard(pitch: PitchDto, onBack: () -> Unit) {
                 }
                 Column {
                     Text("Backers", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-                    Text(pitch._count.backers.toString(), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+                    Text((pitch._count?.backers ?: 0).toString(), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
                 }
                
                 Spacer(Modifier.weight(1f))
@@ -139,7 +139,7 @@ fun PitchCard(pitch: PitchDto, onBack: () -> Unit) {
             Divider(modifier = Modifier.padding(vertical = 12.dp), color = BorderColor, thickness = 0.5.dp)
             
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Pitched by ${pitch.founder.fullName}", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text("Pitched by ${pitch.founder?.fullName ?: "Unknown"}", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
             }
         }
     }
