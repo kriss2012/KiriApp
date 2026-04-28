@@ -117,9 +117,9 @@ class AalRepository(
     // --- Mappers for Data Transformation Layer ---
 
     private fun AalActivityDto.toEntity() = AalActivityEntity(
-        activityId = activityId,
-        userId = userId,
-        activityNumber = activityNumber,
+        activityId = activityId ?: 0,
+        userId = userId ?: 0,
+        activityNumber = activityNumber ?: 0,
         submissionUrl = submissionUrl,
         status = status.name
     )
@@ -133,19 +133,19 @@ class AalRepository(
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
-        boardId = boardId,
-        authorUserId = authorUserId,
-        postType = postType.name,
-        title = title,
-        description = description,
+        boardId = boardId ?: 0,
+        authorUserId = authorUserId ?: 0,
+        postType = _postType?.name ?: "NEWS",
+        title = title ?: "",
+        description = description ?: "",
         mediaUrl = mediaUrl,
-        createdAt = createdAt
+        createdAt = createdAt ?: ""
     )
 
     private fun EcosystemBoardEntity.toDto() = EcosystemBoardDto(
         boardId = boardId,
         authorUserId = authorUserId,
-        postType = safeValueOf<PostType>(postType, PostType.NEWS),
+        _postType = safeValueOf<PostType>(postType, PostType.NEWS),
         title = title,
         description = description,
         mediaUrl = mediaUrl,
@@ -153,21 +153,21 @@ class AalRepository(
     )
 
     private fun JobProjectDto.toEntity() = JobProjectEntity(
-        listingId = listingId,
-        postedBy = postedBy,
-        type = type.name,
-        title = title,
-        description = description,
-        status = status.name
+        listingId = listingId ?: 0,
+        postedBy = postedBy ?: 0,
+        type = _type?.name ?: "JOB",
+        title = title ?: "",
+        description = description ?: "",
+        status = _status?.name ?: "OPEN"
     )
 
     private fun JobProjectEntity.toDto() = JobProjectDto(
         listingId = listingId,
         postedBy = postedBy,
-        type = safeValueOf<JobType>(type, JobType.JOB),
+        _type = safeValueOf<JobType>(type, JobType.JOB),
         title = title,
         description = description,
-        status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
+        _status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
     )
 
     private inline fun <reified T : Enum<T>> safeValueOf(value: String, default: T): T {
