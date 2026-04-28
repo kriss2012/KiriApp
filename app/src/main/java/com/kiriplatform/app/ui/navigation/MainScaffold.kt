@@ -207,12 +207,14 @@ fun NavigationTab(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(
-                imageVector = screen.icon!!,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp),
-                tint = iconColor
-            )
+            if (screen.icon != null) {
+                Icon(
+                    imageVector = screen.icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = iconColor
+                )
+            }
             
             AnimatedVisibility(
                 visible = selected,

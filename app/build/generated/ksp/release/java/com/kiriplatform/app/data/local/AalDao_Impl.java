@@ -55,14 +55,26 @@ public final class AalDao_Impl implements AalDao {
       protected void bind(@NonNull final SupportSQLiteStatement statement,
           @NonNull final AalUserEntity entity) {
         statement.bindLong(1, entity.getUserId());
-        statement.bindString(2, entity.getFullName());
-        statement.bindString(3, entity.getEmail());
+        if (entity.getFullName() == null) {
+          statement.bindNull(2);
+        } else {
+          statement.bindString(2, entity.getFullName());
+        }
+        if (entity.getEmail() == null) {
+          statement.bindNull(3);
+        } else {
+          statement.bindString(3, entity.getEmail());
+        }
         if (entity.getPhone() == null) {
           statement.bindNull(4);
         } else {
           statement.bindString(4, entity.getPhone());
         }
-        statement.bindString(5, entity.getUserCategory());
+        if (entity.getUserCategory() == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, entity.getUserCategory());
+        }
         if (entity.getDigitalPersona() == null) {
           statement.bindNull(6);
         } else {
@@ -99,7 +111,11 @@ public final class AalDao_Impl implements AalDao {
         statement.bindLong(1, entity.getActivityId());
         statement.bindLong(2, entity.getUserId());
         statement.bindLong(3, entity.getActivityNumber());
-        statement.bindString(4, entity.getSubmissionUrl());
+        if (entity.getSubmissionUrl() == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, entity.getSubmissionUrl());
+        }
         statement.bindString(5, entity.getStatus());
         statement.bindLong(6, entity.getSyncedAt());
       }
@@ -302,9 +318,17 @@ public final class AalDao_Impl implements AalDao {
             final int _tmpUserId;
             _tmpUserId = _cursor.getInt(_cursorIndexOfUserId);
             final String _tmpFullName;
-            _tmpFullName = _cursor.getString(_cursorIndexOfFullName);
+            if (_cursor.isNull(_cursorIndexOfFullName)) {
+              _tmpFullName = null;
+            } else {
+              _tmpFullName = _cursor.getString(_cursorIndexOfFullName);
+            }
             final String _tmpEmail;
-            _tmpEmail = _cursor.getString(_cursorIndexOfEmail);
+            if (_cursor.isNull(_cursorIndexOfEmail)) {
+              _tmpEmail = null;
+            } else {
+              _tmpEmail = _cursor.getString(_cursorIndexOfEmail);
+            }
             final String _tmpPhone;
             if (_cursor.isNull(_cursorIndexOfPhone)) {
               _tmpPhone = null;
@@ -312,7 +336,11 @@ public final class AalDao_Impl implements AalDao {
               _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             }
             final String _tmpUserCategory;
-            _tmpUserCategory = _cursor.getString(_cursorIndexOfUserCategory);
+            if (_cursor.isNull(_cursorIndexOfUserCategory)) {
+              _tmpUserCategory = null;
+            } else {
+              _tmpUserCategory = _cursor.getString(_cursorIndexOfUserCategory);
+            }
             final String _tmpDigitalPersona;
             if (_cursor.isNull(_cursorIndexOfDigitalPersona)) {
               _tmpDigitalPersona = null;
@@ -400,7 +428,11 @@ public final class AalDao_Impl implements AalDao {
             final int _tmpActivityNumber;
             _tmpActivityNumber = _cursor.getInt(_cursorIndexOfActivityNumber);
             final String _tmpSubmissionUrl;
-            _tmpSubmissionUrl = _cursor.getString(_cursorIndexOfSubmissionUrl);
+            if (_cursor.isNull(_cursorIndexOfSubmissionUrl)) {
+              _tmpSubmissionUrl = null;
+            } else {
+              _tmpSubmissionUrl = _cursor.getString(_cursorIndexOfSubmissionUrl);
+            }
             final String _tmpStatus;
             _tmpStatus = _cursor.getString(_cursorIndexOfStatus);
             final long _tmpSyncedAt;

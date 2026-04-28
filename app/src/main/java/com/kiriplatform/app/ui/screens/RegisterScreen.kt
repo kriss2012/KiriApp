@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.theme.*
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
+    onBack: () -> Unit,
     onNavigateToLogin: () -> Unit,
     onRegisterSuccess: () -> Unit
 ) {
@@ -66,10 +68,10 @@ fun RegisterScreen(
             TopAppBar(
                 title = { Text("Student Onboarding", fontWeight = FontWeight.Black) },
                 navigationIcon = {
-                    if (currentStep > 1) {
-                        IconButton(onClick = { currentStep-- }) {
-                            Icon(Icons.Default.ArrowBack, null)
-                        }
+                    IconButton(onClick = { 
+                        if (currentStep > 1) currentStep-- else onBack()
+                    }) {
+                        Icon(Icons.Default.ArrowBack, null)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -143,9 +145,37 @@ fun RegisterScreen(
             Button(
                 onClick = {
                     if (currentStep < 4) {
+                        // Validation before moving to next step
+                        when (currentStep) {
+                            1 -> {
+                                if (fullName.isBlank() || email.isBlank() || password.isBlank()) {
+                                    errorMessage = "Please fill all required fields (*)"
+                                    return@Button
+                                }
+                                if (!email.contains("@")) {
+                                    errorMessage = "Please enter a valid email"
+                                    return@Button
+                                }
+                            }
+                            2 -> {
+                                if (selectedRole.isBlank()) {
+                                    errorMessage = "Please select your role"
+                                    return@Button
+                                }
+                            }
+                            3 -> {
+                                if (department.isBlank() || college.isBlank()) {
+                                    errorMessage = "Department and Institution are required"
+                                    return@Button
+                                }
+                            }
+                        }
+                        errorMessage = null
                         currentStep++
                     } else {
+                        if (isLoading) return@Button
                         isLoading = true
+                        errorMessage = null
                         scope.launch {
                             try {
                                 if (department.isBlank()) {
@@ -172,20 +202,44 @@ fun RegisterScreen(
                                 // We'll update the bio/expertise in a separate profile call or extend the request
                                 val response = ApiClient.service.register(request)
                                 val user = response.user
+                                val token = response.token
                                 
-                                if (user != null) {
-                                    sessionManager.saveToken(response.token)
-                                    sessionManager.saveUserId(user.id)
-                                    sessionManager.saveUserName(user.fullName)
-                                    sessionManager.saveUserRole(user.role)
-                                    ApiClient.setToken(response.token)
-
-                                    onRegisterSuccess()
-                                } else {
+                                // Validate response data
+                                if (user == null) {
                                     errorMessage = "Registration succeeded but user data is missing."
+                                    isLoading = false
+                                    return@launch
                                 }
-                            } catch (e: Exception) {
-                                errorMessage = e.message ?: "Registration failed"
+                                
+                                if (token.isBlank()) {
+                                    errorMessage = "Registration succeeded but authentication token is missing."
+                                    isLoading = false
+                                    return@launch
+                                }
+                                
+                                if (user.id.isBlank()) {
+                                    errorMessage = "Registration succeeded but user ID is missing."
+                                    isLoading = false
+                                    return@launch
+                                }
+                                
+                                sessionManager.saveToken(token)
+                                sessionManager.saveUserId(user.id)
+                                sessionManager.saveUserName(user.fullName)
+                                sessionManager.saveUserRole(user.role)
+                                ApiClient.setToken(token)
+
+                                onRegisterSuccess()
+                            } catch (e: Throwable) {
+                                errorMessage = when (e) {
+                                    is java.net.UnknownHostException -> "No internet connection. Please check your network."
+                                    is java.net.SocketTimeoutException -> "Server connection timed out."
+                                    is retrofit2.HttpException -> {
+                                        if (e.code() == 409) "An account with this email already exists."
+                                        else "Server error: ${e.code()}"
+                                    }
+                                    else -> e.localizedMessage ?: "Registration failed. Please try again."
+                                }
                             } finally {
                                 isLoading = false
                             }
@@ -243,7 +297,7 @@ fun AccountStep(
             label = { Text("Password *") }, 
             modifier = Modifier.fillMaxWidth(), 
             shape = RoundedCornerShape(12.dp),
-            visualTransformation = if (passVisible) androidx.compose.ui.text.input.VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = { passVisible = !passVisible }) {
                     Icon(if (passVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff, null)

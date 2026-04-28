@@ -58,26 +58,55 @@ fun KiriNavGraph(
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(
-                onJoinCommunity = { navController.navigate(Screen.Register.route) },
-                onOrganization = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL))
-                    context.startActivity(intent)
+                onJoinCommunity = { 
+                    navController.navigate(Screen.Register.route) {
+                        launchSingleTop = true
+                    }
                 },
-                onSignIn = { navController.navigate(Screen.Login.route) }
+                onOrganization = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL))
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        // Handle potential activity not found
+                    }
+                },
+                onSignIn = { 
+                    navController.navigate(Screen.Login.route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                onLoginSuccess = { navController.navigate(Screen.Home.route) }
+                onNavigateToRegister = { 
+                    navController.navigate(Screen.Register.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onLoginSuccess = { 
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
             )
         }
 
         composable(Screen.Register.route) {
             RegisterScreen(
-                onNavigateToLogin = { navController.navigate(Screen.Login.route) },
-                onRegisterSuccess = { navController.navigate(Screen.Onboarding.route) }
+                onBack = { navController.popBackStack() },
+                onNavigateToLogin = { 
+                    navController.navigate(Screen.Login.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onRegisterSuccess = { 
+                    navController.navigate(Screen.Onboarding.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
             )
         }
         

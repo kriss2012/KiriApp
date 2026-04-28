@@ -37,14 +37,14 @@ public final class KiriDatabase_Impl extends KiriDatabase {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `cached_events` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`id`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `users_vault` (`userId` INTEGER NOT NULL, `fullName` TEXT NOT NULL, `email` TEXT NOT NULL, `phone` TEXT, `userCategory` TEXT NOT NULL, `digitalPersona` TEXT, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`userId`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `users_vault` (`userId` INTEGER NOT NULL, `fullName` TEXT, `email` TEXT, `phone` TEXT, `userCategory` TEXT, `digitalPersona` TEXT, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`userId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `institutions_mdm` (`institutionId` INTEGER NOT NULL, `name` TEXT NOT NULL, `spocUserId` INTEGER NOT NULL, PRIMARY KEY(`institutionId`))");
-        db.execSQL("CREATE TABLE IF NOT EXISTS `aal_activities_history` (`activityId` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `activityNumber` INTEGER NOT NULL, `submissionUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `syncedAt` INTEGER NOT NULL, PRIMARY KEY(`activityId`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `aal_activities_history` (`activityId` INTEGER NOT NULL, `userId` INTEGER NOT NULL, `activityNumber` INTEGER NOT NULL, `submissionUrl` TEXT, `status` TEXT NOT NULL, `syncedAt` INTEGER NOT NULL, PRIMARY KEY(`activityId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `ecosystem_board_cache` (`boardId` INTEGER NOT NULL, `authorUserId` INTEGER NOT NULL, `postType` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `mediaUrl` TEXT, `createdAt` TEXT NOT NULL, PRIMARY KEY(`boardId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `ai_matches_vault` (`matchId` INTEGER NOT NULL, `sourceUserId` INTEGER NOT NULL, `targetUserId` INTEGER NOT NULL, `matchReason` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`matchId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS `jobs_projects_mdm` (`listingId` INTEGER NOT NULL, `postedBy` INTEGER NOT NULL, `type` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`listingId`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '22270853c93f1341c8f49bed59a89c3e')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd998f308ae293fc9c62476a1e2ea1870')");
       }
 
       @Override
@@ -114,10 +114,10 @@ public final class KiriDatabase_Impl extends KiriDatabase {
         }
         final HashMap<String, TableInfo.Column> _columnsUsersVault = new HashMap<String, TableInfo.Column>(7);
         _columnsUsersVault.put("userId", new TableInfo.Column("userId", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUsersVault.put("fullName", new TableInfo.Column("fullName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUsersVault.put("email", new TableInfo.Column("email", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsersVault.put("fullName", new TableInfo.Column("fullName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsersVault.put("email", new TableInfo.Column("email", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsersVault.put("phone", new TableInfo.Column("phone", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsUsersVault.put("userCategory", new TableInfo.Column("userCategory", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUsersVault.put("userCategory", new TableInfo.Column("userCategory", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsersVault.put("digitalPersona", new TableInfo.Column("digitalPersona", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsUsersVault.put("lastSyncedAt", new TableInfo.Column("lastSyncedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysUsersVault = new HashSet<TableInfo.ForeignKey>(0);
@@ -146,7 +146,7 @@ public final class KiriDatabase_Impl extends KiriDatabase {
         _columnsAalActivitiesHistory.put("activityId", new TableInfo.Column("activityId", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAalActivitiesHistory.put("userId", new TableInfo.Column("userId", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAalActivitiesHistory.put("activityNumber", new TableInfo.Column("activityNumber", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsAalActivitiesHistory.put("submissionUrl", new TableInfo.Column("submissionUrl", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAalActivitiesHistory.put("submissionUrl", new TableInfo.Column("submissionUrl", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAalActivitiesHistory.put("status", new TableInfo.Column("status", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAalActivitiesHistory.put("syncedAt", new TableInfo.Column("syncedAt", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysAalActivitiesHistory = new HashSet<TableInfo.ForeignKey>(0);
@@ -208,7 +208,7 @@ public final class KiriDatabase_Impl extends KiriDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "22270853c93f1341c8f49bed59a89c3e", "abab2d77edfcd351a4dadbb75aceb47b");
+    }, "d998f308ae293fc9c62476a1e2ea1870", "1bea0f357bc34f6dfe78959fcc24680d");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

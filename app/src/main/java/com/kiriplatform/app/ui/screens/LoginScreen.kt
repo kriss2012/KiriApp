@@ -96,6 +96,12 @@ fun LoginScreen(
             KiriPrimaryButton(
                 text = if (isLoading) "Signing in..." else "Sign In",
                 onClick = {
+                    if (email.isBlank() || password.isBlank()) {
+                        errorMessage = "Please enter both email and password"
+                        return@KiriPrimaryButton
+                    }
+                    if (isLoading) return@KiriPrimaryButton
+
                     isLoading = true
                     errorMessage = null
                     coroutineScope.launch {
@@ -103,26 +109,50 @@ fun LoginScreen(
                             val response = ApiClient.service.login(LoginRequest(email.trim(), password.trim()))
                             
                             val user = response.user
-                            if (user != null) {
-                                // Save to session
-                                sessionManager.saveToken(response.token)
-                                sessionManager.saveUserId(user.id)
-                                sessionManager.saveUserName(user.fullName)
-                                sessionManager.saveUserRole(user.role)
-                                sessionManager.setCanCreateEvents(user.canCreateEvents)
-                                
-                                // Set token for future API calls
-                                ApiClient.setToken(response.token)
-                                
-                                isLoading = false
-                                onLoginSuccess()
-                            } else {
+                            val token = response.token
+                            
+                            // Validate token and user data
+                            if (user == null) {
                                 isLoading = false
                                 errorMessage = "Invalid user data received"
+                                return@launch
                             }
-                        } catch (e: Exception) {
+                            
+                            if (token.isBlank()) {
+                                isLoading = false
+                                errorMessage = "Invalid authentication token received"
+                                return@launch
+                            }
+                            
+                            if (user.id.isBlank()) {
+                                isLoading = false
+                                errorMessage = "Invalid user ID received"
+                                return@launch
+                            }
+                            
+                            // Save to session
+                            sessionManager.saveToken(token)
+                            sessionManager.saveUserId(user.id)
+                            sessionManager.saveUserName(user.fullName)
+                            sessionManager.saveUserRole(user.role)
+                            sessionManager.setCanCreateEvents(user.canCreateEvents)
+                            
+                            // Set token for future API calls
+                            ApiClient.setToken(token)
+                            
                             isLoading = false
-                            errorMessage = e.message ?: "Authentication failed"
+                            onLoginSuccess()
+                        } catch (e: Throwable) {
+                            isLoading = false
+                            errorMessage = when (e) {
+                                is java.net.UnknownHostException -> "No internet connection. Please check your network."
+                                is java.net.SocketTimeoutException -> "Server connection timed out."
+                                is retrofit2.HttpException -> {
+                                    if (e.code() == 401) "Invalid email or password."
+                                    else "Server error: ${e.code()}"
+                                }
+                                else -> e.localizedMessage ?: "Login failed. Please try again."
+                            }
                         }
                     }
                 },
