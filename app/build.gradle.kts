@@ -4,7 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    // id("com.google.gms.google-services") // Moved to conditional apply below
 }
 
 android {
@@ -61,11 +60,6 @@ android {
     }
 }
 
-// Only apply Google Services if the JSON file is present
-if (file("google-services.json").exists()) {
-    apply(plugin = "com.google.gms.google-services")
-}
-
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -98,11 +92,6 @@ dependencies {
     
     // Image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
-
-    // Firebase (BOM for version management)
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
 
     // Maps
     implementation("com.google.maps.android:maps-compose:4.3.0")

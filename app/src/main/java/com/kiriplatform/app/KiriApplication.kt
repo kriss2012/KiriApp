@@ -11,8 +11,5 @@ class KiriApplication : Application() {
         
         // Initialize global components
         NotificationHelper.createNotificationChannel(this)
-        
-        // Firebase initialization is usually handled by the google-services plugin,
-        // but ensure it's not manually initialized with missing options elsewhere.
     }
 }
