@@ -11,17 +11,13 @@ export const createEvent = async (req: Request, res: Response) => {
       coordinatorName, coordinatorPhone, hostInstitutionId 
     } = req.body;
 
-    // Check if the user has permission to create events
+    // Check if the user exists
     const user = await prisma.user.findUnique({
       where: { id: ownerId }
     });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
-    }
-
-    if (!user.canCreateEvents && user.role !== 'ADMIN' && user.role !== 'SPOC') {
-      return res.status(403).json({ message: 'You do not have permission to create events. Please contact an admin.' });
     }
 
     const { imageUrl } = req.body;
@@ -43,9 +39,8 @@ export const createEvent = async (req: Request, res: Response) => {
       }
     });
 
-    // Notify all verified users about the new event (Async - Point 4)
+    // Notify all users about the new event (Async)
     prisma.user.findMany({
-      where: { isVerified: true },
       select: { id: true }
     }).then(allUsers => {
       allUsers.forEach(u => 
