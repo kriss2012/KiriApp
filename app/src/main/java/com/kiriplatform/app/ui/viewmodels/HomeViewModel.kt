@@ -29,9 +29,14 @@ class HomeViewModel : ViewModel() {
 
     fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
-            // First, try to load from cache for immediate offline view
-            val cachedUser = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
-            val cachedEvents = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+            // First, try to load from cache on IO thread to prevent main-thread lag
+            val cachedData = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+                val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+                user to events
+            }
+            
+            val (cachedUser, cachedEvents) = cachedData
             
             if (cachedUser != null && cachedEvents != null) {
                 _uiState.value = HomeState.Success(cachedUser, cachedEvents)
@@ -40,6 +45,7 @@ class HomeViewModel : ViewModel() {
             }
 
             try {
+                // Retrofit handles its own thread switching, but we keep it inside the scope
                 val user = ApiClient.service.getProfile(userId)
                 val events = ApiClient.service.getEvents().take(3)
                 
@@ -54,9 +60,11 @@ class HomeViewModel : ViewModel() {
                     }
                 } catch (e: Exception) { /* AAL not available for this user */ }
                 
-                // SAVE to cache for next time
-                com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
-                com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", events)
+                // SAVE to cache on IO thread
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
+                    com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", events)
+                }
                 
                 _uiState.value = HomeState.Success(user, events, onboarding, activities)
             } catch (e: Exception) {

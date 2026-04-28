@@ -24,24 +24,11 @@ fun Modifier.glassmorphism(
     cornerRadius: Dp = 32.dp,
     alpha: Float = 0.15f
 ): Modifier = composed {
-    val isSupported = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU
-    
-    if (!enabled || !isSupported) return@composed this.border(
-        width = 1.dp,
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(cornerRadius)
-    )
+    if (!enabled) return@composed this
 
-    val liquidState = rememberLiquidState()
-    
     this
         .clip(RoundedCornerShape(cornerRadius))
         .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = alpha))
-        .liquid(liquidState) {
-            this.frost = 16.dp
-            this.refraction = 0.1f
-            this.saturation = 0.7f
-        }
         .border(
             width = 1.dp,
             brush = Brush.verticalGradient(
