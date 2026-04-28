@@ -53,10 +53,10 @@ class HomeViewModel : ViewModel() {
                 var onboarding: AalOnboardingDto? = null
                 var activities: List<AalActivityDto> = emptyList()
                 try {
-                    val intUserId = userId.toIntOrNull()
-                    if (intUserId != null) {
-                        onboarding = ApiClient.service.getAalOnboarding(intUserId)
-                        activities = ApiClient.service.getAalActivities(intUserId)
+                    // Fetch AAL data if userId is valid
+                    if (userId.isNotEmpty()) {
+                        onboarding = ApiClient.service.getAalOnboarding(userId)
+                        activities = ApiClient.service.getAalActivities(userId)
                     }
                 } catch (e: Exception) { /* AAL not available for this user */ }
                 
