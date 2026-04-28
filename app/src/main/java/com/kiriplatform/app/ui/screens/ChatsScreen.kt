@@ -128,14 +128,18 @@ fun ChatsScreen(
                         Text("Recent Conversations", style = MaterialTheme.typography.labelMedium, color = TextSecondary, modifier = Modifier.padding(bottom = 4.dp))
                     }
                     items(conversations) { convo ->
-                        ChatListItem(
-                            name = convo.otherUser.fullName,
-                            lastMsg = convo.lastMessage.content,
-                            time = "Active", // TODO: Format timestamp
-                            unreadCount = convo.unreadCount,
-                            isAgent = false,
-                            onClick = { onNavigateToChat(convo.otherUser.id) }
-                        )
+                        val otherUser = convo.otherUser
+                        val lastMessage = convo.lastMessage
+                        if (otherUser != null) {
+                            ChatListItem(
+                                name = otherUser.fullName,
+                                lastMsg = lastMessage?.content ?: "",
+                                time = "Active", // TODO: Format timestamp
+                                unreadCount = convo.unreadCount ?: 0,
+                                isAgent = false,
+                                onClick = { onNavigateToChat(otherUser.id) }
+                            )
+                        }
                     }
                 } else if (!isLoading) {
                     item {
