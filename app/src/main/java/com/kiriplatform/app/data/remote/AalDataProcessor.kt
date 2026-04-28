@@ -23,7 +23,7 @@ object AalDataProcessor {
      * Deduplicates and validates ecosystem board posts.
      */
     fun validateBoardItem(item: EcosystemBoardDto): Boolean {
-        return item.title.isNotBlank() && item.description.length > 10
+        return !item.title.isNullOrBlank() && (item.description?.length ?: 0) > 10
     }
 
     /**
