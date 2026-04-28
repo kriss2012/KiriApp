@@ -58,7 +58,7 @@ fun InvestorDashboardScreen(
                     Text("Top Trending Sectors", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         vm.trends.take(2).forEach { trend ->
-                            TrendBox(trend.category, "${trend._count["id"] ?: 0} Projects")
+                            TrendBox(trend.category ?: "General", "${trend._count?.get("id") ?: 0} Projects")
                         }
                     }
                 }
