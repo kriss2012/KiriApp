@@ -79,7 +79,7 @@ fun EditProfileScreen(
                     website = state.user.website ?: ""
                     githubUrl = state.user.githubUrl ?: ""
                     linkedInUrl = state.user.linkedInUrl ?: ""
-                    servicesStr = state.user.services.joinToString(", ")
+                    servicesStr = state.user.services?.joinToString(", ") ?: ""
                 }
             }
             is ProfileState.Error -> {
