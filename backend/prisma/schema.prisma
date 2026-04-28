@@ -112,7 +112,9 @@ model User {
   backedPitches    Backer[]
   boardPosts       EcosystemBoard[]
   
-  // Committee membership
+  // Missing relations for Prisma 7 validation
+  institutions     Institution[]
+  eventRegistrations EventRegistration[]
   committees       InstitutionalCommittee[]
 
   // Approval records (if this user is R5/SPOC)
