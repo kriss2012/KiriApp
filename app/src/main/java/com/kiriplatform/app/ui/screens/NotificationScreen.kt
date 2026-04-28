@@ -228,7 +228,7 @@ fun NotificationItem(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     Button(
-                        onClick = { onAccept(notification.relatedId!!) },
+                        onClick = { notification.relatedId?.let { onAccept(it) } },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(containerColor = color),
                         shape = RoundedCornerShape(8.dp),
