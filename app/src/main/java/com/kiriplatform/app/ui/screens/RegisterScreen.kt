@@ -138,7 +138,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(24.dp))
 
             if (errorMessage != null) {
-                Text(errorMessage!!, color = Color.Red, style = MaterialTheme.typography.labelSmall)
+                Text(errorMessage ?: "", color = Color.Red, style = MaterialTheme.typography.labelSmall)
                 Spacer(Modifier.height(8.dp))
             }
 
