@@ -101,7 +101,7 @@ fun MatchCard(suggestion: MatchSuggestionDto) {
             
             Text("Top Skills", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
             Row(modifier = Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                suggestion.skills.take(3).forEach { skill ->
+                (suggestion.skills ?: emptyList()).take(3).forEach { skill ->
                     Surface(color = BgCream, shape = RoundedCornerShape(8.dp), border = BorderStroke(0.5.dp, BorderColor)) {
                         Text(skill, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = TextPrimary)
                     }
