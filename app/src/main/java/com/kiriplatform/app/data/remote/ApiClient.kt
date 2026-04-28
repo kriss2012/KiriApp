@@ -140,10 +140,10 @@ interface ASGApiService {
     // --- AAL & Ecosystem New Endpoints ---
 
     @GET("aal/onboarding/{userId}")
-    suspend fun getAalOnboarding(@Path("userId") userId: Int): AalOnboardingDto
+    suspend fun getAalOnboarding(@Path("userId") userId: String): AalOnboardingDto
 
     @GET("aal/activities/{userId}")
-    suspend fun getAalActivities(@Path("userId") userId: Int): List<AalActivityDto>
+    suspend fun getAalActivities(@Path("userId") userId: String): List<AalActivityDto>
 
     @POST("aal/activities/submit")
     suspend fun submitAalActivity(@Body request: AalActivityDto): AalActivityDto
