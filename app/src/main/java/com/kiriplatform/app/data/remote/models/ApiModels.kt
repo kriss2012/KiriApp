@@ -146,6 +146,18 @@ data class PitchDto(
     val createdAt: String get() = _createdAt ?: ""
 }
 
+data class UserResponse(
+    @SerializedName("id") val _id: String? = null,
+    @SerializedName("fullName") val _fullName: String? = null,
+    @SerializedName("role") val _role: String? = null,
+    val avatarUrl: String? = null,
+    val college: String? = null
+) {
+    val id: String get() = _id ?: ""
+    val fullName: String get() = _fullName ?: "Kiri User"
+    val role: String get() = _role ?: "STUDENT"
+}
+
 data class PitchCountDto(val backers: Int? = 0)
 
 data class CreatePitchRequest(
@@ -345,7 +357,7 @@ data class UserDto(
     val year: String? = null,
     val section: String? = null,
     val avatarUrl: String? = null,
-    val canCreateEvents: Boolean? = false,
+    val _canCreateEvents: Boolean? = false,
     val points: Int? = 100,
     val phoneNumber: String? = null,
     val website: String? = null,
@@ -361,7 +373,7 @@ data class UserDto(
     val email: String get() = _email ?: ""
     val fullName: String get() = _fullName ?: "Kiri Member"
     val role: String get() = _role ?: "STUDENT"
-    val canCreateEvents: Boolean get() = canCreateEvents ?: false
+    val canCreateEvents: Boolean get() = _canCreateEvents ?: false
     val pointsCount: Int get() = points ?: 0
 }
 
