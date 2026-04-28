@@ -171,9 +171,9 @@ fun PublicProfileScreen(
                         ProfileSection("Expertise & About", u.bio)
                     }
 
-                    if (u.services.isNotEmpty()) {
+                    if (!u.services.isNullOrEmpty()) {
                         Spacer(Modifier.height(24.dp))
-                        ServicesSection(u.services)
+                        ServicesSection(u.services ?: emptyList())
                     }
                     
                     Spacer(Modifier.height(24.dp))
