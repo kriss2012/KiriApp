@@ -129,7 +129,7 @@ class AalRepository(
         userId = userId,
         activityNumber = activityNumber,
         submissionUrl = submissionUrl,
-        _status = ActivityStatus.valueOf(status)
+        _status = safeValueOf<ActivityStatus>(status, ActivityStatus.SUBMITTED)
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
@@ -145,7 +145,7 @@ class AalRepository(
     private fun EcosystemBoardEntity.toDto() = EcosystemBoardDto(
         boardId = boardId,
         authorUserId = authorUserId,
-        postType = PostType.valueOf(postType),
+        postType = safeValueOf<PostType>(postType, PostType.NEWS),
         title = title,
         description = description,
         mediaUrl = mediaUrl,
@@ -164,9 +164,17 @@ class AalRepository(
     private fun JobProjectEntity.toDto() = JobProjectDto(
         listingId = listingId,
         postedBy = postedBy,
-        type = JobType.valueOf(type),
+        type = safeValueOf<JobType>(type, JobType.JOB),
         title = title,
         description = description,
-        status = JobStatus.valueOf(status)
+        status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
     )
+
+    private inline fun <reified T : Enum<T>> safeValueOf(value: String, default: T): T {
+        return try {
+            java.lang.Enum.valueOf(T::class.java, value.uppercase())
+        } catch (e: Exception) {
+            default
+        }
+    }
 }
