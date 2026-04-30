@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Відкрити на телефоні</string>
     <string name="common_signin_button_text">Увійти</string>
     <string name="common_signin_button_text_long">Увійти в облік. запис Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Посилання скопійовано в буфер обміну"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Введено недійсні дані"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Спливаюче вікно"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Спадне меню"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Копіювати посилання"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Відкрити у веб-переглядачі"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Надіслати посилання"</string>
     <string msgid="6827826412747255547" name="in_progress">"Виконується"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Частково вибрано"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Згорнути нижній екран"</string>

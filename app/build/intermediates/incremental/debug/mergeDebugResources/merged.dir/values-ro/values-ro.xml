@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Deschideți pe telefon</string>
     <string name="common_signin_button_text">Conectați-vă</string>
     <string name="common_signin_button_text_long">Conectați-vă cu Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Linkul a fost copiat în clipboard"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Intrare nevalidă"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Fereastră pop-up"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Meniu drop-down"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Copiați linkul"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Deschideți în browser"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Trimiteți linkul"</string>
     <string msgid="6827826412747255547" name="in_progress">"În curs"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Bifată parțial"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Restrânge foaia din partea de jos"</string>

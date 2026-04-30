@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">باز کردن در تلفن</string>
     <string name="common_signin_button_text">ورود به سیستم</string>
     <string name="common_signin_button_text_long">‏ورود به سیستم با Google‎</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"پیوند در بریده‌دان کپی شد"</string>
     <string msgid="8038256446254964252" name="default_error_message">"ورودی نامعتبر"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"پنجره بالاپر"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"منوی کرکره‌ای"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"کپی پیوند"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"بازکردن در مرورگر"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"هم‌رسانی پیوند"</string>
     <string msgid="6827826412747255547" name="in_progress">"درحال انجام"</string>
     <string msgid="7933458017204019916" name="indeterminate">"ناقص علامت زده‌شده"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"جمع کردن برگ زیرین"</string>

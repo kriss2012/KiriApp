@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">ဖုန်းပေါ်မှာ ဖွင့်ပါ</string>
     <string name="common_signin_button_text">လက်မှတ်ထိုး ဝင်ရန်</string>
     <string name="common_signin_button_text_long">Google ဖြင့် လက်မှတ်ထိုးဝင်ရေ</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"လင့်ခ်ကို ကလစ်ဘုတ်သို့ ကူးပြီးပါပြီ"</string>
     <string msgid="8038256446254964252" name="default_error_message">"ထည့်သွင်းမှု မမှန်ကန်ပါ"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"ပေါ့ပ်အပ် ဝင်းဒိုး"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"ဆွဲချမီနူး"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"လင့်ခ်ကို ကူးယူရန်"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"ဘရောင်ဇာတွင် ဖွင့်ရန်"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"လင့်ခ်ကို မျှဝေရန်"</string>
     <string msgid="6827826412747255547" name="in_progress">"ဆောင်ရွက်နေဆဲ"</string>
     <string msgid="7933458017204019916" name="indeterminate">"တစ်ဝက်တစ်ပျက် စစ်ဆေးထားသည်"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချုံ့သည်"</string>

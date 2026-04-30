@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">在手机上打开</string>
     <string name="common_signin_button_text">登录</string>
     <string name="common_signin_button_text_long">使用 Google 帐号登录</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"链接已复制到剪贴板"</string>
     <string msgid="8038256446254964252" name="default_error_message">"输入无效"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"弹出式窗口"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"下拉菜单"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"复制链接"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"在浏览器中打开"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"分享链接"</string>
     <string msgid="6827826412747255547" name="in_progress">"进行中"</string>
     <string msgid="7933458017204019916" name="indeterminate">"部分选中"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"收起底部动作条"</string>

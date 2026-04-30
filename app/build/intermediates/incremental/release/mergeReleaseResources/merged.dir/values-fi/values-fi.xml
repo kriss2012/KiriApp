@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Avaa puhelimessa</string>
     <string name="common_signin_button_text">Kirjaudu sisään</string>
     <string name="common_signin_button_text_long">Kirjaudu Google-tilille</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Linkki kopioitu leikepöydälle"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Virheellinen syöte"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Ponnahdusikkuna"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Avattava valikko"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Kopioi linkki"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Avaa selaimessa"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Jaa linkki"</string>
     <string msgid="6827826412747255547" name="in_progress">"Kesken"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Osittain tarkistettu"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Tiivistä alapaneeli"</string>

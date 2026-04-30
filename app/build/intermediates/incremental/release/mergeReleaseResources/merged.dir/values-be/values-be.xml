@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Адкрыць на тэлефоне</string>
     <string name="common_signin_button_text">Увайсцi</string>
     <string name="common_signin_button_text_long">Увайсці праз Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Спасылка скапіравана ў буфер абмену"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Памылка ўводу"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Усплывальнае акно"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Выпадное меню"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Скапіраваць спасылку"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Адкрыць у браўзеры"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Абагуліць спасылку"</string>
     <string msgid="6827826412747255547" name="in_progress">"У працэсе"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Выбрана часткова"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Згарнуць ніжні аркуш"</string>

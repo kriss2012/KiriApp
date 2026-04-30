@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Отвори на телефону</string>
     <string name="common_signin_button_text">Пријави ме</string>
     <string name="common_signin_button_text_long">Пријави ме на Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Линк је копиран у привремену меморију"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Унос је неважећи"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Искачући прозор"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Падајући мени"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Копирај линк"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Отвори у прегледачу"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Дели линк"</string>
     <string msgid="6827826412747255547" name="in_progress">"У току"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Делимично означено"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Скупите доњу табелу"</string>

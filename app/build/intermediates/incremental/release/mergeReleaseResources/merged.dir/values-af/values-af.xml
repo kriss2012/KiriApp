@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Maak oop op foon</string>
     <string name="common_signin_button_text">Meld aan</string>
     <string name="common_signin_button_text_long">Meld aan met Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Skakel is na knipbord gekopieer"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Ongeldige invoer"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Opspringvenster"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Aftrekkieslys"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Kopieer skakel"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Maak in blaaier oop"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Deel skakel"</string>
     <string msgid="6827826412747255547" name="in_progress">"Besig"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Gedeeltelik gemerk"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Vou onderste blad in"</string>

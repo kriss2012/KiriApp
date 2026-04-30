@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">ტელეფონში გახსნა</string>
     <string name="common_signin_button_text">შესვლა</string>
     <string name="common_signin_button_text_long">Google-ით შესვლა</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"გაცვლის ბუფერში კოპირებული ბმული"</string>
     <string msgid="8038256446254964252" name="default_error_message">"შენატანი არასწორია"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"ამომხტარი ფანჯარა"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"ჩამოსაშლელი მენიუ"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"ბმულის კოპირება"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"ბრაუზერში გახსნა"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"ბმულის გაზიარება"</string>
     <string msgid="6827826412747255547" name="in_progress">"მუშავდება"</string>
     <string msgid="7933458017204019916" name="indeterminate">"ნაწილობრივ შემოწმებულია"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"ქვედა ფურცლის ჩაკეცვა"</string>

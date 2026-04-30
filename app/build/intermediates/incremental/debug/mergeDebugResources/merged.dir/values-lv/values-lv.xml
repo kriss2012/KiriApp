@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Atvērt tālrunī</string>
     <string name="common_signin_button_text">Pierakstīties</string>
     <string name="common_signin_button_text_long">Pierakstīties ar Google kontu</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Saite ir kopēta starpliktuvē."</string>
     <string msgid="8038256446254964252" name="default_error_message">"Nederīga ievade"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Uznirstošais logs"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Nolaižamā izvēlne"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Kopēt saiti"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Atvērt pārlūkprogrammā"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Kopīgot saiti"</string>
     <string msgid="6827826412747255547" name="in_progress">"Notiek apstrāde"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Daļēji atzīmēta"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Sakļaut ekrāna apakšdaļas lapu"</string>

@@ -4,97 +4,97 @@ ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidMan
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:1-37:12
-MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0f60ba25733ee8a2c774fadacd0b3213\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d68066fa9240d3bbe889d80c580dd823\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\462688e1a9f7555df865cd032b7df05a\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a609d9dc9e3decb5702da9f5ea89d8aa\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1a60b77034b631a177b3d7a730911b40\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db54f5ed256a015e8414b3b6a852f166\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\de8fb609a90baa0486170b64e689a069\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:2:1-7:12
-MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dd89dad3831e2ebf8ba1393b1f8b0d1e\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:17:1-23:12
-MERGED from [com.google.dagger:hilt-android:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22458502c03990b392b3c60993763e54\workspace\transformed\hilt-android-2.51.1\AndroidManifest.xml:16:1-19:12
-MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\71879a8da2fbe7a86b24b411ebe5798c\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fe5520c151fc4ab2f69427218b13f6a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:18:1-23:12
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:17:1-44:12
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:16:1-24:12
-MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f1d0d669c7e4b091680d2fe6518ada6d\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:2:1-6:12
-MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:16:1-26:12
-MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2f748d83d47f745ef63c5b5d0ee8e3f3\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:17:1-24:12
-MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cbbae05e3f3c0590da70d453eb345022\workspace\transformed\liquid-release\AndroidManifest.xml:2:1-7:12
-MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d93b6d58f5ffe6d3b52a5edb89bb4b99\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:2:1-7:12
-MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd0c60f2942690a72b4b58e04bfb804d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:2:1-7:12
-MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\743459e34c1d9b179f644dfa7d4ef21c\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ec9bc88cf4ffd0a54724acca572033e\workspace\transformed\material3-release\AndroidManifest.xml:17:1-22:12
-MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9d3840c97e50ead81273821e6ed1a748\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\26feb8bbde094441c78f670cecbd4811\workspace\transformed\animation-core\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47b0797a51e1773baae0dd706a9ed24a\workspace\transformed\animation\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8980e94fcc11e4d1ccd4d81febf00a89\workspace\transformed\foundation-layout\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b1eeeab61085af9f33600ff5b8e05a86\workspace\transformed\foundation-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4340d643c8a1232024fd6abb80857b4a\workspace\transformed\ui-tooling-data\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9691420afda6cb3c8efc005d275c5c20\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e3be9e1770b0089317a889ecd9f6a704\workspace\transformed\ui-util\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\af7b34b0f1843c944be189f3a2e307d6\workspace\transformed\ui-unit\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7d02a64f52c96cda11e7e06c7a179158\workspace\transformed\ui-text\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4696ea79349ef9e9129fe50293c99b3\workspace\transformed\ui-graphics-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4ea1450032697da7cdf9f82ececef2f5\workspace\transformed\ui-geometry\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\897598465ad97d6dee583011df348657\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:17:1-28:12
-MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bd43786288f8473def2109a297d2ddb9\workspace\transformed\material-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f4b7fce8f2dfb11b6f65b85ebfd90378\workspace\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\62df82c23b8782b0ad85c7eeaeb6f658\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\53537eaf7349412023c6a4c5ecb27738\workspace\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
-MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\094a92438bcf34918b757332400e7d73\workspace\transformed\coil-2.5.0\AndroidManifest.xml:2:1-7:12
-MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\da3c878e46a5f55296943c756caf8a63\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\748cd8fa3f250ef849b0beeedc062744\workspace\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6acc2ec45fa03520d2a7a5f7f86f54f9\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\501102bc3175d51e295b9939612fe157\workspace\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\062a5f379c79dbcee37f98179ae179f4\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\312e0b17ed17faf074a504ba0c644624\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d2ba275465a0f92fda4c9d9b65a4bca2\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ae1c561a51aba6a72343047304e6e75\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\76c41192fb8b1f2ae59c7cc115f00fda\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
-MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:17:1-35:12
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12cca5cd4ee6970ce3d21e178bc4f710\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2245a14be841baf35ec37a5ca1ba177a\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22910fd97ee2e28f743aaca8b3683357\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dfe02c6d1d8fe0a8ec5958079052ae99\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0dffcd16cbb8382ae420e7a3d653b26b\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52180158c442d6030dff9d69bf623e7c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:2:1-5:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fa6c416686130dbf2f89a48f31d65b8\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8a69fc433b06afeb0244fb5106dcf599\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd9858f20d7ea73e1b7d22da0e6e700e\workspace\transformed\savedstate-release\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1cdba5509f4fab4d1fb7cdd5f3f4931\workspace\transformed\savedstate-compose\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a15bf71ebb8cf0e954623788c5e46d05\workspace\transformed\runtime-annotation\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\27c3615cace5f4340f67d6955d37b7a3\workspace\transformed\runtime\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c06c3a93228cefe0feec3125656c502b\workspace\transformed\runtime-saveable\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6218d9e2bb5c13ad0d5b8b2af3b5519e\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59094d3c820056b0ee951eaf79c179e9\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ccf44e7471d44f716070c146cdf859e4\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2a7aa392e7ad44a69d017d2380b616f6\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:17:1-30:12
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2ef76d29e1c52464ef8d8a694314e7fa\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\83df4544b788945c40184416f925369e\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0479bcef77470b4a0053bff0bbbd52dc\workspace\transformed\ui-release\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:17:1-29:12
-MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b2ca8983df65a4c83b63cca573337322\workspace\transformed\activity-1.8.1\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\835c99c71114af796d073409cdadceb4\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\49f162bbf25d219651dc6f3d6d8649ae\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:17:1-31:12
-MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ad3c312a8a26136eb4898b4a9038822a\workspace\transformed\room-ktx-2.6.1\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f97bbb205a889df8f3617b0f182561c7\workspace\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\625da4f8b34ca0d673b6ebaade10fbc2\workspace\transformed\sqlite-2.4.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ee45ee91d4ba6b6a6d314540c7277e4e\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c39ea0f3005411e94d9d12d2f8385d60\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\efc574e6874531a72acb1a182a4f3761\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9a6cee5ad05dafd77bb894e0e6cce9ca\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:2:1-7:12
-MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3064fae75f5488af0f520f22a2fd585\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:17:1-55:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7ca77e29dabe81e597d25da40b2a7fd9\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
-MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fc7fdcd529a561fdd7321ca13a34bf77\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d67267650f40b79b8a27659073a9d438\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:2:1-7:12
-MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0274ff6f9df74aaf0968e8f1db504a01\workspace\transformed\dagger-lint-aar-2.51.1\AndroidManifest.xml:16:1-19:12
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ce748e80d2cd16b3d36f10b6478c9ae6\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\221d42f8cd138bd8dd2768e7843d4e14\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88e1ef57b3b2524abd5be3853fc3059\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2e395fa9a380ab270b978524d910c06e\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f023641e7671ab9d2f22303a167d1543\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4bd5e9680879dd71b6e72065942c7b6c\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6a2f99cd312a814f654613a59f39283a\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0fb92f6e126aca16e869c418f8bccbde\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:17:1-23:12
+MERGED from [com.google.dagger:hilt-android:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\56eec0449111edee8ed4c65da83cfc17\workspace\transformed\hilt-android-2.55\AndroidManifest.xml:16:1-19:12
+MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b745bdc03ec3172db42a335cb9621abd\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\415f70eb02746a04fb80cfa22c0f771a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:18:1-23:12
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:17:1-44:12
+MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:16:1-24:12
+MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88c792f22be09e33e6eb4faefa80a72\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:16:1-26:12
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d4a09bb2088d2a8c750d8d13f8a9110\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:17:1-24:12
+MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db7e929f60c5cfae02dffa7a2b114fb5\workspace\transformed\liquid-release\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cef1bc5eef5712149628ea96c7605d21\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\65c963d993ec9adf5074c2c135f8d39d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3ff4c330eac23cf07c17a8abbb51f8b\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ea1b9c99ae27ae0ec7fa4e7cd4377f98\workspace\transformed\material3-release\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\aaa37447f2818aa46732364c81895ba3\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\796ad5424e4d52cbdfadd24a73a1be7a\workspace\transformed\animation-core\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\803bc4ad1812e12644abb9e720c77cc7\workspace\transformed\animation\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fab6ff33c5017390676c4988844df2e6\workspace\transformed\foundation-layout\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f89810239ab8dc49c0fdaee6a20f9b8d\workspace\transformed\foundation-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\226553c4ba1c909fade8eea37b2773c4\workspace\transformed\ui-tooling-data\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\168851f7b5a149d721b1339841c9379a\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f967f667208244af1a568f8e9d5a6051\workspace\transformed\ui-util\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1517ca36d9c08c131f7edfb443d9ca26\workspace\transformed\ui-unit\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1b915a2fd95fdf005902d96e4b34c5a\workspace\transformed\ui-text\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90f7770f1ffc8689d12f1702f63398ef\workspace\transformed\ui-graphics-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b15c7ce2eddd88a7d59577419ec5374a\workspace\transformed\ui-geometry\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cb3b60b5e1decee6ce43962c3ca4872e\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d82d0761a29f7b9f62cc7eb0b37ac8f\workspace\transformed\material-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12df1d95734700a57f7ed5a7a5782aa4\workspace\transformed\material-ripple-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3f6c4657f791160ced41beafe18072b3\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\33fbd6ad17003cda03ba18a5c457e373\workspace\transformed\material-icons-core-release\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d7d12ff9047d4a6043980561e1543aa0\workspace\transformed\coil-2.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f2b7d59b8b8873a9fd7b58add43766dd\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\88c7a50c7c79d80066c41dcce0f44586\workspace\transformed\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b515b40ad9b470cadcbe999b5c28a21a\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a445c03d4fc9cf8eaca9e16351fb54e6\workspace\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\702b2ce1c0a6dcda99785dff8da8f4cb\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\472c23246c63f517066a4948107d0f47\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ca1e37b4132a57f715eb160c76b2e070\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9f45e9db64ba2fc7c8ee8156cc94b385\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6479709d7d2b418436da320edb790ee1\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6febf1be6e8f6617d745cdf938d0c2bc\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\548bd96511c3041c8b90b7e8696b4981\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebbe5ab3abf2ec5058a074ee2e1373fc\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\87097735014fdb3f0fea691568c80182\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f572544946581d91dd4b196a743da6d8\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a1fe94ab6d8500993f4dd85ae39df916\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\304ae8d33b8d0933006e18fb2de4aa16\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c8daa6fb9a175e4db41beaeaeffb5c19\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b99e4718e987fcf0dec87ae1bfeaa332\workspace\transformed\savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4d4062d066fec75739c989050c4090df\workspace\transformed\savedstate-compose\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dea7643542b302d603cc6c03ca4af340\workspace\transformed\runtime-annotation\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2740e6d13a493049663e43de8fce1e49\workspace\transformed\runtime\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\051c09e37bcb38d57819a445630cf727\workspace\transformed\runtime-saveable\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d9e8233287ea21934e96df100a44fa64\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8e3fd170c49069d92fb45291f0d8494b\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a91842bb6cebe725448117df7b0252b1\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6bcf3a64b543572029de050c831a5187\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f0ccbe185f4a31c688df683fd96347bd\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2491bac14f8d153650406694ae3a619d\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8f0a773c5ee737f1cfcbb31ce8461d82\workspace\transformed\ui-release\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:17:1-29:12
+MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bfdf77f2171413f4e4d1b51656e00816\workspace\transformed\activity-1.8.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1619d801ddd9451eda1f4abf36337c01\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\866cd9f6f8e82ae55d7c13a0155ecf02\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.room:room-ktx:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4cce5ef903753f387d13bba064ad947d\workspace\transformed\room-ktx-2.7.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b4eab189c70342c8966f3e554f3d4ad6\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.sqlite:sqlite-framework-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d799898f0e10a44374824202fadcc628\workspace\transformed\sqlite-framework-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.sqlite:sqlite-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\068486a73fa0f58961ad4f40b92bac59\workspace\transformed\sqlite-release\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8bb0fb166b2e2c484b82d7fa7f8c58f6\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\307006e061b135eade1b952b0b07b3a3\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\be245d7d2afa5ce065f66d3a19de4d76\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d240b610a3879db94f0a00d8d0d3b1ca\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebd9326edfc11cccb7b2d4c4ed21e51a\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a7f44b3b2a777524137cce655ca69f33\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\338d16a20e0b04a026dc4e1b41182a7e\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.dagger:dagger-lint-aar:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\68fabd3a8af0d91990010e6405d6d0e8\workspace\transformed\dagger-lint-aar-2.55\AndroidManifest.xml:16:1-19:12
 	package
 		INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -107,8 +107,8 @@ MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] C:\Users\krishna\.gradle\
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
 ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:5:5-67
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:24:5-67
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:24:5-67
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:24:5-67
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:24:5-67
 	android:name
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.POST_NOTIFICATIONS
@@ -118,36 +118,36 @@ ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidMan
 application
 ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:8:5-35:19
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:8:5-35:19
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
-MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f1d0d669c7e4b091680d2fe6518ada6d\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:5:5-20
-MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f1d0d669c7e4b091680d2fe6518ada6d\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:5:5-20
-MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:20:5-24:19
-MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:20:5-24:19
-MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
-MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
-MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
-MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
-MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:22:5-27:19
-MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:22:5-27:19
-MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
-MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:23:5-29:19
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7ca77e29dabe81e597d25da40b2a7fd9\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7ca77e29dabe81e597d25da40b2a7fd9\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:36:5-42:19
+MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88c792f22be09e33e6eb4faefa80a72\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88c792f22be09e33e6eb4faefa80a72\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:20:5-24:19
+MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:20:5-24:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:5-89
+MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:22:5-27:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:22:5-27:19
+MERGED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:23:5-29:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebd9326edfc11cccb7b2d4c4ed21e51a\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebd9326edfc11cccb7b2d4c4ed21e51a\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
 		INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
 		ADDED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml:16:9-35
 	android:label
@@ -200,339 +200,339 @@ uses-sdk
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
 INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
-MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0f60ba25733ee8a2c774fadacd0b3213\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0f60ba25733ee8a2c774fadacd0b3213\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d68066fa9240d3bbe889d80c580dd823\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d68066fa9240d3bbe889d80c580dd823\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\462688e1a9f7555df865cd032b7df05a\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
-MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\462688e1a9f7555df865cd032b7df05a\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
-MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a609d9dc9e3decb5702da9f5ea89d8aa\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
-MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a609d9dc9e3decb5702da9f5ea89d8aa\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
-MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1a60b77034b631a177b3d7a730911b40\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1a60b77034b631a177b3d7a730911b40\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db54f5ed256a015e8414b3b6a852f166\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db54f5ed256a015e8414b3b6a852f166\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\de8fb609a90baa0486170b64e689a069\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\de8fb609a90baa0486170b64e689a069\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
-MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dd89dad3831e2ebf8ba1393b1f8b0d1e\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dd89dad3831e2ebf8ba1393b1f8b0d1e\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.dagger:hilt-android:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22458502c03990b392b3c60993763e54\workspace\transformed\hilt-android-2.51.1\AndroidManifest.xml:18:3-42
-MERGED from [com.google.dagger:hilt-android:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22458502c03990b392b3c60993763e54\workspace\transformed\hilt-android-2.51.1\AndroidManifest.xml:18:3-42
-MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\71879a8da2fbe7a86b24b411ebe5798c\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:20:5-44
-MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\71879a8da2fbe7a86b24b411ebe5798c\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:20:5-44
-MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fe5520c151fc4ab2f69427218b13f6a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fe5520c151fc4ab2f69427218b13f6a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:18:5-43
-MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:18:5-43
-MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f1d0d669c7e4b091680d2fe6518ada6d\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:4:5-43
-MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f1d0d669c7e4b091680d2fe6518ada6d\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:4:5-43
-MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:18:5-43
-MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:18:5-43
-MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2f748d83d47f745ef63c5b5d0ee8e3f3\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2f748d83d47f745ef63c5b5d0ee8e3f3\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
-MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cbbae05e3f3c0590da70d453eb345022\workspace\transformed\liquid-release\AndroidManifest.xml:5:5-44
-MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cbbae05e3f3c0590da70d453eb345022\workspace\transformed\liquid-release\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d93b6d58f5ffe6d3b52a5edb89bb4b99\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d93b6d58f5ffe6d3b52a5edb89bb4b99\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd0c60f2942690a72b4b58e04bfb804d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd0c60f2942690a72b4b58e04bfb804d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\743459e34c1d9b179f644dfa7d4ef21c\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\743459e34c1d9b179f644dfa7d4ef21c\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ec9bc88cf4ffd0a54724acca572033e\workspace\transformed\material3-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ec9bc88cf4ffd0a54724acca572033e\workspace\transformed\material3-release\AndroidManifest.xml:20:5-44
-MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9d3840c97e50ead81273821e6ed1a748\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:21:5-44
-MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9d3840c97e50ead81273821e6ed1a748\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\26feb8bbde094441c78f670cecbd4811\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\26feb8bbde094441c78f670cecbd4811\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47b0797a51e1773baae0dd706a9ed24a\workspace\transformed\animation\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47b0797a51e1773baae0dd706a9ed24a\workspace\transformed\animation\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8980e94fcc11e4d1ccd4d81febf00a89\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8980e94fcc11e4d1ccd4d81febf00a89\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b1eeeab61085af9f33600ff5b8e05a86\workspace\transformed\foundation-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b1eeeab61085af9f33600ff5b8e05a86\workspace\transformed\foundation-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4340d643c8a1232024fd6abb80857b4a\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4340d643c8a1232024fd6abb80857b4a\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9691420afda6cb3c8efc005d275c5c20\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9691420afda6cb3c8efc005d275c5c20\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e3be9e1770b0089317a889ecd9f6a704\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e3be9e1770b0089317a889ecd9f6a704\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\af7b34b0f1843c944be189f3a2e307d6\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\af7b34b0f1843c944be189f3a2e307d6\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7d02a64f52c96cda11e7e06c7a179158\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7d02a64f52c96cda11e7e06c7a179158\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4696ea79349ef9e9129fe50293c99b3\workspace\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4696ea79349ef9e9129fe50293c99b3\workspace\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4ea1450032697da7cdf9f82ececef2f5\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4ea1450032697da7cdf9f82ececef2f5\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\897598465ad97d6dee583011df348657\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\897598465ad97d6dee583011df348657\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bd43786288f8473def2109a297d2ddb9\workspace\transformed\material-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bd43786288f8473def2109a297d2ddb9\workspace\transformed\material-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f4b7fce8f2dfb11b6f65b85ebfd90378\workspace\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f4b7fce8f2dfb11b6f65b85ebfd90378\workspace\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\62df82c23b8782b0ad85c7eeaeb6f658\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\62df82c23b8782b0ad85c7eeaeb6f658\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\53537eaf7349412023c6a4c5ecb27738\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\53537eaf7349412023c6a4c5ecb27738\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\094a92438bcf34918b757332400e7d73\workspace\transformed\coil-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\094a92438bcf34918b757332400e7d73\workspace\transformed\coil-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\da3c878e46a5f55296943c756caf8a63\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\da3c878e46a5f55296943c756caf8a63\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\748cd8fa3f250ef849b0beeedc062744\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\748cd8fa3f250ef849b0beeedc062744\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6acc2ec45fa03520d2a7a5f7f86f54f9\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6acc2ec45fa03520d2a7a5f7f86f54f9\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\501102bc3175d51e295b9939612fe157\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\501102bc3175d51e295b9939612fe157\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\062a5f379c79dbcee37f98179ae179f4\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\062a5f379c79dbcee37f98179ae179f4\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\312e0b17ed17faf074a504ba0c644624\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\312e0b17ed17faf074a504ba0c644624\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d2ba275465a0f92fda4c9d9b65a4bca2\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d2ba275465a0f92fda4c9d9b65a4bca2\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ae1c561a51aba6a72343047304e6e75\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8ae1c561a51aba6a72343047304e6e75\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\76c41192fb8b1f2ae59c7cc115f00fda\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
-MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\76c41192fb8b1f2ae59c7cc115f00fda\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
-MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12cca5cd4ee6970ce3d21e178bc4f710\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12cca5cd4ee6970ce3d21e178bc4f710\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2245a14be841baf35ec37a5ca1ba177a\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2245a14be841baf35ec37a5ca1ba177a\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22910fd97ee2e28f743aaca8b3683357\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\22910fd97ee2e28f743aaca8b3683357\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dfe02c6d1d8fe0a8ec5958079052ae99\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dfe02c6d1d8fe0a8ec5958079052ae99\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0dffcd16cbb8382ae420e7a3d653b26b\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0dffcd16cbb8382ae420e7a3d653b26b\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52180158c442d6030dff9d69bf623e7c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52180158c442d6030dff9d69bf623e7c\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fa6c416686130dbf2f89a48f31d65b8\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3fa6c416686130dbf2f89a48f31d65b8\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8a69fc433b06afeb0244fb5106dcf599\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:5:5-44
-MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8a69fc433b06afeb0244fb5106dcf599\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:5:5-44
-MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd9858f20d7ea73e1b7d22da0e6e700e\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fd9858f20d7ea73e1b7d22da0e6e700e\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1cdba5509f4fab4d1fb7cdd5f3f4931\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
-MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1cdba5509f4fab4d1fb7cdd5f3f4931\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a15bf71ebb8cf0e954623788c5e46d05\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a15bf71ebb8cf0e954623788c5e46d05\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\27c3615cace5f4340f67d6955d37b7a3\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\27c3615cace5f4340f67d6955d37b7a3\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c06c3a93228cefe0feec3125656c502b\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c06c3a93228cefe0feec3125656c502b\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6218d9e2bb5c13ad0d5b8b2af3b5519e\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6218d9e2bb5c13ad0d5b8b2af3b5519e\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59094d3c820056b0ee951eaf79c179e9\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59094d3c820056b0ee951eaf79c179e9\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ccf44e7471d44f716070c146cdf859e4\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ccf44e7471d44f716070c146cdf859e4\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2a7aa392e7ad44a69d017d2380b616f6\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2a7aa392e7ad44a69d017d2380b616f6\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2ef76d29e1c52464ef8d8a694314e7fa\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2ef76d29e1c52464ef8d8a694314e7fa\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\83df4544b788945c40184416f925369e\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\83df4544b788945c40184416f925369e\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0479bcef77470b4a0053bff0bbbd52dc\workspace\transformed\ui-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0479bcef77470b4a0053bff0bbbd52dc\workspace\transformed\ui-release\AndroidManifest.xml:5:5-44
-MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b2ca8983df65a4c83b63cca573337322\workspace\transformed\activity-1.8.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b2ca8983df65a4c83b63cca573337322\workspace\transformed\activity-1.8.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\835c99c71114af796d073409cdadceb4\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\835c99c71114af796d073409cdadceb4\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\49f162bbf25d219651dc6f3d6d8649ae\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\49f162bbf25d219651dc6f3d6d8649ae\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
-MERGED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:21:5-44
-MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ad3c312a8a26136eb4898b4a9038822a\workspace\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.room:room-ktx:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ad3c312a8a26136eb4898b4a9038822a\workspace\transformed\room-ktx-2.6.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f97bbb205a889df8f3617b0f182561c7\workspace\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.sqlite:sqlite-framework:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f97bbb205a889df8f3617b0f182561c7\workspace\transformed\sqlite-framework-2.4.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\625da4f8b34ca0d673b6ebaade10fbc2\workspace\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.sqlite:sqlite:2.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\625da4f8b34ca0d673b6ebaade10fbc2\workspace\transformed\sqlite-2.4.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ee45ee91d4ba6b6a6d314540c7277e4e\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ee45ee91d4ba6b6a6d314540c7277e4e\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
-MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c39ea0f3005411e94d9d12d2f8385d60\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c39ea0f3005411e94d9d12d2f8385d60\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\efc574e6874531a72acb1a182a4f3761\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\efc574e6874531a72acb1a182a4f3761\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9a6cee5ad05dafd77bb894e0e6cce9ca\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:5:5-44
-MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9a6cee5ad05dafd77bb894e0e6cce9ca\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:5:5-44
-MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3064fae75f5488af0f520f22a2fd585\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3064fae75f5488af0f520f22a2fd585\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7ca77e29dabe81e597d25da40b2a7fd9\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7ca77e29dabe81e597d25da40b2a7fd9\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
-MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fc7fdcd529a561fdd7321ca13a34bf77\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fc7fdcd529a561fdd7321ca13a34bf77\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d67267650f40b79b8a27659073a9d438\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
-MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d67267650f40b79b8a27659073a9d438\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
-MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0274ff6f9df74aaf0968e8f1db504a01\workspace\transformed\dagger-lint-aar-2.51.1\AndroidManifest.xml:18:3-42
-MERGED from [com.google.dagger:dagger-lint-aar:2.51.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0274ff6f9df74aaf0968e8f1db504a01\workspace\transformed\dagger-lint-aar-2.51.1\AndroidManifest.xml:18:3-42
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ce748e80d2cd16b3d36f10b6478c9ae6\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation-compose:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ce748e80d2cd16b3d36f10b6478c9ae6\workspace\transformed\hilt-navigation-compose-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\221d42f8cd138bd8dd2768e7843d4e14\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.hilt:hilt-navigation:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\221d42f8cd138bd8dd2768e7843d4e14\workspace\transformed\hilt-navigation-1.2.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88e1ef57b3b2524abd5be3853fc3059\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88e1ef57b3b2524abd5be3853fc3059\workspace\transformed\navigation-common-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2e395fa9a380ab270b978524d910c06e\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2e395fa9a380ab270b978524d910c06e\workspace\transformed\navigation-runtime-2.7.7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f023641e7671ab9d2f22303a167d1543\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f023641e7671ab9d2f22303a167d1543\workspace\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4bd5e9680879dd71b6e72065942c7b6c\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4bd5e9680879dd71b6e72065942c7b6c\workspace\transformed\navigation-runtime-ktx-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6a2f99cd312a814f654613a59f39283a\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-compose:2.7.7] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6a2f99cd312a814f654613a59f39283a\workspace\transformed\navigation-compose-2.7.7\AndroidManifest.xml:5:5-44
+MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0fb92f6e126aca16e869c418f8bccbde\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.accompanist:accompanist-permissions:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0fb92f6e126aca16e869c418f8bccbde\workspace\transformed\accompanist-permissions-0.34.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.dagger:hilt-android:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\56eec0449111edee8ed4c65da83cfc17\workspace\transformed\hilt-android-2.55\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:hilt-android:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\56eec0449111edee8ed4c65da83cfc17\workspace\transformed\hilt-android-2.55\AndroidManifest.xml:18:3-42
+MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b745bdc03ec3172db42a335cb9621abd\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.maps.android:maps-compose:4.3.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b745bdc03ec3172db42a335cb9621abd\workspace\transformed\maps-compose-4.3.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\415f70eb02746a04fb80cfa22c0f771a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.maps.android:maps-ktx:5.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\415f70eb02746a04fb80cfa22c0f771a\workspace\transformed\maps-ktx-5.0.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88c792f22be09e33e6eb4faefa80a72\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-tasks:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a88c792f22be09e33e6eb4faefa80a72\workspace\transformed\play-services-tasks-18.0.1\AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:18:5-43
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d4a09bb2088d2a8c750d8d13f8a9110\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.5.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d4a09bb2088d2a8c750d8d13f8a9110\workspace\transformed\fragment-1.5.1\AndroidManifest.xml:20:5-22:41
+MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db7e929f60c5cfae02dffa7a2b114fb5\workspace\transformed\liquid-release\AndroidManifest.xml:5:5-44
+MERGED from [io.github.fletchmckee.liquid:liquid-android:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\db7e929f60c5cfae02dffa7a2b114fb5\workspace\transformed\liquid-release\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cef1bc5eef5712149628ea96c7605d21\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cef1bc5eef5712149628ea96c7605d21\workspace\transformed\coil-compose-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\65c963d993ec9adf5074c2c135f8d39d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-compose-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\65c963d993ec9adf5074c2c135f8d39d\workspace\transformed\coil-compose-base-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3ff4c330eac23cf07c17a8abbb51f8b\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.accompanist:accompanist-drawablepainter:0.32.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a3ff4c330eac23cf07c17a8abbb51f8b\workspace\transformed\accompanist-drawablepainter-0.32.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ea1b9c99ae27ae0ec7fa4e7cd4377f98\workspace\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.2.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ea1b9c99ae27ae0ec7fa4e7cd4377f98\workspace\transformed\material3-release\AndroidManifest.xml:20:5-44
+MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\aaa37447f2818aa46732364c81895ba3\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:21:5-44
+MERGED from [com.google.accompanist:accompanist-flowlayout:0.34.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\aaa37447f2818aa46732364c81895ba3\workspace\transformed\accompanist-flowlayout-0.34.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\796ad5424e4d52cbdfadd24a73a1be7a\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\796ad5424e4d52cbdfadd24a73a1be7a\workspace\transformed\animation-core\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\803bc4ad1812e12644abb9e720c77cc7\workspace\transformed\animation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\803bc4ad1812e12644abb9e720c77cc7\workspace\transformed\animation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fab6ff33c5017390676c4988844df2e6\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\fab6ff33c5017390676c4988844df2e6\workspace\transformed\foundation-layout\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f89810239ab8dc49c0fdaee6a20f9b8d\workspace\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f89810239ab8dc49c0fdaee6a20f9b8d\workspace\transformed\foundation-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\226553c4ba1c909fade8eea37b2773c4\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\226553c4ba1c909fade8eea37b2773c4\workspace\transformed\ui-tooling-data\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\168851f7b5a149d721b1339841c9379a\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\168851f7b5a149d721b1339841c9379a\workspace\transformed\ui-tooling-preview\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f967f667208244af1a568f8e9d5a6051\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f967f667208244af1a568f8e9d5a6051\workspace\transformed\ui-util\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1517ca36d9c08c131f7edfb443d9ca26\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1517ca36d9c08c131f7edfb443d9ca26\workspace\transformed\ui-unit\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1b915a2fd95fdf005902d96e4b34c5a\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c1b915a2fd95fdf005902d96e4b34c5a\workspace\transformed\ui-text\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90f7770f1ffc8689d12f1702f63398ef\workspace\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90f7770f1ffc8689d12f1702f63398ef\workspace\transformed\ui-graphics-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b15c7ce2eddd88a7d59577419ec5374a\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b15c7ce2eddd88a7d59577419ec5374a\workspace\transformed\ui-geometry\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cb3b60b5e1decee6ce43962c3ca4872e\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-google-fonts:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\cb3b60b5e1decee6ce43962c3ca4872e\workspace\transformed\ui-text-google-fonts-1.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d82d0761a29f7b9f62cc7eb0b37ac8f\workspace\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2d82d0761a29f7b9f62cc7eb0b37ac8f\workspace\transformed\material-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12df1d95734700a57f7ed5a7a5782aa4\workspace\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\12df1d95734700a57f7ed5a7a5782aa4\workspace\transformed\material-ripple-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3f6c4657f791160ced41beafe18072b3\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-extended-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3f6c4657f791160ced41beafe18072b3\workspace\transformed\material-icons-extended-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\33fbd6ad17003cda03ba18a5c457e373\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.6.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\33fbd6ad17003cda03ba18a5c457e373\workspace\transformed\material-icons-core-release\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d7d12ff9047d4a6043980561e1543aa0\workspace\transformed\coil-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d7d12ff9047d4a6043980561e1543aa0\workspace\transformed\coil-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f2b7d59b8b8873a9fd7b58add43766dd\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [io.coil-kt:coil-base:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f2b7d59b8b8873a9fd7b58add43766dd\workspace\transformed\coil-base-2.5.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\88c7a50c7c79d80066c41dcce0f44586\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\88c7a50c7c79d80066c41dcce0f44586\workspace\transformed\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b515b40ad9b470cadcbe999b5c28a21a\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b515b40ad9b470cadcbe999b5c28a21a\workspace\transformed\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a445c03d4fc9cf8eaca9e16351fb54e6\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a445c03d4fc9cf8eaca9e16351fb54e6\workspace\transformed\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\702b2ce1c0a6dcda99785dff8da8f4cb\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\702b2ce1c0a6dcda99785dff8da8f4cb\workspace\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\472c23246c63f517066a4948107d0f47\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\472c23246c63f517066a4948107d0f47\workspace\transformed\vectordrawable-animated-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ca1e37b4132a57f715eb160c76b2e070\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ca1e37b4132a57f715eb160c76b2e070\workspace\transformed\vectordrawable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9f45e9db64ba2fc7c8ee8156cc94b385\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\9f45e9db64ba2fc7c8ee8156cc94b385\workspace\transformed\autofill-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6479709d7d2b418436da320edb790ee1\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6479709d7d2b418436da320edb790ee1\workspace\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6febf1be6e8f6617d745cdf938d0c2bc\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6febf1be6e8f6617d745cdf938d0c2bc\workspace\transformed\lifecycle-runtime-ktx\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\548bd96511c3041c8b90b7e8696b4981\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\548bd96511c3041c8b90b7e8696b4981\workspace\transformed\lifecycle-livedata-core-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebbe5ab3abf2ec5058a074ee2e1373fc\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebbe5ab3abf2ec5058a074ee2e1373fc\workspace\transformed\lifecycle-viewmodel-ktx-2.9.4\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\87097735014fdb3f0fea691568c80182\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\87097735014fdb3f0fea691568c80182\workspace\transformed\lifecycle-livedata-core-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f572544946581d91dd4b196a743da6d8\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f572544946581d91dd4b196a743da6d8\workspace\transformed\lifecycle-livedata-2.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a1fe94ab6d8500993f4dd85ae39df916\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a1fe94ab6d8500993f4dd85ae39df916\workspace\transformed\lifecycle-viewmodel-2.9.4\AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\304ae8d33b8d0933006e18fb2de4aa16\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\304ae8d33b8d0933006e18fb2de4aa16\workspace\transformed\lifecycle-viewmodel-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c8daa6fb9a175e4db41beaeaeffb5c19\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c8daa6fb9a175e4db41beaeaeffb5c19\workspace\transformed\savedstate-ktx-1.3.3\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b99e4718e987fcf0dec87ae1bfeaa332\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b99e4718e987fcf0dec87ae1bfeaa332\workspace\transformed\savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4d4062d066fec75739c989050c4090df\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.savedstate:savedstate-compose-android:1.3.3] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4d4062d066fec75739c989050c4090df\workspace\transformed\savedstate-compose\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dea7643542b302d603cc6c03ca4af340\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-annotation-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\dea7643542b302d603cc6c03ca4af340\workspace\transformed\runtime-annotation\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2740e6d13a493049663e43de8fce1e49\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2740e6d13a493049663e43de8fce1e49\workspace\transformed\runtime\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\051c09e37bcb38d57819a445630cf727\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\051c09e37bcb38d57819a445630cf727\workspace\transformed\runtime-saveable\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d9e8233287ea21934e96df100a44fa64\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d9e8233287ea21934e96df100a44fa64\workspace\transformed\lifecycle-runtime-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8e3fd170c49069d92fb45291f0d8494b\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8e3fd170c49069d92fb45291f0d8494b\workspace\transformed\lifecycle-viewmodel-savedstate-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a91842bb6cebe725448117df7b0252b1\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a91842bb6cebe725448117df7b0252b1\workspace\transformed\core-ktx-1.15.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6bcf3a64b543572029de050c831a5187\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6bcf3a64b543572029de050c831a5187\workspace\transformed\graphics-path-1.0.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f0ccbe185f4a31c688df683fd96347bd\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\f0ccbe185f4a31c688df683fd96347bd\workspace\transformed\lifecycle-runtime-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2491bac14f8d153650406694ae3a619d\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\2491bac14f8d153650406694ae3a619d\workspace\transformed\lifecycle-viewmodel-compose-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8f0a773c5ee737f1cfcbb31ce8461d82\workspace\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8f0a773c5ee737f1cfcbb31ce8461d82\workspace\transformed\ui-release\AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bfdf77f2171413f4e4d1b51656e00816\workspace\transformed\activity-1.8.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bfdf77f2171413f4e4d1b51656e00816\workspace\transformed\activity-1.8.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1619d801ddd9451eda1f4abf36337c01\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1619d801ddd9451eda1f4abf36337c01\workspace\transformed\activity-ktx-1.8.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\866cd9f6f8e82ae55d7c13a0155ecf02\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.8.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\866cd9f6f8e82ae55d7c13a0155ecf02\workspace\transformed\activity-compose-1.8.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:21:5-44
+MERGED from [androidx.room:room-ktx:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4cce5ef903753f387d13bba064ad947d\workspace\transformed\room-ktx-2.7.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.room:room-ktx:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4cce5ef903753f387d13bba064ad947d\workspace\transformed\room-ktx-2.7.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b4eab189c70342c8966f3e554f3d4ad6\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b4eab189c70342c8966f3e554f3d4ad6\workspace\transformed\annotation-experimental-1.4.1\AndroidManifest.xml:5:5-44
+MERGED from [androidx.sqlite:sqlite-framework-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d799898f0e10a44374824202fadcc628\workspace\transformed\sqlite-framework-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-framework-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d799898f0e10a44374824202fadcc628\workspace\transformed\sqlite-framework-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\068486a73fa0f58961ad4f40b92bac59\workspace\transformed\sqlite-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.sqlite:sqlite-android:2.5.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\068486a73fa0f58961ad4f40b92bac59\workspace\transformed\sqlite-release\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8bb0fb166b2e2c484b82d7fa7f8c58f6\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\8bb0fb166b2e2c484b82d7fa7f8c58f6\workspace\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\307006e061b135eade1b952b0b07b3a3\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\307006e061b135eade1b952b0b07b3a3\workspace\transformed\core-runtime-2.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\be245d7d2afa5ce065f66d3a19de4d76\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.databinding:viewbinding:7.4.2] C:\Users\krishna\.gradle\caches\9.3.1\transforms\be245d7d2afa5ce065f66d3a19de4d76\workspace\transformed\viewbinding-7.4.2\AndroidManifest.xml:5:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d240b610a3879db94f0a00d8d0d3b1ca\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.3.6] C:\Users\krishna\.gradle\caches\9.3.1\transforms\d240b610a3879db94f0a00d8d0d3b1ca\workspace\transformed\exifinterface-1.3.6\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:21:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebd9326edfc11cccb7b2d4c4ed21e51a\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\ebd9326edfc11cccb7b2d4c4ed21e51a\workspace\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a7f44b3b2a777524137cce655ca69f33\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a7f44b3b2a777524137cce655ca69f33\workspace\transformed\tracing-1.2.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\338d16a20e0b04a026dc4e1b41182a7e\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-viewtree:1.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\338d16a20e0b04a026dc4e1b41182a7e\workspace\transformed\core-viewtree-1.0.0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.dagger:dagger-lint-aar:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\68fabd3a8af0d91990010e6405d6d0e8\workspace\transformed\dagger-lint-aar-2.55\AndroidManifest.xml:18:3-42
+MERGED from [com.google.dagger:dagger-lint-aar:2.55] C:\Users\krishna\.gradle\caches\9.3.1\transforms\68fabd3a8af0d91990010e6405d6d0e8\workspace\transformed\dagger-lint-aar-2.55\AndroidManifest.xml:18:3-42
 	android:targetSdkVersion
 		INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:5-79
+ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:5-79
 	android:name
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:22-76
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:23:22-76
 uses-feature#0x00020000
-ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:26:5-28:35
+ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:26:5-28:35
 	android:glEsVersion
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:27:9-41
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:27:9-41
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:28:9-32
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:28:9-32
 queries
-ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:30:5-34:15
+ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:30:5-34:15
 package#com.google.android.apps.maps
-ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:9-64
+ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:9-64
 	android:name
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:18-61
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:33:18-61
 uses-library#org.apache.http.legacy
-ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
+ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:39:9-41:40
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:41:13-37
 	android:name
-		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b36ab463302200781a1ad1a7c4bf45ea\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
+		ADDED from [com.google.android.gms:play-services-maps:18.2.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3d771ff5183eb94da0a863c2e840567a\workspace\transformed\play-services-maps-18.2.0\AndroidManifest.xml:40:13-50
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\4a1ee542d60a6fadd68a5233555deafd\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+		ADDED from [com.google.android.gms:play-services-base:18.0.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ae5c16e8ee9914354748dc5fab4a72c\workspace\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
 meta-data#com.google.android.gms.version
-ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
+ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:21:9-23:69
 	android:value
-		ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
+		ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:23:13-66
 	android:name
-		ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\bda32a3f9e68898600dd8ae24f67d788\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
+		ADDED from [com.google.android.gms:play-services-basement:18.0.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\a4ae9124e76c11484d994d17a82359d1\workspace\transformed\play-services-basement-18.0.0\AndroidManifest.xml:22:13-58
 activity#androidx.compose.ui.tooling.PreviewActivity
-ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
+ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:23:9-25:39
 	android:exported
-		ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:25:13-36
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:25:13-36
 	android:name
-		ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\6493afc9de47e93f9969a6c91eee084d\workspace\transformed\ui-tooling\AndroidManifest.xml:24:13-71
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\52057b627c42301cc2ea85d3d02d3cd8\workspace\transformed\ui-tooling\AndroidManifest.xml:24:13-71
 provider#androidx.startup.InitializationProvider
-ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
-MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\0cbe418eaa6fbabcdb077f32e63a6e06\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\47df3228c9347931afdf9c9c8b33649b\workspace\transformed\startup-runtime-1.1.1\AndroidManifest.xml:26:9-30:34
 	tools:node
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:28:13-31
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:28:13-31
 	android:authorities
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:26:13-68
 	android:exported
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:27:13-37
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:25:13-67
 meta-data#androidx.emoji2.text.EmojiCompatInitializer
-ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\90bd82a8ee999b976a010afb2bb90a11\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
+		ADDED from [androidx.emoji2:emoji2:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3ad3c6678f9d90f5e5cd0c22b0723a9c\workspace\transformed\emoji2-1.4.0\AndroidManifest.xml:30:17-75
 meta-data#androidx.lifecycle.ProcessLifecycleInitializer
-ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:31:17-49
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\e064ee7932f79743c547e8714d3f8899\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:30:17-78
+		ADDED from [androidx.lifecycle:lifecycle-process:2.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d6b2f8cc28745bf1c581412f614e9d9\workspace\transformed\lifecycle-process-2.9.4\AndroidManifest.xml:30:17-78
 permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
 permission#com.kiriplatform.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
 	android:protectionLevel
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
 	android:name
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
 uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
 uses-permission#com.kiriplatform.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
-ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
 	android:name
-		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\7c037ea57d3da3205394f3a22b0988c5\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+		ADDED from [androidx.core:core:1.15.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\c2198cbec7c0b4e0b6a29d70b187ccd7\workspace\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
 activity#androidx.activity.ComponentActivity
-ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:23:9-26:79
+ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:23:9-26:79
 	android:exported
-		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:25:13-36
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:25:13-36
 	android:theme
-		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:26:13-76
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:26:13-76
 	android:name
-		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\5d06d687dbec50aa16babd844c8d22e2\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:24:13-63
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.9.4] C:\Users\krishna\.gradle\caches\9.3.1\transforms\59e58f2e0f562bc4db046481b74d2ac3\workspace\transformed\ui-test-manifest-1.9.4\AndroidManifest.xml:24:13-63
 service#androidx.room.MultiInstanceInvalidationService
-ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:24:9-28:63
+ADDED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:24:9-28:63
 	android:exported
-		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:27:13-37
+		ADDED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:27:13-37
 	tools:ignore
-		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:28:13-60
+		ADDED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:28:13-60
 	android:directBootAware
-		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:26:13-43
+		ADDED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:26:13-43
 	android:name
-		ADDED from [androidx.room:room-runtime:2.6.1] C:\Users\krishna\.gradle\caches\9.3.1\transforms\b9dce95fc7034d198a3d74f50ea7aeea\workspace\transformed\room-runtime-2.6.1\AndroidManifest.xml:25:13-74
+		ADDED from [androidx.room:room-runtime-android:2.7.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\1569c6b1c822df35fd64e5710078a379\workspace\transformed\room-runtime-release\AndroidManifest.xml:25:13-74
 meta-data#androidx.profileinstaller.ProfileInstallerInitializer
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:29:13-31:52
 	android:value
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:31:17-49
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:30:17-85
 receiver#androidx.profileinstaller.ProfileInstallReceiver
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:34:9-52:20
 	android:enabled
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:37:13-35
 	android:exported
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:38:13-36
 	android:permission
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:39:13-57
 	android:directBootAware
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:36:13-44
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:35:13-76
 intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:40:13-42:29
 action#androidx.profileinstaller.action.INSTALL_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:17-91
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:41:25-88
 intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:43:13-45:29
 action#androidx.profileinstaller.action.SKIP_FILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:17-85
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:44:25-82
 intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:46:13-48:29
 action#androidx.profileinstaller.action.SAVE_PROFILE
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:17-88
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:47:25-85
 intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:49:13-51:29
 action#androidx.profileinstaller.action.BENCHMARK_OPERATION
-ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
+ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:17-95
 	android:name
-		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\3690061bef8d6d9a727ade64b62e73db\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92
+		ADDED from [androidx.profileinstaller:profileinstaller:1.4.0] C:\Users\krishna\.gradle\caches\9.3.1\transforms\79dbf1e95e2d1b9d6aed7c48f9b0feac\workspace\transformed\profileinstaller-1.4.0\AndroidManifest.xml:50:25-92

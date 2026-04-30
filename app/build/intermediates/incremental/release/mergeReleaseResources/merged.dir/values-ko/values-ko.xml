@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">스마트폰에서 열기</string>
     <string name="common_signin_button_text">로그인</string>
     <string name="common_signin_button_text_long">Google 계정으로 로그인</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"클립보드에 링크 복사됨"</string>
     <string msgid="8038256446254964252" name="default_error_message">"입력이 잘못됨"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"팝업 창"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"드롭다운 메뉴"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"링크 복사"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"브라우저에서 열기"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"링크 공유"</string>
     <string msgid="6827826412747255547" name="in_progress">"진행 중"</string>
     <string msgid="7933458017204019916" name="indeterminate">"일부 선택됨"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"하단 시트 접기"</string>

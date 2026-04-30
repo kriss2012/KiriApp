@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">スマートフォンで開く</string>
     <string name="common_signin_button_text">ログイン</string>
     <string name="common_signin_button_text_long">Googleにログイン</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"リンクをクリップボードにコピーしました"</string>
     <string msgid="8038256446254964252" name="default_error_message">"入力値が無効です"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"ポップアップウィンドウ"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"プルダウン メニュー"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"リンクをコピー"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"ブラウザで開く"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"リンクの共有"</string>
     <string msgid="6827826412747255547" name="in_progress">"処理しています"</string>
     <string msgid="7933458017204019916" name="indeterminate">"一部 ON"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"ボトムシートを折りたたみます"</string>

@@ -28,13 +28,9 @@
     <string name="common_open_on_phone">Hape në telefon</string>
     <string name="common_signin_button_text">Identifikohu</string>
     <string name="common_signin_button_text_long">Identifikohu me Google</string>
-    <string msgid="3260749812566568062" name="copy_toast_msg">"Lidhja u kopjua në kujtesën e fragmenteve"</string>
     <string msgid="8038256446254964252" name="default_error_message">"Hyrje e pavlefshme"</string>
     <string msgid="6312721426453364202" name="default_popup_window_title">"Dritare kërcyese"</string>
     <string msgid="1890207353314751437" name="dropdown_menu">"Menyja me lëshim poshtë"</string>
-    <string msgid="4566929209979330987" name="fallback_menu_item_copy_link">"Kopjo lidhjen"</string>
-    <string msgid="3413186855122069269" name="fallback_menu_item_open_in_browser">"Hape në shfletues"</string>
-    <string msgid="7145444925855055364" name="fallback_menu_item_share_link">"Ndaj lidhjen"</string>
     <string msgid="6827826412747255547" name="in_progress">"Në vazhdim"</string>
     <string msgid="7933458017204019916" name="indeterminate">"Pjesërisht e shënuar"</string>
     <string msgid="2988463736136100848" name="m3c_bottom_sheet_collapse_description">"Palos fletën e poshtme"</string>
