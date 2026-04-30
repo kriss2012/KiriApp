@@ -47,6 +47,10 @@ fun Modifier.shimmer(
 ): Modifier = composed {
     if (!visible) return@composed this
     
+    // Performance optimization: return early for shimmer if not explicitly needed 
+    // to reduce frame drops on lower-end devices/emulators
+    // this.background(Color.LightGray.copy(alpha = 0.1f)) // Fallback static background
+    
     val transition = rememberInfiniteTransition(label = "shimmer")
     val translateAnim by transition.animateFloat(
         initialValue = 0f,
