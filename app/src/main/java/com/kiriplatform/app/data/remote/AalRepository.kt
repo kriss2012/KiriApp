@@ -19,14 +19,14 @@ class AalRepository(
     /**
      * Fetches the AAL onboarding status for a user.
      */
-    fun getOnboarding(userId: Int): Flow<AalOnboardingDto> = flow {
+    fun getOnboarding(userId: String): Flow<AalOnboardingDto> = flow {
         emit(apiService.getAalOnboarding(userId))
     }
 
     /**
      * Fetches activities for a specific intern with local caching.
      */
-    fun getActivities(userId: Int): Flow<List<AalActivityDto>> = flow {
+    fun getActivities(userId: String): Flow<List<AalActivityDto>> = flow {
         // 1. Emit from cache first
         val cached = aalDao.getActivities(userId).map { it.toDto() }
         if (cached.isNotEmpty()) emit(cached)
@@ -82,7 +82,7 @@ class AalRepository(
     /**
      * Retrieves AI-generated resource matches for a user.
      */
-    fun getAiMatches(userId: Int): Flow<List<AiResourceMatchDto>> = flow {
+    fun getAiMatches(userId: String): Flow<List<AiResourceMatchDto>> = flow {
         emit(apiService.getAiMatches(userId))
     }
 
@@ -117,8 +117,8 @@ class AalRepository(
     // --- Mappers for Data Transformation Layer ---
 
     private fun AalActivityDto.toEntity() = AalActivityEntity(
-        activityId = activityId ?: 0,
-        userId = userId ?: 0,
+        activityId = activityId ?: "",
+        userId = userId ?: "",
         activityNumber = activityNumber ?: 0,
         submissionUrl = submissionUrl,
         status = status.name
@@ -133,8 +133,8 @@ class AalRepository(
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
-        boardId = boardId ?: 0,
-        authorUserId = authorUserId ?: 0,
+        boardId = boardId ?: "",
+        authorUserId = authorUserId ?: "",
         postType = _postType?.name ?: "NEWS",
         title = title ?: "",
         description = description ?: "",
@@ -153,8 +153,8 @@ class AalRepository(
     )
 
     private fun JobProjectDto.toEntity() = JobProjectEntity(
-        listingId = listingId ?: 0,
-        postedBy = postedBy ?: 0,
+        listingId = listingId ?: "",
+        postedBy = postedBy ?: "",
         type = _type?.name ?: "JOB",
         title = title ?: "",
         description = description ?: "",
