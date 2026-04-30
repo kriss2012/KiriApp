@@ -29,18 +29,23 @@ class HomeViewModel : ViewModel() {
 
     fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
-            // First, try to load from cache on IO thread to prevent main-thread lag
-            val cachedData = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
-                val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
-                user to events
-            }
-            
-            val (cachedUser, cachedEvents) = cachedData
-            
-            if (cachedUser != null && cachedEvents != null) {
-                _uiState.value = HomeState.Success(cachedUser, cachedEvents)
-            } else {
+            try {
+                // First, try to load from cache on IO thread to prevent main-thread lag
+                val cachedData = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+                    val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+                    user to events
+                }
+                
+                val (cachedUser, cachedEvents) = cachedData
+                
+                if (cachedUser != null && cachedEvents != null) {
+                    _uiState.value = HomeState.Success(cachedUser, cachedEvents)
+                } else {
+                    _uiState.value = HomeState.Loading
+                }
+            } catch (e: Exception) {
+                // Ignore cache errors and proceed to network
                 _uiState.value = HomeState.Loading
             }
 
