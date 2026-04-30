@@ -29,8 +29,8 @@ enum class UserCategory {
 }
 
 data class StakeholderRoleDto(
-    @SerializedName("role_mapping_id") val roleMappingId: Int,
-    @SerializedName("user_id") val userId: String,
+    @SerializedName("role_mapping_id") val roleMappingId: String? = null,
+    @SerializedName("user_id") val userId: String? = null,
     @SerializedName("role_name") val _roleName: StakeholderRole? = StakeholderRole.GUEST
 ) {
     val roleName: StakeholderRole get() = _roleName ?: StakeholderRole.GUEST
@@ -43,17 +43,17 @@ enum class StakeholderRole {
 // --- 2. Institutions, Committees & Repositories (R1-R5) ---
 
 data class InstitutionDto(
-    @SerializedName("institution_id") val institutionId: Int,
+    @SerializedName("institution_id") val institutionId: String? = null,
     val name: String? = null,
-    @SerializedName("spoc_user_id") val spocUserId: Int? = null
+    @SerializedName("spoc_user_id") val spocUserId: String? = null
 ) {
     val institutionName: String get() = name ?: "Kiri Institution"
 }
 
 data class InstitutionalCommitteeDto(
-    @SerializedName("committee_id") val committeeId: Int,
-    @SerializedName("institution_id") val institutionId: Int,
-    @SerializedName("user_id") val userId: Int,
+    @SerializedName("committee_id") val committeeId: String? = null,
+    @SerializedName("institution_id") val institutionId: String? = null,
+    @SerializedName("user_id") val userId: String? = null,
     val department: String? = null,
     @SerializedName("role_type") val _roleType: CommitteeRoleType? = CommitteeRoleType.STUDENT_REP
 ) {
@@ -65,12 +65,12 @@ enum class CommitteeRoleType {
 }
 
 data class UserRepositoryDto(
-    @SerializedName("repo_mapping_id") val repoMappingId: Int,
-    @SerializedName("user_id") val userId: String,
-    @SerializedName("institution_id") val institutionId: Int,
+    @SerializedName("repo_mapping_id") val repoMappingId: String? = null,
+    @SerializedName("user_id") val userId: String? = null,
+    @SerializedName("institution_id") val institutionId: String? = null,
     @SerializedName("repo_category") val _repoCategory: RepoCategory? = RepoCategory.R1,
     @SerializedName("approval_status") val _approvalStatus: ApprovalStatus? = ApprovalStatus.PENDING,
-    @SerializedName("approved_by") val approvedBy: Int? = null
+    @SerializedName("approved_by") val approvedBy: String? = null
 ) {
     val repoCategory: RepoCategory get() = _repoCategory ?: RepoCategory.R1
     val approvalStatus: ApprovalStatus get() = _approvalStatus ?: ApprovalStatus.PENDING
@@ -87,7 +87,7 @@ enum class ApprovalStatus {
 // --- 3. Apex Kiri Organization (AAL) & LMS ---
 
 data class AalOnboardingDto(
-    @SerializedName("aal_id") val aalId: Int? = 0,
+    @SerializedName("aal_id") val aalId: String? = null,
     @SerializedName("user_id") val userId: String? = null,
     @SerializedName("mindset_score") val mindsetScore: String? = null,
     @SerializedName("lms_status") val _lmsStatus: LmsStatus? = LmsStatus.ENROLLED,
@@ -107,7 +107,7 @@ enum class InterviewStatus {
 }
 
 data class AalActivityDto(
-    @SerializedName("activity_id") val activityId: Int? = 0,
+    @SerializedName("activity_id") val activityId: String? = null,
     @SerializedName("user_id") val userId: String? = null,
     @SerializedName("activity_number") val activityNumber: Int? = 0,
     @SerializedName("submission_url") val submissionUrl: String? = null,
@@ -123,10 +123,10 @@ enum class ActivityStatus {
 // --- 4. Events, Hackathons & Workflows ---
 
 data class AalEventDto(
-    @SerializedName("event_id") val eventId: Int? = 0,
+    @SerializedName("event_id") val eventId: String? = null,
     val title: String? = null,
     val _type: EventType? = EventType.MEETUP,
-    @SerializedName("host_institution_id") val hostInstitutionId: Int? = null,
+    @SerializedName("host_institution_id") val hostInstitutionId: String? = null,
     @SerializedName("start_time") val startTime: String? = null,
     val location: String? = null,
     @SerializedName("qr_base_url") val qrBaseUrl: String? = null
@@ -139,9 +139,9 @@ enum class EventType {
 }
 
 data class EventRegistrationDto(
-    @SerializedName("registration_id") val registrationId: Int? = 0,
-    @SerializedName("event_id") val eventId: Int? = 0,
-    @SerializedName("user_id") val userId: Int? = 0,
+    @SerializedName("registration_id") val registrationId: String? = null,
+    @SerializedName("event_id") val eventId: String? = null,
+    @SerializedName("user_id") val userId: String? = null,
     val _status: RegistrationStatus? = RegistrationStatus.REGISTERED,
     @SerializedName("form_data") val formData: String? = null,
     @SerializedName("qr_scanned_at") val qrScannedAt: String? = null
@@ -154,16 +154,16 @@ enum class RegistrationStatus {
 }
 
 data class EventTeamDto(
-    @SerializedName("team_id") val teamId: Int? = 0,
-    @SerializedName("event_id") val eventId: Int? = 0,
+    @SerializedName("team_id") val teamId: String? = null,
+    @SerializedName("event_id") val eventId: String? = null,
     @SerializedName("team_name") val teamName: String? = null,
     @SerializedName("ai_generated") val aiGenerated: Boolean? = false
 )
 
 data class EventSubmissionDto(
-    @SerializedName("submission_id") val submissionId: Int? = 0,
-    @SerializedName("event_id") val eventId: Int? = 0,
-    @SerializedName("team_id") val teamId: Int? = null,
+    @SerializedName("submission_id") val submissionId: String? = null,
+    @SerializedName("event_id") val eventId: String? = null,
+    @SerializedName("team_id") val teamId: String? = null,
     @SerializedName("document_url") val documentUrl: String? = null,
     @SerializedName("geo_lat") val geoLat: Double? = null,
     @SerializedName("geo_long") val geoLong: Double? = null,
@@ -171,10 +171,10 @@ data class EventSubmissionDto(
 )
 
 data class JudgingRecordDto(
-    @SerializedName("judge_record_id") val judgeRecordId: Int? = 0,
-    @SerializedName("event_id") val eventId: Int? = 0,
-    @SerializedName("team_id") val teamId: Int? = 0,
-    @SerializedName("judge_user_id") val judgeUserId: Int? = null,
+    @SerializedName("judge_record_id") val judgeRecordId: String? = null,
+    @SerializedName("event_id") val eventId: String? = null,
+    @SerializedName("team_id") val teamId: String? = null,
+    @SerializedName("judge_user_id") val judgeUserId: String? = null,
     @SerializedName("is_ai_judge") val isAiJudge: Boolean? = false,
     val score: Float? = 0f,
     val feedback: String? = null
@@ -183,8 +183,8 @@ data class JudgingRecordDto(
 // --- 5. The AI Core (Live Inputs & Mapping) ---
 
 data class LiveInputDto(
-    @SerializedName("input_id") val inputId: Int? = 0,
-    @SerializedName("user_id") val userId: Int? = 0,
+    @SerializedName("input_id") val inputId: String? = null,
+    @SerializedName("user_id") val userId: String? = null,
     @SerializedName("format_type") val _formatType: InputFormat? = InputFormat.TEXT,
     @SerializedName("content_url") val contentUrl: String? = null,
     val _context: InputContext? = InputContext.DAY_TO_DAY,
@@ -203,9 +203,9 @@ enum class InputContext {
 }
 
 data class AiResourceMatchDto(
-    @SerializedName("match_id") val matchId: Int? = 0,
-    @SerializedName("source_user_id") val sourceUserId: Int? = 0,
-    @SerializedName("target_user_id") val targetUserId: Int? = 0,
+    @SerializedName("match_id") val matchId: String? = null,
+    @SerializedName("source_user_id") val sourceUserId: String? = null,
+    @SerializedName("target_user_id") val targetUserId: String? = null,
     @SerializedName("match_reason") val matchReason: String? = null,
     val _status: MatchStatus? = MatchStatus.SUGGESTED
 ) {
@@ -219,8 +219,8 @@ enum class MatchStatus {
 // --- 6. Ecosystem Dashboard (News, Jobs, Asks) ---
 
 data class EcosystemBoardDto(
-    @SerializedName("board_id") val boardId: Int? = 0,
-    @SerializedName("author_user_id") val authorUserId: Int? = 0,
+    @SerializedName("board_id") val boardId: String? = null,
+    @SerializedName("author_user_id") val authorUserId: String? = null,
     @SerializedName("post_type") val _postType: PostType? = PostType.NEWS,
     val title: String? = null,
     val description: String? = null,
@@ -235,8 +235,8 @@ enum class PostType {
 }
 
 data class JobProjectDto(
-    @SerializedName("listing_id") val listingId: Int? = 0,
-    @SerializedName("posted_by") val postedBy: Int? = 0,
+    @SerializedName("listing_id") val listingId: String? = null,
+    @SerializedName("posted_by") val postedBy: String? = null,
     val _type: JobType? = JobType.JOB,
     val title: String? = null,
     val description: String? = null,
