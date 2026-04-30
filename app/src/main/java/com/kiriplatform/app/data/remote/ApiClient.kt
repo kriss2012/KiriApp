@@ -161,7 +161,7 @@ interface ASGApiService {
     suspend fun submitLiveInput(@Body request: LiveInputDto): LiveInputDto
 
     @GET("aal/matches/{userId}")
-    suspend fun getAiMatches(@Path("userId") userId: Int): List<AiResourceMatchDto>
+    suspend fun getAiMatches(@Path("userId") userId: String): List<AiResourceMatchDto>
 
     @GET("aal/board")
     suspend fun getEcosystemBoard(): List<EcosystemBoardDto>
