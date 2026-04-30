@@ -46,7 +46,7 @@ abstract class KiriDatabase : RoomDatabase() {
 @Dao
 interface AalDao {
     @Query("SELECT * FROM users_vault WHERE userId = :userId")
-    suspend fun getUser(userId: Int): AalUserEntity?
+    suspend fun getUser(userId: String): AalUserEntity?
 
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: AalUserEntity)
@@ -58,7 +58,7 @@ interface AalDao {
     suspend fun insertInstitutions(institutions: List<InstitutionEntity>)
 
     @Query("SELECT * FROM aal_activities_history WHERE userId = :userId")
-    suspend fun getActivities(userId: Int): List<AalActivityEntity>
+    suspend fun getActivities(userId: String): List<AalActivityEntity>
 
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     suspend fun insertActivities(activities: List<AalActivityEntity>)
@@ -70,7 +70,7 @@ interface AalDao {
     suspend fun insertBoardItems(items: List<EcosystemBoardEntity>)
 
     @Query("SELECT * FROM ai_matches_vault WHERE sourceUserId = :userId OR targetUserId = :userId")
-    suspend fun getMatches(userId: Int): List<AiResourceMatchEntity>
+    suspend fun getMatches(userId: String): List<AiResourceMatchEntity>
 
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     suspend fun insertMatches(matches: List<AiResourceMatchEntity>)
