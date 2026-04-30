@@ -90,7 +90,7 @@ fun PublicProfileScreen(
                 CircularProgressIndicator(color = OrangePrimary)
             }
         } else if (user != null) {
-            val u = user ?: return@items
+            val u = user!!
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
