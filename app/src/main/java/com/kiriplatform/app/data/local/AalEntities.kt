@@ -11,7 +11,7 @@ import com.kiriplatform.app.data.remote.models.*
 
 @Entity(tableName = "users_vault")
 data class AalUserEntity(
-    @PrimaryKey val userId: Int,
+    @PrimaryKey val userId: String,
     val fullName: String? = "Kiri Member",
     val email: String? = "",
     val phone: String?,
@@ -22,15 +22,15 @@ data class AalUserEntity(
 
 @Entity(tableName = "institutions_mdm")
 data class InstitutionEntity(
-    @PrimaryKey val institutionId: Int,
+    @PrimaryKey val institutionId: String,
     val name: String,
-    val spocUserId: Int
+    val spocUserId: String
 )
 
 @Entity(tableName = "aal_activities_history")
 data class AalActivityEntity(
-    @PrimaryKey val activityId: Int,
-    val userId: Int,
+    @PrimaryKey val activityId: String,
+    val userId: String,
     val activityNumber: Int,
     val submissionUrl: String?,
     val status: String,
@@ -39,8 +39,8 @@ data class AalActivityEntity(
 
 @Entity(tableName = "ecosystem_board_cache")
 data class EcosystemBoardEntity(
-    @PrimaryKey val boardId: Int,
-    val authorUserId: Int,
+    @PrimaryKey val boardId: String,
+    val authorUserId: String,
     val postType: String,
     val title: String,
     val description: String,
@@ -50,17 +50,17 @@ data class EcosystemBoardEntity(
 
 @Entity(tableName = "ai_matches_vault")
 data class AiResourceMatchEntity(
-    @PrimaryKey val matchId: Int,
-    val sourceUserId: Int,
-    val targetUserId: Int,
+    @PrimaryKey val matchId: String,
+    val sourceUserId: String,
+    val targetUserId: String,
     val matchReason: String,
     val status: String
 )
 
 @Entity(tableName = "jobs_projects_mdm")
 data class JobProjectEntity(
-    @PrimaryKey val listingId: Int,
-    val postedBy: Int,
+    @PrimaryKey val listingId: String,
+    val postedBy: String,
     val type: String,
     val title: String,
     val description: String,
