@@ -18,7 +18,8 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,17 +63,19 @@ fun ProfileScreen(
         }
     }
 
-    // Pull-to-refresh state (Material3 1.2.x API)
-    val pullToRefreshState = rememberPullToRefreshState()
-    if (pullToRefreshState.isRefreshing) {
-        LaunchedEffect(true) {
-            if (userId.isNotEmpty()) viewModel.fetchProfile(context, userId)
+    // Pull-to-refresh state (Material3 1.3.x API)
+    var isRefreshing by remember { mutableStateOf(false) }
+    val onRefresh: () -> Unit = {
+        isRefreshing = true
+        if (userId.isNotEmpty()) {
+            viewModel.fetchProfile(context, userId)
         }
     }
+
     // Stop the indicator once the network call resolves
-    if (uiState !is ProfileState.Loading) {
-        LaunchedEffect(uiState) {
-            pullToRefreshState.endRefresh()
+    LaunchedEffect(uiState) {
+        if (uiState !is ProfileState.Loading) {
+            isRefreshing = false
         }
     }
 
@@ -81,11 +84,12 @@ fun ProfileScreen(
         containerColor = BgCream,
         bottomBar = { Spacer(Modifier.height(0.dp)) }
     ) { padding ->
-        Box(
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .nestedScroll(pullToRefreshState.nestedScrollConnection)
+                .padding(padding),
         ) {
             when (val state = uiState) {
                 is ProfileState.Loading -> {
@@ -124,13 +128,6 @@ fun ProfileScreen(
                 }
                 else -> {}
             }
-
-            // Pull-to-refresh indicator overlaid at top
-            PullToRefreshContainer(
-                state = pullToRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter),
-                contentColor = OrangePrimary
-            )
         }
     }
 }
