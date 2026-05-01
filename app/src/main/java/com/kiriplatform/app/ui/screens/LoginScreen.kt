@@ -2,6 +2,7 @@ package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -163,11 +164,15 @@ fun LoginScreen(
 
             Row {
                 Text("Don't have an account? ", color = TextSecondary)
+                val interactionSource = remember { MutableInteractionSource() }
                 Text(
                     "Sign Up",
                     color = OrangePrimary,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { onNavigateToRegister() }
+                    modifier = Modifier.clickable(
+                        interactionSource = interactionSource,
+                        indication = null // Temporarily disable ripple to avoid IndicationNodeFactory crash
+                    ) { onNavigateToRegister() }
                 )
             }
         }
