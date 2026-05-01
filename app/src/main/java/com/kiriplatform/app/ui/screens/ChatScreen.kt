@@ -187,8 +187,9 @@ fun ChatScreen(
                             placeholder = { Text("Message...", color = TextSecondary) },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(24.dp),
-                            colors = TextFieldDefaults.textFieldColors(
-                                containerColor = Color(0xFFF5F5F5),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color(0xFFF5F5F5),
+                                unfocusedContainerColor = Color(0xFFF5F5F5),
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent
                             )

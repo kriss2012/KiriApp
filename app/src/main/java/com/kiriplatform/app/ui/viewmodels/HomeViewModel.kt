@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 
 import com.kiriplatform.app.data.remote.models.*
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
 sealed class HomeState {
     object Loading : HomeState()
     data class Success(
@@ -23,7 +26,8 @@ sealed class HomeState {
     data class Error(val message: String) : HomeState()
 }
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState.asStateFlow()
 
@@ -37,10 +41,13 @@ class HomeViewModel : ViewModel() {
                     user to events
                 }
                 
-                val (cachedUser, cachedEvents) = cachedData
+                val cachedUser = cachedData.first
+                val cachedEvents = cachedData.second
                 
-                if (cachedUser != null && cachedEvents != null) {
-                    _uiState.value = HomeState.Success(cachedUser, cachedEvents)
+                if (cachedUser is UserDto && cachedEvents is List<*>) {
+                    @Suppress("UNCHECKED_CAST")
+                    val validEvents = cachedEvents as List<EventDto>
+                    _uiState.value = HomeState.Success(cachedUser, validEvents)
                 } else {
                     _uiState.value = HomeState.Loading
                 }

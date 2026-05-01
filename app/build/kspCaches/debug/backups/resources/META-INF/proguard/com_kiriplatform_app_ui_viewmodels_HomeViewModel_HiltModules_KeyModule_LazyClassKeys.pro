@@ -1,0 +1,1 @@
+-keep,allowobfuscation,allowshrinking class com.kiriplatform.app.ui.viewmodels.HomeViewModel

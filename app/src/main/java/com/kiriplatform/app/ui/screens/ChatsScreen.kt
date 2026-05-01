@@ -71,8 +71,9 @@ fun ChatsScreen(
                     shape = RoundedCornerShape(12.dp),
                     leadingIcon = { Icon(Icons.Default.Search, null, tint = OrangePrimary) },
                     trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { viewModel.searchUsers("") }) { Icon(Icons.Default.Close, null) } },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = BgCream.copy(alpha = 0.5f),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = BgCream.copy(alpha = 0.5f),
+                        unfocusedContainerColor = BgCream.copy(alpha = 0.5f),
                         unfocusedBorderColor = Color.Transparent,
                         focusedBorderColor = OrangePrimary.copy(alpha = 0.3f)
                     ),

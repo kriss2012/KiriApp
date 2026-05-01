@@ -42,7 +42,7 @@ import androidx.compose.runtime.*
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = androidx.hilt.navigation.compose.hiltViewModel(),
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToRepository: () -> Unit = {},

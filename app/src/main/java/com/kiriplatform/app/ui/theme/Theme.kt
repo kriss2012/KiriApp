@@ -2,9 +2,15 @@ package com.kiriplatform.app.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.IndicationNodeFactory
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.ui.node.DelegatableNode
+import androidx.compose.ui.Modifier
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -44,6 +50,15 @@ fun ColorScheme.toAmoled(): ColorScheme {
     )
 }
 
+private object SafeIndication : IndicationNodeFactory {
+    override fun create(interactionSource: InteractionSource): DelegatableNode {
+        return object : Modifier.Node() {}
+    }
+    
+    override fun equals(other: Any?): Boolean = other === this
+    override fun hashCode(): Int = System.identityHashCode(this)
+}
+
 @Composable
 fun KiriAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -73,7 +88,13 @@ fun KiriAppTheme(
     // Material 3 Expressive Theme logic
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+        typography = Typography
+    ) {
+        // Force use of a safe Indication (IndicationNodeFactory) to prevent crash in Compose 1.7+
+        // This bypasses the strict check for legacy indications while version skew is present.
+        CompositionLocalProvider(
+            LocalIndication provides SafeIndication,
+            content = content
+        )
+    }
 }
