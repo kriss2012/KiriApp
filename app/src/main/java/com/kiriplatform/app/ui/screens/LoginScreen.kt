@@ -164,15 +164,11 @@ fun LoginScreen(
 
             Row {
                 Text("Don't have an account? ", color = TextSecondary)
-                val interactionSource = remember { MutableInteractionSource() }
                 Text(
                     "Sign Up",
                     color = OrangePrimary,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable(
-                        interactionSource = interactionSource,
-                        indication = null // Temporarily disable ripple to avoid IndicationNodeFactory crash
-                    ) { onNavigateToRegister() }
+                    modifier = Modifier.clickable { onNavigateToRegister() }
                 )
             }
         }
