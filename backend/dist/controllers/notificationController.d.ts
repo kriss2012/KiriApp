@@ -9,6 +9,7 @@ export declare const createNotification: (userId: string, title: string, content
     title: string;
     type: string;
     content: string;
+    relatedId: string | null;
     isRead: boolean;
 } | undefined>;
 //# sourceMappingURL=notificationController.d.ts.map
