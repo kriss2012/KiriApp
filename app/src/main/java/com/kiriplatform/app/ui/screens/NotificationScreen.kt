@@ -2,6 +2,7 @@ package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -66,26 +67,37 @@ fun NotificationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Notifications", fontWeight = FontWeight.Black) },
+                title = { 
+                    Column {
+                        Text("NOTIFICATIONS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), letterSpacing = 1.sp)
+                        Text("Recent Updates", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    }
+                },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(36.dp)
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
                     }
                 },
                 actions = {
                     if (uiState is NotificationState.Success && (uiState as NotificationState.Success).notifications.any { !it.isRead }) {
                         TextButton(onClick = { viewModel.markAllAsRead(context, userId) }) {
-                            Text("Mark all read", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelMedium)
+                            Text("Clear all", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.colorScheme.background,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (val state = uiState) {
@@ -160,68 +172,65 @@ fun NotificationItem(
         else -> Icons.Default.Notifications
     }
     
-    val color = when (notification.type) {
+    val iconColor = when (notification.type) {
         "EVENT" -> MaterialTheme.colorScheme.primary
         "REQUEST" -> MaterialTheme.colorScheme.secondary
         "MESSAGE" -> MaterialTheme.colorScheme.tertiary
-        else -> MaterialTheme.colorScheme.onSurfaceVariant
+        else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (notification.isRead) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = if (notification.isRead) 0.dp else 2.dp),
-        border = if (notification.isRead) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(14.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(color.copy(alpha = 0.1f)),
-                    contentAlignment = Alignment.Center
+                Surface(
+                    modifier = Modifier.size(40.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    color = iconColor.copy(alpha = 0.05f),
+                    border = BorderStroke(1.dp, iconColor.copy(alpha = 0.1f))
                 ) {
-                    Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(20.dp))
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
+                    }
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = notification.title,
                         style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold,
+                        fontWeight = if (notification.isRead) FontWeight.Medium else FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = notification.content,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 14.sp
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        lineHeight = 16.sp
                     )
                     Text(
                         text = getRelativeTime(notification.createdAt),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                         fontSize = 10.sp,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                 }
 
                 if (!notification.isRead) {
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                    )
+                    Surface(
+                        modifier = Modifier.size(6.dp),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primary
+                    ) {}
                 }
             }
 
@@ -234,21 +243,21 @@ fun NotificationItem(
                 ) {
                     Button(
                         onClick = { notification.relatedId?.let { onAccept(it) } },
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = color),
+                        modifier = Modifier.weight(1f).height(36.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text("Accept", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimary)
+                        Text("Accept", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                     }
                     OutlinedButton(
                         onClick = onDecline,
-                        modifier = Modifier.weight(1f),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        modifier = Modifier.weight(1f).height(36.dp),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text("Ignore", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Ignore", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
