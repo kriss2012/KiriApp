@@ -24,6 +24,8 @@ import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 dotenv.config();
 const app = express();
+// Trust proxy for Render/Cloudflare/etc to let express-rate-limit see real IPs
+app.set('trust proxy', 1);
 const httpServer = createServer(app);
 initSocket(httpServer);
 // Middleware
