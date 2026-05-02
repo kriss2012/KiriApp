@@ -151,30 +151,45 @@ fun ProfileContent(
             ) 
         }
 
-        // New Resources Section with Clickable Links
-        if (!user.website.isNullOrEmpty() || !user.githubUrl.isNullOrEmpty() || !user.linkedInUrl.isNullOrEmpty()) {
-            item { SectionHeader(title = "Resources & Social", actionText = "", onActionClick = {}) }
+        // Bio / About Section
+        if (!user.bio.isNullOrEmpty()) {
+            item { SectionHeader(title = "About", actionText = "", onActionClick = {}) }
             item {
-                Card(
-                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                Text(
+                    text = user.bio,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        // Skills / Services Section
+        if (!user.services.isNullOrEmpty()) {
+            item { SectionHeader(title = "Expertise & Services", actionText = "", onActionClick = {}) }
+            item {
+                FlowRow(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    mainAxisSpacing = 8.dp,
+                    crossAxisSpacing = 8.dp
                 ) {
-                    Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        user.website?.let {
-                            ResourceRow("🌐 Website", it)
-                        }
-                        user.githubUrl?.let {
-                            ResourceRow("💻 GitHub", it)
-                        }
-                        user.linkedInUrl?.let {
-                            ResourceRow("🔗 LinkedIn", it)
-                        }
+                    user.services.forEach { service ->
+                        SuggestionChip(
+                            onClick = { },
+                            label = { Text(service) },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = SuggestionChipDefaults.suggestionChipColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
+                                labelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                            ),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        )
                     }
                 }
             }
         }
+
+        // Resources & Social Section
         
         // Digital Persona (AI-Generated)
         if (!user.digitalPersona.isNullOrEmpty()) {
