@@ -333,6 +333,7 @@ data class RegisterRequest(
     val year: String? = null,
     val section: String? = null,
     val phoneNumber: String? = null,
+    val bio: String? = null,
     val website: String? = null,
     val githubUrl: String? = null,
     val linkedInUrl: String? = null,
