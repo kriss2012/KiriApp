@@ -115,13 +115,13 @@ fun ProfileScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Text(state.message, color = MaterialTheme.colorScheme.error, fontSize = 14.sp)
                         Spacer(Modifier.height(8.dp))
                         Button(
                             onClick = { viewModel.fetchProfile(context, userId) },
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Retry", color = Color.White)
+                            Text("Retry", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -239,10 +239,11 @@ fun ProfileContent(
 @Composable
 fun ResourceRow(label: String, url: String) {
     Column {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         ClickableUrlText(
             text = url,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+            linkColor = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -376,15 +377,19 @@ fun DashboardMenu(
     onNavigateToConnections: () -> Unit,
     onNavigateToActivity: () -> Unit
 ) {
+    val primaryContainer = MaterialTheme.colorScheme.primaryContainer
+    val secondaryContainer = MaterialTheme.colorScheme.secondaryContainer
+    val tertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer
+
     val menuItems = listOf(
-        DashboardMenuItem("🚀", "My Startup Profile", OrangeLight, "Coming Soon"),
-        DashboardMenuItem("🤝", "Team Requests", GreenLight),
-        DashboardMenuItem("📋", "My Community Activity", BlueInfo)
+        DashboardMenuItem("🚀", "My Startup Profile", primaryContainer, "Coming Soon"),
+        DashboardMenuItem("🤝", "Team Requests", secondaryContainer),
+        DashboardMenuItem("📋", "My Community Activity", tertiaryContainer)
     )
 
-    Column(modifier = Modifier.padding(horizontal = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         if (menuItems.isEmpty()) {
-            Text("No dashboard items available", modifier = Modifier.padding(16.dp), color = TextSecondary)
+            Text("No dashboard items available", modifier = Modifier.padding(24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         } else {
             menuItems.forEach { item ->
                 DashboardMenuCard(
