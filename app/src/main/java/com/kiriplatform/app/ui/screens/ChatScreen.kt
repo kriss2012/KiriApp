@@ -97,7 +97,7 @@ fun ChatScreen(
     }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
                 title = {
@@ -106,10 +106,10 @@ fun ChatScreen(
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)
-                                .background(OrangePrimary.copy(alpha = 0.1f)),
+                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(receiverName.take(1).uppercase(), color = OrangePrimary, fontWeight = FontWeight.Black)
+                            Text(receiverName.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Black)
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
@@ -117,7 +117,7 @@ fun ChatScreen(
                             Text(
                                 if (connectionStatus == "ACCEPTED") "Connected" else "Message Request",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = if (connectionStatus == "ACCEPTED") Color(0xFF4CAF50) else TextSecondary
+                                color = if (connectionStatus == "ACCEPTED") GreenSuccess else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -127,12 +127,12 @@ fun ChatScreen(
                         Icon(androidx.compose.material.icons.Icons.Default.ArrowBack, null)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.White)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
         bottomBar = {
             Surface(
-                color = Color.White, 
+                color = MaterialTheme.colorScheme.surface, 
                 tonalElevation = 8.dp,
                 modifier = Modifier
                     .navigationBarsPadding()
@@ -142,15 +142,15 @@ fun ChatScreen(
                     // Pending Request Banner
                     if (connectionStatus == "PENDING") {
                         Surface(
-                            color = OrangePrimary.copy(alpha = 0.05f),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Row(
-                                modifier = Modifier.padding(16.dp, 8.dp),
+                                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text("This is a message request", fontSize = 12.sp, color = TextSecondary)
+                                Text("This is a message request", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 TextButton(
                                     onClick = {
                                         coroutineScope.launch {
@@ -177,19 +177,19 @@ fun ChatScreen(
 
                     Row(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = 24.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         TextField(
                             value = messageText,
                             onValueChange = { messageText = it },
-                            placeholder = { Text("Message...", color = TextSecondary) },
+                            placeholder = { Text("Message...", color = MaterialTheme.colorScheme.onSurfaceVariant) },
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(24.dp),
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color(0xFFF5F5F5),
-                                unfocusedContainerColor = Color(0xFFF5F5F5),
+                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent
                             )
@@ -206,8 +206,8 @@ fun ChatScreen(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
-                                .background(OrangePrimary),
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White)
+                                .background(MaterialTheme.colorScheme.primary),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                         ) {
                             Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
                         }
@@ -216,10 +216,10 @@ fun ChatScreen(
             }
         }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding).background(BgCream)) {
+        Box(modifier = Modifier.fillMaxSize().padding(padding).background(MaterialTheme.colorScheme.background)) {
             when (val state = uiState) {
                 is ChatState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                 }
                 is ChatState.Success -> {
                     if (state.messages.isEmpty()) {
@@ -237,7 +237,7 @@ fun ChatScreen(
                             state = listState,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 16.dp),
+                                .padding(horizontal = 24.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp),
                             contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
                         ) {
@@ -253,7 +253,7 @@ fun ChatScreen(
                     }
                 }
                 is ChatState.Error -> {
-                    Text(state.message, color = Color.Red, modifier = Modifier.align(Alignment.Center))
+                    Text(state.message, color = MaterialTheme.colorScheme.error, modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -269,19 +269,19 @@ fun EmptyChatState(neighborName: String) {
     ) {
         Text(
             text = "🤝",
-            fontSize = 48.sp
+            style = MaterialTheme.typography.displayMedium
         )
         Spacer(Modifier.height(16.dp))
         Text(
             text = "Start a conversation with $neighborName",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = "Your email and phone are hidden\nuntil they accept your connection.",
             style = MaterialTheme.typography.bodySmall,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -307,14 +307,14 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     if (isSystem) {
         Box(Modifier.fillMaxWidth().padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
             Surface(
-                color = Color(0xFFE8F5E9),
+                color = GreenLight,
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = message.content,
                     modifier = Modifier.padding(16.dp, 8.dp),
-                    fontSize = 12.sp,
-                    color = Color(0xFF2E7D32),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = GreenSuccess,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             }
@@ -328,30 +328,30 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     ) {
         Column(horizontalAlignment = if (isFromMe) Alignment.End else Alignment.Start) {
             Surface(
-                color = if (isFromMe) OrangePrimary else Color.White,
+                color = if (isFromMe) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(
                     topStart = 20.dp,
                     topEnd = 20.dp,
                     bottomStart = if (isFromMe) 20.dp else 4.dp,
                     bottomEnd = if (isFromMe) 4.dp else 20.dp
                 ),
-                shadowElevation = 0.5.dp
+                shadowElevation = if (isFromMe) 0.dp else 1.dp
             ) {
                 ClickableUrlText(
                     text = message.content,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = if (isFromMe) Color.White else TextPrimary,
+                        color = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                         lineHeight = 20.sp
                     ),
-                    linkColor = if (isFromMe) Color.White else OrangePrimary
+                    linkColor = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
                 )
             }
             if (timeStr.isNotEmpty()) {
                 Text(
                     text = timeStr,
-                    color = TextSecondary,
-                    fontSize = 10.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
                     modifier = Modifier.padding(top = 4.dp, start = 4.dp, end = 4.dp)
                 )
             }
