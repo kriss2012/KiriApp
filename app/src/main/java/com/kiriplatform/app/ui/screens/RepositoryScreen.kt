@@ -48,7 +48,7 @@ fun RepositoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(MaterialTheme.colorScheme.background)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
         // Premium Gradient Header — matches ProfileHeroSection design token
@@ -57,7 +57,7 @@ fun RepositoryScreen(
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
                 .background(
-                    Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08)))
+                    Brush.linearGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)))
                 )
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(horizontal = 24.dp, vertical = 20.dp)
@@ -66,13 +66,13 @@ fun RepositoryScreen(
                 Text(
                     "Community",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     fontWeight = FontWeight.Black
                 )
                 Text(
                     "Network of Jalgaon's brightest minds",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.8f)
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                 )
             }
         }
@@ -92,16 +92,16 @@ fun RepositoryScreen(
                     onClick = { selectedFilter = filter },
                     label = { Text(filter, fontSize = 10.sp) },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = OrangePrimary,
-                        selectedLabelColor = Color.White,
-                        containerColor = Color.White,
-                        labelColor = TextSecondary
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
-                        borderColor = BorderColor,
-                        selectedBorderColor = OrangePrimary,
+                        borderColor = MaterialTheme.colorScheme.outlineVariant,
+                        selectedBorderColor = MaterialTheme.colorScheme.primary,
                         borderWidth = 1.dp
                     ),
                     shape = RoundedCornerShape(20.dp)
@@ -113,7 +113,7 @@ fun RepositoryScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             when (val state = uiState) {
                 is RepositoryState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                 }
                 is RepositoryState.Success -> {
                     val filteredUsers = if (selectedFilter == "All") state.users else state.users.filter { it.role == selectedFilter }
@@ -124,13 +124,13 @@ fun RepositoryScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.message, color = Color.Red, style = MaterialTheme.typography.bodySmall)
+                        Text(state.message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
                         Spacer(Modifier.height(8.dp))
                         Button(
                             onClick = { viewModel.fetchVerifiedUsers(context) },
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Retry", color = Color.White)
+                            Text("Retry", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -148,7 +148,7 @@ fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Uni
         if (users.isEmpty()) {
             item {
                 Box(modifier = Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) {
-                    Text("No related data found", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                    Text("No related data found", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         } else {
@@ -164,11 +164,11 @@ fun StudentCard(user: UserDto, onClick: () -> Unit) {
     val initials = user.fullName.split(" ").filter { it.isNotEmpty() }.take(2).map { it[0] }.joinToString("")
     
     val gradient = when (user.role) {
-        "FOUNDER" -> Brush.linearGradient(colors = listOf(OrangePrimary, OrangeDark))
+        "FOUNDER" -> Brush.linearGradient(colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)))
         "SPOC", "ADMIN" -> Brush.linearGradient(colors = listOf(Color(0xFF1D9E75), Color(0xFF0F6E56)))
         "MENTOR" -> Brush.linearGradient(colors = listOf(Color(0xFFE0742A), Color(0xFFB85A15)))
         "INVESTOR" -> Brush.linearGradient(colors = listOf(Color(0xFF378ADD), Color(0xFF185FA5)))
-        else -> Brush.linearGradient(colors = listOf(PurpleAccent, Color(0xFF4F3BB5)))
+        else -> Brush.linearGradient(colors = listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f)))
     }
 
     Card(
@@ -176,8 +176,8 @@ fun StudentCard(user: UserDto, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -192,18 +192,18 @@ fun StudentCard(user: UserDto, onClick: () -> Unit) {
                     .background(gradient),
                 contentAlignment = Alignment.Center
             ) {
-                Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 14.sp)
+                Text(initials, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Black, fontSize = 14.sp)
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
+                Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text(user.role, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp)
                 if (!user.college.isNullOrEmpty()) {
-                    Text(user.college ?: "", style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f), fontSize = 8.sp)
+                    Text(user.college ?: "", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f), fontSize = 8.sp)
                 }
             }
 
-            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color(0xFFCCCCCC))
+            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f))
         }
     }
 }
