@@ -9,16 +9,16 @@ val PurpleAccent = Color(0xFF6B4FBB)
 val PurpleLight = Color(0xFFEDE8F8)
 
 // Cleaner backgrounds for Kiri Store type UI
-val BgCream = Color(0xFFFFFFFF) // Pure white
-val BgSurface = Color(0xFFF8F9FA) // Light gray surface
-val TextPrimary = Color(0xFF1A1A24) // Crisp dark
-val TextSecondary = Color(0xFF6C6C7D) // Cool gray
-val BorderColor = Color(0xFFEBEBEF) // Subtle border
-val GreenSuccess = Color(0xFF228B22) 
-val GreenLight = Color(0xFFF0FAF0)
-val YellowWarm = Color(0xFFFFF8E1)
-val BlueInfo = Color(0xFFE3F2FD)
-val BluePrimary = Color(0xFF001F3F) // Premium Navy Blue for APEX Branding
+val BgCream = Color(0xFFFDFDFD) // Warm white
+val BgSurface = Color(0xFFF4F6F8) // Soft surface
+val TextPrimary = Color(0xFF0F172A) // Slate 900
+val TextSecondary = Color(0xFF64748B) // Slate 500
+val BorderColor = Color(0xFFE2E8F0) // Slate 200
+val GreenSuccess = Color(0xFF10B981) 
+val GreenLight = Color(0xFFECFDF5)
+val YellowWarm = Color(0xFFFFFBEB)
+val BlueInfo = Color(0xFFEFF6FF)
+val BluePrimary = Color(0xFF1E293B) // Premium Slate
 
 // Premium Theme Colors
 val OceanPrimary = Color(0xFF00B4D8)
