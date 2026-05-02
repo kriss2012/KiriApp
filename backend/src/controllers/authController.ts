@@ -5,7 +5,23 @@ import prisma from '../utils/prisma.js';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, fullName, userCategory, phoneNumber, role } = req.body;
+    const {
+      email,
+      password,
+      fullName,
+      userCategory,
+      phoneNumber,
+      role,
+      department,
+      college,
+      year,
+      section,
+      website,
+      githubUrl,
+      linkedInUrl,
+      services,
+      bio
+    } = req.body;
 
     // 0. Mandatory Field Validation
     if (!email || !password || !fullName) {
@@ -36,6 +52,15 @@ export const register = async (req: Request, res: Response) => {
       fullName,
       userCategory: userCategory || (role ? categoryMapping[role] : 'STUDENT'),
       phoneNumber,
+      department,
+      college,
+      year,
+      section,
+      website,
+      githubUrl,
+      linkedInUrl,
+      services: services || [],
+      bio
     };
 
     if (role) {
