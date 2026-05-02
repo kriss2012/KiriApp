@@ -344,6 +344,7 @@ model Notification {
   title     String
   content   String
   type      String
+  relatedId String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 }
