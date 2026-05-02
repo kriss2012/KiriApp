@@ -23,7 +23,16 @@ export const getProfile = async (req: Request, res: Response) => {
           avatarUrl: true,
           phoneNumber: true,
           points: true,
-          createdAt: true
+          createdAt: true,
+          // Added fields for complete profile
+          department: true,
+          college: true,
+          year: true,
+          section: true,
+          website: true,
+          githubUrl: true,
+          linkedInUrl: true,
+          services: true
         }
       }),
       prisma.event.count({ where: { ownerId: userId } }),
@@ -89,9 +98,31 @@ export const updateProfile = async (req: Request, res: Response) => {
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
-    const { fullName, bio, avatarUrl, phoneNumber } = req.body;
+    const {
+      fullName,
+      bio,
+      avatarUrl,
+      phoneNumber,
+      role,
+      department,
+      college,
+      year,
+      website,
+      githubUrl,
+      linkedInUrl,
+      services
+    } = req.body;
 
     console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
+
+    // Map role string to UserCategory enum if applicable
+    const categoryMapping: Record<string, any> = {
+      'STUDENT': 'STUDENT',
+      'FOUNDER': 'NON_STUDENT',
+      'MENTOR': 'NON_STUDENT',
+      'SPOC': 'FACULTY',
+      'ALUMNI': 'ALUMNI'
+    };
 
     const user = await prisma.user.update({
       where: { id: userId },
@@ -99,10 +130,24 @@ export const updateProfile = async (req: Request, res: Response) => {
         fullName,
         bio,
         avatarUrl,
-        phoneNumber
+        phoneNumber,
+        department,
+        college,
+        year,
+        website,
+        githubUrl,
+        linkedInUrl,
+        services,
+        userCategory: role ? categoryMapping[role] : undefined,
+        // Update stakeholder role if provided
+        stakeholderRoles: role ? {
+          deleteMany: {}, // Clear existing roles for simplicity in this version
+          create: {
+            roleName: role
+          }
+        } : undefined
       },
-      // Explicit select — returns the same field set as getProfile so the
-      // Android DTO deserializes correctly and canCreateEvents is always present.
+      // Explicit select — returns the same field set as getProfile
       select: {
         id: true,
         email: true,
@@ -113,7 +158,15 @@ export const updateProfile = async (req: Request, res: Response) => {
         avatarUrl: true,
         phoneNumber: true,
         points: true,
-        createdAt: true
+        createdAt: true,
+        department: true,
+        college: true,
+        year: true,
+        section: true,
+        website: true,
+        githubUrl: true,
+        linkedInUrl: true,
+        services: true
       }
     });
 
