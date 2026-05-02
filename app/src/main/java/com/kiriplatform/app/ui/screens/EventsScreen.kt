@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kiriplatform.app.data.SessionManager
 import com.kiriplatform.app.data.remote.models.EventDto
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.kiriplatform.app.ui.viewmodels.*
@@ -76,9 +77,10 @@ fun EventsScreen(
                     },
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                    text = { Text("Broadcast Event", fontWeight = FontWeight.Bold) },
-                    shape = RoundedCornerShape(16.dp)
+                    icon = { Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                    text = { Text("BROADCAST", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, letterSpacing = 1.sp) },
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
                 )
             }
         }
@@ -91,16 +93,18 @@ fun EventsScreen(
                 .padding(bottom = 20.dp)
         ) {
             // Header
-            Row(
-                modifier = Modifier.padding(24.dp, 20.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 20.dp)) {
                 Text(
-                    "Upcoming Events",
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Black
+                    "LIVE EVENTS",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    letterSpacing = 1.sp
+                )
+                Text(
+                    "Ecosystem Hub",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -108,30 +112,24 @@ fun EventsScreen(
             LazyRow(
                 modifier = Modifier.padding(bottom = 16.dp),
                 contentPadding = PaddingValues(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(24.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(tabs) { tab ->
                     val isSelected = selectedTab == tab
-                    Column(
+                    Surface(
                         modifier = Modifier.clickable { selectedTab = tab },
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        shape = RoundedCornerShape(8.dp),
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                        border = if (isSelected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                     ) {
                         Text(
-                            text = tab,
-                            style = MaterialTheme.typography.titleSmall,
-                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                            text = tab.uppercase(),
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 0.5.sp
                         )
-                        if (isSelected) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(top = 6.dp)
-                                    .height(3.dp)
-                                    .width(16.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primary)
-                            )
-                        }
                     }
                 }
             }
@@ -191,10 +189,10 @@ fun EventsList(events: List<EventDto>, navController: androidx.navigation.NavCon
             Text(
                 "ACTIVE BROADCASTS",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                 fontWeight = FontWeight.Bold,
-                letterSpacing = 1.5.sp,
-                modifier = Modifier.padding(vertical = 8.dp)
+                letterSpacing = 1.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
         }
         items(events) { event ->
@@ -216,14 +214,14 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
     val day = event.date.split("-").lastOrNull()?.split("T")?.firstOrNull() ?: "01"
     val month = "EVENT"
     val title = event.title
-    val location = event.description.take(45) + "..."
+    val description = event.description.take(60) + "..."
     val type = event.type ?: "General"
     val prize = event.prize ?: "TBD"
 
     Surface(
         onClick = onDetailsClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
@@ -234,87 +232,89 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     contentDescription = "Event Banner",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(140.dp)
-                        .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+                        .height(160.dp)
+                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
                     contentScale = ContentScale.Crop
                 )
             }
-            Row(
-                modifier = Modifier.padding(20.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Large Date Block
-                Surface(
-                    modifier = Modifier.size(48.dp, 52.dp),
-                    shape = RoundedCornerShape(14.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                    Surface(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                        shape = RoundedCornerShape(6.dp),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                     ) {
                         Text(
-                            day,
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Black
-                        )
-                        Text(
-                            month,
+                            type.uppercase(),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 7.sp
+                            letterSpacing = 0.5.sp
                         )
                     }
-                }
-                
-                Column(modifier = Modifier.weight(1f)) {
-                    Surface(
-                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text(
-                            type,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(Modifier.height(8.dp))
+                    
                     Text(
-                        title,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        "$day ${month.uppercase()}",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         fontWeight = FontWeight.Bold
                     )
-                    Text(
-                        location,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
-            }
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp, 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Prize: ", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    Text(prize, style = MaterialTheme.typography.titleSmall, color = GreenSuccess, fontWeight = FontWeight.Bold)
-                }
+                
+                Spacer(Modifier.height(12.dp))
+                
                 Text(
-                    "Details →",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
+                
+                Spacer(Modifier.height(4.dp))
+                
+                Text(
+                    description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    lineHeight = 18.sp
+                )
+                
+                Spacer(Modifier.height(16.dp))
+                
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                
+                Spacer(Modifier.height(16.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("Prize:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+                        Text(prize, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                    }
+                    
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text(
+                            "View Details",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = null,
+                            modifier = Modifier.size(12.dp),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             }
         }
     }
