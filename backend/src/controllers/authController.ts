@@ -21,13 +21,22 @@ export const register = async (req: Request, res: Response) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Map role string to UserCategory enum if applicable
+    const categoryMapping: Record<string, any> = {
+      'STUDENT': 'STUDENT',
+      'FOUNDER': 'NON_STUDENT',
+      'MENTOR': 'NON_STUDENT',
+      'SPOC': 'FACULTY',
+      'ALUMNI': 'ALUMNI'
+    };
+
     // Create user with optional StakeholderRole
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         fullName,
-        userCategory: userCategory || 'STUDENT',
+        userCategory: userCategory || (role ? categoryMapping[role] : 'STUDENT'),
         phoneNumber,
         stakeholderRoles: role ? {
           create: {
