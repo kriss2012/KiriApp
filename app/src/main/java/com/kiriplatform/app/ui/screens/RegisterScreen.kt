@@ -196,6 +196,7 @@ fun RegisterScreen(
                                     year = year.takeIf { it.isNotBlank() },
                                     section = section.takeIf { it.isNotBlank() },
                                     phoneNumber = phoneNumber.takeIf { it.isNotBlank() },
+                                    bio = bio.takeIf { it.isNotBlank() },
                                     inviteCode = inviteCode.takeIf { it.isNotBlank() },
                                     aalAutoEnroll = autoEnrollAal,
                                     services = skills.split(",").map { it.trim() }.filter { it.isNotEmpty() }
