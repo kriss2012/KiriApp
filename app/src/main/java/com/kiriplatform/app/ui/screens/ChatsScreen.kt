@@ -49,34 +49,39 @@ fun ChatsScreen(
         topBar = {
             Column(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.background)
                     .statusBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                    .padding(horizontal = 24.dp, vertical = 20.dp)
             ) {
                 Text(
-                    text = "Messages",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Black,
+                    text = "MESSAGES",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    letterSpacing = 1.sp
+                )
+                Text(
+                    text = "Conversations",
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 
                 // Search Bar
                 OutlinedTextField(
                     value = query,
                     onValueChange = { viewModel.searchUsers(it) },
-                    placeholder = { Text("Search community agents or people...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
+                    placeholder = { Text("Search community agents or people...", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), fontSize = 14.sp) },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.primary) },
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) },
                     trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { viewModel.searchUsers("") }) { Icon(Icons.Default.Close, null) } },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        unfocusedBorderColor = Color.Transparent,
-                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary
                     ),
                     singleLine = true
                 )
@@ -171,44 +176,47 @@ fun ChatListItem(
     Surface(
         onClick = onClick,
         color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Avatar
             Box {
                 Surface(
-                    modifier = Modifier.size(56.dp),
-                    shape = CircleShape,
-                    color = if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant
+                    modifier = Modifier.size(48.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    color = if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.05f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                    border = BorderStroke(1.dp, if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
                 ) {
                     if (isAgent) {
-                        Icon(
-                            Icons.Default.SmartToy,
-                            contentDescription = null,
-                            modifier = Modifier.padding(12.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                Icons.Default.SmartToy,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     } else {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(name.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                            Text(name.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                         }
                     }
                 }
                 if (isAgent) {
-                    Box(
+                    Surface(
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
-                            .size(14.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.surface)
-                            .padding(2.dp)
+                            .size(12.dp),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.surface,
+                        border = BorderStroke(2.dp, MaterialTheme.colorScheme.surface)
                     ) {
                         Box(modifier = Modifier.fillMaxSize().clip(CircleShape).background(Color(0xFF4CAF50)))
                     }
@@ -229,35 +237,34 @@ fun ChatListItem(
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = time,
+                        text = time.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isAgent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        fontWeight = FontWeight.Bold,
+                        color = if (isAgent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        letterSpacing = 0.5.sp
                     )
                 }
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = lastMsg,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
 
             if (unreadCount > 0) {
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 Surface(
                     color = MaterialTheme.colorScheme.primary,
                     shape = CircleShape,
-                    modifier = Modifier.size(20.dp)
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        Text(unreadCount.toString(), color = MaterialTheme.colorScheme.onPrimary, fontSize = 10.sp, fontWeight = FontWeight.Black)
-                    }
-                }
+                    modifier = Modifier.size(8.dp)
+                ) {}
             }
         }
     }
