@@ -57,15 +57,15 @@ fun NAACRecordsScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.surface,
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { CertificateService.generateInnovationReport(context, userName, vm.activities) },
-                containerColor = OrangePrimary,
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 icon = { Icon(Icons.Default.Add, null) },
                 text = { Text("DOWNLOAD PORTFOLIO") },
                 shape = RoundedCornerShape(16.dp)
@@ -76,21 +76,21 @@ fun NAACRecordsScreen(
             // ... (keep Header and Tabs from original code) ...
             
             // Header
-            Column(modifier = Modifier.padding(18.dp, 10.dp)) {
+            Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 10.dp)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    Text("Innovation Portfolio", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                    Icon(Icons.Default.Info, contentDescription = null, modifier = Modifier.size(16.dp), tint = TextSecondary)
+                    Text("Innovation Portfolio", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Black)
+                    Icon(Icons.Default.Info, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Text("Automated records for NAAC & NEP documentation", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("Automated records for NAAC & NEP documentation", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // Tabs (same as original)
             LazyRow(
                 modifier = Modifier.padding(vertical = 5.dp),
-                contentPadding = PaddingValues(horizontal = 14.dp),
+                contentPadding = PaddingValues(horizontal = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(tabs) { tab ->
@@ -100,16 +100,16 @@ fun NAACRecordsScreen(
                         onClick = { selectedTab = tab },
                         label = { Text(tab) },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = OrangePrimary,
-                            selectedLabelColor = Color.White,
-                            containerColor = Color.White,
-                            labelColor = TextSecondary
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                            labelColor = MaterialTheme.colorScheme.onSurfaceVariant
                         ),
                         border = FilterChipDefaults.filterChipBorder(
                             enabled = true,
                             selected = isSelected,
-                            borderColor = BorderColor,
-                            selectedBorderColor = OrangePrimary,
+                            borderColor = MaterialTheme.colorScheme.outlineVariant,
+                            selectedBorderColor = MaterialTheme.colorScheme.primary,
                             borderWidth = 1.dp
                         ),
                         shape = RoundedCornerShape(20.dp)
@@ -127,7 +127,7 @@ fun NAACRecordsScreen(
             }
 
             LazyColumn(
-                modifier = Modifier.padding(horizontal = 14.dp),
+                modifier = Modifier.padding(horizontal = 24.dp),
                 contentPadding = PaddingValues(bottom = 80.dp),
                 verticalArrangement = Arrangement.spacedBy(7.dp)
             ) {
@@ -136,13 +136,13 @@ fun NAACRecordsScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth().padding(vertical = 24.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color.White),
-                            border = BorderStroke(1.dp, BorderColor)
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                         ) {
                             Text("No activity records found for this category.", 
                                 modifier = Modifier.padding(32.dp).fillMaxWidth(),
                                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                                color = TextSecondary)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -152,7 +152,7 @@ fun NAACRecordsScreen(
                         title = activity.title,
                         date = activity.createdAt.split("T").firstOrNull() ?: activity.createdAt,
                         status = "Verified",
-                        statusColor = GreenSuccess
+                        statusColor = Color(0xFF4CAF50)
                     )
                 }
             }
@@ -165,21 +165,20 @@ fun RecordCard(title: String, date: String, status: String, statusColor: Color) 
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Box(modifier = Modifier.size(32.dp).background(BlueInfo, RoundedCornerShape(8.dp)), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.size(32.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(8.dp)), contentAlignment = Alignment.Center) {
                 Text("📄", fontSize = 14.sp)
             }
             Column(modifier = Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(date, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 9.sp)
+                Text(title, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text(date, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 9.sp)
             }
             Surface(
                 color = statusColor.copy(alpha = 0.1f),
