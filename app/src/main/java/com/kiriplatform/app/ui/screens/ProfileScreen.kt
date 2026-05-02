@@ -317,9 +317,9 @@ fun ProfileHeroSection(
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                     )
-                    if (!user.department.isNullOrEmpty()) {
+                    if (!user.department.isNullOrEmpty() || !user.college.isNullOrEmpty()) {
                         Text(
-                            user.department,
+                            text = listOfNotNull(user.department, user.college).joinToString(" • "),
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
                         )
