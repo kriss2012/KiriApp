@@ -7,9 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -170,8 +167,8 @@ fun ProfileContent(
             item {
                 FlowRow(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                    mainAxisSpacing = 8.dp,
-                    crossAxisSpacing = 8.dp
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     user.services.forEach { service ->
                         SuggestionChip(
