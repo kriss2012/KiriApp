@@ -35,3 +35,20 @@ val AmberSecondary = Color(0xFFFB8500)
 // Amoled
 val AmoledBlack = Color(0xFF000000)
 val AmoledSurface = Color(0xFF050505)
+
+// Notion-inspired Colors
+val NotionWhite = Color(0xFFFFFFFF)
+val NotionOffWhite = Color(0xFFF7F6F3)
+val NotionLightGrey = Color(0xFFEBECED)
+val NotionGrey = Color(0xFF91918E)
+val NotionDarkGrey = Color(0xFF37352F)
+val NotionBlack = Color(0xFF191711)
+val NotionBorder = Color(0xFFE9E9E7)
+val NotionSurface = Color(0xFFFFFFFF)
+val NotionBackground = Color(0xFFFFFFFF)
+
+// Accent Colors (Subtle Notion-style)
+val NotionBlue = Color(0xFF2383E2)
+val NotionRed = Color(0xFFFF5252)
+val NotionYellow = Color(0xFFFAD35E)
+val NotionGreen = Color(0xFF448361)
