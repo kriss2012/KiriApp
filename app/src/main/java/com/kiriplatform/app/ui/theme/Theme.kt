@@ -93,7 +93,7 @@ fun KiriAppTheme(
         // Force use of a safe Indication (IndicationNodeFactory) to prevent crash in Compose 1.7+
         // This bypasses the strict check for legacy indications while version skew is present.
         CompositionLocalProvider(
-            LocalIndication provides SafeIndication,
+            LocalIndication provides ripple(),
             content = content
         )
     }
