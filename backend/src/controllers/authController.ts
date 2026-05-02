@@ -5,7 +5,7 @@ import prisma from '../utils/prisma.js';
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, fullName, userCategory, phoneNumber } = req.body;
+    const { email, password, fullName, userCategory, phoneNumber, role } = req.body;
 
     // 0. Mandatory Field Validation
     if (!email || !password || !fullName) {
@@ -21,14 +21,22 @@ export const register = async (req: Request, res: Response) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user with optional StakeholderRole
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         fullName,
         userCategory: userCategory || 'STUDENT',
-        phoneNumber
+        phoneNumber,
+        stakeholderRoles: role ? {
+          create: {
+            roleName: role
+          }
+        } : undefined
+      },
+      include: {
+        stakeholderRoles: true
       }
     });
 
