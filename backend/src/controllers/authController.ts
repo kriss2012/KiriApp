@@ -30,20 +30,25 @@ export const register = async (req: Request, res: Response) => {
       'ALUMNI': 'ALUMNI'
     };
 
-    // Create user with optional StakeholderRole
+    const createData: any = {
+      email,
+      password: hashedPassword,
+      fullName,
+      userCategory: userCategory || (role ? categoryMapping[role] : 'STUDENT'),
+      phoneNumber,
+    };
+
+    if (role) {
+      createData.stakeholderRoles = {
+        create: {
+          roleName: role
+        }
+      };
+    }
+
+    // Create user
     const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        fullName,
-        userCategory: userCategory || (role ? categoryMapping[role] : 'STUDENT'),
-        phoneNumber,
-        stakeholderRoles: role ? {
-          create: {
-            roleName: role
-          }
-        } : undefined
-      },
+      data: createData,
       include: {
         stakeholderRoles: true
       }

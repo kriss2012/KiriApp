@@ -107,6 +107,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       department,
       college,
       year,
+      section,
       website,
       githubUrl,
       linkedInUrl,
@@ -134,18 +135,20 @@ export const updateProfile = async (req: Request, res: Response) => {
         department,
         college,
         year,
+        section,
         website,
         githubUrl,
         linkedInUrl,
         services,
-        userCategory: role ? categoryMapping[role] : undefined,
-        // Update stakeholder role if provided
-        stakeholderRoles: role ? {
-          deleteMany: {}, // Clear existing roles for simplicity in this version
-          create: {
-            roleName: role
+        ...(role ? {
+          userCategory: categoryMapping[role],
+          stakeholderRoles: {
+            deleteMany: {}, // Clear existing roles
+            create: {
+              roleName: role
+            }
           }
-        } : undefined
+        } : {})
       },
       // Explicit select — returns the same field set as getProfile
       select: {

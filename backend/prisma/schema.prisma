@@ -79,6 +79,14 @@ model User {
   phoneNumber      String?       @unique
   avatarUrl        String?
   bio              String?
+  department       String?
+  college          String?
+  year             String?
+  section          String?
+  website          String?
+  githubUrl        String?
+  linkedInUrl      String?
+  services         String[]      @default([])
   points           Int           @default(100)
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt

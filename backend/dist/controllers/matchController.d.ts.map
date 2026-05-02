@@ -1,1 +1,1 @@
-{"version":3,"file":"matchController.d.ts","sourceRoot":"","sources":["../../src/controllers/matchController.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAGjD,eAAO,MAAM,sBAAsB,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,4DA4CvE,CAAC"}
+{"version":3,"file":"matchController.d.ts","sourceRoot":"","sources":["../../src/controllers/matchController.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAGjD,eAAO,MAAM,sBAAsB,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,4DAoCvE,CAAC"}

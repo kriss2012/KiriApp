@@ -71,8 +71,8 @@ export const getConversations = async (req, res) => {
             },
             orderBy: { createdAt: 'desc' },
             include: {
-                sender: { select: { id: true, fullName: true, avatarUrl: true, role: true } },
-                receiver: { select: { id: true, fullName: true, avatarUrl: true, role: true } }
+                sender: { select: { id: true, fullName: true, avatarUrl: true, userCategory: true } },
+                receiver: { select: { id: true, fullName: true, avatarUrl: true, userCategory: true } }
             }
         });
         // Group by user pair
@@ -110,7 +110,7 @@ export const searchUsers = async (req, res) => {
                 ]
             },
             take: 10,
-            select: { id: true, fullName: true, avatarUrl: true, role: true }
+            select: { id: true, fullName: true, avatarUrl: true, userCategory: true }
         });
         res.json(users);
     }

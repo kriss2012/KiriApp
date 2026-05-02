@@ -84,8 +84,8 @@ export const getUserConnections = async (req, res) => {
                 ]
             },
             include: {
-                sender: { select: { id: true, fullName: true, avatarUrl: true, role: true } },
-                receiver: { select: { id: true, fullName: true, avatarUrl: true, role: true } }
+                sender: { select: { id: true, fullName: true, avatarUrl: true, userCategory: true } },
+                receiver: { select: { id: true, fullName: true, avatarUrl: true, userCategory: true } }
             }
         });
         res.status(200).json(connections);

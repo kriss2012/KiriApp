@@ -1,9 +1,9 @@
 import prisma from '../utils/prisma.js';
 export const getMarketTrends = async (req, res) => {
     try {
-        // Group pitches by category to see where the innovation is concentrated
+        // Group pitches by status to see where the innovation is concentrated
         const trends = await prisma.pitch.groupBy({
-            by: ['category'],
+            by: ['status'],
             _count: { id: true },
             _avg: { fundingGoal: true },
         });
@@ -18,16 +18,16 @@ export const getHighPotentialPitches = async (req, res) => {
         const pitches = await prisma.pitch.findMany({
             include: {
                 founder: {
-                    select: { fullName: true, avatarUrl: true, githubUrl: true, _count: { select: { activities: true } } }
+                    select: { fullName: true, avatarUrl: true }
                 },
                 _count: { select: { backers: true } }
             }
         });
-        // Strategy: Health Score = (Activities * 2) + (Backer Count * 3) + (Days since creation - weighted inversely)
+        // Strategy: Health Score based on Backer Count and creation recency
         const rankedPitches = pitches.map(p => {
-            const activityCount = p.founder._count.activities;
             const backerCount = p._count.backers;
-            const healthScore = Math.min(100, (activityCount * 5) + (backerCount * 10)); // Simplified for Demo 
+            const daysSinceCreation = Math.floor((Date.now() - new Date(p.createdAt).getTime()) / (1000 * 60 * 60 * 24));
+            const healthScore = Math.min(100, (backerCount * 10) + Math.max(0, 30 - daysSinceCreation));
             return {
                 ...p,
                 healthScore
@@ -41,13 +41,11 @@ export const getHighPotentialPitches = async (req, res) => {
 };
 export const getInnovationHeatmap = async (req, res) => {
     try {
+        // Return activity counts by user category
         const heatmap = await prisma.user.groupBy({
-            by: ['department'],
+            by: ['userCategory'],
             _count: {
                 id: true
-            },
-            where: {
-                activities: { some: {} }
             }
         });
         res.json(heatmap);
