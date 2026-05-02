@@ -65,12 +65,12 @@ fun ConnectionsScreen(
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = BgCream,
-                contentColor = OrangePrimary,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary,
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                        color = OrangePrimary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             ) {
@@ -86,7 +86,7 @@ fun ConnectionsScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 when (val state = uiState) {
                     is ConnectionsState.Loading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                     }
                     is ConnectionsState.Success -> {
                         val filteredList = when (selectedTab) {
@@ -99,8 +99,8 @@ fun ConnectionsScreen(
                         } else {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
                                 items(filteredList) { connection ->
                                     val otherUser = if (connection.senderId == userId) connection.receiver else connection.sender
@@ -138,7 +138,7 @@ fun ConnectionItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
@@ -150,22 +150,22 @@ fun ConnectionItem(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(CircleShape)
-                    .background(OrangePrimary.copy(alpha = 0.1f)),
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(user.fullName.take(1).uppercase(), color = OrangePrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(user.fullName.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(user.fullName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
-                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text(user.fullName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                Text(user.role, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             if (isRequest) {
                 Button(
                     onClick = onAccept,
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
                 ) {
                     Text("Accept", fontSize = 12.sp, fontWeight = FontWeight.Bold)
@@ -182,13 +182,13 @@ fun EmptyConnections(isRequest: Boolean, modifier: Modifier = Modifier) {
             Icons.Default.Person,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = TextSecondary.copy(alpha = 0.3f)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         )
         Spacer(Modifier.height(16.dp))
         Text(
             "No related data found",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

@@ -101,10 +101,10 @@ fun EditProfileScreen(
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -122,9 +122,9 @@ fun EditProfileScreen(
             EditField(label = "LinkedIn URL", value = linkedInUrl, onValueChange = { linkedInUrl = it })
             EditField(label = "Services (comma separated)", value = servicesStr, onValueChange = { servicesStr = it })
             
-            Divider(color = BorderColor.copy(alpha = 0.5f), thickness = 1.dp)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
             
-            EditField(label = "Role", value = role, onValueChange = { role = it })
+            EditField(label = "Role", value = role, onValueChange = { role = it }, readOnly = true)
             EditField(label = "Department", value = department, onValueChange = { department = it })
             EditField(label = "College", value = college, onValueChange = { college = it })
             EditField(label = "Year / Level", value = year, onValueChange = { year = it })
@@ -156,10 +156,10 @@ fun EditProfileScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 if (isSaving && uiState is ProfileState.Loading) {
-                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
                 } else {
                     Text("Save Changes", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
@@ -191,19 +191,23 @@ fun EditField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    readOnly: Boolean = false
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(label, style = MaterialTheme.typography.labelMedium, color = TextSecondary)
+        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = singleLine,
+            readOnly = readOnly,
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = OrangePrimary,
-                unfocusedBorderColor = BorderColor
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                disabledBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         )
     }

@@ -60,12 +60,12 @@ fun EventDetailsScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = TextPrimary
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
         Column(
             modifier = Modifier
@@ -102,17 +102,17 @@ fun EventDetailsScreen(
                 }
             }
 
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(24.dp)) {
                 // Type Badge
                 Surface(
-                    color = OrangeLight,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
                     shape = RoundedCornerShape(8.dp)
                 ) {
                     Text(
                         text = event.type ?: "GENERAL",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = OrangeDark,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -123,7 +123,7 @@ fun EventDetailsScreen(
                 Text(
                     text = event.title,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.ExtraBold
                 )
 
@@ -131,15 +131,15 @@ fun EventDetailsScreen(
 
                 // Date & Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.DateRange, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text(event.date, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+                    Text(event.date, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text(event.location, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+                    Text(event.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
 
                 Spacer(Modifier.height(16.dp))
@@ -148,23 +148,23 @@ fun EventDetailsScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
-                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Person, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Person, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = TextPrimary)
+                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                         }
                         if (!event.coordinatorPhone.isNullOrEmpty()) {
                             Spacer(Modifier.height(4.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Phone, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Phone, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text(event.coordinatorPhone ?: "", style = MaterialTheme.typography.bodySmall, color = BluePrimary)
+                                Text(event.coordinatorPhone ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
@@ -173,7 +173,7 @@ fun EventDetailsScreen(
                 if (!event.prize.isNullOrEmpty()) {
                     Spacer(Modifier.height(16.dp))
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)), // Keeping a success color for prizes
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Row(
@@ -193,12 +193,12 @@ fun EventDetailsScreen(
                 Spacer(Modifier.height(24.dp))
 
                 // Description
-                Text("About the Event", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = TextPrimary)
+                Text("About the Event", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = event.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 24.sp
                 )
 
@@ -217,13 +217,13 @@ fun EventDetailsScreen(
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
                 
@@ -231,7 +231,7 @@ fun EventDetailsScreen(
                     Text(
                         "Note: Clicking this will open an external registration form (e.g., Google Form).",
                         style = MaterialTheme.typography.labelSmall,
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
                     )
                 }

@@ -65,7 +65,7 @@ fun InnovationPitchesScreen(
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(vm.pitches) { pitch ->
@@ -136,7 +136,7 @@ fun PitchCard(pitch: PitchDto, onBack: () -> Unit) {
                 }
             }
             
-            Divider(modifier = Modifier.padding(vertical = 12.dp), color = BorderColor, thickness = 0.5.dp)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 0.5.dp)
             
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Pitched by ${pitch.founder?.fullName ?: "Unknown"}", style = MaterialTheme.typography.labelSmall, color = TextSecondary)

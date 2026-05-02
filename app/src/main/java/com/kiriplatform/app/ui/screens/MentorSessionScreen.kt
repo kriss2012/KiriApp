@@ -63,7 +63,7 @@ fun MentorSessionScreen(
             // Sessions List
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
+                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(3) { index ->
@@ -102,7 +102,7 @@ fun MentorSprintCard(mentorName: String, topic: String, status: String, time: St
                 }
             }
             
-            Divider(modifier = Modifier.padding(vertical = 16.dp), color = BorderColor, thickness = 0.5.dp)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 0.5.dp)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.DateRange, null, tint = TextSecondary, modifier = Modifier.size(16.dp))

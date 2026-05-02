@@ -51,7 +51,7 @@ fun SplashScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(MaterialTheme.colorScheme.background)
             .padding(22.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -71,14 +71,14 @@ fun SplashScreen(
             Text(
                 "KIRI PLATFORM",
                 style = MaterialTheme.typography.headlineLarge,
-                color = TextPrimary,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Black,
                 letterSpacing = (-1).sp
             )
             Text(
                 "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
@@ -88,27 +88,27 @@ fun SplashScreen(
 
         // Pulsing Badge
         Surface(
-            color = OrangeLight,
+            color = MaterialTheme.colorScheme.primaryContainer,
             shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, OrangePrimary),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
             modifier = Modifier.alpha(alpha.value)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .border(1.dp, OrangePrimary, RoundedCornerShape(20.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
                     .padding(horizontal = 14.dp, vertical = 5.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .size(6.dp)
-                        .background(OrangePrimary, RoundedCornerShape(50))
+                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
                 )
                 Spacer(Modifier.width(5.dp))
                 Text(
                     "Building the Startup Community of Bharat",
                     style = MaterialTheme.typography.labelSmall,
-                    color = OrangePrimary,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -119,11 +119,11 @@ fun SplashScreen(
         Text(
             text = buildAnnotatedString {
                 append("Where ")
-                withStyle(style = SpanStyle(color = OrangePrimary)) { append("Founders, Investors") }
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) { append("Founders, Investors") }
                 append(" & Mentors Connect")
             },
             style = MaterialTheme.typography.headlineMedium,
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             modifier = Modifier.alpha(alpha.value)
         )
@@ -133,7 +133,7 @@ fun SplashScreen(
         Text(
             "We bring together the most ambitious entrepreneurs to learn, collaborate and grow.",
             style = MaterialTheme.typography.bodySmall,
-            color = TextSecondary,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
             modifier = Modifier.alpha(alpha.value)
         )
@@ -157,13 +157,13 @@ fun SplashScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PurpleAccent)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
             ) {
                 Text(
                     "KIRI AI Launchpad →",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.ExtraBold,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -173,13 +173,13 @@ fun SplashScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.5.dp, BorderColor) // Using BorderStroke
+                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outlineVariant) // Using BorderStroke
             ) {
                 Text(
                     "Sign In",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

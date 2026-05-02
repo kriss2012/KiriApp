@@ -107,6 +107,7 @@ data class MatchSuggestionDto(
     @SerializedName("id") val _id: String? = null,
     @SerializedName("fullName") val _fullName: String? = null,
     @SerializedName("role") val _role: String? = null,
+    val userCategory: String? = null,
     val avatarUrl: String? = null,
     val skills: List<String>? = emptyList(),
     val college: String? = null,
@@ -115,7 +116,7 @@ data class MatchSuggestionDto(
 ) {
     val id: String get() = _id ?: ""
     val fullName: String get() = _fullName ?: "Kiri User"
-    val role: String get() = _role ?: "STUDENT"
+    val role: String get() = _role ?: userCategory ?: "STUDENT"
     val matchScore: Int get() = _matchScore ?: 0
 }
 
@@ -150,12 +151,13 @@ data class UserResponse(
     @SerializedName("id") val _id: String? = null,
     @SerializedName("fullName") val _fullName: String? = null,
     @SerializedName("role") val _role: String? = null,
+    val userCategory: String? = null,
     val avatarUrl: String? = null,
     val college: String? = null
 ) {
     val id: String get() = _id ?: ""
     val fullName: String get() = _fullName ?: "Kiri User"
-    val role: String get() = _role ?: "STUDENT"
+    val role: String get() = _role ?: userCategory ?: "STUDENT"
 }
 
 data class PitchCountDto(val backers: Int? = 0)
@@ -372,7 +374,7 @@ data class UserDto(
     val id: String get() = _id ?: ""
     val email: String get() = _email ?: ""
     val fullName: String get() = _fullName ?: "Kiri Member"
-    val role: String get() = _role ?: "STUDENT"
+    val role: String get() = _role ?: userCategory ?: "STUDENT"
     val canCreateEvents: Boolean get() = _canCreateEvents ?: false
     val pointsCount: Int get() = points ?: 0
 }

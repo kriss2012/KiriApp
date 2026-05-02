@@ -118,8 +118,8 @@ fun AIStatusChip(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(CircleShape)
-            .background(PurpleLight)
-            .border(0.5.dp, PurpleAccent, CircleShape)
+            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
+            .border(0.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f), CircleShape)
             .padding(horizontal = 11.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -127,13 +127,13 @@ fun AIStatusChip(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(5.dp)
                 .clip(CircleShape)
-                .background(PurpleAccent)
+                .background(MaterialTheme.colorScheme.primary)
         )
         Spacer(Modifier.width(5.dp))
         Text(
             text = "ASG AI Agent is ready",
             style = MaterialTheme.typography.labelSmall,
-            color = PurpleAccent,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 9.sp
         )
     }

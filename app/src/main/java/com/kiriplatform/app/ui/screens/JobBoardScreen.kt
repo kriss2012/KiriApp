@@ -45,18 +45,18 @@ fun JobBoardScreen(
     }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             @OptIn(ExperimentalMaterial3Api::class)
             TopAppBar(
                 title = { Text("Opportunity Board", fontWeight = FontWeight.Bold) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
         floatingActionButton = {
             // Show only for Founders, SPOCs, or Admins
             if (userRole != "STUDENT") {
-                FloatingActionButton(onClick = { /* TODO: Open Post Job Dialog */ }, containerColor = OrangePrimary, contentColor = Color.White) {
+                FloatingActionButton(onClick = { /* TODO: Open Post Job Dialog */ }, containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary) {
                     Icon(Icons.Default.Add, contentDescription = "Post Opportunity")
                 }
             }
@@ -65,14 +65,14 @@ fun JobBoardScreen(
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when (val state = uiState) {
                 is JobState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                 }
                 is JobState.Success -> {
                     JobBoardContent(state.jobs)
                 }
                 is JobState.Error -> {
                     Column(modifier = Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Text(state.message, color = MaterialTheme.colorScheme.error, fontSize = 14.sp)
                         Button(onClick = { viewModel.fetchJobs(context) }) {
                             Text("Retry")
                         }
@@ -88,7 +88,7 @@ fun JobBoardContent(jobs: List<JobDto>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 24.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
@@ -96,12 +96,13 @@ fun JobBoardContent(jobs: List<JobDto>) {
                 "Find Your Next Startup Role",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(vertical = 16.dp)
             )
         }
         if (jobs.isEmpty()) {
             item {
-                Text("No opportunities found", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("No opportunities found", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         } else {
             items(jobs) { job ->
@@ -117,26 +118,26 @@ fun JobCard(job: JobDto) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.BusinessCenter, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
+                Icon(Icons.Default.BusinessCenter, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(job.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text(job.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
             }
-            Text(job.poster?.fullName ?: "ASG Recruiter", style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+            Text(job.poster?.fullName ?: "ASG Recruiter", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             
             Spacer(modifier = Modifier.height(12.dp))
             
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = TextSecondary, modifier = Modifier.size(14.dp))
-                    Text(job.location ?: "Hybrid", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(14.dp))
+                    Text(job.location ?: "Hybrid", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Surface(color = OrangeLight, shape = RoundedCornerShape(6.dp)) {
-                    Text(job.type, modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold)
+                Surface(color = MaterialTheme.colorScheme.secondaryContainer, shape = RoundedCornerShape(6.dp)) {
+                    Text(job.type, modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSecondaryContainer, fontWeight = FontWeight.Bold)
                 }
             }
             
@@ -144,20 +145,20 @@ fun JobCard(job: JobDto) {
             
             ClickableUrlText(
                 text = job.description,
-                style = MaterialTheme.typography.bodySmall.copy(color = TextSecondary, lineHeight = 18.sp)
+                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 18.sp)
             )
             
-            Divider(modifier = Modifier.padding(vertical = 12.dp), color = BorderColor)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant)
             
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text("Competitive", style = MaterialTheme.typography.titleSmall, color = TextPrimary, fontWeight = FontWeight.Bold)
+                Text("Competitive", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                 Button(
                     onClick = { /* Apply */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
                     modifier = Modifier.height(32.dp)
                 ) {
-                    Text("Apply Now", fontSize = 12.sp, color = Color.White)
+                    Text("Apply Now", fontSize = 12.sp, color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }

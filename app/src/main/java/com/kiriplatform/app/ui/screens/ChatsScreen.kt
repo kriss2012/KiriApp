@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -44,11 +45,11 @@ fun ChatsScreen(
     }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             Column(
                 modifier = Modifier
-                    .background(Color.White)
+                    .background(MaterialTheme.colorScheme.surface)
                     .statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 12.dp)
             ) {
@@ -56,7 +57,7 @@ fun ChatsScreen(
                     text = "Messages",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Black,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 
@@ -64,18 +65,18 @@ fun ChatsScreen(
                 OutlinedTextField(
                     value = query,
                     onValueChange = { viewModel.searchUsers(it) },
-                    placeholder = { Text("Search community agents or people...", color = TextSecondary.copy(alpha = 0.5f), fontSize = 14.sp) },
+                    placeholder = { Text("Search community agents or people...", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f), fontSize = 14.sp) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
                     shape = RoundedCornerShape(12.dp),
-                    leadingIcon = { Icon(Icons.Default.Search, null, tint = OrangePrimary) },
+                    leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.primary) },
                     trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { viewModel.searchUsers("") }) { Icon(Icons.Default.Close, null) } },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = BgCream.copy(alpha = 0.5f),
-                        unfocusedContainerColor = BgCream.copy(alpha = 0.5f),
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                         unfocusedBorderColor = Color.Transparent,
-                        focusedBorderColor = OrangePrimary.copy(alpha = 0.3f)
+                        focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
                     ),
                     singleLine = true
                 )
@@ -92,7 +93,7 @@ fun ChatsScreen(
         ) {
             // Search Results Override
             if (query.isNotEmpty()) {
-                item { Text("Search Results", style = MaterialTheme.typography.labelMedium, color = TextSecondary, modifier = Modifier.padding(bottom = 4.dp)) }
+                item { Text("Search Results", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp)) }
                 items(searchResults) { user ->
                     ChatListItem(
                         name = user.fullName,
@@ -104,12 +105,12 @@ fun ChatsScreen(
                     )
                 }
                 if (searchResults.isEmpty() && !isLoading) {
-                    item { Text("No results for '$query'", modifier = Modifier.padding(16.dp), color = TextSecondary) }
+                    item { Text("No results for '$query'", modifier = Modifier.padding(16.dp), color = MaterialTheme.colorScheme.onSurfaceVariant) }
                 }
             } else {
                 // PINNED: Kiri AI
                 item {
-                    Text("Pinned Assistant", style = MaterialTheme.typography.labelMedium, color = TextSecondary, modifier = Modifier.padding(bottom = 4.dp))
+                    Text("Pinned Assistant", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
                 }
                 item {
                     ChatListItem(
@@ -126,7 +127,7 @@ fun ChatsScreen(
                 if (conversations.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("Recent Conversations", style = MaterialTheme.typography.labelMedium, color = TextSecondary, modifier = Modifier.padding(bottom = 4.dp))
+                        Text("Recent Conversations", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
                     }
                     items(conversations) { convo ->
                         val otherUser = convo.otherUser
@@ -146,9 +147,9 @@ fun ChatsScreen(
                     item {
                         Box(modifier = Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(Icons.Default.ChatBubbleOutline, null, modifier = Modifier.size(48.dp), tint = TextSecondary.copy(alpha = 0.3f))
+                                Icon(Icons.Default.ChatBubbleOutline, null, modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f))
                                 Spacer(modifier = Modifier.height(12.dp))
-                                Text("No peer chats yet.\nStart by discovering community members!", color = TextSecondary, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                Text("No peer chats yet.\nStart by discovering community members!", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                             }
                         }
                     }
@@ -169,9 +170,9 @@ fun ChatListItem(
 ) {
     Surface(
         onClick = onClick,
-        color = Color.White,
+        color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(16.dp),
-        shadowElevation = 0.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -185,18 +186,18 @@ fun ChatListItem(
                 Surface(
                     modifier = Modifier.size(56.dp),
                     shape = CircleShape,
-                    color = if (isAgent) OrangePrimary.copy(alpha = 0.1f) else BgCream
+                    color = if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant
                 ) {
                     if (isAgent) {
                         Icon(
                             Icons.Default.SmartToy,
                             contentDescription = null,
                             modifier = Modifier.padding(12.dp),
-                            tint = OrangePrimary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     } else {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(name.take(1).uppercase(), color = OrangePrimary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                            Text(name.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                         }
                     }
                 }
@@ -206,7 +207,7 @@ fun ChatListItem(
                             .align(Alignment.BottomEnd)
                             .size(14.dp)
                             .clip(CircleShape)
-                            .background(Color.White)
+                            .background(MaterialTheme.colorScheme.surface)
                             .padding(2.dp)
                     ) {
                         Box(modifier = Modifier.fillMaxSize().clip(CircleShape).background(Color(0xFF4CAF50)))
@@ -233,14 +234,14 @@ fun ChatListItem(
                     Text(
                         text = time,
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isAgent) OrangePrimary else TextSecondary.copy(alpha = 0.6f)
+                        color = if (isAgent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     )
                 }
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = lastMsg,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -249,12 +250,12 @@ fun ChatListItem(
             if (unreadCount > 0) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Surface(
-                    color = OrangePrimary,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = CircleShape,
                     modifier = Modifier.size(20.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Text(unreadCount.toString(), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Black)
+                        Text(unreadCount.toString(), color = MaterialTheme.colorScheme.onPrimary, fontSize = 10.sp, fontWeight = FontWeight.Black)
                     }
                 }
             }

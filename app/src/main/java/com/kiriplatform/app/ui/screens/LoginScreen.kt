@@ -35,11 +35,11 @@ fun LoginScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(containerColor = BgCream) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(innerPadding)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -91,7 +91,12 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (errorMessage != null) {
-                Text(text = errorMessage ?: "", color = Color.Red, style = MaterialTheme.typography.labelSmall)
+                Text(
+                    text = errorMessage ?: "", 
+                    color = MaterialTheme.colorScheme.error, 
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))

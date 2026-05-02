@@ -45,25 +45,25 @@ fun LiveInputScreen(
                 }
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(20.dp)
+                .padding(24.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Text(
                 "Update Your Digital Persona",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Black,
-                color = TextPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 "Share what's happening. The AI will analyze this to suggest new resources and connections.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(top = 4.dp)
             )
 
@@ -82,8 +82,8 @@ fun LiveInputScreen(
                         onClick = { selectedContext = key },
                         label = { Text(label) },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = OrangePrimary,
-                            selectedLabelColor = Color.White
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary
                         )
                     )
                 }
@@ -97,7 +97,11 @@ fun LiveInputScreen(
                 label = { Text("Share your thoughts...") },
                 placeholder = { Text("Today I successfully integrated the API but I'm struggling with the UI layout...") },
                 modifier = Modifier.fillMaxWidth().height(200.dp),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                )
             )
 
             Spacer(Modifier.height(24.dp))
@@ -106,9 +110,9 @@ fun LiveInputScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                MediaInputButton(Icons.Default.Mic, "Voice", BluePrimary)
-                MediaInputButton(Icons.Default.Image, "Image", OrangePrimary)
-                MediaInputButton(Icons.Default.VideoCall, "Video", Color(0xFFE91E63))
+                MediaInputButton(Icons.Default.Mic, "Voice", MaterialTheme.colorScheme.primary)
+                MediaInputButton(Icons.Default.Image, "Image", MaterialTheme.colorScheme.secondary)
+                MediaInputButton(Icons.Default.VideoCall, "Video", MaterialTheme.colorScheme.tertiary)
             }
 
             Spacer(Modifier.height(40.dp))
@@ -117,7 +121,7 @@ fun LiveInputScreen(
                 onClick = { /* Submit to Backend */ },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.Psychology, null)
@@ -146,7 +150,7 @@ fun MediaInputButton(icon: ImageVector, label: String, color: Color) {
             }
         }
         Spacer(Modifier.height(8.dp))
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

@@ -193,7 +193,7 @@ fun PublicProfileScreen(
                             DetailItem(androidx.compose.material.icons.Icons.Default.Phone, "Phone", u.phoneNumber ?: "Not provided")
                             
                             if (u.website != null) {
-                                Divider(Modifier.padding(vertical = 12.dp), color = BorderColor.copy(alpha = 0.5f))
+                                HorizontalDivider(Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                                 DetailItem(androidx.compose.material.icons.Icons.Default.Language, "Website", u.website, isLink = true)
                             }
                         }
