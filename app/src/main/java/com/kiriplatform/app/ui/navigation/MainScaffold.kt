@@ -4,8 +4,12 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -136,19 +140,19 @@ fun MainScaffold(
 fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
     Surface(
         modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .height(64.dp)
-            .wrapContentWidth()
-            .glassmorphism(cornerRadius = 32.dp, alpha = 0.85f),
-        shape = RoundedCornerShape(32.dp),
-        color = Color.Transparent,
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f))
+            .padding(horizontal = 48.dp) // Narrower width for icon-only nav
+            .height(56.dp)
+            .wrapContentWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 2.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 12.dp)
                 .fillMaxHeight(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             BottomNavItems.forEach { screen ->
@@ -178,58 +182,38 @@ fun NavigationTab(
     selected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor by animateColorAsState(
-        targetValue = if (selected) OrangePrimary.copy(alpha = 0.15f) else Color.Transparent,
-        animationSpec = spring(stiffness = Spring.StiffnessLow),
-        label = "tabBackground"
-    )
-    
     val iconColor by animateColorAsState(
-        targetValue = if (selected) OrangePrimary else TextSecondary.copy(alpha = 0.7f),
+        targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
         label = "iconColor"
     )
 
-    Surface(
-        onClick = onClick,
-        color = backgroundColor,
-        shape = RoundedCornerShape(24.dp),
+    Box(
         modifier = Modifier
-            .height(48.dp)
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
+            .size(44.dp)
+            .clip(CircleShape)
+            .clickable(onClick = onClick)
+            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.08f) else Color.Transparent),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            if (screen.icon != null) {
-                Icon(
-                    imageVector = screen.icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = iconColor
-                )
-            }
-            
-            AnimatedVisibility(
-                visible = selected,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
-            ) {
-                Text(
-                    text = screen.title,
-                    modifier = Modifier.padding(start = 8.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = OrangePrimary,
-                    maxLines = 1
-                )
-            }
+        if (screen.icon != null) {
+            Icon(
+                imageVector = screen.icon,
+                contentDescription = screen.title,
+                modifier = Modifier.size(24.dp),
+                tint = iconColor
+            )
+        }
+        
+        // Notion-style subtle dot indicator for selected state
+        if (selected) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 6.dp)
+                    .size(4.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }
