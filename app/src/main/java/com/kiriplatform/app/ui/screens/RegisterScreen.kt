@@ -63,10 +63,10 @@ fun RegisterScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Student Onboarding", fontWeight = FontWeight.Black) },
+                title = { Text("Student Onboarding", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black) },
                 navigationIcon = {
                     IconButton(onClick = { 
                         if (currentStep > 1) currentStep-- else onBack()
@@ -82,10 +82,11 @@ fun RegisterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(24.dp)
+                .padding(horizontal = 24.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(Modifier.height(24.dp))
             // Step Indicator
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -93,11 +94,11 @@ fun RegisterScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 StepCircle(1, currentStep)
-                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 1) OrangePrimary else Color.LightGray)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
                 StepCircle(2, currentStep)
-                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 2) OrangePrimary else Color.LightGray)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 2) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
                 StepCircle(3, currentStep)
-                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 3) OrangePrimary else Color.LightGray)
+                HorizontalDivider(modifier = Modifier.weight(1f), color = if (currentStep > 3) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
                 StepCircle(4, currentStep)
             }
             
@@ -138,7 +139,7 @@ fun RegisterScreen(
             Spacer(Modifier.height(24.dp))
 
             if (errorMessage != null) {
-                Text(errorMessage ?: "", color = Color.Red, style = MaterialTheme.typography.labelSmall)
+                Text(errorMessage ?: "", color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelSmall)
                 Spacer(Modifier.height(8.dp))
             }
 
@@ -248,15 +249,19 @@ fun RegisterScreen(
                 },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ),
                 enabled = !isLoading
             ) {
                 if (isLoading) {
-                    CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(24.dp))
                 } else {
                     Text(if (currentStep == 4) "Finalize Account" else "Next Step →", fontWeight = FontWeight.Bold)
                 }
             }
+            Spacer(Modifier.height(24.dp))
         }
     }
 }
@@ -270,13 +275,13 @@ fun StepCircle(step: Int, currentStep: Int) {
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(if (isCompleted || isActive) OrangePrimary else Color.LightGray),
+            .background(if (isCompleted || isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
         contentAlignment = Alignment.Center
     ) {
         if (isCompleted) {
-            Icon(Icons.Default.Check, null, tint = Color.White, modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(16.dp))
         } else {
-            Text(step.toString(), color = if (isActive) Color.White else Color.DarkGray, fontWeight = FontWeight.Bold)
+            Text(step.toString(), color = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -289,14 +294,14 @@ fun AccountStep(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
-        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
-        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
         var passVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             password, onPasswordChange, 
             label = { Text("Password *") }, 
             modifier = Modifier.fillMaxWidth(), 
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(16.dp),
             visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = { passVisible = !passVisible }) {
@@ -320,17 +325,21 @@ fun RoleStep(
         roles.forEach { (key, label) ->
             Card(
                 modifier = Modifier.fillMaxWidth().clickable { onRoleChange(key) },
-                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) OrangePrimary.copy(alpha = 0.1f) else Color.White),
-                border = androidx.compose.foundation.BorderStroke(2.dp, if (selectedRole == key) OrangePrimary else Color.Transparent)
+                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surface),
+                border = androidx.compose.foundation.BorderStroke(2.dp, if (selectedRole == key) MaterialTheme.colorScheme.primary else Color.Transparent)
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(selectedRole == key, onClick = { onRoleChange(key) })
+                    RadioButton(
+                        selected = selectedRole == key,
+                        onClick = { onRoleChange(key) },
+                        colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
+                    )
                     Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
                 }
             }
         }
         if (selectedRole != "STUDENT") {
-            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
         }
     }
 }
@@ -351,11 +360,11 @@ fun DetailStep(
         Text("Professional Identity", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
         
         if (role == "STUDENT") {
-            OutlinedTextField(rollNumber, onRollChange, label = { Text("Roll Number / PRN") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+            OutlinedTextField(rollNumber, onRollChange, label = { Text("Roll Number / PRN") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
             
             var expanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(expanded, { expanded = !expanded }) {
-                OutlinedTextField(college, {}, readOnly = true, label = { Text("Institution") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) }, modifier = Modifier.fillMaxWidth().menuAnchor(), shape = RoundedCornerShape(12.dp))
+                OutlinedTextField(college, {}, readOnly = true, label = { Text("Institution") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) }, modifier = Modifier.fillMaxWidth().menuAnchor(), shape = RoundedCornerShape(16.dp))
                 ExposedDropdownMenu(expanded, { expanded = false }) {
                     listOf("GH Raisoni Jalgaon", "GCOE Jalgaon", "SSBT Bambhori", "KBCNMU", "Other").forEach {
                         DropdownMenuItem(text = { Text(it) }, onClick = { onCollegeChange(it); expanded = false })
@@ -364,18 +373,18 @@ fun DetailStep(
             }
             
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(year, onYearChange, label = { Text("Year") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(12.dp))
-                OutlinedTextField(section, onSectionChange, label = { Text("Section") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(12.dp))
+                OutlinedTextField(year, onYearChange, label = { Text("Year") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(section, onSectionChange, label = { Text("Section") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp))
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = OrangePrimary))
+                Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary))
                 Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium)
             }
         }
         
-        OutlinedTextField(department, onDeptChange, label = { Text("Department *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
-        OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp))
+        OutlinedTextField(department, onDeptChange, label = { Text("Department *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+        OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
     }
 }
 
@@ -388,7 +397,7 @@ fun PersonaStep(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
-        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         
         OutlinedTextField(
             value = bio,
@@ -396,7 +405,7 @@ fun PersonaStep(
             label = { Text("Short Bio / Intent") },
             placeholder = { Text("e.g. Building an EdTech startup for rural students...") },
             modifier = Modifier.fillMaxWidth().height(120.dp),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(16.dp)
         )
 
         OutlinedTextField(
@@ -404,7 +413,7 @@ fun PersonaStep(
             onValueChange = onSkillsChange,
             label = { Text(if (role == "STUDENT") "Skills (React, Python, etc.)" else "Services Provided") },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(16.dp)
         )
 
         if (role != "STUDENT") {
@@ -413,7 +422,7 @@ fun PersonaStep(
                 onValueChange = onExpertiseChange,
                 label = { Text("Primary Expertise (Fintech, AI, etc.)") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(16.dp)
             )
         }
     }
