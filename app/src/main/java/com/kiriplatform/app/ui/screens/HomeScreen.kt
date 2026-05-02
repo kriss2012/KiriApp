@@ -297,17 +297,40 @@ fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(24.dp, 16.dp, 24.dp, 0.dp),
+            .padding(horizontal = 24.dp, vertical = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column {
-            Text("KIRI", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onBackground, letterSpacing = 2.sp)
-            Text("PLATFORM", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 3.sp, fontWeight = FontWeight.Bold)
+            Text(
+                "KIRI",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                        )
+                    )
+                ),
+                fontWeight = FontWeight.Black,
+                letterSpacing = 2.sp
+            )
+            Text(
+                "PLATFORM",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
+                letterSpacing = 3.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            IconButton(onClick = onNavigateToNotifications) {
-                KiriIconBadge(icon = "🔔", backgroundColor = MaterialTheme.colorScheme.surfaceContainer)
+        Surface(
+            onClick = onNavigateToNotifications,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = RoundedCornerShape(12.dp),
+            modifier = Modifier.size(40.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text("🔔", fontSize = 16.sp)
             }
         }
     }
@@ -317,17 +340,28 @@ fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
 fun GreetingSection(userName: String?) {
     val safeName = userName ?: "Innovator"
     val displayName = safeName.split(" ").firstOrNull() ?: safeName
-    Column(modifier = Modifier.padding(24.dp, 24.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)) {
         val calendar = java.util.Calendar.getInstance()
         val hour = calendar.get(java.util.Calendar.HOUR_OF_DAY)
         val greeting = when (hour) {
-            in 0..11 -> "Welcome back, 🌅"
-            in 12..16 -> "Active now, ☀️"
-            else -> "Planning ahead, 🌙"
+            in 0..11 -> "Good Morning,"
+            in 12..16 -> "Good Afternoon,"
+            else -> "Good Evening,"
         }
-        Text(greeting, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
-        Text(displayName, style = MaterialTheme.typography.displaySmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black, fontSize = 36.sp)
-        Spacer(Modifier.height(12.dp))
+        Text(
+            greeting,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text(
+            displayName,
+            style = MaterialTheme.typography.displaySmall,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.Black,
+            fontSize = 32.sp
+        )
+        Spacer(Modifier.height(16.dp))
         AIStatusChip()
     }
 }
