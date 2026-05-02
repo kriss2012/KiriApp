@@ -39,14 +39,38 @@ enum class AppTheme(
     AMBER(
         lightScheme = lightColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = BgCream),
         darkScheme = darkColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = Color(0xFF1F1A0D))
+    ),
+    NOTION(
+        lightScheme = lightColorScheme(
+            primary = NotionBlack,
+            secondary = NotionBlue,
+            background = NotionBackground,
+            surface = NotionSurface,
+            onPrimary = NotionWhite,
+            onSecondary = NotionWhite,
+            onBackground = NotionBlack,
+            onSurface = NotionBlack,
+            outlineVariant = NotionBorder
+        ),
+        darkScheme = darkColorScheme(
+            primary = NotionWhite,
+            secondary = NotionBlue,
+            background = Color(0xFF191919),
+            surface = Color(0xFF202020),
+            onPrimary = NotionBlack,
+            onSecondary = NotionWhite,
+            onBackground = NotionWhite,
+            onSurface = NotionWhite,
+            outlineVariant = Color(0xFF2F2F2F)
+        )
     )
 }
 
 fun ColorScheme.toAmoled(): ColorScheme {
     return this.copy(
         background = AmoledBlack,
-        surface = AmoledSurface,
-        surfaceContainer = AmoledSurface
+        surface = AmoledBlack,
+        surfaceContainer = AmoledBlack
     )
 }
 
@@ -62,7 +86,7 @@ private object SafeIndication : IndicationNodeFactory {
 @Composable
 fun KiriAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    appTheme: AppTheme = AppTheme.PURPLE,
+    appTheme: AppTheme = AppTheme.NOTION,
     isAmoledTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
