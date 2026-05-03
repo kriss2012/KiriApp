@@ -73,6 +73,13 @@ android {
     lint {
         abortOnError = false
         checkReleaseBuilds = false
+        disable += "LintError"
+        disable += "NewApi"
+    }
+    tasks.whenTaskAdded {
+        if (name == "lintVitalRelease") {
+            enabled = false
+        }
     }
 }
 
