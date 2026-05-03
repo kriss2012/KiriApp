@@ -166,9 +166,9 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionTintLavender,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -177,19 +177,19 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("KIRI AI INTERNSHIP", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), letterSpacing = 1.sp)
-                    Text("Intelligence Progress", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                    Text("KIRI AI INTERNSHIP", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple800.copy(alpha = 0.5f), letterSpacing = 1.sp)
+                    Text("Intelligence Progress", style = MaterialTheme.typography.titleMedium, color = NotionBrandPurple800, fontWeight = FontWeight.Bold)
                 }
                 Surface(
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                    shape = RoundedCornerShape(6.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                    color = NotionPrimary.copy(alpha = 0.1f),
+                    shape = MaterialTheme.shapes.small, // 6dp
+                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
                 ) {
                     Text(
                         onboarding.lmsStatus.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = NotionPrimary,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -201,14 +201,14 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
                 Text(
                     "$completedCount / 7",
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = NotionBrandPurple800,
                     fontWeight = FontWeight.Bold
                 )
                 LinearProgressIndicator(
                     progress = { completedCount / 7f },
-                    modifier = Modifier.weight(1f).height(8.dp).clip(RoundedCornerShape(4.dp)),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    modifier = Modifier.weight(1f).height(8.dp).clip(CircleShape),
+                    color = NotionPrimary,
+                    trackColor = NotionBrandPurple300.copy(alpha = 0.5f),
                     strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
                 )
             }
@@ -217,7 +217,7 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
             Text(
                 "Continue your journey to unlock Kiri Certification.",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                color = NotionBrandPurple800.copy(alpha = 0.6f)
             )
         }
     }
@@ -230,20 +230,20 @@ fun InnovationHubCard(onNavigateToHub: () -> Unit) {
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickable { onNavigateToHub() },
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionTintPeach,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("KIRI ECOSYSTEM", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), letterSpacing = 1.sp)
-                Text("Hub Dashboard", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
-                Text("Marketplace, Matchmaker & AI Services.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                Text("KIRI ECOSYSTEM", style = MaterialTheme.typography.labelSmall, color = NotionBrandOrangeDeep.copy(alpha = 0.4f), letterSpacing = 1.sp)
+                Text("Hub Dashboard", style = MaterialTheme.typography.titleMedium, color = NotionBrandOrangeDeep, fontWeight = FontWeight.Bold)
+                Text("Marketplace, Matchmaker & AI Services.", style = MaterialTheme.typography.bodySmall, color = NotionBrandOrangeDeep.copy(alpha = 0.6f))
             }
-            KiriIconBadge(icon = "⚡", backgroundColor = MaterialTheme.colorScheme.surface)
+            KiriIconBadge(icon = "⚡", backgroundColor = NotionCanvas)
         }
     }
 }
@@ -254,9 +254,9 @@ fun InnovationProgressCard(points: Int) {
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionSurface,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
@@ -270,9 +270,9 @@ fun InnovationProgressCard(points: Int) {
                 Text("Neural Tier 1", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 LinearProgressIndicator(
                     progress = { (points % 1000) / 1000f },
-                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)).padding(vertical = 4.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape).padding(vertical = 4.dp),
+                    color = NotionPrimary,
+                    trackColor = NotionHairlineStrong.copy(alpha = 0.5f)
                 )
             }
             Column(horizontalAlignment = Alignment.End) {
@@ -304,7 +304,7 @@ fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
             onClick = onNavigateToNotifications,
             modifier = Modifier
                 .size(40.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                .border(1.dp, NotionHairline, MaterialTheme.shapes.medium)
         ) {
             Icon(
                 imageVector = Icons.Default.Notifications,
@@ -336,9 +336,9 @@ fun GreetingSection(userName: String?) {
         )
         Text(
             displayName,
-            style = MaterialTheme.typography.headlineLarge,
+            style = MaterialTheme.typography.displaySmall,
             color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(Modifier.height(16.dp))
         AIStatusChip()
@@ -352,8 +352,8 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
             .padding(horizontal = 24.dp, vertical = 12.dp)
             .fillMaxWidth()
             .clickable { onNavigateToSearch() },
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.primary, // Notion-style "callout" but with primary color for emphasis
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionPrimary,
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
@@ -364,20 +364,20 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
                 Text(
                     "INTELLIGENT NETWORK",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                    color = NotionOnPrimary.copy(alpha = 0.7f),
                     letterSpacing = 1.sp
                 )
                 Text(
                     "Connect with builders and creators.",
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = NotionOnPrimary,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(Modifier.height(12.dp))
                 Text(
                     "Discover Nodes →",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = NotionOnPrimary,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -388,9 +388,9 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
 @Composable
 fun RepositoriesSection(onNavigateToRepository: () -> Unit) {
     val repos = listOf(
-        RepoItem("🎬", "Creators", "0", MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
-        RepoItem("🏆", "Engineers", "0", MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
-        RepoItem("🎯", "Founders", "0", MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+        RepoItem("🎬", "Creators", "0", NotionTintSky),
+        RepoItem("🏆", "Engineers", "0", NotionTintMint),
+        RepoItem("🎯", "Founders", "0", NotionTintPeach)
     )
 
     Column {
@@ -413,9 +413,9 @@ fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
             .width(110.dp)
             .height(100.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = item.color,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Column(
             modifier = Modifier
@@ -424,12 +424,12 @@ fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(item.icon, fontSize = 20.sp)
+            Text(item.icon, fontSize = 24.sp)
             Spacer(Modifier.height(8.dp))
             Text(
                 item.name,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = NotionCharcoal,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
