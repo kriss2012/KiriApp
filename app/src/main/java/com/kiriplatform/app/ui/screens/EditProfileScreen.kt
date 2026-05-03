@@ -124,7 +124,44 @@ fun EditProfileScreen(
             
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
             
-            EditField(label = "Role", value = role, onValueChange = { role = it }, readOnly = true)
+            val roles = listOf("STUDENT", "FOUNDER", "MENTOR", "SPOC")
+            var expanded by remember { mutableStateOf(false) }
+
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Role", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
+                    OutlinedTextField(
+                        value = role,
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                        modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+                        )
+                    )
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        roles.forEach { selectionOption ->
+                            DropdownMenuItem(
+                                text = { Text(selectionOption) },
+                                onClick = {
+                                    role = selectionOption
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+
             EditField(label = "Department", value = department, onValueChange = { department = it })
             EditField(label = "College", value = college, onValueChange = { college = it })
             EditField(label = "Year / Level", value = year, onValueChange = { year = it })

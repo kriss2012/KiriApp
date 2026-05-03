@@ -54,14 +54,14 @@ fun InnovationHubScreen(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(1.dp, NotionHairline),
-                color = NotionCanvas
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                color = MaterialTheme.colorScheme.surface
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     Text(
                         "KIRI INTELLIGENCE LAYER",
                         style = MaterialTheme.typography.labelSmall,
-                        color = NotionPrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         letterSpacing = 2.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -69,14 +69,14 @@ fun InnovationHubScreen(
                     Text(
                         "Ecosystem Hub",
                         style = MaterialTheme.typography.headlineLarge,
-                        color = NotionInk,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
                         "Scaling the Innovation Economy with AI.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = NotionCharcoal.copy(alpha = 0.6f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -118,8 +118,8 @@ fun HubCard(item: HubItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
         onClick = onClick,
         modifier = modifier.height(160.dp),
         shape = MaterialTheme.shapes.medium, // 8dp
-        color = NotionCanvas,
-        border = BorderStroke(1.dp, NotionHairline)
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp).fillMaxSize(),
@@ -129,11 +129,11 @@ fun HubCard(item: HubItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
                 modifier = Modifier
                     .size(40.dp)
                     .clip(MaterialTheme.shapes.small) // 6dp
-                    .background(NotionCanvas)
-                    .border(1.dp, NotionHairline, MaterialTheme.shapes.small),
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(item.icon, null, tint = NotionInk, modifier = Modifier.size(20.dp))
+                Icon(item.icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             }
             
             Column {
@@ -141,12 +141,12 @@ fun HubCard(item: HubItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
                     item.title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = NotionInk
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     item.description,
                     style = MaterialTheme.typography.labelSmall,
-                    color = NotionSteel,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 14.sp
                 )
             }

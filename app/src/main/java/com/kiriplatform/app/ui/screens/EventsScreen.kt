@@ -118,16 +118,17 @@ fun EventsScreen(
                     val isSelected = selectedTab == tab
                     Surface(
                         modifier = Modifier.clickable { selectedTab = tab },
-                        shape = MaterialTheme.shapes.medium, // 8dp
-                        color = if (isSelected) NotionInkDeep else NotionCanvas,
-                        border = if (isSelected) null else BorderStroke(1.dp, NotionHairline)
+                        shape = RoundedCornerShape(8.dp),
+                        color = if (isSelected) NotionInkDeep else MaterialTheme.colorScheme.surface,
+                        border = if (isSelected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                     ) {
                         Text(
-                            text = tab,
+                            text = tab.uppercase(),
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = if (isSelected) NotionOnDark else NotionSteel,
-                            fontWeight = FontWeight.Medium
+                            style = MaterialTheme.typography.labelSmall,
+                            color = if (isSelected) NotionOnDark else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 0.5.sp
                         )
                     }
                 }
@@ -220,9 +221,9 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
     Surface(
         onClick = onDetailsClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large, // 12dp
-        color = NotionCanvas,
-        border = BorderStroke(1.dp, NotionHairline)
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column {
             if (!event.imageUrl.isNullOrEmpty()) {
@@ -232,7 +233,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(160.dp)
-                        .clip(MaterialTheme.shapes.large),
+                        .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
                     contentScale = ContentScale.Crop
                 )
             }
@@ -244,7 +245,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                 ) {
                     Surface(
                         color = NotionTintLavender,
-                        shape = MaterialTheme.shapes.small, // 6dp
+                        shape = RoundedCornerShape(4.dp),
                         border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))
                     ) {
                         Text(
@@ -261,7 +262,8 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                         "$day ${month.uppercase()}",
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionSteel,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                 }
                 
@@ -285,7 +287,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                 
                 Spacer(Modifier.height(16.dp))
                 
-                HorizontalDivider(color = NotionHairline)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 
                 Spacer(Modifier.height(16.dp))
                 
@@ -295,16 +297,17 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("Prize:", style = MaterialTheme.typography.labelSmall, color = NotionSteel)
+                        Text("PRIZE:", style = MaterialTheme.typography.labelSmall, color = NotionSteel, fontWeight = FontWeight.Bold, letterSpacing = 0.5.sp)
                         Text(prize, style = MaterialTheme.typography.labelSmall, color = NotionPrimary, fontWeight = FontWeight.Bold)
                     }
                     
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
-                            "View Details",
+                            "VIEW DETAILS",
                             style = MaterialTheme.typography.labelSmall,
                             color = NotionInk,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 0.5.sp
                         )
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,

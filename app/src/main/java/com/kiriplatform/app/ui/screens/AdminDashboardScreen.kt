@@ -51,23 +51,23 @@ fun AdminDashboardScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text(collegeName.uppercase(), style = MaterialTheme.typography.labelSmall, color = OrangePrimary, letterSpacing = 2.sp)
-                Text("Institutional Panel", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Monitoring Innovation Records", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text(collegeName.uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                Text("Institutional Panel", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Monitoring Innovation Records", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // Stats row (Simulated)
             Row(modifier = Modifier.padding(horizontal = 24.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatBox("Total Students", "142", BluePrimary)
-                StatBox("Pitches", "12", GreenSuccess)
+                StatBox("Total Students", "142", MaterialTheme.colorScheme.primary)
+                StatBox("Pitches", "12", NotionSuccess)
             }
 
             Spacer(Modifier.height(16.dp))
@@ -93,11 +93,11 @@ fun StatBox(label: String, value: String, color: Color) {
     Card(
         modifier = Modifier.width(160.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(value, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black, color = color)
         }
     }
@@ -107,16 +107,16 @@ fun StatBox(label: String, value: String, color: Color) {
 fun AdminActivityCard(studentName: String, activity: String, date: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(0.5.dp, BorderColor)
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(studentName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                Text(activity, style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text(activity, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Text(date, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text(date, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

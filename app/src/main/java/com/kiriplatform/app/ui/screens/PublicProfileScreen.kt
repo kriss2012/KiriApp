@@ -67,16 +67,16 @@ fun PublicProfileScreen(
     }
 
     Scaffold(
-        containerColor = NotionCanvas,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Profile", style = MaterialTheme.typography.titleMedium, color = NotionInk) },
+                title = { Text("Profile", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = NotionInk)
+                        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = NotionCanvas)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         }
     ) { padding ->
@@ -119,7 +119,7 @@ fun PublicProfileScreen(
                         )
                     }
                     Spacer(Modifier.height(16.dp))
-                    Text(u.fullName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                    Text(u.fullName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                     Text(u.role, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
                     if (u.college != null) {
                         Text(u.college, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
@@ -128,8 +128,8 @@ fun PublicProfileScreen(
                     Spacer(Modifier.height(24.dp))
                     
                     if (userId == currentUserId) {
-                        Surface(color = NotionTintLavender, shape = MaterialTheme.shapes.medium, border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))) {
-                            Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = NotionBrandPurple800, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+                        Surface(color = MaterialTheme.colorScheme.primaryContainer, shape = MaterialTheme.shapes.medium, border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))) {
+                            Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = MaterialTheme.colorScheme.onPrimaryContainer, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                         }
                     } else {
                         val btnText = when (connectionStatus) {
@@ -162,18 +162,18 @@ fun PublicProfileScreen(
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         shape = MaterialTheme.shapes.large, // 12dp
-                        color = NotionCanvas,
-                        border = BorderStroke(1.dp, NotionHairline)
+                        color = MaterialTheme.colorScheme.surface,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                     ) {
                         Column(Modifier.padding(20.dp)) {
-                            Text("Professional Details", fontWeight = FontWeight.Bold, color = NotionInk, fontSize = 16.sp)
+                            Text("Professional Details", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, fontSize = 16.sp)
                             Spacer(Modifier.height(16.dp))
                             
                             DetailItem(Icons.Default.Email, "Email", u.email)
                             DetailItem(androidx.compose.material.icons.Icons.Default.Phone, "Phone", u.phoneNumber ?: "Not provided")
                             
                             if (u.website != null) {
-                                HorizontalDivider(Modifier.padding(vertical = 12.dp), color = NotionHairline)
+                                HorizontalDivider(Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant)
                                 DetailItem(androidx.compose.material.icons.Icons.Default.Language, "Website", u.website, isLink = true)
                             }
                         }
@@ -244,10 +244,10 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)
-                .background(if (isLink) NotionLinkBlue.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant),
+                .background(if (isLink) MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
-            Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isLink) NotionLinkBlue else MaterialTheme.colorScheme.onSurfaceVariant)
+            Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isLink) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Spacer(Modifier.width(16.dp))
         Column {
@@ -256,7 +256,7 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
                 ClickableUrlText(
                     text = value,
                     style = androidx.compose.ui.text.TextStyle(
-                        color = NotionLinkBlue,
+                        color = MaterialTheme.colorScheme.secondary,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp
                     )

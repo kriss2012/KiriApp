@@ -24,9 +24,9 @@ import com.kiriplatform.app.data.remote.models.InviteCodeDto
 @Composable
 fun InviteManagerScreen() {
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Generate Invite Dialog */ }, containerColor = OrangePrimary, contentColor = Color.White) {
+            FloatingActionButton(onClick = { /* Generate Invite Dialog */ }, containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary) {
                 Icon(Icons.Default.Add, null)
             }
         }
@@ -34,15 +34,15 @@ fun InviteManagerScreen() {
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("GOVERNANCE HUB", style = MaterialTheme.typography.labelSmall, color = BluePrimary, letterSpacing = 2.sp)
-                Text("Professional Invites", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Manage onboarding for Prof Admins & Mentors", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("GOVERNANCE HUB", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                Text("Professional Invites", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Manage onboarding for Prof Admins & Mentors", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // Stats row
             Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatChip("Active", "12", color = BluePrimary)
-                StatChip("Used", "45", color = GreenSuccess)
+                StatChip("Active", "12", color = MaterialTheme.colorScheme.primary)
+                StatChip("Used", "45", color = NotionSuccess)
             }
 
             Spacer(Modifier.height(16.dp))
@@ -73,7 +73,7 @@ fun StatChip(label: String, value: String, color: Color) {
         border = BorderStroke(1.dp, color.copy(alpha = 0.1f))
     ) {
         Row(modifier = Modifier.padding(12.dp, 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Spacer(Modifier.width(8.dp))
             Text(value, style = MaterialTheme.typography.titleSmall, color = color, fontWeight = FontWeight.Black)
         }
@@ -83,17 +83,17 @@ fun StatChip(label: String, value: String, color: Color) {
 @Composable
 fun InviteRow(code: String, role: String, isUsed: Boolean) {
     ListItem(
-        headlineContent = { Text(code, fontWeight = FontWeight.Black, color = if(isUsed) TextSecondary else BluePrimary, letterSpacing = 1.sp) },
+        headlineContent = { Text(code, fontWeight = FontWeight.Black, color = if(isUsed) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.primary, letterSpacing = 1.sp) },
         supportingContent = { Text("Target Role: $role", style = MaterialTheme.typography.labelSmall) },
         trailingContent = { 
             if(isUsed) {
-                Icon(Icons.Default.CheckCircle, "Used", tint = GreenSuccess, modifier = Modifier.size(20.dp))
+                Icon(Icons.Default.CheckCircle, "Used", tint = NotionSuccess, modifier = Modifier.size(20.dp))
             } else {
-                Surface(color = OrangePrimary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
-                    Text("ACTIVE", modifier = Modifier.padding(8.dp, 4.dp), color = OrangePrimary, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Black)
+                Surface(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
+                    Text("ACTIVE", modifier = Modifier.padding(8.dp, 4.dp), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Black)
                 }
             }
         },
-        colors = ListItemDefaults.colors(containerColor = Color.White)
+        colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surface)
     )
 }

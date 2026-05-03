@@ -118,7 +118,7 @@ fun ChatScreen(
                             Text(
                                 if (connectionStatus == "ACCEPTED") "Connected" else "Message Request",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = if (connectionStatus == "ACCEPTED") GreenSuccess else MaterialTheme.colorScheme.onSurfaceVariant
+                                color = if (connectionStatus == "ACCEPTED") NotionSuccess else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -189,12 +189,12 @@ fun ChatScreen(
                             modifier = Modifier.weight(1f),
                             shape = MaterialTheme.shapes.medium, // 8dp
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = NotionSurface,
-                                unfocusedContainerColor = NotionSurface,
+                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                focusedTextColor = NotionInk,
-                                unfocusedTextColor = NotionInk
+                                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                             )
                         )
                         Spacer(Modifier.width(8.dp))
@@ -209,8 +209,8 @@ fun ChatScreen(
                             modifier = Modifier
                                 .size(44.dp)
                                 .clip(MaterialTheme.shapes.medium)
-                                .background(NotionPrimary),
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = NotionOnPrimary)
+                                .background(MaterialTheme.colorScheme.primary),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
                         ) {
                             Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(18.dp))
                         }
@@ -310,14 +310,14 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     if (isSystem) {
         Box(Modifier.fillMaxWidth().padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
             Surface(
-                color = GreenLight,
+                color = NotionTintMint,
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = message.content,
                     modifier = Modifier.padding(16.dp, 8.dp),
                     style = MaterialTheme.typography.labelSmall,
-                    color = GreenSuccess,
+                    color = NotionSuccess,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             }
@@ -331,19 +331,19 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     ) {
         Column(horizontalAlignment = if (isFromMe) Alignment.End else Alignment.Start) {
             Surface(
-                color = if (isFromMe) NotionPrimary else NotionSurface,
+                color = if (isFromMe) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
                 shape = MaterialTheme.shapes.medium, // 8dp for consistent Notion geometry
-                border = if (isFromMe) null else BorderStroke(1.dp, NotionHairline),
+                border = if (isFromMe) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 shadowElevation = 0.dp
             ) {
                 ClickableUrlText(
                     text = message.content,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = if (isFromMe) NotionOnPrimary else NotionInk,
+                        color = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                         lineHeight = 20.sp
                     ),
-                    linkColor = if (isFromMe) NotionOnPrimary else NotionPrimary
+                    linkColor = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
                 )
             }
             if (timeStr.isNotEmpty()) {

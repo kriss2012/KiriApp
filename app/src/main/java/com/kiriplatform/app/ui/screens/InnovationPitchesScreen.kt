@@ -41,15 +41,15 @@ fun InnovationPitchesScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { showSubmitDialog = true },
-                containerColor = OrangePrimary,
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 icon = { Icon(Icons.Default.Add, null) },
                 text = { Text("PITCH IDEA") },
                 shape = RoundedCornerShape(16.dp)
@@ -59,8 +59,8 @@ fun InnovationPitchesScreen(
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("Innovation Marketplace", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Discovery and back regional startup pitches", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("Innovation Marketplace", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Discovery and back regional startup pitches", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             LazyColumn(
@@ -91,55 +91,55 @@ fun PitchCard(pitch: PitchDto, onBack: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Surface(
-                    color = OrangeLight,
+                    color = NotionTintPeach,
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold)
+                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = NotionBrandOrangeDeep, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.weight(1f))
-                Text(pitch.status, style = MaterialTheme.typography.labelSmall, color = if (pitch.status == "OPEN") GreenSuccess else TextSecondary)
+                Text(pitch.status, style = MaterialTheme.typography.labelSmall, color = if (pitch.status == "OPEN") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             }
             
             Spacer(Modifier.height(12.dp))
-            Text(pitch.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = TextPrimary)
-            Text(pitch.description, style = MaterialTheme.typography.bodySmall, color = TextSecondary, maxLines = 3)
+            Text(pitch.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onSurface)
+            Text(pitch.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3)
             
             Spacer(Modifier.height(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Column {
-                    Text("Goal", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-                    Text("₹${pitch.fundingGoal.toInt()}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+                    Text("Goal", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("₹${pitch.fundingGoal.toInt()}", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 }
                 Column {
-                    Text("Backers", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-                    Text((pitch._count?.backers ?: 0).toString(), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+                    Text("Backers", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text((pitch._count?.backers ?: 0).toString(), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 }
                
                 Spacer(Modifier.weight(1f))
                 
                 Button(
                     onClick = onBack,
-                    colors = ButtonDefaults.buttonColors(containerColor = BorderColor.copy(alpha = 0.5f)),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                     shape = RoundedCornerShape(12.dp),
                     contentPadding = PaddingValues(horizontal = 12.dp)
                 ) {
-                    Icon(Icons.Default.Favorite, contentDescription = null, modifier = Modifier.size(16.dp), tint = OrangePrimary)
+                    Icon(Icons.Default.Favorite, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(6.dp))
-                    Text("BACK IT", style = MaterialTheme.typography.labelSmall, color = TextPrimary, fontWeight = FontWeight.Bold)
+                    Text("BACK IT", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Bold)
                 }
             }
             
             HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 0.5.dp)
             
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Pitched by ${pitch.founder?.fullName ?: "Unknown"}", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text("Pitched by ${pitch.founder?.fullName ?: "Unknown"}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

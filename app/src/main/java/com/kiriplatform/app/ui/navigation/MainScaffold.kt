@@ -113,7 +113,7 @@ fun MainScaffold(
     ) { padding ->
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = BgCream
+            color = MaterialTheme.colorScheme.background
         ) {
             Box(modifier = Modifier.fillMaxSize()) {
                 // Main Content
@@ -143,10 +143,10 @@ fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
             .padding(horizontal = 48.dp) // Narrower width for icon-only nav
             .height(56.dp)
             .wrapContentWidth(),
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 2.dp,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        tonalElevation = 0.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier
@@ -183,36 +183,24 @@ fun NavigationTab(
     onClick: () -> Unit
 ) {
     val iconColor by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+        targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         label = "iconColor"
     )
 
     Box(
         modifier = Modifier
             .size(44.dp)
-            .clip(CircleShape)
+            .clip(RoundedCornerShape(8.dp))
             .clickable(onClick = onClick)
-            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.08f) else Color.Transparent),
+            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         if (screen.icon != null) {
             Icon(
                 imageVector = screen.icon,
                 contentDescription = screen.title,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(22.dp),
                 tint = iconColor
-            )
-        }
-        
-        // Notion-style subtle dot indicator for selected state
-        if (selected) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 6.dp)
-                    .size(4.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary)
             )
         }
     }

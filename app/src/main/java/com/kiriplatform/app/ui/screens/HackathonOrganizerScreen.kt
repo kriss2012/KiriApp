@@ -27,12 +27,12 @@ fun HackathonOrganizerScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(MaterialTheme.colorScheme.background)
             .padding(18.dp)
             .padding(bottom = 80.dp)
     ) {
         // Header
-        Text("Organise a Hackathon", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
+        Text("Organise a Hackathon", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
         Spacer(Modifier.height(24.dp))
 
         // Stepper
@@ -51,7 +51,7 @@ fun HackathonOrganizerScreen() {
                 if (index < totalSteps - 1) {
                     HorizontalDivider(
                         modifier = Modifier.weight(1f).padding(horizontal = 4.dp),
-                        color = if (step < currentStep) OrangePrimary else BorderColor,
+                        color = if (step < currentStep) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                         thickness = 2.dp
                     )
                 }
@@ -95,17 +95,17 @@ fun StepIndicator(number: String, isCompleted: Boolean, isActive: Boolean) {
         modifier = Modifier
             .size(24.dp)
             .clip(CircleShape)
-            .background(if (isCompleted || isActive) OrangePrimary else Color.Transparent)
-            .border(if (isCompleted || isActive) 0.dp else 1.dp, if (isActive) OrangePrimary else BorderColor, CircleShape),
+            .background(if (isCompleted || isActive) MaterialTheme.colorScheme.primary else Color.Transparent)
+            .border(if (isCompleted || isActive) 0.dp else 1.dp, if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant, CircleShape),
         contentAlignment = Alignment.Center
     ) {
         if (isCompleted) {
-            Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color.White)
+            Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onPrimary)
         } else {
             Text(
                 number,
                 style = MaterialTheme.typography.labelSmall,
-                color = if (isActive) Color.White else TextSecondary,
+                color = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Bold
             )
         }
