@@ -185,6 +185,15 @@ export const updateProfile = async (req: Request, res: Response) => {
     res.status(200).json(user);
   } catch (error: any) {
     // Log Prisma-specific error codes for faster debugging
+    if (error?.code === 'P2002') {
+      const target = error.meta?.target || [];
+      const field = target.includes('phoneNumber') ? 'Phone Number' : 'Field';
+      return res.status(400).json({
+        message: `${field} is already in use by another account.`,
+        error: error.message
+      });
+    }
+
     if (error?.code) {
       console.error(`[UpdateProfile] ❌ Prisma error P${error.code} for user ${req.params['userId']}:`, error.meta ?? error.message);
     } else {
