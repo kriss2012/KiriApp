@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -182,9 +184,9 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionCanvas,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Row(
             modifier = Modifier
@@ -195,14 +197,14 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
-                    .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), RoundedCornerShape(8.dp)),
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(NotionCanvas)
+                    .border(1.dp, NotionHairline, MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = user.fullName.take(1).uppercase(),
-                    color = MaterialTheme.colorScheme.primary,
+                    color = NotionInk,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
@@ -215,25 +217,25 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                     text = user.fullName,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = NotionInk
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = user.role,
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = NotionPrimary,
                         fontWeight = FontWeight.Bold
                     )
                     if (user.college != null) {
                         Surface(
                             modifier = Modifier.size(2.dp),
                             shape = CircleShape,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                            color = NotionSteel.copy(alpha = 0.5f)
                         ) {}
                         Text(
                             text = user.college,
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            color = NotionCharcoal.copy(alpha = 0.5f),
                             maxLines = 1
                         )
                     }
@@ -241,10 +243,10 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
             }
             
             Icon(
-                imageVector = androidx.compose.material.icons.automirrored.filled.ArrowForward,
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                tint = NotionSteel
             )
         }
     }
