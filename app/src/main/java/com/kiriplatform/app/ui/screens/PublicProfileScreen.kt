@@ -89,7 +89,7 @@ fun PublicProfileScreen(
         
         if (isLoading) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = OrangePrimary)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         } else if (user != null) {
             val u = user!!
@@ -107,22 +107,22 @@ fun PublicProfileScreen(
                         modifier = Modifier
                             .size(100.dp)
                             .clip(MaterialTheme.shapes.large) // Notion square-ish look
-                            .background(NotionCanvas)
-                            .border(1.dp, NotionHairline, MaterialTheme.shapes.large),
+                            .background(MaterialTheme.colorScheme.surface)
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.large),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = u.fullName.take(1).uppercase(),
-                            color = NotionInk,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
                             fontSize = 40.sp
                         )
                     }
                     Spacer(Modifier.height(16.dp))
                     Text(u.fullName, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                    Text(u.role, color = OrangePrimary, style = MaterialTheme.typography.titleMedium)
+                    Text(u.role, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
                     if (u.college != null) {
-                        Text(u.college, color = TextSecondary, style = MaterialTheme.typography.bodyMedium)
+                        Text(u.college, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium)
                     }
                     
                     Spacer(Modifier.height(24.dp))
@@ -189,7 +189,7 @@ fun PublicProfileScreen(
 @Composable
 fun ServicesSection(services: List<String>) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text("Services Offered", fontWeight = FontWeight.Bold, color = TextPrimary, style = MaterialTheme.typography.titleSmall)
+        Text("Services Offered", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.titleSmall)
         Spacer(Modifier.height(12.dp))
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
@@ -198,14 +198,14 @@ fun ServicesSection(services: List<String>) {
         ) {
             services.forEach { service ->
                 Surface(
-                    color = OrangePrimary.copy(alpha = 0.08f),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
                     shape = RoundedCornerShape(12.dp),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, OrangePrimary.copy(alpha = 0.2f))
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
                 ) {
                     Text(
                         text = service,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        color = OrangePrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -244,19 +244,19 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)
-                .background(if (isLink) Color(0xFFE3F2FD) else Color(0xFFF5F5F5)),
+                .background(if (isLink) NotionLinkBlue.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
-            Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isLink) Color(0xFF1976D2) else TextSecondary)
+            Icon(icon, null, modifier = Modifier.size(18.dp), tint = if (isLink) NotionLinkBlue else MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Spacer(Modifier.width(16.dp))
         Column {
-            Text(label, color = TextSecondary, fontSize = 12.sp)
+            Text(label, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
             if (isLink) {
                 ClickableUrlText(
                     text = value,
                     style = androidx.compose.ui.text.TextStyle(
-                        color = Color(0xFF1976D2),
+                        color = NotionLinkBlue,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp
                     )
@@ -264,7 +264,7 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
             } else {
                 Text(
                     text = value,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp
                 )
@@ -276,11 +276,11 @@ fun DetailItem(icon: androidx.compose.ui.graphics.vector.ImageVector, label: Str
 @Composable
 fun ProfileSection(title: String, content: String) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(title, fontWeight = FontWeight.Bold, color = TextPrimary, style = MaterialTheme.typography.titleSmall)
+        Text(title, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.titleSmall)
         Spacer(Modifier.height(8.dp))
         ClickableUrlText(
             text = content,
-            style = MaterialTheme.typography.bodyMedium.copy(color = TextSecondary, lineHeight = 20.sp)
+            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 20.sp)
         )
     }
 }
