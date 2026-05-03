@@ -65,17 +65,33 @@ fun RegisterScreen(
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = { Text("Student Onboarding", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
-                navigationIcon = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Row(
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     IconButton(onClick = { 
                         if (currentStep > 1) currentStep-- else onBack()
                     }) {
-                        Icon(Icons.Default.ArrowBack, null, tint = NotionInk)
+                        Icon(Icons.Default.ArrowBack, null, tint = MaterialTheme.colorScheme.onSurface)
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = NotionCanvas)
-            )
+                    Text(
+                        "STUDENT ONBOARDING",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        letterSpacing = 2.sp,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+            }
         }
     ) { padding ->
         Column(
@@ -275,14 +291,15 @@ fun StepCircle(step: Int, currentStep: Int) {
     Box(
         modifier = Modifier
             .size(32.dp)
-            .clip(CircleShape)
-            .background(if (isCompleted || isActive) NotionPrimary else NotionHairline),
+            .clip(RoundedCornerShape(4.dp))
+            .background(if (isCompleted || isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
+            .border(1.dp, if (isCompleted || isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(4.dp)),
         contentAlignment = Alignment.Center
     ) {
         if (isCompleted) {
-            Icon(Icons.Default.Check, null, tint = NotionOnPrimary, modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(16.dp))
         } else {
-            Text(step.toString(), color = if (isActive) NotionOnPrimary else NotionSteel, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            Text(step.toString(), color = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -294,26 +311,47 @@ fun AccountStep(
     password: String, onPasswordChange: (String) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
-        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
-        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
+        Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        OutlinedTextField(
+            fullName, onFullNameChange, 
+            label = { Text("Full Name *", style = MaterialTheme.typography.labelSmall) }, 
+            modifier = Modifier.fillMaxWidth(), 
+            shape = RoundedCornerShape(8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            )
+        )
+        OutlinedTextField(
+            email, onEmailChange, 
+            label = { Text("Email Address *", style = MaterialTheme.typography.labelSmall) }, 
+            modifier = Modifier.fillMaxWidth(), 
+            shape = RoundedCornerShape(8.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            )
+        )
         var passVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             password, onPasswordChange, 
-            label = { Text("Password *") }, 
+            label = { Text("Password *", style = MaterialTheme.typography.labelSmall) }, 
             modifier = Modifier.fillMaxWidth(), 
-            shape = MaterialTheme.shapes.medium,
+            shape = RoundedCornerShape(8.dp),
             visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+            ),
             trailingIcon = {
                 IconButton(onClick = { passVisible = !passVisible }) {
-                    Icon(if (passVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff, null)
+                    Icon(if (passVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff, null, modifier = Modifier.size(20.dp))
                 }
             }
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoleStep(
     selectedRole: String, onRoleChange: (String) -> Unit,
@@ -322,26 +360,35 @@ fun RoleStep(
     val roles = listOf("STUDENT" to "🎓 Student", "FOUNDER" to "🚀 Founder", "MENTOR" to "👨‍🏫 Mentor", "SPOC" to "🏢 SPOC")
     
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+        Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
         roles.forEach { (key, label) ->
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth().clickable { onRoleChange(key) },
-                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) NotionTintLavender else NotionCanvas),
-                border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedRole == key) NotionPrimary else NotionHairline),
-                shape = MaterialTheme.shapes.large
+                color = if (selectedRole == key) MaterialTheme.colorScheme.primary.copy(alpha = 0.05f) else MaterialTheme.colorScheme.surface,
+                border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedRole == key) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = selectedRole == key,
                         onClick = { onRoleChange(key) },
-                        colors = RadioButtonDefaults.colors(selectedColor = NotionPrimary)
+                        colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
                     )
-                    Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = NotionCharcoal)
+                    Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }
         if (selectedRole != "STUDENT") {
-            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
+            OutlinedTextField(
+                inviteCode, onInviteCodeChange, 
+                label = { Text("Invite Code", style = MaterialTheme.typography.labelSmall) }, 
+                modifier = Modifier.fillMaxWidth(), 
+                shape = RoundedCornerShape(8.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+                )
+            )
         }
     }
 }
