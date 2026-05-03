@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Language
@@ -19,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.data.SessionManager
 import com.kiriplatform.app.data.remote.ApiClient
 import com.kiriplatform.app.data.remote.models.UserDto
+import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
 import com.kiriplatform.app.ui.components.ClickableUrlText
 import kotlinx.coroutines.launch
@@ -65,16 +67,16 @@ fun PublicProfileScreen(
     }
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = NotionCanvas,
         topBar = {
             TopAppBar(
-                title = { Text("Profile", style = MaterialTheme.typography.titleMedium) },
+                title = { Text("Profile", style = MaterialTheme.typography.titleMedium, color = NotionInk) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = null)
+                        Icon(Icons.Default.ArrowBack, contentDescription = null, tint = NotionInk)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = NotionCanvas)
             )
         }
     ) { padding ->
@@ -103,16 +105,17 @@ fun PublicProfileScreen(
                     Spacer(Modifier.height(32.dp))
                     Box(
                         modifier = Modifier
-                            .size(120.dp)
-                            .clip(CircleShape)
-                            .background(OrangePrimary.copy(alpha = 0.1f)),
+                            .size(100.dp)
+                            .clip(MaterialTheme.shapes.large) // Notion square-ish look
+                            .background(NotionCanvas)
+                            .border(1.dp, NotionHairline, MaterialTheme.shapes.large),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = u.fullName.take(1).uppercase(),
-                            color = OrangePrimary,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 48.sp
+                            color = NotionInk,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 40.sp
                         )
                     }
                     Spacer(Modifier.height(16.dp))
@@ -125,42 +128,19 @@ fun PublicProfileScreen(
                     Spacer(Modifier.height(24.dp))
                     
                     if (userId == currentUserId) {
-                        Surface(color = OrangeLight, shape = RoundedCornerShape(8.dp)) {
-                            Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = OrangeDark, style = MaterialTheme.typography.labelSmall)
-                        }
-                    } else if (connectionStatus == "ACCEPTED") {
-                        Button(
-                            onClick = { onNavigateToChat(userId) },
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Icon(Icons.Default.Email, null)
-                            Spacer(Modifier.width(8.dp))
-                            Text("Send Message")
-                        }
-                    } else if (connectionStatus == "PENDING") {
-                        Button(
-                            onClick = { onNavigateToChat(userId) }, // Allow messaging during pending (Request)
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Icon(Icons.Default.Email, null)
-                            Spacer(Modifier.width(8.dp))
-                            Text("Message Request")
+                        Surface(color = NotionTintLavender, shape = MaterialTheme.shapes.medium, border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))) {
+                            Text("Your Public View", modifier = Modifier.padding(12.dp, 6.dp), color = NotionBrandPurple800, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                         }
                     } else {
-                        Button(
-                            onClick = { onNavigateToChat(userId) }, // messaging triggers connecting now
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
-                            shape = RoundedCornerShape(12.dp)
-                        ) {
-                            Icon(Icons.Default.PersonAdd, null)
-                            Spacer(Modifier.width(8.dp))
-                            Text("Connect & Message")
+                        val btnText = when (connectionStatus) {
+                            "ACCEPTED" -> "Send Message"
+                            "PENDING" -> "Message Request"
+                            else -> "Connect & Message"
                         }
+                        KiriPrimaryButton(
+                            text = btnText,
+                            onClick = { onNavigateToChat(userId) }
+                        )
                     }
                     
                     Spacer(Modifier.height(32.dp))
@@ -179,21 +159,21 @@ fun PublicProfileScreen(
                     Spacer(Modifier.height(24.dp))
                     
                     // Contact & Links Card
-                    Card(
+                    Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        shape = MaterialTheme.shapes.large, // 12dp
+                        color = NotionCanvas,
+                        border = BorderStroke(1.dp, NotionHairline)
                     ) {
                         Column(Modifier.padding(20.dp)) {
-                            Text("Professional Details", fontWeight = FontWeight.Black, color = TextPrimary, fontSize = 16.sp)
+                            Text("Professional Details", fontWeight = FontWeight.Bold, color = NotionInk, fontSize = 16.sp)
                             Spacer(Modifier.height(16.dp))
                             
                             DetailItem(Icons.Default.Email, "Email", u.email)
                             DetailItem(androidx.compose.material.icons.Icons.Default.Phone, "Phone", u.phoneNumber ?: "Not provided")
                             
                             if (u.website != null) {
-                                HorizontalDivider(Modifier.padding(vertical = 12.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                                HorizontalDivider(Modifier.padding(vertical = 12.dp), color = NotionHairline)
                                 DetailItem(androidx.compose.material.icons.Icons.Default.Language, "Website", u.website, isLink = true)
                             }
                         }
