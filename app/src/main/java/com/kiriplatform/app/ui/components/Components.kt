@@ -76,22 +76,23 @@ fun KiriPrimaryButton(
         enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
-            .height(48.dp),
-        shape = RoundedCornerShape(8.dp),
+            .height(44.dp), // Notion's height is 44px
+        shape = MaterialTheme.shapes.medium, // 8dp
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = NotionHairline,
+            disabledContentColor = NotionMuted
         ),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 0.dp,
             pressedElevation = 0.dp
-        ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        )
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -105,7 +106,7 @@ fun ASGTagChip(
 ) {
     Surface(
         color = backgroundColor,
-        shape = RoundedCornerShape(4.dp),
+        shape = MaterialTheme.shapes.extraSmall, // 4dp
         modifier = modifier
     ) {
         Text(
@@ -113,7 +114,7 @@ fun ASGTagChip(
             style = MaterialTheme.typography.labelSmall,
             color = textColor,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Bold
         )
     }
 }
@@ -122,9 +123,9 @@ fun ASGTagChip(
 fun AIStatusChip(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(6.dp))
+            .clip(MaterialTheme.shapes.small) // 6dp
             .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(6.dp))
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
             .padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -132,7 +133,7 @@ fun AIStatusChip(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .size(6.dp)
                 .clip(CircleShape)
-                .background(NotionGreen)
+                .background(NotionSuccess)
         )
         Spacer(Modifier.width(8.dp))
         Text(
@@ -154,9 +155,9 @@ fun KiriIconBadge(
     Box(
         modifier = modifier
             .size(32.dp)
-            .clip(RoundedCornerShape(6.dp))
+            .clip(MaterialTheme.shapes.small) // 6dp
             .background(backgroundColor)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(6.dp))
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
