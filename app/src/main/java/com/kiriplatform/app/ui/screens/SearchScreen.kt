@@ -198,13 +198,13 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(NotionCanvas)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
                     .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = user.fullName.take(1).uppercase(),
-                    color = NotionInk,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
@@ -217,13 +217,13 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                     text = user.fullName,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = NotionInk
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
                         text = user.role.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = NotionPrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 0.5.sp
                     )
@@ -231,12 +231,12 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                         Surface(
                             modifier = Modifier.size(2.dp),
                             shape = CircleShape,
-                            color = NotionSteel.copy(alpha = 0.5f)
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         ) {}
                         Text(
                             text = user.college.uppercase(),
                             style = MaterialTheme.typography.labelSmall,
-                            color = NotionCharcoal.copy(alpha = 0.5f),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                             maxLines = 1,
                             fontSize = 9.sp,
                             letterSpacing = 0.5.sp
@@ -249,7 +249,7 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = NotionSteel
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
