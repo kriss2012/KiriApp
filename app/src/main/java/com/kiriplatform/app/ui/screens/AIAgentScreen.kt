@@ -79,18 +79,18 @@ fun AIAgentScreen(
                     Text(
                         "KIRI INTELLIGENCE",
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Black,
+                        color = NotionInk,
+                        fontWeight = FontWeight.SemiBold,
                         letterSpacing = 2.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = NotionInk)
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.Transparent
+                    containerColor = NotionCanvas
                 )
             )
 
@@ -263,20 +263,17 @@ fun KiriMessageBubble(msg: com.kiriplatform.app.ui.viewmodels.KiriMessage) {
     ) {
         Column(horizontalAlignment = if (isUser) Alignment.End else Alignment.Start) {
             Surface(
-                color = if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh,
-                shape = RoundedCornerShape(
-                    topStart = 24.dp, topEnd = 24.dp,
-                    bottomStart = if (isUser) 24.dp else 4.dp,
-                    bottomEnd = if (isUser) 4.dp else 24.dp
-                ),
-                modifier = if (!isUser) Modifier.glassmorphism(cornerRadius = 24.dp, alpha = 0.1f).widthIn(max = 320.dp) else Modifier.widthIn(max = 300.dp)
+                color = if (isUser) NotionPrimary else NotionSurface,
+                shape = MaterialTheme.shapes.medium, // 8dp
+                border = if (isUser) null else BorderStroke(1.dp, NotionHairline),
+                modifier = Modifier.widthIn(max = 300.dp)
             ) {
                 Text(
                     text = msg.content,
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 14.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
-                    lineHeight = 24.sp
+                    color = if (isUser) NotionOnPrimary else NotionInk,
+                    lineHeight = 22.sp
                 )
             }
         }
