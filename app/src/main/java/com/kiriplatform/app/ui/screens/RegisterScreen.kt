@@ -66,15 +66,15 @@ fun RegisterScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Student Onboarding", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Black) },
+                title = { Text("Student Onboarding", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
                 navigationIcon = {
                     IconButton(onClick = { 
                         if (currentStep > 1) currentStep-- else onBack()
                     }) {
-                        Icon(Icons.Default.ArrowBack, null)
+                        Icon(Icons.Default.ArrowBack, null, tint = NotionInk)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = NotionCanvas)
             )
         }
     ) { padding ->
@@ -248,8 +248,8 @@ fun RegisterScreen(
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth().height(56.dp),
-                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.fillMaxWidth().height(44.dp),
+                shape = MaterialTheme.shapes.medium,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
@@ -276,13 +276,13 @@ fun StepCircle(step: Int, currentStep: Int) {
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
-            .background(if (isCompleted || isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
+            .background(if (isCompleted || isActive) NotionPrimary else NotionHairline),
         contentAlignment = Alignment.Center
     ) {
         if (isCompleted) {
-            Icon(Icons.Default.Check, null, tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(16.dp))
+            Icon(Icons.Default.Check, null, tint = NotionOnPrimary, modifier = Modifier.size(16.dp))
         } else {
-            Text(step.toString(), color = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
+            Text(step.toString(), color = if (isActive) NotionOnPrimary else NotionSteel, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -294,15 +294,15 @@ fun AccountStep(
     password: String, onPasswordChange: (String) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
-        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
-        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+        Text("Account Basics", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+        OutlinedTextField(fullName, onFullNameChange, label = { Text("Full Name *") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
+        OutlinedTextField(email, onEmailChange, label = { Text("Email Address *") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
         var passVisible by remember { mutableStateOf(false) }
         OutlinedTextField(
             password, onPasswordChange, 
             label = { Text("Password *") }, 
             modifier = Modifier.fillMaxWidth(), 
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.medium,
             visualTransformation = if (passVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 IconButton(onClick = { passVisible = !passVisible }) {
@@ -322,25 +322,26 @@ fun RoleStep(
     val roles = listOf("STUDENT" to "🎓 Student", "FOUNDER" to "🚀 Founder", "MENTOR" to "👨‍🏫 Mentor", "SPOC" to "🏢 SPOC")
     
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
         roles.forEach { (key, label) ->
             Card(
                 modifier = Modifier.fillMaxWidth().clickable { onRoleChange(key) },
-                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.surface),
-                border = androidx.compose.foundation.BorderStroke(2.dp, if (selectedRole == key) MaterialTheme.colorScheme.primary else Color.Transparent)
+                colors = CardDefaults.cardColors(containerColor = if (selectedRole == key) NotionTintLavender else NotionCanvas),
+                border = androidx.compose.foundation.BorderStroke(1.dp, if (selectedRole == key) NotionPrimary else NotionHairline),
+                shape = MaterialTheme.shapes.large
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     RadioButton(
                         selected = selectedRole == key,
                         onClick = { onRoleChange(key) },
-                        colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
+                        colors = RadioButtonDefaults.colors(selectedColor = NotionPrimary)
                     )
-                    Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)
+                    Text(label, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = NotionCharcoal)
                 }
             }
         }
         if (selectedRole != "STUDENT") {
-            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+            OutlinedTextField(inviteCode, onInviteCodeChange, label = { Text("Invite Code") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
         }
     }
 }
@@ -358,14 +359,14 @@ fun DetailStep(
     autoEnroll: Boolean, onAutoEnrollChange: (Boolean) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Professional Identity", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
+        Text("Professional Identity", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
         
         if (role == "STUDENT") {
-            OutlinedTextField(rollNumber, onRollChange, label = { Text("Roll Number / PRN") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+            OutlinedTextField(rollNumber, onRollChange, label = { Text("Roll Number / PRN") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
             
             var expanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(expanded, { expanded = !expanded }) {
-                OutlinedTextField(college, {}, readOnly = true, label = { Text("Institution") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) }, modifier = Modifier.fillMaxWidth().menuAnchor(), shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(college, {}, readOnly = true, label = { Text("Institution") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) }, modifier = Modifier.fillMaxWidth().menuAnchor(), shape = MaterialTheme.shapes.medium)
                 ExposedDropdownMenu(expanded, { expanded = false }) {
                     listOf("GH Raisoni Jalgaon", "GCOE Jalgaon", "SSBT Bambhori", "KBCNMU", "Other").forEach {
                         DropdownMenuItem(text = { Text(it) }, onClick = { onCollegeChange(it); expanded = false })
@@ -374,18 +375,18 @@ fun DetailStep(
             }
             
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(year, onYearChange, label = { Text("Year") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp))
-                OutlinedTextField(section, onSectionChange, label = { Text("Section") }, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp))
+                OutlinedTextField(year, onYearChange, label = { Text("Year") }, modifier = Modifier.weight(1f), shape = MaterialTheme.shapes.medium)
+                OutlinedTextField(section, onSectionChange, label = { Text("Section") }, modifier = Modifier.weight(1f), shape = MaterialTheme.shapes.medium)
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.primary))
-                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium)
+                Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = NotionPrimary))
+                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium, color = NotionCharcoal)
             }
         }
         
-        OutlinedTextField(department, onDeptChange, label = { Text("Department *") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
-        OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp))
+        OutlinedTextField(department, onDeptChange, label = { Text("Department *") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
+        OutlinedTextField(phoneNumber, onPhoneChange, label = { Text("Phone Number") }, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.medium)
     }
 }
 
@@ -397,8 +398,8 @@ fun PersonaStep(
     expertise: String, onExpertiseChange: (String) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
-        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.6f))
         
         OutlinedTextField(
             value = bio,
@@ -406,7 +407,7 @@ fun PersonaStep(
             label = { Text("Short Bio / Intent") },
             placeholder = { Text("e.g. Building an EdTech startup for rural students...") },
             modifier = Modifier.fillMaxWidth().height(120.dp),
-            shape = RoundedCornerShape(16.dp)
+            shape = MaterialTheme.shapes.medium
         )
 
         OutlinedTextField(
@@ -414,7 +415,7 @@ fun PersonaStep(
             onValueChange = onSkillsChange,
             label = { Text(if (role == "STUDENT") "Skills (React, Python, etc.)" else "Services Provided") },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
+            shape = MaterialTheme.shapes.medium
         )
 
         if (role != "STUDENT") {
@@ -423,7 +424,7 @@ fun PersonaStep(
                 onValueChange = onExpertiseChange,
                 label = { Text("Primary Expertise (Fintech, AI, etc.)") },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp)
+                shape = MaterialTheme.shapes.medium
             )
         }
     }
