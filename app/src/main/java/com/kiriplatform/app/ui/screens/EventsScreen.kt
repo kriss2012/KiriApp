@@ -112,23 +112,22 @@ fun EventsScreen(
             LazyRow(
                 modifier = Modifier.padding(bottom = 16.dp),
                 contentPadding = PaddingValues(horizontal = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(tabs) { tab ->
                     val isSelected = selectedTab == tab
                     Surface(
                         modifier = Modifier.clickable { selectedTab = tab },
-                        shape = RoundedCornerShape(8.dp),
-                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-                        border = if (isSelected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        shape = MaterialTheme.shapes.medium, // 8dp
+                        color = if (isSelected) NotionInkDeep else NotionCanvas,
+                        border = if (isSelected) null else BorderStroke(1.dp, NotionHairline)
                     ) {
                         Text(
-                            text = tab.uppercase(),
+                            text = tab,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                            fontWeight = FontWeight.Bold,
-                            letterSpacing = 0.5.sp
+                            style = MaterialTheme.typography.labelMedium,
+                            color = if (isSelected) NotionOnDark else NotionSteel,
+                            fontWeight = FontWeight.Medium
                         )
                     }
                 }
@@ -221,9 +220,9 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
     Surface(
         onClick = onDetailsClick,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        shape = MaterialTheme.shapes.large, // 12dp
+        color = NotionCanvas,
+        border = BorderStroke(1.dp, NotionHairline)
     ) {
         Column {
             if (!event.imageUrl.isNullOrEmpty()) {
@@ -233,7 +232,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(160.dp)
-                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+                        .clip(MaterialTheme.shapes.large),
                     contentScale = ContentScale.Crop
                 )
             }
@@ -244,15 +243,15 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Surface(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                        shape = RoundedCornerShape(6.dp),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                        color = NotionTintLavender,
+                        shape = MaterialTheme.shapes.small, // 6dp
+                        border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))
                     ) {
                         Text(
                             type.uppercase(),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = NotionBrandPurple800,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 0.5.sp
                         )
@@ -261,7 +260,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     Text(
                         "$day ${month.uppercase()}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        color = NotionSteel,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -271,7 +270,7 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                 Text(
                     title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = NotionInk,
                     fontWeight = FontWeight.Bold
                 )
                 
@@ -280,13 +279,13 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                 Text(
                     description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    color = NotionCharcoal.copy(alpha = 0.6f),
                     lineHeight = 18.sp
                 )
                 
                 Spacer(Modifier.height(16.dp))
                 
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                HorizontalDivider(color = NotionHairline)
                 
                 Spacer(Modifier.height(16.dp))
                 
@@ -296,22 +295,22 @@ fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text("Prize:", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-                        Text(prize, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text("Prize:", style = MaterialTheme.typography.labelSmall, color = NotionSteel)
+                        Text(prize, style = MaterialTheme.typography.labelSmall, color = NotionPrimary, fontWeight = FontWeight.Bold)
                     }
                     
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(
                             "View Details",
                             style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = NotionInk,
                             fontWeight = FontWeight.Bold
                         )
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = null,
                             modifier = Modifier.size(12.dp),
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = NotionInk
                         )
                     }
                 }
