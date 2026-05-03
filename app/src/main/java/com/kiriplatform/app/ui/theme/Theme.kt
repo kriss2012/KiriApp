@@ -20,48 +20,42 @@ enum class AppTheme(
     val lightScheme: ColorScheme,
     val darkScheme: ColorScheme
 ) {
-    OCEAN(
-        lightScheme = lightColorScheme(primary = OceanPrimary, secondary = OceanSecondary, background = BgCream),
-        darkScheme = darkColorScheme(primary = OceanPrimary, secondary = OceanSecondary, background = Color(0xFF0A192F))
-    ),
-    PURPLE(
-        lightScheme = lightColorScheme(primary = PurplePremium, secondary = PurpleSecondary, background = BgCream),
-        darkScheme = darkColorScheme(primary = PurplePremium, secondary = PurpleSecondary, background = Color(0xFF1A0B2E))
-    ),
-    FOREST(
-        lightScheme = lightColorScheme(primary = ForestPrimary, secondary = ForestSecondary, background = BgCream),
-        darkScheme = darkColorScheme(primary = ForestPrimary, secondary = ForestSecondary, background = Color(0xFF0D1F17))
-    ),
-    SLATE(
-        lightScheme = lightColorScheme(primary = SlatePrimary, secondary = SlateSecondary, background = BgCream),
-        darkScheme = darkColorScheme(primary = SlatePrimary, secondary = SlateSecondary, background = Color(0xFF1B1B2F))
-    ),
-    AMBER(
-        lightScheme = lightColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = BgCream),
-        darkScheme = darkColorScheme(primary = AmberPrimary, secondary = AmberSecondary, background = Color(0xFF1F1A0D))
-    ),
     NOTION(
         lightScheme = lightColorScheme(
-            primary = NotionBlack,
-            secondary = NotionBlue,
-            background = NotionBackground,
+            primary = NotionPrimary,
+            onPrimary = NotionOnPrimary,
+            primaryContainer = NotionTintLavender,
+            onPrimaryContainer = NotionBrandPurple800,
+            secondary = NotionLinkBlue,
+            onSecondary = NotionOnPrimary,
+            background = NotionCanvas,
+            onBackground = NotionInk,
             surface = NotionSurface,
-            onPrimary = NotionWhite,
-            onSecondary = NotionWhite,
-            onBackground = NotionBlack,
-            onSurface = NotionBlack,
-            outlineVariant = NotionBorder
+            onSurface = NotionInk,
+            surfaceVariant = NotionSurfaceSoft,
+            onSurfaceVariant = NotionCharcoal,
+            outline = NotionHairlineStrong,
+            outlineVariant = NotionHairline,
+            error = NotionError,
+            onError = NotionOnPrimary
         ),
         darkScheme = darkColorScheme(
-            primary = NotionWhite,
-            secondary = NotionBlue,
-            background = Color(0xFF191919),
-            surface = Color(0xFF202020),
-            onPrimary = NotionBlack,
-            onSecondary = NotionWhite,
-            onBackground = NotionWhite,
-            onSurface = NotionWhite,
-            outlineVariant = Color(0xFF2F2F2F)
+            primary = NotionPrimary,
+            onPrimary = NotionOnPrimary,
+            primaryContainer = NotionBrandPurple800,
+            onPrimaryContainer = NotionBrandPurple300,
+            secondary = NotionLinkBlue,
+            onSecondary = NotionOnPrimary,
+            background = NotionBrandNavyDeep,
+            onBackground = NotionOnDark,
+            surface = NotionBrandNavy,
+            onSurface = NotionOnDark,
+            surfaceVariant = NotionBrandNavyMid,
+            onSurfaceVariant = NotionOnDarkMuted,
+            outline = NotionStone,
+            outlineVariant = NotionSlate,
+            error = NotionError,
+            onError = NotionOnPrimary
         )
     )
 }
@@ -109,10 +103,10 @@ fun KiriAppTheme(
         }
     }
 
-    // Material 3 Expressive Theme logic
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography
+        typography = Typography,
+        shapes = Shapes
     ) {
         // Force use of a safe Indication (IndicationNodeFactory) to prevent crash in Compose 1.7+
         // This bypasses the strict check for legacy indications while version skew is present.
