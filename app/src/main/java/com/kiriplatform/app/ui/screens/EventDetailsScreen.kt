@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.kiriplatform.app.data.remote.models.EventDto
+import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,19 +55,18 @@ fun EventDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Event Details", fontWeight = FontWeight.Bold) },
+                title = { Text("Event Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = NotionInk)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    containerColor = NotionCanvas
                 )
             )
         },
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = NotionCanvas
     ) { padding ->
         Column(
             modifier = Modifier
@@ -105,15 +106,17 @@ fun EventDetailsScreen(
             Column(modifier = Modifier.padding(24.dp)) {
                 // Type Badge
                 Surface(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    shape = RoundedCornerShape(8.dp)
+                    color = NotionTintLavender,
+                    shape = MaterialTheme.shapes.small, // 6dp
+                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))
                 ) {
                     Text(
-                        text = event.type ?: "GENERAL",
+                        text = event.type?.uppercase() ?: "GENERAL",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        fontWeight = FontWeight.Bold
+                        color = NotionBrandPurple800,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                 }
 
@@ -205,27 +208,16 @@ fun EventDetailsScreen(
                 Spacer(Modifier.height(40.dp))
 
                 // Apply Button
-                Button(
+                KiriPrimaryButton(
+                    text = if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
                     onClick = {
                         if (!event.registrationLink.isNullOrEmpty()) {
                             event.registrationLink?.let { uriHandler.openUri(it) }
                         } else {
                             android.widget.Toast.makeText(context, "Registration link not available", android.widget.Toast.LENGTH_SHORT).show()
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(
-                        if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
+                    }
+                )
                 
                 if (!event.registrationLink.isNullOrEmpty()) {
                     Text(
