@@ -14,100 +14,102 @@ val JetBrainsMonoFamily = FontFamily(
 
 val Typography = Typography(
     displayLarge = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Black,
-        fontSize = 57.sp,
-        lineHeight = 64.sp,
-        letterSpacing = (-0.25).sp
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 56.sp,
+        lineHeight = 62.sp,
+        letterSpacing = (-1).sp
     ),
     displayMedium = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Black,
-        fontSize = 45.sp,
-        lineHeight = 52.sp
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 48.sp,
+        lineHeight = 55.sp,
+        letterSpacing = (-0.5).sp
     ),
     displaySmall = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Black,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 36.sp,
-        lineHeight = 44.sp
+        lineHeight = 44.sp,
+        letterSpacing = (-0.5).sp
     ),
     headlineLarge = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Black,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 32.sp,
         lineHeight = 40.sp
     ),
     headlineMedium = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.ExtraBold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 28.sp,
-        lineHeight = 36.sp
+        lineHeight = 35.sp
     ),
     headlineSmall = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
-        lineHeight = 32.sp
-    ),
-    titleLarge = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp
     ),
+    titleLarge = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp,
+        lineHeight = 28.sp
+    ),
     titleMedium = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     titleSmall = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     bodyLarge = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
+        fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
+        fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
+        fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
     ),
     labelLarge = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     labelMedium = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
-        fontFamily = JetBrainsMonoFamily,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
