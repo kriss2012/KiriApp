@@ -125,29 +125,36 @@ export const updateProfile = async (req: Request, res: Response) => {
       'ALUMNI': 'ALUMNI'
     };
 
+    // Valid roles for the StakeholderRole table
+    const validStakeholderRoles = ['FOUNDER', 'MENTOR', 'INVESTOR', 'SERVICE_PROVIDER', 'INCUBATOR', 'GUEST'];
+
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
         fullName,
-        bio,
+        bio: bio || null,
         avatarUrl,
-        phoneNumber,
-        department,
-        college,
-        year,
-        section,
-        website,
-        githubUrl,
-        linkedInUrl,
-        services,
+        phoneNumber: phoneNumber || null, // Fix unique constraint issue with empty strings
+        department: department || null,
+        college: college || null,
+        year: year || null,
+        section: section || null,
+        website: website || null,
+        githubUrl: githubUrl || null,
+        linkedInUrl: linkedInUrl || null,
+        services: services || [],
         ...(role ? {
-          userCategory: categoryMapping[role],
-          stakeholderRoles: {
-            deleteMany: {}, // Clear existing roles
-            create: {
-              roleName: role
-            }
-          }
+          userCategory: categoryMapping[role] || 'STUDENT',
+          stakeholderRoles: validStakeholderRoles.includes(role)
+            ? {
+                deleteMany: {}, // Clear existing roles
+                create: {
+                  roleName: role as any
+                }
+              }
+            : {
+                deleteMany: {} // Basic roles like STUDENT/SPOC don't have StakeholderRole entries
+              }
         } : {})
       },
       // Explicit select — returns the same field set as getProfile
