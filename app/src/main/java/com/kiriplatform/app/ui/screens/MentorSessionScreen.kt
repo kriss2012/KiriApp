@@ -34,22 +34,22 @@ fun MentorSessionScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("GLOBAL MENTOR LINK", style = MaterialTheme.typography.labelSmall, color = OrangePrimary, letterSpacing = 2.sp)
-                Text("Expert Sessions", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Book 1:1 mentorship sprints with global mentors", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("GLOBAL MENTOR LINK", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                Text("Expert Sessions", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Book 1:1 mentorship sprints with global mentors", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // Tabs for Active vs Browse
             var selectedTab by remember { mutableStateOf(0) }
-            TabRow(selectedTabIndex = selectedTab, containerColor = Color.Transparent, contentColor = OrangePrimary, indicator = {}) {
+            TabRow(selectedTabIndex = selectedTab, containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.primary, indicator = {}) {
                 Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }) {
                     Text("ACTIVE SPRINTS", modifier = Modifier.padding(16.dp), style = MaterialTheme.typography.titleSmall)
                 }
@@ -84,33 +84,33 @@ fun MentorSprintCard(mentorName: String, topic: String, status: String, time: St
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(modifier = Modifier.size(45.dp).clip(CircleShape).background(BgCream), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.size(45.dp).clip(CircleShape).background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) {
                     Text(mentorName.take(1), fontWeight = FontWeight.Black)
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(mentorName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-                    Text(topic, style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                    Text(topic, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Surface(color = if(status == "SCHEDULED") GreenSuccess.copy(alpha = 0.1f) else OrangePrimary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
-                    Text(status, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = if(status=="SCHEDULED") GreenSuccess else OrangePrimary)
+                Surface(color = if(status == "SCHEDULED") NotionSuccess.copy(alpha = 0.1f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
+                    Text(status, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = if(status=="SCHEDULED") NotionSuccess else MaterialTheme.colorScheme.primary)
                 }
             }
             
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 0.5.dp)
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.DateRange, null, tint = TextSecondary, modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.DateRange, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(time, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text(time, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(Modifier.weight(1f))
                 TextButton(onClick = { /* Join Link */ }) {
-                    Text("JOIN SESSION", style = MaterialTheme.typography.titleSmall, color = BluePrimary)
+                    Text("JOIN SESSION", style = MaterialTheme.typography.titleSmall, color = NotionLinkBlue)
                 }
             }
         }
