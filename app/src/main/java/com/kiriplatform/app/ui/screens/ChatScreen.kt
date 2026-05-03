@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -184,14 +185,16 @@ fun ChatScreen(
                         TextField(
                             value = messageText,
                             onValueChange = { messageText = it },
-                            placeholder = { Text("Message...", color = MaterialTheme.colorScheme.onSurfaceVariant) },
+                            placeholder = { Text("Type a message...", color = NotionSteel) },
                             modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(24.dp),
+                            shape = MaterialTheme.shapes.medium, // 8dp
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                focusedContainerColor = NotionSurface,
+                                unfocusedContainerColor = NotionSurface,
                                 focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
+                                unfocusedIndicatorColor = Color.Transparent,
+                                focusedTextColor = NotionInk,
+                                unfocusedTextColor = NotionInk
                             )
                         )
                         Spacer(Modifier.width(8.dp))
@@ -204,12 +207,12 @@ fun ChatScreen(
                                 }
                             },
                             modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.primary),
-                            colors = IconButtonDefaults.iconButtonColors(contentColor = MaterialTheme.colorScheme.onPrimary)
+                                .size(44.dp)
+                                .clip(MaterialTheme.shapes.medium)
+                                .background(NotionPrimary),
+                            colors = IconButtonDefaults.iconButtonColors(contentColor = NotionOnPrimary)
                         ) {
-                            Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
+                            Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(18.dp))
                         }
                     }
                 }
@@ -328,23 +331,19 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     ) {
         Column(horizontalAlignment = if (isFromMe) Alignment.End else Alignment.Start) {
             Surface(
-                color = if (isFromMe) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(
-                    topStart = 20.dp,
-                    topEnd = 20.dp,
-                    bottomStart = if (isFromMe) 20.dp else 4.dp,
-                    bottomEnd = if (isFromMe) 4.dp else 20.dp
-                ),
-                shadowElevation = if (isFromMe) 0.dp else 1.dp
+                color = if (isFromMe) NotionPrimary else NotionSurface,
+                shape = MaterialTheme.shapes.medium, // 8dp for consistent Notion geometry
+                border = if (isFromMe) null else BorderStroke(1.dp, NotionHairline),
+                shadowElevation = 0.dp
             ) {
                 ClickableUrlText(
                     text = message.content,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                        color = if (isFromMe) NotionOnPrimary else NotionInk,
                         lineHeight = 20.sp
                     ),
-                    linkColor = if (isFromMe) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary
+                    linkColor = if (isFromMe) NotionOnPrimary else NotionPrimary
                 )
             }
             if (timeStr.isNotEmpty()) {
