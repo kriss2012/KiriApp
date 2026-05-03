@@ -184,9 +184,9 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = MaterialTheme.shapes.large, // 12dp
-        color = NotionCanvas,
-        border = BorderStroke(1.dp, NotionHairline)
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier
@@ -197,9 +197,9 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(MaterialTheme.shapes.medium)
+                    .clip(RoundedCornerShape(8.dp))
                     .background(NotionCanvas)
-                    .border(1.dp, NotionHairline, MaterialTheme.shapes.medium),
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -221,10 +221,11 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                 )
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
-                        text = user.role,
+                        text = user.role.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionPrimary,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                     if (user.college != null) {
                         Surface(
@@ -233,10 +234,12 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                             color = NotionSteel.copy(alpha = 0.5f)
                         ) {}
                         Text(
-                            text = user.college,
+                            text = user.college.uppercase(),
                             style = MaterialTheme.typography.labelSmall,
                             color = NotionCharcoal.copy(alpha = 0.5f),
-                            maxLines = 1
+                            maxLines = 1,
+                            fontSize = 9.sp,
+                            letterSpacing = 0.5.sp
                         )
                     }
                 }
