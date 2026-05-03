@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -65,20 +66,20 @@ fun SplashScreen(
             Image(
                 painter = painterResource(id = com.kiriplatform.app.R.drawable.kiri_logo_new),
                 contentDescription = "Kiri Logo",
-                modifier = Modifier.size(150.dp)
+                modifier = Modifier.size(120.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
-                "KIRI PLATFORM",
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = FontWeight.Black,
+                "KIRI",
+                style = MaterialTheme.typography.displaySmall,
+                color = NotionInk,
+                fontWeight = FontWeight.Bold,
                 letterSpacing = (-1).sp
             )
             Text(
                 "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = NotionSteel,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
@@ -88,27 +89,25 @@ fun SplashScreen(
 
         // Pulsing Badge
         Surface(
-            color = MaterialTheme.colorScheme.primaryContainer,
-            shape = RoundedCornerShape(20.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+            color = NotionTintLavender,
+            shape = MaterialTheme.shapes.medium,
+            border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f)),
             modifier = Modifier.alpha(alpha.value)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp))
-                    .padding(horizontal = 14.dp, vertical = 5.dp)
+                modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp)
             ) {
                 Box(
                     modifier = Modifier
                         .size(6.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
+                        .background(NotionPrimary, CircleShape)
                 )
-                Spacer(Modifier.width(5.dp))
+                Spacer(Modifier.width(8.dp))
                 Text(
-                    "Building the Startup Community of Bharat",
+                    "Startup Community of Bharat",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    color = NotionBrandPurple800,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -119,13 +118,14 @@ fun SplashScreen(
         Text(
             text = buildAnnotatedString {
                 append("Where ")
-                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) { append("Founders, Investors") }
-                append(" & Mentors Connect")
+                withStyle(style = SpanStyle(color = NotionPrimary)) { append("Founders, Investors") }
+                append("\n& Mentors Connect")
             },
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = NotionInk,
             textAlign = TextAlign.Center,
-            modifier = Modifier.alpha(alpha.value)
+            modifier = Modifier.alpha(alpha.value),
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -144,42 +144,39 @@ fun SplashScreen(
         Column(
             modifier = Modifier
                 .offset(y = buttonOffset.value.dp)
-                .alpha(if (buttonOffset.value < 50f) 1f else 0f)
+                .alpha(if (buttonOffset.value < 50f) 1f else 0f),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             KiriPrimaryButton(
                 text = "Join the Community →",
                 onClick = onJoinCommunity
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Button(
+            
+            OutlinedButton(
                 onClick = onOrganization,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    .height(44.dp),
+                shape = MaterialTheme.shapes.medium,
+                border = BorderStroke(1.dp, NotionHairline),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = NotionInk)
             ) {
                 Text(
                     "KIRI AI Launchpad →",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = MaterialTheme.colorScheme.onSecondary
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
-            OutlinedButton(
+
+            TextButton(
                 onClick = onSignIn,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(14.dp),
-                border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outlineVariant) // Using BorderStroke
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    "Sign In",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                    "Already have an account? Sign In",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = NotionSteel,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
