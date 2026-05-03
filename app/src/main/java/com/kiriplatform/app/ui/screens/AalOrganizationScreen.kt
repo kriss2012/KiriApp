@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,14 +40,14 @@ fun AalOrganizationScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null, tint = NotionInk) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = NotionCanvas)
             )
         },
-        containerColor = BgCream
+        containerColor = NotionCanvas
     ) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
@@ -54,21 +55,21 @@ fun AalOrganizationScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color.Black),
-                    shape = RoundedCornerShape(24.dp)
+                    color = NotionInkDeep,
+                    shape = MaterialTheme.shapes.large // 12dp
                 ) {
                     Column(modifier = Modifier.padding(24.dp)) {
-                        Text("INTERNSHIP PROGRESS", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
+                        Text("INTERNSHIP PROGRESS", color = NotionOnDark.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
                         Spacer(Modifier.height(8.dp))
-                        Text("3 / 7 Activities", color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black)
+                        Text("3 / 7 Activities", color = NotionOnDark, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                         Spacer(Modifier.height(16.dp))
                         LinearProgressIndicator(
-                            progress = 3f/7f,
-                            modifier = Modifier.fillMaxWidth().height(8.dp),
-                            color = OrangePrimary,
-                            trackColor = Color.White.copy(alpha = 0.1f),
+                            progress = { 3f/7f },
+                            modifier = Modifier.fillMaxWidth().height(6.dp),
+                            color = NotionPrimary,
+                            trackColor = NotionOnDark.copy(alpha = 0.1f),
                             strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
                         )
                     }
@@ -95,14 +96,12 @@ fun AalOrganizationScreen(
 
 @Composable
 fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClick: () -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isCurrent) Color.White else Color.White.copy(alpha = 0.6f)
-        ),
+        shape = MaterialTheme.shapes.medium, // 8dp
+        color = if (isCurrent) NotionTintLavender.copy(alpha = 0.3f) else NotionSurface,
         onClick = onClick,
-        border = if (isCurrent) androidx.compose.foundation.BorderStroke(2.dp, OrangePrimary) else null
+        border = if (isCurrent) androidx.compose.foundation.BorderStroke(1.dp, NotionPrimary) else BorderStroke(1.dp, NotionHairline)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -111,15 +110,15 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
         ) {
             Box(
                 modifier = Modifier.size(40.dp).background(
-                    if (isCompleted) GreenSuccess.copy(alpha = 0.1f) else Color.Gray.copy(alpha = 0.1f),
-                    RoundedCornerShape(12.dp)
+                    if (isCompleted) NotionPrimary.copy(alpha = 0.1f) else NotionSlate.copy(alpha = 0.1f),
+                    MaterialTheme.shapes.small // 6dp
                 ),
                 contentAlignment = Alignment.Center
             ) {
                 if (isCompleted) {
-                    Icon(Icons.Default.CheckCircle, null, tint = GreenSuccess)
+                    Icon(Icons.Default.CheckCircle, null, tint = NotionPrimary)
                 } else {
-                    Icon(Icons.Default.Info, null, tint = Color.Gray)
+                    Icon(Icons.Default.Info, null, tint = NotionSteel)
                 }
             }
 
@@ -127,13 +126,13 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
                 Text(
                     title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (isCurrent) FontWeight.Black else FontWeight.Bold,
-                    color = if (isCurrent) TextPrimary else TextSecondary
+                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
+                    color = NotionInk
                 )
                 Text(
                     if (isCompleted) "VERIFIED" else if (isCurrent) "START NOW" else "LOCKED",
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isCompleted) GreenSuccess else if (isCurrent) OrangePrimary else TextSecondary
+                    color = if (isCompleted) NotionPrimary else if (isCurrent) NotionPrimary else NotionSteel
                 )
             }
         }
