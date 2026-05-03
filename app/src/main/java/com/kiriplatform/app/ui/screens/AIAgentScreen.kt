@@ -59,14 +59,6 @@ fun AIAgentScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Decorative glow
-        Box(
-            modifier = Modifier
-                .size(400.dp)
-                .offset(x = 100.dp, y = (-100).dp)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f), RoundedCornerShape(200.dp))
-        )
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -74,25 +66,30 @@ fun AIAgentScreen(
                 .imePadding()
         ) {
             // ── Top bar ───────────────────────────────────────────────────
-            CenterAlignedTopAppBar(
-                title = {
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onSurface)
+                    }
                     Text(
                         "KIRI INTELLIGENCE",
                         style = MaterialTheme.typography.labelLarge,
-                        color = NotionInk,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 2.sp
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp,
+                        modifier = Modifier.padding(start = 8.dp)
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = NotionInk)
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = NotionCanvas
-                )
-            )
+                }
+            }
 
             // ── Specialization chips ──────────────────────────────────────
             SpecializationSelector(
@@ -150,70 +147,70 @@ fun KiriInputBar(
     selectedFileName: String?,
     onCancelAttachment: () -> Unit
 ) {
-    Column(
-        modifier = modifier
-            .glassmorphism(cornerRadius = 32.dp, alpha = 0.08f)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
-        // Attachment preview
-        if (selectedFileName != null) {
-            Surface(
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.padding(bottom = 8.dp, top = 4.dp, start = 8.dp, end = 8.dp)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(modifier = Modifier.padding(8.dp)) {
+            // Attachment preview
+            if (selectedFileName != null) {
+                Surface(
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
+                    shape = RoundedCornerShape(6.dp),
+                    modifier = Modifier.padding(bottom = 8.dp)
                 ) {
-                    Icon(Icons.Default.Description, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
-                    Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, maxLines = 1, modifier = Modifier.weight(1f))
-                    IconButton(onClick = onCancelAttachment, modifier = Modifier.size(24.dp)) {
-                        Icon(Icons.Default.Close, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(Icons.Default.Description, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
+                        Text(selectedFileName, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, maxLines = 1, modifier = Modifier.weight(1f))
+                        IconButton(onClick = onCancelAttachment, modifier = Modifier.size(24.dp)) {
+                            Icon(Icons.Default.Close, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(14.dp))
+                        }
                     }
                 }
             }
-        }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onAttachClick) {
-                Icon(Icons.Default.Add, contentDescription = "Attach", tint = MaterialTheme.colorScheme.primary)
-            }
-
-            Box(
-                modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
-                contentAlignment = Alignment.CenterStart
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                if (text.isEmpty()) {
-                    Text("Analyze with Kiri...", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                IconButton(onClick = onAttachClick) {
+                    Icon(Icons.Default.Add, contentDescription = "Attach", tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
                 }
-                androidx.compose.foundation.text.BasicTextField(
-                    value = text,
-                    onValueChange = onTextChange,
-                    modifier = Modifier.fillMaxWidth(),
-                    textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    maxLines = 5
-                )
-            }
 
-            FloatingActionButton(
-                onClick = onSend,
-                modifier = Modifier.size(44.dp),
-                shape = RoundedCornerShape(22.dp),
-                containerColor = if (text.isNotBlank() || selectedFileName != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainer,
-                elevation = FloatingActionButtonDefaults.elevation(0.dp)
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "Send",
-                    tint = if (text.isNotBlank() || selectedFileName != null) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
-                    modifier = Modifier.size(20.dp)
-                )
+                Box(
+                    modifier = Modifier.weight(1f).padding(horizontal = 8.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    if (text.isEmpty()) {
+                        Text("Ask Kiri anything...", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                    }
+                    androidx.compose.foundation.text.BasicTextField(
+                        value = text,
+                        onValueChange = onTextChange,
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        maxLines = 5
+                    )
+                }
+
+                IconButton(
+                    onClick = onSend,
+                    enabled = text.isNotBlank() || selectedFileName != null
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.Send,
+                        contentDescription = "Send",
+                        tint = if (text.isNotBlank() || selectedFileName != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
             }
         }
     }
@@ -226,30 +223,39 @@ fun KiriEmptyState() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .size(100.dp)
-                .glassmorphism(cornerRadius = 30.dp, alpha = 0.1f)
-                .shimmer()
-        )
-        Spacer(Modifier.height(48.dp))
-        Text("KIRI AI", style = MaterialTheme.typography.displayLarge, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onBackground, fontSize = 64.sp, letterSpacing = (-2).sp)
-        Spacer(Modifier.height(16.dp))
+        Surface(
+            modifier = Modifier.size(80.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text("K", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Black)
+            }
+        }
+        Spacer(Modifier.height(32.dp))
         Text(
-            "MULTIMODAL INTELLIGENCE ACTIVE",
+            "KIRI INTELLIGENCE",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.primary,
             letterSpacing = 4.sp,
             fontWeight = FontWeight.Bold
         )
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(16.dp))
+        Text(
+            "Multimodal Processing Active",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Spacer(Modifier.height(8.dp))
         Text(
             "Upload documents or describe your vision to begin high-fidelity processing.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 56.dp),
-            lineHeight = 26.sp
+            modifier = Modifier.padding(horizontal = 48.dp),
+            lineHeight = 22.sp
         )
     }
 }
@@ -263,16 +269,16 @@ fun KiriMessageBubble(msg: com.kiriplatform.app.ui.viewmodels.KiriMessage) {
     ) {
         Column(horizontalAlignment = if (isUser) Alignment.End else Alignment.Start) {
             Surface(
-                color = if (isUser) NotionPrimary else NotionSurface,
-                shape = MaterialTheme.shapes.medium, // 8dp
-                border = if (isUser) null else BorderStroke(1.dp, NotionHairline),
-                modifier = Modifier.widthIn(max = 300.dp)
+                color = if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(8.dp),
+                border = if (isUser) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                modifier = Modifier.widthIn(max = 280.dp)
             ) {
                 Text(
                     text = msg.content,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (isUser) NotionOnPrimary else NotionInk,
+                    color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                     lineHeight = 22.sp
                 )
             }
@@ -285,23 +291,24 @@ fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
     val options = listOf("GENERAL", "TECH", "LEGAL", "GTM")
     androidx.compose.foundation.lazy.LazyRow(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(options) { option ->
             val isSelected = selected == option
             Surface(
                 onClick = { onSelected(option) },
-                shape = RoundedCornerShape(20.dp),
-                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                border = if (isSelected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)),
-                modifier = Modifier.height(40.dp)
+                shape = RoundedCornerShape(8.dp),
+                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
+                modifier = Modifier.height(36.dp)
             ) {
-                Box(modifier = Modifier.padding(horizontal = 20.dp), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.padding(horizontal = 16.dp), contentAlignment = Alignment.Center) {
                     Text(
                         option, 
-                        style = MaterialTheme.typography.labelMedium, 
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                        color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+                        style = MaterialTheme.typography.labelSmall, 
+                        fontWeight = FontWeight.Bold,
+                        color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                        letterSpacing = 0.5.sp
                     )
                 }
             }
