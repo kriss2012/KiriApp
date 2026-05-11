@@ -1,0 +1,7 @@
+com.kiriplatform.app-resValues-0 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\generated\res\resValues\release
+com.kiriplatform.app-updated_navigation_xml-1 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\generated\updated_navigation_xml\release
+com.kiriplatform.app-packageReleaseResources-2 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.kiriplatform.app-packageReleaseResources-3 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.kiriplatform.app-release-4 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\merged_res\release\mergeReleaseResources
+com.kiriplatform.app-main-5 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\res
+com.kiriplatform.app-release-6 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\release\res
