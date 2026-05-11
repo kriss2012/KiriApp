@@ -17,6 +17,7 @@ data class AalUserEntity(
     val phone: String?,
     val userCategory: String? = "STUDENT",
     val digitalPersona: String?,
+    val avatarUrl: String? = null,
     val lastSyncedAt: Long = System.currentTimeMillis()
 )
 
