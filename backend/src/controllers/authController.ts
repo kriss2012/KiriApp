@@ -19,6 +19,9 @@ export const register = async (req: Request, res: Response) => {
       website,
       githubUrl,
       linkedInUrl,
+      portfolioUrl,
+      rollNo,
+      achievements,
       services,
       bio
     } = req.body;
@@ -59,6 +62,9 @@ export const register = async (req: Request, res: Response) => {
       website,
       githubUrl,
       linkedInUrl,
+      portfolioUrl,
+      rollNo,
+      achievements,
       services: services || [],
       bio
     };
