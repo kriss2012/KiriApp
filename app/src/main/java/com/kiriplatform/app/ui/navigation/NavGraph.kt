@@ -168,7 +168,7 @@ fun KiriNavGraph(
         }
         
         composable(Screen.Events.route) {
-            EventsScreen(navController = navController)
+            EventsScreen(onNavigateBack = { navController.popBackStack() })
         }
         
         composable(Screen.Profile.route) {
