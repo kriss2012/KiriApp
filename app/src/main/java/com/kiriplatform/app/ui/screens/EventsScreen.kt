@@ -49,8 +49,10 @@ fun EventsScreen(
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
 
+    val userRole = sessionManager.getUserRole() ?: "STUDENT"
+
     LaunchedEffect(Unit) {
-        viewModel.fetchEvents(context)
+        viewModel.fetchEvents(context, userRole, userId)
     }
 
     LaunchedEffect(uiState) {
@@ -152,7 +154,7 @@ fun EventsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(state.message, color = Color.Red, fontSize = 14.sp)
-                            Button(onClick = { viewModel.fetchEvents(context) }) {
+                            Button(onClick = { viewModel.fetchEvents(context, userRole, userId) }) {
                                 Text("Retry")
                             }
                         }
@@ -195,14 +197,40 @@ fun EventsList(events: List<EventDto>, navController: androidx.navigation.NavCon
 
 @Composable
 fun EventDetailCard(event: EventDto, onDetailsClick: () -> Unit) {
-    val day = event.date.split("-").lastOrNull() ?: "01"
-    val month = "EVENT"
+    val dateParts = event.date.split("T").first().split("-")
+    val day = dateParts.lastOrNull() ?: "01"
+    val month = when(dateParts.getOrNull(1)) {
+        "01" -> "Jan"
+        "02" -> "Feb"
+        "03" -> "Mar"
+        "04" -> "Apr"
+        "05" -> "May"
+        "06" -> "Jun"
+        "07" -> "Jul"
+        "08" -> "Aug"
+        "09" -> "Sep"
+        "10" -> "Oct"
+        "11" -> "Nov"
+        "12" -> "Dec"
+        else -> "EVENT"
+    }
+    
     val title = event.title
-    val organizer = "Community Event"
-    val location = event.description.take(30) + "..."
+    val organizer = event.coordinatorName ?: "Kiri Community"
+    val location = event.location
     val type = event.type ?: "General"
-    val typeBg = OrangeLight
-    val typeText = OrangeDark
+    val typeBg = when(type.uppercase()) {
+        "HACKATHON" -> Color(0xFFFFEFE0)
+        "WORKSHOP" -> Color(0xFFE0F7FA)
+        "MEETUP" -> Color(0xFFF3E5F5)
+        else -> OrangeLight
+    }
+    val typeText = when(type.uppercase()) {
+        "HACKATHON" -> OrangeDark
+        "WORKSHOP" -> Color(0xFF006064)
+        "MEETUP" -> Color(0xFF4A148C)
+        else -> OrangeDark
+    }
     val prize = event.prize ?: "TBD"
 
     Card(
