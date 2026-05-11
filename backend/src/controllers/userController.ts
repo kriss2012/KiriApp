@@ -32,7 +32,10 @@ export const getProfile = async (req: Request, res: Response) => {
           website: true,
           githubUrl: true,
           linkedInUrl: true,
-          services: true
+          services: true,
+          rollNo: true,
+          portfolioUrl: true,
+          achievements: true
         }
       }),
       prisma.event.count({ where: { ownerId: userId } }),
@@ -111,7 +114,10 @@ export const updateProfile = async (req: Request, res: Response) => {
       website,
       githubUrl,
       linkedInUrl,
-      services
+      services,
+      rollNo,
+      portfolioUrl,
+      achievements
     } = req.body;
 
     console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
@@ -143,6 +149,9 @@ export const updateProfile = async (req: Request, res: Response) => {
         githubUrl: githubUrl || null,
         linkedInUrl: linkedInUrl || null,
         services: services || [],
+        rollNo: rollNo || null,
+        portfolioUrl: portfolioUrl || null,
+        achievements: achievements || [],
         ...(role ? {
           userCategory: categoryMapping[role] || 'STUDENT',
           stakeholderRoles: validStakeholderRoles.includes(role)
@@ -176,7 +185,10 @@ export const updateProfile = async (req: Request, res: Response) => {
         website: true,
         githubUrl: true,
         linkedInUrl: true,
-        services: true
+        services: true,
+        rollNo: true,
+        portfolioUrl: true,
+        achievements: true
       }
     });
 
