@@ -29,6 +29,9 @@ class HomeViewModel : ViewModel() {
 
     fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
+            val sessionManager = com.kiriplatform.app.data.SessionManager.getInstance(context)
+            val userRole = sessionManager.getUserRole() ?: "STUDENT"
+
             // First, try to load from cache for immediate offline view
             val cachedUser = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
             val cachedEvents = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
@@ -41,7 +44,18 @@ class HomeViewModel : ViewModel() {
 
             try {
                 val user = ApiClient.service.getProfile(userId)
-                val events = ApiClient.service.getEvents().take(3)
+                val rawEvents = ApiClient.service.getEvents()
+                
+                val today = java.time.LocalDate.now().toString()
+                val filteredEvents = when (userRole) {
+                    "ADMIN" -> rawEvents
+                    "SPOC", "ORGANIZER" -> {
+                        rawEvents.filter { it.ownerId == userId || it.date >= today }
+                    }
+                    else -> {
+                        rawEvents.filter { it.date >= today }
+                    }
+                }.take(3)
                 
                 // Fetch AAL data
                 var onboarding: AalOnboardingDto? = null
@@ -56,9 +70,9 @@ class HomeViewModel : ViewModel() {
                 
                 // SAVE to cache for next time
                 com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
-                com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", events)
+                com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", filteredEvents)
                 
-                _uiState.value = HomeState.Success(user, events, onboarding, activities)
+                _uiState.value = HomeState.Success(user, filteredEvents, onboarding, activities)
             } catch (e: Exception) {
                 if (_uiState.value !is HomeState.Success) {
                     _uiState.value = HomeState.Error(e.message ?: "Failed to load home data")
