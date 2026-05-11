@@ -230,7 +230,8 @@ data class EventDto(
     val coordinatorPhone: String? = null,
     val type: String? = null,
     val registrationLink: String? = null,
-    val prize: String? = null
+    val prize: String? = null,
+    val ownerId: String? = null
 )
 
 data class LoginRequest(
