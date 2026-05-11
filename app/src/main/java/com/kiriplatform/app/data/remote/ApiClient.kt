@@ -186,11 +186,21 @@ object ApiClient {
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
-                val builder = chain.request().newBuilder()
+                val request = chain.request()
+                val builder = request.newBuilder()
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
                 }
-                chain.proceed(builder.build())
+                
+                val response = chain.proceed(builder.build())
+                
+                if (response.code == 401) {
+                    // Logic to handle unauthorized (token expired)
+                    // You might want to notify the UI to show login screen
+                    // This is just a placeholder to indicate where it would happen
+                }
+                
+                response
             }
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.HEADERS
