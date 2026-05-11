@@ -13,12 +13,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DashboardScreen(
     onNavigateToRepository: () -> Unit = {},
-    onNavigateToVoice: () -> Unit = {}
+    onNavigateToVoice: () -> Unit = {},
+    onNavigateToEvents: () -> Unit = {},
+    onNavigateToLms: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("ASG organization Dashboard", fontWeight = FontWeight.Bold) },
+                title = { Text("ASG Organization Dashboard", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
@@ -38,8 +40,9 @@ fun DashboardScreen(
                 item { DashboardCard("Internal Chat", "Chat with founders & mentors") { /* Navigate to Chat */ } }
                 item { DashboardCard("Job Board", "Find startup opportunities") { /* Navigate to Jobs */ } }
                 item { DashboardCard("Repositories", "Alumni, Faculty & Students") { onNavigateToRepository() } }
-                item { DashboardCard("Events Wall", "Community meetups & SIH") {} }
+                item { DashboardCard("Events Wall", "Community meetups & SIH") { onNavigateToEvents() } }
                 item { DashboardCard("Mentorship", "Find initial handholding") {} }
+                item { DashboardCard("AAL LMS", "AI Launchpad & Internship") { onNavigateToLms() } }
                 item { DashboardCard("AI Agent", "Linkages & Funding assist") { onNavigateToVoice() } }
             }
         }
