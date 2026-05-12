@@ -130,6 +130,7 @@ fun LoginScreen(
                             
                             val user = response.user
                             val token = response.token
+                            val refreshToken = response.refreshToken
                             
                             // Validate token and user data
                             if (user == null) {
@@ -152,13 +153,14 @@ fun LoginScreen(
                             
                             // Save to session
                             sessionManager.saveToken(token)
+                            sessionManager.saveRefreshToken(refreshToken)
                             sessionManager.saveUserId(user.id)
                             sessionManager.saveUserName(user.fullName)
                             sessionManager.saveUserRole(user.role)
                             sessionManager.setCanCreateEvents(user.canCreateEvents)
                             
                             // Set token for future API calls
-                            ApiClient.setToken(token)
+                            ApiClient.setToken(token, refreshToken)
                             
                             isLoading = false
                             onLoginSuccess()
