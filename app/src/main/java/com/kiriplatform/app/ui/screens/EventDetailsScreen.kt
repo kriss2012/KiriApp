@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -79,13 +80,13 @@ fun EventDetailsScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onBackground
+                    containerColor = if (isSystemInDarkTheme()) NotionBrandNavyDeep else MaterialTheme.colorScheme.background,
+                    titleContentColor = if (isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.onBackground,
+                    navigationIconContentColor = if (isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.onBackground
                 )
             )
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = if (isSystemInDarkTheme()) NotionBrandNavyDeep else MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -98,7 +99,7 @@ fun EventDetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(if (isSystemInDarkTheme()) NotionBrandNavyMid else MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 if (!event.imageUrl.isNullOrEmpty()) {
                     AsyncImage(
@@ -115,7 +116,7 @@ fun EventDetailsScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("🖼️", fontSize = 48.sp)
                             Text("No Banner Image Provided", 
-                                color = MaterialTheme.colorScheme.onSurfaceVariant, 
+                                color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant, 
                                 style = MaterialTheme.typography.labelSmall)
                         }
                     }
@@ -145,7 +146,7 @@ fun EventDetailsScreen(
                 Text(
                     text = event.title.clean(),
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Black,
                     lineHeight = 34.sp
                 )
@@ -155,21 +156,21 @@ fun EventDetailsScreen(
                 // Date & Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.DateRange, contentDescription = null, 
-                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                        tint = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(12.dp))
                     Text(event.date.formatDate(), 
                         style = MaterialTheme.typography.bodyMedium, 
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = if (isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Medium)
                 }
                 Spacer(Modifier.height(12.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Default.LocationOn, contentDescription = null, 
-                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                        tint = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
                     Spacer(Modifier.width(12.dp))
                     Text(event.location.clean(), 
                         style = MaterialTheme.typography.bodyMedium, 
-                        color = MaterialTheme.colorScheme.onSurface)
+                        color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurface)
                 }
 
                 Spacer(Modifier.height(24.dp))
@@ -178,23 +179,23 @@ fun EventDetailsScreen(
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    color = if (isSystemInDarkTheme()) NotionBrandNavyMid else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    border = BorderStroke(1.dp, if (isSystemInDarkTheme()) NotionBrandPurple.copy(alpha = 0.3f) else MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text("EVENT COORDINATOR", 
                             style = MaterialTheme.typography.labelSmall, 
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 1.sp)
                         Spacer(Modifier.height(12.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.Person, null, 
-                                tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                                tint = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                             Spacer(Modifier.width(12.dp))
                             Text(event.coordinatorName?.clean() ?: "ASG Core Team", 
                                 fontWeight = FontWeight.Bold, 
-                                color = MaterialTheme.colorScheme.onSurface)
+                                color = if (isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }
@@ -202,10 +203,10 @@ fun EventDetailsScreen(
                 if (!event.prize.isNullOrEmpty()) {
                     Spacer(Modifier.height(16.dp))
                     Surface(
-                        color = NotionTintMint,
+                        color = if (isSystemInDarkTheme()) NotionBrandGreen.copy(alpha = 0.1f) else NotionTintMint,
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, NotionBrandGreen.copy(alpha = 0.2f))
+                        border = BorderStroke(1.dp, NotionBrandGreen.copy(alpha = 0.3f))
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
@@ -215,7 +216,7 @@ fun EventDetailsScreen(
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = NotionBrandGreen)
-                                Text(event.prize.clean(), style = MaterialTheme.typography.bodySmall, color = NotionBrandGreen)
+                                Text(event.prize.clean(), style = MaterialTheme.typography.bodySmall, color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.8f) else NotionBrandGreen)
                             }
                         }
                     }
@@ -227,12 +228,12 @@ fun EventDetailsScreen(
                 Text("About the Event", 
                     style = MaterialTheme.typography.titleLarge, 
                     fontWeight = FontWeight.Black, 
-                    color = MaterialTheme.colorScheme.onSurface)
+                    color = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.onSurface)
                 Spacer(Modifier.height(12.dp))
                 Text(
                     text = event.description.clean(),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                     lineHeight = 26.sp
                 )
 

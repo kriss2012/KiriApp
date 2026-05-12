@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.data.remote.models.EventDto
@@ -177,99 +179,117 @@ data class EventDisplayItem(
 @Composable
 fun BroadcastCard(event: EventDto, onClick: () -> Unit) {
     fun String.clean(): String = try {
-        URLDecoder.decode(this.replace("+", " "), "UTF-8")
+        java.net.URLDecoder.decode(this.replace("+", " "), "UTF-8")
     } catch (e: Exception) {
         this.replace("+", " ")
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isSystemInDarkTheme()) NotionBrandNavyMid.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.1f) else MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+            // Top Row: Category and Status
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Category Badge
                 Surface(
-                    color = NotionTintLavender,
+                    color = if (isSystemInDarkTheme()) NotionBrandPurple800 else NotionTintLavender,
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
                         text = (event.type ?: "GENERAL").uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = NotionBrandPurple800,
-                        fontWeight = FontWeight.Bold
+                        color = if (isSystemInDarkTheme()) NotionBrandPurple300 else NotionBrandPurple800,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                 }
                 
-                // Event Count / Date Preview
                 Text(
                     text = if (event.type == "HACKATHON") "01 EVENT" else "ACTIVE",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp
                 )
             }
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(14.dp))
 
-            // Title - Highlighted visibility
+            // Title
             Text(
                 text = event.title.clean(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Black,
-                color = if (isSystemInDarkTheme()) NotionBrandYellow else NotionPrimary
+                color = if (isSystemInDarkTheme()) NotionBrandYellow else NotionPrimary,
+                letterSpacing = (-0.3).sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(6.dp))
 
             // Description
             Text(
                 text = event.description.clean(),
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2
+                color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.7f) else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                lineHeight = 18.sp,
+                overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(Modifier.height(12.dp))
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp)
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(16.dp))
+            HorizontalDivider(
+                color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.1f) else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), 
+                thickness = 0.5.dp
+            )
+            Spacer(Modifier.height(16.dp))
 
+            // Bottom Row: Reward and View Details
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Prize Info
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // Reward Section - Using a Column or a Row with weight to ensure no overlap
+                Row(
+                    modifier = Modifier.weight(1f, fill = false),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         "REWARD: ",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.5f) else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        event.prize?.clean() ?: "TBD",
+                        text = event.prize?.clean() ?: "TBD",
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionLinkBlue,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
+                        fontWeight = FontWeight.Black,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
-                // Action Text
+                Spacer(Modifier.width(16.dp)) // Guaranteed gap
+
                 Text(
-                    "VIEW DETAILS →",
+                    text = "VIEW DETAILS →",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Black
+                    color = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Black,
+                    letterSpacing = 0.5.sp,
+                    maxLines = 1
                 )
             }
         }
