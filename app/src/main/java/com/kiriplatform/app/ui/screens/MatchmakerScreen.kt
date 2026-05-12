@@ -37,21 +37,21 @@ fun MatchmakerScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("AI Matchmaker", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Predictive matching based on your skills & goals", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("AI Matchmaker", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Predictive matching based on your skills & goals", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             if (vm.suggestions.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = OrangePrimary)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             } else {
                 LazyColumn(
@@ -73,37 +73,37 @@ fun MatchCard(suggestion: MatchSuggestionDto) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
-                    modifier = Modifier.size(50.dp).clip(CircleShape).background(OrangeLight),
+                    modifier = Modifier.size(50.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(suggestion.fullName.take(1), fontWeight = FontWeight.Black, color = OrangePrimary)
+                    Text(suggestion.fullName.take(1), fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onPrimaryContainer)
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(suggestion.fullName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = TextPrimary)
-                    Text("${suggestion.role} • ${suggestion.college ?: "Regional Hub"}", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                    Text(suggestion.fullName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onSurface)
+                    Text("${suggestion.role} • ${suggestion.college ?: "Regional Hub"}", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Surface(
-                    color = GreenSuccess.copy(alpha = 0.1f),
+                    color = Color(0xFF1D9E75).copy(alpha = 0.1f),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("${suggestion.matchScore}% MATCH", modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = GreenSuccess, fontWeight = FontWeight.Bold)
+                    Text("${suggestion.matchScore}% MATCH", modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = Color(0xFF1D9E75), fontWeight = FontWeight.Bold)
                 }
             }
             
             Spacer(Modifier.height(16.dp))
             
-            Text("Top Skills", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text("Top Skills", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Row(modifier = Modifier.padding(top = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                suggestion.skills.take(3).forEach { skill ->
-                    Surface(color = BgCream, shape = RoundedCornerShape(8.dp), border = BorderStroke(0.5.dp, BorderColor)) {
-                        Text(skill, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = TextPrimary)
+                (suggestion.skills ?: emptyList()).take(3).forEach { skill ->
+                    Surface(color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp), border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.outlineVariant)) {
+                        Text(skill, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -115,7 +115,7 @@ fun MatchCard(suggestion: MatchSuggestionDto) {
                     onClick = { /* onNavigateToChat */ },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text("CONNECT")
                 }
@@ -123,9 +123,9 @@ fun MatchCard(suggestion: MatchSuggestionDto) {
                     onClick = { /* onNavigateToProfile */ },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    border = BorderStroke(1.dp, BorderColor)
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
-                    Text("VIEW PORTFOLIO", color = TextPrimary)
+                    Text("VIEW PORTFOLIO", color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }

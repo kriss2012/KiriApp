@@ -1,0 +1,7 @@
+com.kiriplatform.app-resValues-0 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\generated\res\resValues\debug
+com.kiriplatform.app-updated_navigation_xml-1 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\generated\updated_navigation_xml\debug
+com.kiriplatform.app-packageDebugResources-2 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.kiriplatform.app-packageDebugResources-3 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.kiriplatform.app-debug-4 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.kiriplatform.app-debug-5 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\debug\res
+com.kiriplatform.app-main-6 C:\Users\krishna\AndroidStudioProjects\ASGApp\app\src\main\res

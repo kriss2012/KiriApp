@@ -35,38 +35,50 @@ fun LoginScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(containerColor = BgCream) { padding ->
+    Scaffold(containerColor = MaterialTheme.colorScheme.background) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(innerPadding)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Welcome Back",
+                text = "KIRI PLATFORM",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Welcome back",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Black,
-                color = TextPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Sign in to continue to Kiri Community",
+                text = "Sign in to your document workspace.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email Address") },
+                label = { Text("Email", style = MaterialTheme.typography.labelSmall) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = OrangePrimary,
-                    unfocusedBorderColor = BorderColor
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    cursorColor = MaterialTheme.colorScheme.primary
                 )
             )
 
@@ -75,61 +87,106 @@ fun LoginScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text("Password", style = MaterialTheme.typography.labelSmall) },
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(8.dp),
+                textStyle = MaterialTheme.typography.bodyMedium,
                 visualTransformation = PasswordVisualTransformation(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = OrangePrimary,
-                    unfocusedBorderColor = BorderColor
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    cursorColor = MaterialTheme.colorScheme.primary
                 )
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             if (errorMessage != null) {
-                Text(text = errorMessage!!, color = Color.Red, style = MaterialTheme.typography.labelSmall)
+                Text(
+                    text = errorMessage ?: "", 
+                    color = MaterialTheme.colorScheme.error, 
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             KiriPrimaryButton(
-                text = if (isLoading) "Signing in..." else "Sign In",
+                text = if (isLoading) "SIGNING IN..." else "SIGN IN",
                 onClick = {
+                    if (email.isBlank() || password.isBlank()) {
+                        errorMessage = "Please enter both email and password"
+                        return@KiriPrimaryButton
+                    }
+                    if (isLoading) return@KiriPrimaryButton
+
                     isLoading = true
                     errorMessage = null
                     coroutineScope.launch {
                         try {
                             val response = ApiClient.service.login(LoginRequest(email.trim(), password.trim()))
                             
+                            val user = response.user
+                            val token = response.token
+                            
+                            // Validate token and user data
+                            if (user == null) {
+                                isLoading = false
+                                errorMessage = "Invalid user data received"
+                                return@launch
+                            }
+                            
+                            if (token.isBlank()) {
+                                isLoading = false
+                                errorMessage = "Invalid authentication token received"
+                                return@launch
+                            }
+                            
+                            if (user.id.isBlank()) {
+                                isLoading = false
+                                errorMessage = "Invalid user ID received"
+                                return@launch
+                            }
+                            
                             // Save to session
-                            sessionManager.saveToken(response.token)
-                            sessionManager.saveUserId(response.user.id)
-                            sessionManager.saveUserName(response.user.fullName)
-                            sessionManager.saveUserRole(response.user.role)
-                            sessionManager.setCanCreateEvents(response.user.canCreateEvents)
+                            sessionManager.saveToken(token)
+                            sessionManager.saveUserId(user.id)
+                            sessionManager.saveUserName(user.fullName)
+                            sessionManager.saveUserRole(user.role)
+                            sessionManager.setCanCreateEvents(user.canCreateEvents)
                             
                             // Set token for future API calls
-                            ApiClient.setToken(response.token)
+                            ApiClient.setToken(token)
                             
                             isLoading = false
                             onLoginSuccess()
-                        } catch (e: Exception) {
+                        } catch (e: Throwable) {
                             isLoading = false
-                            errorMessage = e.message ?: "Authentication failed"
+                            errorMessage = when (e) {
+                                is java.net.UnknownHostException -> "No internet connection. Please check your network."
+                                is java.net.SocketTimeoutException -> "Server connection timed out."
+                                is retrofit2.HttpException -> {
+                                    if (e.code() == 401) "Invalid email or password."
+                                    else "Server error: ${e.code()}"
+                                }
+                                else -> e.localizedMessage ?: "Login failed. Please try again."
+                            }
                         }
                     }
                 },
                 enabled = !isLoading && email.isNotEmpty() && password.isNotEmpty()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Row {
-                Text("Don't have an account? ", color = TextSecondary)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("New here? ", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(
-                    "Sign Up",
-                    color = OrangePrimary,
+                    "Create an account",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.clickable { onNavigateToRegister() }
                 )

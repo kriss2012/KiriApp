@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Center the premium logo with appropriate padding for adaptive icon safe zone -->
+    <item
+        android:drawable="@drawable/kiri_logo_vector_premium"
+        android:gravity="center"
+        android:width="96dp"
+        android:height="96dp" />
+</layer-list>

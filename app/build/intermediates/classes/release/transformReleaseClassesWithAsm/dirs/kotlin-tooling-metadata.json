@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1.1.0",
   "buildSystem": "Gradle",
-  "buildSystemVersion": "8.10.2",
+  "buildSystemVersion": "9.3.1",
   "buildPlugin": "org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper",
-  "buildPluginVersion": "2.1.10",
+  "buildPluginVersion": "2.2.10",
   "projectSettings": {
     "isHmppEnabled": true,
     "isCompatibilityMetadataVariantEnabled": false,

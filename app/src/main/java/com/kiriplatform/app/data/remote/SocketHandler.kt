@@ -58,23 +58,23 @@ object SocketHandler {
             socket.off("match_suggested")
 
             socket.on("new_notification") { args ->
-                val data = args[0] as JSONObject
-                onNotification(data)
+                val data = args.getOrNull(0) as? JSONObject
+                data?.let { onNotification(it) }
             }
 
             socket.on("receive_message") { args ->
-                val data = args[0] as JSONObject
-                onMessage(data)
+                val data = args.getOrNull(0) as? JSONObject
+                data?.let { onMessage(it) }
             }
 
             socket.on("connection_accepted") { args ->
-                val data = args[0] as JSONObject
-                onConnectionAccepted(data)
+                val data = args.getOrNull(0) as? JSONObject
+                data?.let { onConnectionAccepted(it) }
             }
 
             socket.on("match_suggested") { args ->
-                val data = args[0] as JSONObject
-                onMatchSuggested(data)
+                val data = args.getOrNull(0) as? JSONObject
+                data?.let { onMatchSuggested(it) }
             }
         }
     }

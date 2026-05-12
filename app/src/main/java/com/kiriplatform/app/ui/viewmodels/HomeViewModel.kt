@@ -12,6 +12,9 @@ import kotlinx.coroutines.launch
 
 import com.kiriplatform.app.data.remote.models.*
 
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
+
 sealed class HomeState {
     object Loading : HomeState()
     data class Success(
@@ -23,56 +26,59 @@ sealed class HomeState {
     data class Error(val message: String) : HomeState()
 }
 
-class HomeViewModel : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState: StateFlow<HomeState> = _uiState.asStateFlow()
 
     fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
-            val sessionManager = com.kiriplatform.app.data.SessionManager.getInstance(context)
-            val userRole = sessionManager.getUserRole() ?: "STUDENT"
-
-            // First, try to load from cache for immediate offline view
-            val cachedUser = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
-            val cachedEvents = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
-            
-            if (cachedUser != null && cachedEvents != null) {
-                _uiState.value = HomeState.Success(cachedUser, cachedEvents)
-            } else {
+            try {
+                // First, try to load from cache on IO thread to prevent main-thread lag
+                val cachedData = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+                    val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
+                    user to events
+                }
+                
+                val cachedUser = cachedData.first
+                val cachedEvents = cachedData.second
+                
+                if (cachedUser is UserDto && cachedEvents is List<*>) {
+                    @Suppress("UNCHECKED_CAST")
+                    val validEvents = cachedEvents as List<EventDto>
+                    _uiState.value = HomeState.Success(cachedUser, validEvents)
+                } else {
+                    _uiState.value = HomeState.Loading
+                }
+            } catch (e: Exception) {
+                // Ignore cache errors and proceed to network
                 _uiState.value = HomeState.Loading
             }
 
             try {
+                // Retrofit handles its own thread switching, but we keep it inside the scope
                 val user = ApiClient.service.getProfile(userId)
-                val rawEvents = ApiClient.service.getEvents()
-                
-                val today = java.time.LocalDate.now().toString()
-                val filteredEvents = when (userRole) {
-                    "ADMIN" -> rawEvents
-                    "SPOC", "ORGANIZER" -> {
-                        rawEvents.filter { it.ownerId == userId || it.date >= today }
-                    }
-                    else -> {
-                        rawEvents.filter { it.date >= today }
-                    }
-                }.take(3)
+                val events = ApiClient.service.getEvents().take(3)
                 
                 // Fetch AAL data
                 var onboarding: AalOnboardingDto? = null
                 var activities: List<AalActivityDto> = emptyList()
                 try {
-                    val intUserId = userId.toIntOrNull()
-                    if (intUserId != null) {
-                        onboarding = ApiClient.service.getAalOnboarding(intUserId)
-                        activities = ApiClient.service.getAalActivities(intUserId)
+                    // Fetch AAL data if userId is valid
+                    if (userId.isNotEmpty()) {
+                        onboarding = ApiClient.service.getAalOnboarding(userId)
+                        activities = ApiClient.service.getAalActivities(userId)
                     }
                 } catch (e: Exception) { /* AAL not available for this user */ }
                 
-                // SAVE to cache for next time
-                com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
-                com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", filteredEvents)
+                // SAVE to cache on IO thread
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                    com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
+                    com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", events)
+                }
                 
-                _uiState.value = HomeState.Success(user, filteredEvents, onboarding, activities)
+                _uiState.value = HomeState.Success(user, events, onboarding, activities)
             } catch (e: Exception) {
                 if (_uiState.value !is HomeState.Success) {
                     _uiState.value = HomeState.Error(e.message ?: "Failed to load home data")

@@ -3,16 +3,13 @@ import { createNotification } from './notificationController.js';
 import { createActivity } from './aiController.js';
 export const createEvent = async (req, res) => {
     try {
-        const { title, description, date, location, type, ownerId, registrationLink, prize } = req.body;
-        // Check if the user has permission to create events
+        const { title, description, date, location, type, ownerId, registrationLink, prize, coordinatorName, coordinatorPhone, hostInstitutionId } = req.body;
+        // Check if the user exists
         const user = await prisma.user.findUnique({
             where: { id: ownerId }
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
-        }
-        if (!user.canCreateEvents && user.role !== 'ADMIN' && user.role !== 'SPOC') {
-            return res.status(403).json({ message: 'You do not have permission to create events. Please contact an admin.' });
         }
         const { imageUrl } = req.body;
         const event = await prisma.event.create({
@@ -24,13 +21,15 @@ export const createEvent = async (req, res) => {
                 imageUrl,
                 registrationLink,
                 prize,
+                coordinatorName,
+                coordinatorPhone,
+                hostInstitutionId,
                 type: type || 'GENERAL',
                 ownerId
             }
         });
-        // Notify all verified users about the new event (Async - Point 4)
+        // Notify all users about the new event (Async)
         prisma.user.findMany({
-            where: { isVerified: true },
             select: { id: true }
         }).then(allUsers => {
             allUsers.forEach(u => createNotification(u.id, 'New Event Added', `Check out "${title}" happening at ${location}.`, 'EVENT', event.id));
@@ -98,7 +97,7 @@ export const updateEvent = async (req, res) => {
         if (typeof eventId !== 'string') {
             return res.status(400).json({ message: 'Invalid Event ID' });
         }
-        const { title, description, date, location, type, imageUrl, registrationLink, prize } = req.body;
+        const { title, description, date, location, type, imageUrl, registrationLink, prize, coordinatorName, coordinatorPhone, hostInstitutionId } = req.body;
         const event = await prisma.event.update({
             where: { id: eventId },
             data: {
@@ -109,7 +108,10 @@ export const updateEvent = async (req, res) => {
                 type,
                 imageUrl,
                 registrationLink,
-                prize
+                prize,
+                coordinatorName,
+                coordinatorPhone,
+                hostInstitutionId
             }
         });
         res.status(200).json(event);

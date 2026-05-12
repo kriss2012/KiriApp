@@ -14,8 +14,8 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Home : Screen("home", "Home", Icons.Default.Home)
     object Search : Screen("search", "Search", Icons.Default.Search)
     object Chats : Screen("chats", "Chats", Icons.Default.Chat)
-    object Repository : Screen("repository", "Community", Icons.Default.Group)
-    object Events : Screen("events", "Events", Icons.Default.CalendarMonth)
+    object Repository : Screen("repository", "Community", Icons.Default.People)
+    object Events : Screen("events", "Events", Icons.Default.DateRange)
     object Profile : Screen("profile", "Profile", Icons.Default.Person)
     object EditProfile : Screen("edit_profile", "Edit Profile")
     object Notifications : Screen("notifications", "Notifications")
@@ -28,7 +28,7 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Chat : Screen("chat/{receiverId}") {
         fun createRoute(receiverId: String) = "chat/$receiverId"
     }
-    object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.SmartToy)
+    object AIAgent : Screen("ai_agent", "Kiri AI", Icons.Default.AutoAwesome)
     object Jobs : Screen("jobs", "Jobs")
     object AddEvent : Screen("add_event", "Add Event")
     object EventDetails : Screen("event_details/{eventJson}") {

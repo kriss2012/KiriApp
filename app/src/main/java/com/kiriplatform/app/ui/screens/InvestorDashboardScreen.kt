@@ -35,17 +35,17 @@ fun InvestorDashboardScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("INVESTOR COMMAND", style = MaterialTheme.typography.labelSmall, color = BluePrimary, letterSpacing = 2.sp)
-                Text("Market Insights", style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Data-driven talent discovery for Jalgaon region", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("INVESTOR COMMAND", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                Text("Market Insights", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Data-driven talent discovery for Jalgaon region", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // Market Trends Row
@@ -58,7 +58,7 @@ fun InvestorDashboardScreen(
                     Text("Top Trending Sectors", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 8.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                         vm.trends.take(2).forEach { trend ->
-                            TrendBox(trend.category, "${trend._count["id"] ?: 0} Projects")
+                            TrendBox(trend.category ?: "General", "${trend._count?.get("id") ?: 0} Projects")
                         }
                     }
                 }
@@ -80,12 +80,12 @@ fun TrendBox(label: String, value: String) {
     Card(
         modifier = Modifier.width(160.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
-            Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = BluePrimary)
+            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -95,21 +95,21 @@ fun InvestorPitchCard(pitch: InvestorPitchDto) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Surface(color = BluePrimary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
-                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = BluePrimary, fontWeight = FontWeight.Bold)
+                Surface(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), shape = RoundedCornerShape(8.dp)) {
+                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.weight(1f))
-                Text("HEALTH SCORE: ${pitch.healthScore}%", style = MaterialTheme.typography.labelSmall, color = if (pitch.healthScore > 70) GreenSuccess else OrangePrimary, fontWeight = FontWeight.Bold)
+                Text("HEALTH SCORE: ${pitch.healthScore}%", style = MaterialTheme.typography.labelSmall, color = if (pitch.healthScore > 70) MaterialTheme.colorScheme.primary else NotionBrandOrange, fontWeight = FontWeight.Bold)
             }
             
             Spacer(Modifier.height(12.dp))
-            Text(pitch.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = TextPrimary)
-            Text(pitch.description, style = MaterialTheme.typography.bodySmall, color = TextSecondary, maxLines = 2)
+            Text(pitch.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.onSurface)
+            Text(pitch.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2)
 
             Spacer(Modifier.height(20.dp))
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -117,7 +117,7 @@ fun InvestorPitchCard(pitch: InvestorPitchDto) {
                     onClick = { /* onNavigateToPitchDetails */ },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = BluePrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text("ANALYZE ROI")
                 }
@@ -125,9 +125,9 @@ fun InvestorPitchCard(pitch: InvestorPitchDto) {
                     onClick = { /* onNavigateToFounder */ },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(14.dp),
-                    border = BorderStroke(1.dp, BorderColor)
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
-                    Text("FOUNDER INTEL", color = TextPrimary)
+                    Text("FOUNDER INTEL", color = MaterialTheme.colorScheme.onSurface)
                 }
             }
         }

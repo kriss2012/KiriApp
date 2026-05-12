@@ -9,23 +9,28 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.padding
 import com.kiriplatform.app.ui.screens.*
 import com.kiriplatform.app.data.SessionManager
 import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 
 @Composable
-fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
+fun KiriNavGraph(
+    navController: NavHostController = rememberNavController(),
+    hasToken: Boolean,
+    paddingValues: androidx.compose.foundation.layout.PaddingValues = androidx.compose.foundation.layout.PaddingValues(0.dp)
+) {
     val context = LocalContext.current
-    val sessionManager = remember { SessionManager.getInstance(context) }
-    val hasToken = sessionManager.getToken() != null
     
     NavHost(
         navController = navController,
         startDestination = if (hasToken) Screen.Home.route else Screen.Splash.route,
+        modifier = Modifier.padding(paddingValues),
         enterTransition = {
             androidx.compose.animation.slideInHorizontally(
                 initialOffsetX = { 1000 },
@@ -53,26 +58,55 @@ fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
     ) {
         composable(Screen.Splash.route) {
             SplashScreen(
-                onJoinCommunity = { navController.navigate(Screen.Register.route) },
-                onOrganization = {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL))
-                    context.startActivity(intent)
+                onJoinCommunity = { 
+                    navController.navigate(Screen.Register.route) {
+                        launchSingleTop = true
+                    }
                 },
-                onSignIn = { navController.navigate(Screen.Login.route) }
+                onOrganization = {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL))
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        // Handle potential activity not found
+                    }
+                },
+                onSignIn = { 
+                    navController.navigate(Screen.Login.route) {
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToRegister = { navController.navigate(Screen.Register.route) },
-                onLoginSuccess = { navController.navigate(Screen.Home.route) }
+                onNavigateToRegister = { 
+                    navController.navigate(Screen.Register.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onLoginSuccess = { 
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
             )
         }
 
         composable(Screen.Register.route) {
             RegisterScreen(
-                onNavigateToLogin = { navController.navigate(Screen.Login.route) },
-                onRegisterSuccess = { navController.navigate(Screen.Onboarding.route) }
+                onBack = { navController.popBackStack() },
+                onNavigateToLogin = { 
+                    navController.navigate(Screen.Login.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onRegisterSuccess = { 
+                    navController.navigate(Screen.Onboarding.route) {
+                        popUpTo(Screen.Splash.route) { inclusive = true }
+                    }
+                }
             )
         }
         
@@ -134,7 +168,7 @@ fun KiriNavGraph(navController: NavHostController = rememberNavController()) {
         }
         
         composable(Screen.Events.route) {
-            EventsScreen(navController = navController)
+            EventsScreen(onNavigateBack = { navController.popBackStack() })
         }
         
         composable(Screen.Profile.route) {

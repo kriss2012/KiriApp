@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.kiriplatform.app.data.remote.models.EventDto
+import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,19 +55,18 @@ fun EventDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Event Details", fontWeight = FontWeight.Bold) },
+                title = { Text("Event Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = NotionInk)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = TextPrimary
+                    containerColor = NotionCanvas
                 )
             )
         },
-        containerColor = BgCream
+        containerColor = NotionCanvas
     ) { padding ->
         Column(
             modifier = Modifier
@@ -102,18 +103,20 @@ fun EventDetailsScreen(
                 }
             }
 
-            Column(modifier = Modifier.padding(20.dp)) {
+            Column(modifier = Modifier.padding(24.dp)) {
                 // Type Badge
                 Surface(
-                    color = OrangeLight,
-                    shape = RoundedCornerShape(8.dp)
+                    color = NotionTintLavender,
+                    shape = MaterialTheme.shapes.small, // 6dp
+                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))
                 ) {
                     Text(
-                        text = event.type ?: "GENERAL",
+                        text = event.type?.uppercase() ?: "GENERAL",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = OrangeDark,
-                        fontWeight = FontWeight.Bold
+                        color = NotionBrandPurple800,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
                 }
 
@@ -123,7 +126,7 @@ fun EventDetailsScreen(
                 Text(
                     text = event.title,
                     style = MaterialTheme.typography.headlineMedium,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.ExtraBold
                 )
 
@@ -131,15 +134,15 @@ fun EventDetailsScreen(
 
                 // Date & Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.DateRange, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text(event.date, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+                    Text(event.date, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Spacer(Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = OrangePrimary, modifier = Modifier.size(20.dp))
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text(event.location, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+                    Text(event.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
 
                 Spacer(Modifier.height(16.dp))
@@ -148,23 +151,23 @@ fun EventDetailsScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
-                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(Modifier.height(8.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Person, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Person, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = TextPrimary)
+                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                         }
                         if (!event.coordinatorPhone.isNullOrEmpty()) {
                             Spacer(Modifier.height(4.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Phone, null, tint = BluePrimary, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Phone, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                                 Spacer(Modifier.width(8.dp))
-                                Text(event.coordinatorPhone!!, style = MaterialTheme.typography.bodySmall, color = BluePrimary)
+                                Text(event.coordinatorPhone ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
@@ -173,7 +176,7 @@ fun EventDetailsScreen(
                 if (!event.prize.isNullOrEmpty()) {
                     Spacer(Modifier.height(16.dp))
                     Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)),
+                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)), // Keeping a success color for prizes
                         shape = RoundedCornerShape(12.dp)
                     ) {
                         Row(
@@ -184,7 +187,7 @@ fun EventDetailsScreen(
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = Color(0xFF2E7D32))
-                                Text(event.prize!!, style = MaterialTheme.typography.bodySmall, color = Color(0xFF1B5E20))
+                                Text(event.prize ?: "No Prize Info", style = MaterialTheme.typography.bodySmall, color = Color(0xFF1B5E20))
                             }
                         }
                     }
@@ -193,45 +196,34 @@ fun EventDetailsScreen(
                 Spacer(Modifier.height(24.dp))
 
                 // Description
-                Text("About the Event", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = TextPrimary)
+                Text("About the Event", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     text = event.description,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 24.sp
                 )
 
                 Spacer(Modifier.height(40.dp))
 
                 // Apply Button
-                Button(
+                KiriPrimaryButton(
+                    text = if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
                     onClick = {
                         if (!event.registrationLink.isNullOrEmpty()) {
-                            uriHandler.openUri(event.registrationLink!!)
+                            event.registrationLink?.let { uriHandler.openUri(it) }
                         } else {
                             android.widget.Toast.makeText(context, "Registration link not available", android.widget.Toast.LENGTH_SHORT).show()
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
-                ) {
-                    Text(
-                        if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                }
+                    }
+                )
                 
                 if (!event.registrationLink.isNullOrEmpty()) {
                     Text(
                         "Note: Clicking this will open an external registration form (e.g., Google Form).",
                         style = MaterialTheme.typography.labelSmall,
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
                     )
                 }

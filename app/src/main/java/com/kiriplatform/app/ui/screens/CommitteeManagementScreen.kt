@@ -35,17 +35,17 @@ fun CommitteeManagementScreen(
                 }
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = Color.White,
-                contentColor = OrangePrimary,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary,
                 indicator = { tabPositions ->
-                    TabRowDefaults.Indicator(
+                    TabRowDefaults.SecondaryIndicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                        color = OrangePrimary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             ) {
@@ -78,7 +78,7 @@ fun RepsManagement() {
             Text("Committee Reps", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             Button(
                 onClick = { /* Add Rep Dialog */ },
-                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Icon(Icons.Default.Add, null, modifier = Modifier.size(16.dp))
@@ -108,20 +108,20 @@ fun RepsManagement() {
                         Surface(
                             modifier = Modifier.size(40.dp),
                             shape = RoundedCornerShape(20.dp),
-                            color = if (role.contains("FACULTY")) BluePrimary.copy(alpha = 0.1f) else OrangePrimary.copy(alpha = 0.1f)
+                            color = if (role.contains("FACULTY")) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else NotionTintPeach
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
                                     if (role.contains("FACULTY")) Icons.Default.School else Icons.Default.Person,
                                     null,
-                                    tint = if (role.contains("FACULTY")) BluePrimary else OrangePrimary
+                                    tint = if (role.contains("FACULTY")) MaterialTheme.colorScheme.primary else NotionBrandOrange
                                 )
                             }
                         }
                         Spacer(Modifier.width(16.dp))
                         Column {
                             Text(name, fontWeight = FontWeight.Bold)
-                            Text(role.replace("_", " "), style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                            Text(role.replace("_", " "), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     }
                 }
@@ -142,7 +142,7 @@ fun RepositoryTiers() {
 
     Column(modifier = Modifier.fillMaxSize().padding(20.dp)) {
         Text("Repository Mapping", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        Text("Organize your talent pool into tiers for city-wide matching.", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        Text("Organize your talent pool into tiers for city-wide matching.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         
         Spacer(Modifier.height(20.dp))
 
@@ -150,19 +150,20 @@ fun RepositoryTiers() {
             items(tiers) { (tier, description) ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, BorderColor)
+                    shape = RoundedCornerShape(8.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Badge(containerColor = OrangePrimary) { Text(tier, color = Color.White) }
+                            Badge(containerColor = MaterialTheme.colorScheme.primary) { Text(tier, color = MaterialTheme.colorScheme.onPrimary) }
                             Spacer(Modifier.width(12.dp))
                             Text(description, fontWeight = FontWeight.SemiBold)
                         }
                         Spacer(Modifier.height(12.dp))
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                             TextButton(onClick = { /* View Members */ }) {
-                                Text("Manage Members →", color = BluePrimary)
+                                Text("Manage Members →", color = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
@@ -177,7 +178,7 @@ fun PendingApprovals() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(Icons.Default.TaskAlt, null, modifier = Modifier.size(64.dp), tint = Color.LightGray)
-            Text("No pending requests", color = TextSecondary)
+            Text("No pending requests", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

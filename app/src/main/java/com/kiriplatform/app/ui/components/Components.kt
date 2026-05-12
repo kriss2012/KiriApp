@@ -1,5 +1,6 @@
 package com.kiriplatform.app.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -29,31 +30,36 @@ fun SectionHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp, vertical = 14.dp),
+            .padding(horizontal = 24.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleSmall,
-            color = TextPrimary
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.5.sp
         )
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.CenterVertically) {
             secondaryActionText?.let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = OrangePrimary,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier.clickable { onSecondaryActionClick() }
                 )
             }
-            Text(
-                text = actionText,
-                style = MaterialTheme.typography.labelSmall,
-                color = OrangePrimary,
-                modifier = Modifier.clickable { onActionClick() }
-            )
+            if (actionText.isNotEmpty()) {
+                Text(
+                    text = actionText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.clickable { onActionClick() }
+                )
+            }
         }
     }
 }
@@ -70,17 +76,23 @@ fun KiriPrimaryButton(
         enabled = enabled,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp),
-        shape = RoundedCornerShape(14.dp),
+            .height(44.dp), // Notion's height is 44px
+        shape = MaterialTheme.shapes.medium, // 8dp
         colors = ButtonDefaults.buttonColors(
-            containerColor = OrangePrimary,
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = NotionHairline,
+            disabledContentColor = NotionMuted
+        ),
+        elevation = ButtonDefaults.buttonElevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 0.dp
         )
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.ExtraBold
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -94,14 +106,14 @@ fun ASGTagChip(
 ) {
     Surface(
         color = backgroundColor,
-        shape = RoundedCornerShape(6.dp),
+        shape = MaterialTheme.shapes.extraSmall, // 4dp
         modifier = modifier
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
             color = textColor,
-            modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
             fontWeight = FontWeight.Bold
         )
     }
@@ -111,24 +123,24 @@ fun ASGTagChip(
 fun AIStatusChip(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
-            .clip(CircleShape)
-            .background(PurpleLight)
-            .border(0.5.dp, PurpleAccent, CircleShape)
-            .padding(horizontal = 11.dp, vertical = 5.dp),
+            .clip(MaterialTheme.shapes.small) // 6dp
+            .background(MaterialTheme.colorScheme.surface)
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
+            .padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(5.dp)
+                .size(6.dp)
                 .clip(CircleShape)
-                .background(PurpleAccent)
+                .background(NotionSuccess)
         )
-        Spacer(Modifier.width(5.dp))
+        Spacer(Modifier.width(8.dp))
         Text(
-            text = "ASG AI Agent is ready",
+            text = "AI Agent active",
             style = MaterialTheme.typography.labelSmall,
-            color = PurpleAccent,
-            fontSize = 9.sp
+            color = MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -142,12 +154,13 @@ fun KiriIconBadge(
 ) {
     Box(
         modifier = modifier
-            .size(30.dp)
-            .clip(RoundedCornerShape(10.dp))
+            .size(32.dp)
+            .clip(MaterialTheme.shapes.small) // 6dp
             .background(backgroundColor)
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = icon, fontSize = 13.sp)
+        Text(text = icon, fontSize = 14.sp)
     }
 }

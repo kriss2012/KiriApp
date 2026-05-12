@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 data class MainState(
-    val currentColorTheme: AppTheme = AppTheme.OCEAN,
+    val currentColorTheme: AppTheme = AppTheme.NOTION,
     val isDarkTheme: Boolean? = null, // null follows system
     val isAmoledTheme: Boolean = false,
     val isLiquidGlassEnabled: Boolean = true

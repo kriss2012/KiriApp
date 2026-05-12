@@ -7,7 +7,10 @@ import prisma from '../utils/prisma.js';
 
 export const getOnboarding = async (req: Request, res: Response) => {
   try {
-    const userId = req.params['userId'];
+    const userId = req.params['userId'] as string | undefined;
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
     const onboarding = await prisma.aalOnboarding.findUnique({
       where: { userId }
     });
@@ -53,7 +56,10 @@ export const submitActivity = async (req: Request, res: Response) => {
 
 export const getActivities = async (req: Request, res: Response) => {
   try {
-    const userId = req.params['userId'];
+    const userId = req.params['userId'] as string | undefined;
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required' });
+    }
     const activities = await prisma.aalActivity.findMany({
       where: { userId },
       orderBy: { activityNumber: 'asc' }
@@ -66,7 +72,10 @@ export const getActivities = async (req: Request, res: Response) => {
 
 export const verifyActivity = async (req: Request, res: Response) => {
   try {
-    const { activityId } = req.params;
+    const activityId = req.params['activityId'] as string | undefined;
+    if (!activityId) {
+      return res.status(400).json({ message: 'Activity ID is required' });
+    }
     const activity = await prisma.aalActivity.update({
       where: { id: activityId },
       data: { status: 'VERIFIED' }

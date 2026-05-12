@@ -21,7 +21,7 @@ class EventsViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<EventsState>(EventsState.Idle)
     val uiState: StateFlow<EventsState> = _uiState.asStateFlow()
 
-    fun fetchEvents(context: android.content.Context, userRole: String, userId: String) {
+    fun fetchEvents(context: android.content.Context) {
         viewModelScope.launch {
             // Load from cache for immediate offline view
             val cached = com.kiriplatform.app.data.CacheManager.getCache(context, "events_list", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
@@ -34,19 +34,10 @@ class EventsViewModel : ViewModel() {
             try {
                 val rawEvents = ApiClient.service.getEvents()
                 
+                // --- AUTO-REMOVAL LOGIC (Expiry) ---
+                // Filtering events to only show those occurring today or in the future
                 val today = java.time.LocalDate.now().toString()
-                
-                val events = when (userRole) {
-                    "ADMIN" -> rawEvents // Admin sees all (current and past)
-                    "SPOC", "ORGANIZER" -> {
-                        // Organizers see their own events (all) and other upcoming events
-                        rawEvents.filter { it.ownerId == userId || it.date >= today }
-                    }
-                    else -> {
-                        // Students see only upcoming events
-                        rawEvents.filter { it.date >= today }
-                    }
-                }
+                val events = rawEvents.filter { it.date >= today }
                 
                 // Save to cache
                 com.kiriplatform.app.data.CacheManager.saveCache(context, "events_list", events)
@@ -70,8 +61,7 @@ class EventsViewModel : ViewModel() {
         coordinatorPhone: String? = null,
         imageUrl: String? = null,
         registrationLink: String? = null,
-        prize: String? = null,
-        userRole: String
+        prize: String? = null
     ) {
         viewModelScope.launch {
             _uiState.value = EventsState.Loading
@@ -91,7 +81,7 @@ class EventsViewModel : ViewModel() {
                         prize = prize
                     )
                 )
-                fetchEvents(context, userRole, ownerId) // Refresh list after successful creation
+                fetchEvents(context) // Refresh list after successful creation
             } catch (e: Exception) {
                 _uiState.value = EventsState.Error(e.message ?: "Failed to create event")
             }

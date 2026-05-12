@@ -1,38 +1,42 @@
 [
     {
-        "merged": "com.kiriplatform.app-release-59:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.kiriplatform.app-release-65:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.kiriplatform.app-release-65:/drawable_kiri_logo_new.png.flat",
+        "source": "com.kiriplatform.app-main-66:/drawable/kiri_logo_new.png"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/xml_data_extraction_rules.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/xml/data_extraction_rules.xml"
+        "merged": "com.kiriplatform.app-release-65:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/drawable/ic_launcher_background.xml"
+        "merged": "com.kiriplatform.app-release-65:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.kiriplatform.app-release-65:/xml_data_extraction_rules.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/xml_backup_rules.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/xml/backup_rules.xml"
+        "merged": "com.kiriplatform.app-release-65:/xml_backup_rules.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/drawable_ic_launcher_foreground_premium.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/drawable/ic_launcher_foreground_premium.xml"
+        "merged": "com.kiriplatform.app-release-65:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/drawable_kiri_logo_vector_premium.xml.flat",
-        "source": "com.kiriplatform.app-main-60:/drawable/kiri_logo_vector_premium.xml"
+        "merged": "com.kiriplatform.app-release-65:/drawable_ic_launcher_foreground_premium.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/drawable/ic_launcher_foreground_premium.xml"
     },
     {
-        "merged": "com.kiriplatform.app-release-59:/font_jetbrains_mono_regular.ttf.flat",
-        "source": "com.kiriplatform.app-main-60:/font/jetbrains_mono_regular.ttf"
+        "merged": "com.kiriplatform.app-release-65:/font_jetbrains_mono_regular.ttf.flat",
+        "source": "com.kiriplatform.app-main-66:/font/jetbrains_mono_regular.ttf"
+    },
+    {
+        "merged": "com.kiriplatform.app-release-65:/drawable_kiri_logo_vector_premium.xml.flat",
+        "source": "com.kiriplatform.app-main-66:/drawable/kiri_logo_vector_premium.xml"
     }
 ]

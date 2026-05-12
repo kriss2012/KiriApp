@@ -16,7 +16,7 @@ export const createJob = async (req: Request, res: Response) => {
 export const getAllJobs = async (req: Request, res: Response) => {
   try {
     const jobs = await prisma.job.findMany({
-      include: { poster: { select: { fullName: true, role: true } } },
+      include: { poster: { select: { fullName: true, userCategory: true } } },
       orderBy: { createdAt: 'desc' }
     });
     res.status(200).json(jobs);

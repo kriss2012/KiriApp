@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express';
 import prisma from '../utils/prisma.js';
-import { Role } from '@prisma/client';
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
@@ -18,26 +17,25 @@ export const getProfile = async (req: Request, res: Response) => {
           id: true,
           email: true,
           fullName: true,
-          role: true,
-          studentLevel: true,
+          userCategory: true,
+          digitalPersona: true,
+          bio: true,
+          avatarUrl: true,
+          phoneNumber: true,
+          points: true,
+          createdAt: true,
+          // Added fields for complete profile
           department: true,
           college: true,
           year: true,
           section: true,
-          isVerified: true,
-          canCreateEvents: true,
-          bio: true,
-          skills: true,
-          avatarUrl: true,
+          website: true,
           githubUrl: true,
           linkedInUrl: true,
-          phoneNumber: true,
-          website: true,
           services: true,
-          intent: true,
-          preferredLanguage: true,
-          points: true,
-          createdAt: true
+          rollNo: true,
+          portfolioUrl: true,
+          achievements: true
         }
       }),
       prisma.event.count({ where: { ownerId: userId } }),
@@ -96,73 +94,118 @@ export const updateProfile = async (req: Request, res: Response) => {
     const userId = req.params['userId'];
     const requesterId = (req as any).user?.id || (req as any).user?.userId;
 
-    // Security: Only allow users to update their own profile (or ADMIN)
-    if (requesterId !== userId && (req as any).user?.role !== 'ADMIN') {
+    // Security: Only allow users to update their own profile
+    if (requesterId !== userId) {
         return res.status(403).json({ message: 'Unauthorized: You can only update your own profile.' });
     }
     if (typeof userId !== 'string') {
       return res.status(400).json({ message: 'Invalid User ID' });
     }
-    const { fullName, bio, skills, avatarUrl, department, college, year, section, role, githubUrl, linkedInUrl, intent, preferredLanguage, phoneNumber, website, services } = req.body;
-
-    // Robustness: Ensure role matches Enum casing (Prisma is strict)
-    const normalizedRole = role ? role.toString().toUpperCase() : undefined;
+    const {
+      fullName,
+      bio,
+      avatarUrl,
+      phoneNumber,
+      role,
+      department,
+      college,
+      year,
+      section,
+      website,
+      githubUrl,
+      linkedInUrl,
+      services,
+      rollNo,
+      portfolioUrl,
+      achievements
+    } = req.body;
 
     console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
+
+    // Map role string to UserCategory enum if applicable
+    const categoryMapping: Record<string, any> = {
+      'STUDENT': 'STUDENT',
+      'FOUNDER': 'NON_STUDENT',
+      'MENTOR': 'NON_STUDENT',
+      'SPOC': 'FACULTY',
+      'ALUMNI': 'ALUMNI'
+    };
+
+    // Valid roles for the StakeholderRole table
+    const validStakeholderRoles = ['FOUNDER', 'MENTOR', 'INVESTOR', 'SERVICE_PROVIDER', 'INCUBATOR', 'GUEST'];
 
     const user = await prisma.user.update({
       where: { id: userId },
       data: {
         fullName,
-        bio,
-        skills,
+        bio: bio || null,
         avatarUrl,
-        department,
-        college,
-        year,
-        section,
-        role: normalizedRole as any,
-        githubUrl,
-        linkedInUrl,
-        intent,
-        preferredLanguage,
-        phoneNumber,
-        website,
-        services
+        phoneNumber: phoneNumber || null, // Fix unique constraint issue with empty strings
+        department: department || null,
+        college: college || null,
+        year: year || null,
+        section: section || null,
+        website: website || null,
+        githubUrl: githubUrl || null,
+        linkedInUrl: linkedInUrl || null,
+        services: services || [],
+        rollNo: rollNo || null,
+        portfolioUrl: portfolioUrl || null,
+        achievements: achievements || [],
+        ...(role ? {
+          userCategory: categoryMapping[role] || 'STUDENT',
+          stakeholderRoles: validStakeholderRoles.includes(role)
+            ? {
+                deleteMany: {}, // Clear existing roles
+                create: {
+                  roleName: role as any
+                }
+              }
+            : {
+                deleteMany: {} // Basic roles like STUDENT/SPOC don't have StakeholderRole entries
+              }
+        } : {})
       },
-      // Explicit select — returns the same field set as getProfile so the
-      // Android DTO deserializes correctly and canCreateEvents is always present.
+      // Explicit select — returns the same field set as getProfile
       select: {
         id: true,
         email: true,
         fullName: true,
-        role: true,
-        studentLevel: true,
+        userCategory: true,
+        digitalPersona: true,
+        bio: true,
+        avatarUrl: true,
+        phoneNumber: true,
+        points: true,
+        createdAt: true,
         department: true,
         college: true,
         year: true,
         section: true,
-        isVerified: true,
-        canCreateEvents: true,
-        bio: true,
-        skills: true,
-        avatarUrl: true,
+        website: true,
         githubUrl: true,
         linkedInUrl: true,
-        phoneNumber: true,
-        website: true,
         services: true,
-        intent: true,
-        preferredLanguage: true,
-        createdAt: true
+        rollNo: true,
+        portfolioUrl: true,
+        achievements: true
       }
     });
 
-    console.log(`[UpdateProfile] ✅ Successfully updated user ${userId} — name: "${user.fullName}", role: "${user.role}"`);
+    console.log(`[UpdateProfile] ✅ Successfully updated user ${userId} — name: "${user.fullName}"`);
 
     res.status(200).json(user);
   } catch (error: any) {
     // Log Prisma-specific error codes for faster debugging
+    if (error?.code === 'P2002') {
+      const target = error.meta?.target || [];
+      const field = target.includes('phoneNumber') ? 'Phone Number' : 'Field';
+      return res.status(400).json({
+        message: `${field} is already in use by another account.`,
+        error: error.message
+      });
+    }
+
     if (error?.code) {
       console.error(`[UpdateProfile] ❌ Prisma error P${error.code} for user ${req.params['userId']}:`, error.meta ?? error.message);
     } else {
@@ -172,48 +215,25 @@ export const updateProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const toggleEventAccess = async (req: Request, res: Response) => {
-  try {
-    const userId = req.params['userId'];
-    if (typeof userId !== 'string') {
-      return res.status(400).json({ message: 'Invalid User ID' });
-    }
-    const { canCreateEvents } = req.body;
-
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: { canCreateEvents }
-    });
-
-    res.status(200).json({ message: `Event access ${canCreateEvents ? 'granted' : 'revoked'} for ${user.fullName}` });
-  } catch (error: any) {
-    res.status(500).json({ message: 'Error toggling event access', error: error.message });
-  }
-};
 
 export const getAllVerifiedUsers = async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
-      where: { isVerified: true },
-      select: { id: true, fullName: true, role: true, avatarUrl: true, canCreateEvents: true }
+      select: { id: true, fullName: true, userCategory: true, avatarUrl: true }
     });
     res.status(200).json(users);
   } catch (error: any) {
-    res.status(500).json({ message: 'Error fetching verified users', error: error.message });
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 };
 
 export const searchUsers = async (req: Request, res: Response) => {
   try {
     const name = req.query['name'] as string | undefined;
-    const role = req.query['role'] as string | undefined;
 
     const where: any = {};
     if (name) {
       where.fullName = { contains: name as string, mode: 'insensitive' };
-    }
-    if (role && role !== 'ALL') {
-      where.role = role as Role;
     }
 
     const users = await prisma.user.findMany({
@@ -221,11 +241,9 @@ export const searchUsers = async (req: Request, res: Response) => {
       select: {
         id: true,
         fullName: true,
-        role: true,
+        userCategory: true,
         avatarUrl: true,
-        college: true,
-        bio: true,
-        skills: true
+        bio: true
       },
       orderBy: { createdAt: 'desc' }
     });
@@ -239,7 +257,7 @@ export const searchUsers = async (req: Request, res: Response) => {
 export const getActivities = async (req: Request, res: Response) => {
   try {
     const userId = req.params['userId'] as string;
-    const activities = await prisma.activity.findMany({
+    const activities = await prisma.aalActivity.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' }
     });
@@ -252,52 +270,29 @@ export const getActivities = async (req: Request, res: Response) => {
 export const getUserStats = async (req: Request, res: Response) => {
   try {
     const userId = req.params['userId'] as string;
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { 
-        points: true, 
-        _count: { 
-          select: { 
-            activities: true, 
-            sentRequests: true,
-            receivedRequests: true 
-          } 
-        } 
-      }
+    const [aalActivitiesCount, sentRequestsCount, receivedRequestsCount] = await Promise.all([
+      prisma.aalActivity.count({ where: { userId } }),
+      prisma.connection.count({ where: { senderId: userId } }),
+      prisma.connection.count({ where: { receiverId: userId } })
+    ]);
+    res.json({
+      aalActivitiesCount,
+      sentRequestsCount,
+      receivedRequestsCount
     });
-    res.json(user);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const getCollegeActivity = async (req: Request, res: Response) => {
-  try {
-    const collegeName = req.params['collegeName'] as string;
-    // SPOCs can only see their own college
-    const activities = await prisma.activity.findMany({
-      where: {
-        user: { college: collegeName }
-      },
-      include: {
-        user: { select: { fullName: true, role: true } }
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 50
-    });
-    res.json(activities);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
 
 export const verifyActivity = async (req: Request, res: Response) => {
   try {
     const activityId = req.params['activityId'] as string;
-    // For now, verification just marks it with a status in content
-    const activity = await prisma.activity.update({
+    // For now, verification just marks it with a status
+    const activity = await prisma.aalActivity.update({
       where: { id: activityId },
-      data: { content: `[VERIFIED BY SPOC] ${req.body.comments || ''}` }
+      data: { status: 'VERIFIED' }
     });
     res.json(activity);
   } catch (error: any) {

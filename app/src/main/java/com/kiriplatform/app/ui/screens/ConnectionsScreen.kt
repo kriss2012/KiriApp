@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -52,25 +53,42 @@ fun ConnectionsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Community Connections", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                title = { 
+                    Column {
+                        Text("COMMUNITY", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), letterSpacing = 1.sp)
+                        Text("Connections", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     }
-                }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBack,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .size(36.dp)
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                    ) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                )
             )
         },
-        containerColor = Color.Transparent
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = BgCream,
-                contentColor = OrangePrimary,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary,
+                divider = { HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant) },
                 indicator = { tabPositions ->
                     TabRowDefaults.SecondaryIndicator(
                         Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                        color = OrangePrimary
+                        color = MaterialTheme.colorScheme.primary,
+                        height = 2.dp
                     )
                 }
             ) {
@@ -78,7 +96,14 @@ fun ConnectionsScreen(
                     Tab(
                         selected = selectedTab == index,
                         onClick = { selectedTab = index },
-                        text = { Text(title, fontWeight = FontWeight.Bold) }
+                        text = { 
+                            Text(
+                                title.uppercase(), 
+                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Medium,
+                                style = MaterialTheme.typography.labelSmall,
+                                letterSpacing = 1.sp
+                            ) 
+                        }
                     )
                 }
             }
@@ -86,7 +111,7 @@ fun ConnectionsScreen(
             Box(modifier = Modifier.fillMaxSize()) {
                 when (val state = uiState) {
                     is ConnectionsState.Loading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                     }
                     is ConnectionsState.Success -> {
                         val filteredList = when (selectedTab) {
@@ -99,16 +124,18 @@ fun ConnectionsScreen(
                         } else {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
+                                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 16.dp),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
                                 items(filteredList) { connection ->
                                     val otherUser = if (connection.senderId == userId) connection.receiver else connection.sender
-                                    ConnectionItem(
-                                        user = otherUser,
-                                        isRequest = selectedTab == 0,
-                                        onAccept = { viewModel.acceptRequest(connection.id, userId) }
-                                    )
+                                    otherUser?.let { user ->
+                                        ConnectionItem(
+                                            user = user,
+                                            isRequest = selectedTab == 0,
+                                            onAccept = { viewModel.acceptRequest(connection.id, userId) }
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -129,15 +156,11 @@ fun ConnectionItem(
     isRequest: Boolean,
     onAccept: () -> Unit
 ) {
-    // Wait, if it's a request, I'm the receiver, user is sender.
-    // If it's network, I could be either. Let's just use a simple logic:
-    // Receiver sees sender as the "other" person in a request.
-    
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -146,27 +169,29 @@ fun ConnectionItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(OrangePrimary.copy(alpha = 0.1f)),
+                    .size(44.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.05f))
+                    .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(user.fullName.take(1).uppercase(), color = OrangePrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                Text(user.fullName.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(user.fullName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
-                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text(user.fullName, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                Text(user.role, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
             }
 
             if (isRequest) {
                 Button(
                     onClick = onAccept,
+                    modifier = Modifier.height(32.dp),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                    contentPadding = PaddingValues(horizontal = 12.dp)
                 ) {
-                    Text("Accept", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    Text("Accept", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -180,13 +205,13 @@ fun EmptyConnections(isRequest: Boolean, modifier: Modifier = Modifier) {
             Icons.Default.Person,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = TextSecondary.copy(alpha = 0.3f)
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         )
         Spacer(Modifier.height(16.dp))
         Text(
             "No related data found",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

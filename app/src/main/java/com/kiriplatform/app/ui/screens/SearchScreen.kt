@@ -1,6 +1,8 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -78,22 +81,22 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Transparent)
+            .background(MaterialTheme.colorScheme.background)
             .statusBarsPadding()
             .padding(horizontal = 24.dp)
             .padding(top = 16.dp)
     ) {
         Text(
-            "Community Discovery",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Black,
-            color = TextPrimary,
-            letterSpacing = (-0.5).sp
+            "COMMUNITY",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            letterSpacing = 1.sp
         )
         Text(
-            "Find and connect with fellow students and mentors in Jalgaon",
-            style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            "Discovery",
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -105,14 +108,16 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
                 performSearch()
             },
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text("Search members, colleges...", style = MaterialTheme.typography.bodySmall) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextSecondary) },
-            shape = RoundedCornerShape(12.dp),
+            placeholder = { Text("Search members, colleges...", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) },
+            shape = RoundedCornerShape(8.dp),
             singleLine = true,
             maxLines = 1,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = OrangePrimary,
-                unfocusedBorderColor = BorderColor
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface
             )
         )
 
@@ -134,16 +139,17 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
                         ) 
                     },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = OrangePrimary,
-                        selectedLabelColor = Color.White,
-                        containerColor = Color.White,
-                        labelColor = TextSecondary
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        labelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     ),
                     border = FilterChipDefaults.filterChipBorder(
-                        borderColor = BorderColor,
+                        borderColor = MaterialTheme.colorScheme.outlineVariant,
                         enabled = true,
                         selected = selectedCategory == category
-                    )
+                    ),
+                    shape = RoundedCornerShape(8.dp)
                 )
             }
         }
@@ -152,11 +158,11 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
 
         if (isLoading) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = OrangePrimary)
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             }
         } else if (userResults.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("No related data found", color = TextSecondary)
+                Text("No related data found", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         } else {
             LazyColumn(
@@ -174,13 +180,13 @@ fun SearchScreen(onNavigateToProfile: (String) -> Unit) {
 
 @Composable
 fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
             modifier = Modifier
@@ -190,16 +196,17 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .background(OrangePrimary.copy(alpha = 0.1f)),
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = user.fullName.take(1).uppercase(),
-                    color = OrangePrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    fontSize = 18.sp
                 )
             }
 
@@ -210,22 +217,40 @@ fun UserSearchItem(user: UserResponse, onClick: () -> Unit) {
                     text = user.fullName,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-                Text(
-                    text = user.role,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = OrangePrimary
-                )
-                if (user.college != null) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(
-                        text = user.college,
+                        text = user.role.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = TextSecondary,
-                        maxLines = 1
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
                     )
+                    if (user.college != null) {
+                        Surface(
+                            modifier = Modifier.size(2.dp),
+                            shape = CircleShape,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                        ) {}
+                        Text(
+                            text = user.college.uppercase(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                            maxLines = 1,
+                            fontSize = 9.sp,
+                            letterSpacing = 0.5.sp
+                        )
+                    }
                 }
             }
+            
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.size(14.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

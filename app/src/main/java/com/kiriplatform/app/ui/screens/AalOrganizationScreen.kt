@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,12 +18,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kiriplatform.app.ui.theme.*
+import com.kiriplatform.app.ui.viewmodels.AalState
+import com.kiriplatform.app.ui.viewmodels.AalViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AalOrganizationScreen(
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    viewModel: AalViewModel = hiltViewModel()
 ) {
     val activities = remember {
         listOf(
@@ -36,58 +41,84 @@ fun AalOrganizationScreen(
         )
     }
 
+    val state by viewModel.uiState.collectAsState()
+    
+    // TODO: Get actual userId from SessionManager
+    LaunchedEffect(Unit) {
+        viewModel.loadAalData("default_user") 
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Black) },
+                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null) }
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null, tint = NotionInk) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = BgCream)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = NotionCanvas)
             )
         },
-        containerColor = BgCream
+        containerColor = NotionCanvas
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color.Black),
-                    shape = RoundedCornerShape(24.dp)
+        when (val currentState = state) {
+            is AalState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(color = NotionPrimary)
+                }
+            }
+            is AalState.Error -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Error: ${currentState.message}", color = Color.Red)
+                }
+            }
+            is AalState.Success -> {
+                val completedCount = currentState.activities.count { it.status.name == "COMPLETED" || it.status.name == "VERIFIED" }
+                
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize().padding(padding),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Column(modifier = Modifier.padding(24.dp)) {
-                        Text("INTERNSHIP PROGRESS", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
-                        Spacer(Modifier.height(8.dp))
-                        Text("3 / 7 Activities", color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Black)
-                        Spacer(Modifier.height(16.dp))
-                        LinearProgressIndicator(
-                            progress = 3f/7f,
-                            modifier = Modifier.fillMaxWidth().height(8.dp),
-                            color = OrangePrimary,
-                            trackColor = Color.White.copy(alpha = 0.1f),
-                            strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
+                    item {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = NotionInkDeep,
+                            shape = MaterialTheme.shapes.large // 12dp
+                        ) {
+                            Column(modifier = Modifier.padding(24.dp)) {
+                                Text("INTERNSHIP PROGRESS", color = NotionOnDark.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
+                                Spacer(Modifier.height(8.dp))
+                                Text("$completedCount / 7 Activities", color = NotionOnDark, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                                Spacer(Modifier.height(16.dp))
+                                LinearProgressIndicator(
+                                    progress = { completedCount.toFloat() / 7f },
+                                    modifier = Modifier.fillMaxWidth().height(6.dp),
+                                    color = NotionPrimary,
+                                    trackColor = NotionOnDark.copy(alpha = 0.1f),
+                                    strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
+                                )
+                            }
+                        }
+                    }
+
+                    item {
+                        Text("Your Learning Journey", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, modifier = Modifier.padding(top = 12.dp))
+                    }
+
+                    items(activities.indices.toList()) { index ->
+                        val activityNumber = index + 1
+                        val activityData = currentState.activities.find { it.activityNumber == activityNumber }
+                        val isCompleted = activityData?.status?.name == "COMPLETED" || activityData?.status?.name == "VERIFIED"
+                        val isCurrent = activityData?.status?.name == "IN_PROGRESS" || (activityData == null && index == completedCount)
+                        
+                        ActivityCard(
+                            title = activities[index],
+                            isCompleted = isCompleted,
+                            isCurrent = isCurrent,
+                            onClick = { /* Navigate to activity submission */ }
                         )
                     }
                 }
-            }
-
-            item {
-                Text("Your Learning Journey", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black, modifier = Modifier.padding(top = 12.dp))
-            }
-
-            items(activities.indices.toList()) { index ->
-                val isCompleted = index < 3
-                val isCurrent = index == 3
-                ActivityCard(
-                    title = activities[index],
-                    isCompleted = isCompleted,
-                    isCurrent = isCurrent,
-                    onClick = { /* Navigate to activity submission */ }
-                )
             }
         }
     }
@@ -95,14 +126,12 @@ fun AalOrganizationScreen(
 
 @Composable
 fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClick: () -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isCurrent) Color.White else Color.White.copy(alpha = 0.6f)
-        ),
+        shape = MaterialTheme.shapes.medium, // 8dp
+        color = if (isCurrent) NotionTintLavender.copy(alpha = 0.3f) else NotionSurface,
         onClick = onClick,
-        border = if (isCurrent) androidx.compose.foundation.BorderStroke(2.dp, OrangePrimary) else null
+        border = if (isCurrent) androidx.compose.foundation.BorderStroke(1.dp, NotionPrimary) else BorderStroke(1.dp, NotionHairline)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -111,15 +140,15 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
         ) {
             Box(
                 modifier = Modifier.size(40.dp).background(
-                    if (isCompleted) GreenSuccess.copy(alpha = 0.1f) else Color.Gray.copy(alpha = 0.1f),
-                    RoundedCornerShape(12.dp)
+                    if (isCompleted) NotionPrimary.copy(alpha = 0.1f) else NotionSlate.copy(alpha = 0.1f),
+                    MaterialTheme.shapes.small // 6dp
                 ),
                 contentAlignment = Alignment.Center
             ) {
                 if (isCompleted) {
-                    Icon(Icons.Default.CheckCircle, null, tint = GreenSuccess)
+                    Icon(Icons.Default.CheckCircle, null, tint = NotionPrimary)
                 } else {
-                    Icon(Icons.Default.Info, null, tint = Color.Gray)
+                    Icon(Icons.Default.Info, null, tint = NotionSteel)
                 }
             }
 
@@ -127,13 +156,13 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
                 Text(
                     title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (isCurrent) FontWeight.Black else FontWeight.Bold,
-                    color = if (isCurrent) TextPrimary else TextSecondary
+                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
+                    color = NotionInk
                 )
                 Text(
                     if (isCompleted) "VERIFIED" else if (isCurrent) "START NOW" else "LOCKED",
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isCompleted) GreenSuccess else if (isCurrent) OrangePrimary else TextSecondary
+                    color = if (isCompleted) NotionPrimary else if (isCurrent) NotionPrimary else NotionSteel
                 )
             }
         }

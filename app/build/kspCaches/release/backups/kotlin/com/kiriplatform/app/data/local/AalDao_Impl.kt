@@ -38,7 +38,7 @@ public class AalDao_Impl(
     this.__db = __db
     this.__insertAdapterOfAalUserEntity = object : EntityInsertAdapter<AalUserEntity>() {
       protected override fun createQuery(): String =
-          "INSERT OR REPLACE INTO `users_vault` (`userId`,`fullName`,`email`,`phone`,`userCategory`,`digitalPersona`,`avatarUrl`,`lastSyncedAt`) VALUES (?,?,?,?,?,?,?,?)"
+          "INSERT OR REPLACE INTO `users_vault` (`userId`,`fullName`,`email`,`phone`,`userCategory`,`digitalPersona`,`lastSyncedAt`) VALUES (?,?,?,?,?,?,?)"
 
       protected override fun bind(statement: SQLiteStatement, entity: AalUserEntity) {
         statement.bindText(1, entity.userId)
@@ -72,13 +72,7 @@ public class AalDao_Impl(
         } else {
           statement.bindText(6, _tmpDigitalPersona)
         }
-        val _tmpAvatarUrl: String? = entity.avatarUrl
-        if (_tmpAvatarUrl == null) {
-          statement.bindNull(7)
-        } else {
-          statement.bindText(7, _tmpAvatarUrl)
-        }
-        statement.bindLong(8, entity.lastSyncedAt)
+        statement.bindLong(7, entity.lastSyncedAt)
       }
     }
     this.__insertAdapterOfInstitutionEntity = object : EntityInsertAdapter<InstitutionEntity>() {
@@ -200,7 +194,6 @@ public class AalDao_Impl(
         val _columnIndexOfPhone: Int = getColumnIndexOrThrow(_stmt, "phone")
         val _columnIndexOfUserCategory: Int = getColumnIndexOrThrow(_stmt, "userCategory")
         val _columnIndexOfDigitalPersona: Int = getColumnIndexOrThrow(_stmt, "digitalPersona")
-        val _columnIndexOfAvatarUrl: Int = getColumnIndexOrThrow(_stmt, "avatarUrl")
         val _columnIndexOfLastSyncedAt: Int = getColumnIndexOrThrow(_stmt, "lastSyncedAt")
         val _result: AalUserEntity?
         if (_stmt.step()) {
@@ -236,16 +229,10 @@ public class AalDao_Impl(
           } else {
             _tmpDigitalPersona = _stmt.getText(_columnIndexOfDigitalPersona)
           }
-          val _tmpAvatarUrl: String?
-          if (_stmt.isNull(_columnIndexOfAvatarUrl)) {
-            _tmpAvatarUrl = null
-          } else {
-            _tmpAvatarUrl = _stmt.getText(_columnIndexOfAvatarUrl)
-          }
           val _tmpLastSyncedAt: Long
           _tmpLastSyncedAt = _stmt.getLong(_columnIndexOfLastSyncedAt)
           _result =
-              AalUserEntity(_tmpUserId,_tmpFullName,_tmpEmail,_tmpPhone,_tmpUserCategory,_tmpDigitalPersona,_tmpAvatarUrl,_tmpLastSyncedAt)
+              AalUserEntity(_tmpUserId,_tmpFullName,_tmpEmail,_tmpPhone,_tmpUserCategory,_tmpDigitalPersona,_tmpLastSyncedAt)
         } else {
           _result = null
         }

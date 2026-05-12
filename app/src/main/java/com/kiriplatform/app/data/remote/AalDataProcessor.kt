@@ -10,12 +10,12 @@ import com.kiriplatform.app.data.remote.models.*
 object AalDataProcessor {
 
     /**
-     * Standardizes user input content before it's sent to the AI ML services.
+     * Standardized user input content before it's sent to the AI ML services.
      */
     fun cleanseLiveInput(input: LiveInputDto): LiveInputDto {
         // Example: Trim whitespace, normalize text context
         return input.copy(
-            contentUrl = input.contentUrl.trim()
+            contentUrl = input.contentUrl?.trim()
         )
     }
 
@@ -23,7 +23,7 @@ object AalDataProcessor {
      * Deduplicates and validates ecosystem board posts.
      */
     fun validateBoardItem(item: EcosystemBoardDto): Boolean {
-        return item.title.isNotBlank() && item.description.length > 10
+        return !item.title.isNullOrBlank() && (item.description?.length ?: 0) > 10
     }
 
     /**
@@ -31,7 +31,7 @@ object AalDataProcessor {
      */
     fun normalizeActivity(activity: AalActivityDto): AalActivityDto {
         return activity.copy(
-            submissionUrl = activity.submissionUrl.lowercase()
+            submissionUrl = activity.submissionUrl?.lowercase()
         )
     }
     

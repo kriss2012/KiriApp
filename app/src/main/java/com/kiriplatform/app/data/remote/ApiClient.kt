@@ -140,10 +140,10 @@ interface ASGApiService {
     // --- AAL & Ecosystem New Endpoints ---
 
     @GET("aal/onboarding/{userId}")
-    suspend fun getAalOnboarding(@Path("userId") userId: Int): AalOnboardingDto
+    suspend fun getAalOnboarding(@Path("userId") userId: String): AalOnboardingDto
 
     @GET("aal/activities/{userId}")
-    suspend fun getAalActivities(@Path("userId") userId: Int): List<AalActivityDto>
+    suspend fun getAalActivities(@Path("userId") userId: String): List<AalActivityDto>
 
     @POST("aal/activities/submit")
     suspend fun submitAalActivity(@Body request: AalActivityDto): AalActivityDto
@@ -161,7 +161,7 @@ interface ASGApiService {
     suspend fun submitLiveInput(@Body request: LiveInputDto): LiveInputDto
 
     @GET("aal/matches/{userId}")
-    suspend fun getAiMatches(@Path("userId") userId: Int): List<AiResourceMatchDto>
+    suspend fun getAiMatches(@Path("userId") userId: String): List<AiResourceMatchDto>
 
     @GET("aal/board")
     suspend fun getEcosystemBoard(): List<EcosystemBoardDto>
@@ -186,21 +186,11 @@ object ApiClient {
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
-                val request = chain.request()
-                val builder = request.newBuilder()
+                val builder = chain.request().newBuilder()
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
                 }
-                
-                val response = chain.proceed(builder.build())
-                
-                if (response.code == 401) {
-                    // Logic to handle unauthorized (token expired)
-                    // You might want to notify the UI to show login screen
-                    // This is just a placeholder to indicate where it would happen
-                }
-                
-                response
+                chain.proceed(builder.build())
             }
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.HEADERS

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.kiriplatform.app-mergeReleaseResources-57:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.kiriplatform.app-mergeReleaseResources-63:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "C:\\Users\\krishna\\AndroidStudioProjects\\ASGApp\\app\\src\\main\\res\\values-night\\themes.xml",

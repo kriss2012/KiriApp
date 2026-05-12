@@ -19,14 +19,14 @@ class AalRepository(
     /**
      * Fetches the AAL onboarding status for a user.
      */
-    fun getOnboarding(userId: Int): Flow<AalOnboardingDto> = flow {
+    fun getOnboarding(userId: String): Flow<AalOnboardingDto> = flow {
         emit(apiService.getAalOnboarding(userId))
     }
 
     /**
      * Fetches activities for a specific intern with local caching.
      */
-    fun getActivities(userId: Int): Flow<List<AalActivityDto>> = flow {
+    fun getActivities(userId: String): Flow<List<AalActivityDto>> = flow {
         // 1. Emit from cache first
         val cached = aalDao.getActivities(userId).map { it.toDto() }
         if (cached.isNotEmpty()) emit(cached)
@@ -82,7 +82,7 @@ class AalRepository(
     /**
      * Retrieves AI-generated resource matches for a user.
      */
-    fun getAiMatches(userId: Int): Flow<List<AiResourceMatchDto>> = flow {
+    fun getAiMatches(userId: String): Flow<List<AiResourceMatchDto>> = flow {
         emit(apiService.getAiMatches(userId))
     }
 
@@ -117,9 +117,9 @@ class AalRepository(
     // --- Mappers for Data Transformation Layer ---
 
     private fun AalActivityDto.toEntity() = AalActivityEntity(
-        activityId = activityId,
-        userId = userId,
-        activityNumber = activityNumber,
+        activityId = activityId ?: "",
+        userId = userId ?: "",
+        activityNumber = activityNumber ?: 0,
         submissionUrl = submissionUrl,
         status = status.name
     )
@@ -129,23 +129,23 @@ class AalRepository(
         userId = userId,
         activityNumber = activityNumber,
         submissionUrl = submissionUrl,
-        status = ActivityStatus.valueOf(status)
+        _status = safeValueOf<ActivityStatus>(status, ActivityStatus.SUBMITTED)
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
-        boardId = boardId,
-        authorUserId = authorUserId,
-        postType = postType.name,
-        title = title,
-        description = description,
+        boardId = boardId ?: "",
+        authorUserId = authorUserId ?: "",
+        postType = _postType?.name ?: "NEWS",
+        title = title ?: "",
+        description = description ?: "",
         mediaUrl = mediaUrl,
-        createdAt = createdAt
+        createdAt = createdAt ?: ""
     )
 
     private fun EcosystemBoardEntity.toDto() = EcosystemBoardDto(
         boardId = boardId,
         authorUserId = authorUserId,
-        postType = PostType.valueOf(postType),
+        _postType = safeValueOf<PostType>(postType, PostType.NEWS),
         title = title,
         description = description,
         mediaUrl = mediaUrl,
@@ -153,20 +153,28 @@ class AalRepository(
     )
 
     private fun JobProjectDto.toEntity() = JobProjectEntity(
-        listingId = listingId,
-        postedBy = postedBy,
-        type = type.name,
-        title = title,
-        description = description,
-        status = status.name
+        listingId = listingId ?: "",
+        postedBy = postedBy ?: "",
+        type = _type?.name ?: "JOB",
+        title = title ?: "",
+        description = description ?: "",
+        status = _status?.name ?: "OPEN"
     )
 
     private fun JobProjectEntity.toDto() = JobProjectDto(
         listingId = listingId,
         postedBy = postedBy,
-        type = JobType.valueOf(type),
+        _type = safeValueOf<JobType>(type, JobType.JOB),
         title = title,
         description = description,
-        status = JobStatus.valueOf(status)
+        _status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
     )
+
+    private inline fun <reified T : Enum<T>> safeValueOf(value: String, default: T): T {
+        return try {
+            java.lang.Enum.valueOf(T::class.java, value.uppercase())
+        } catch (e: Exception) {
+            default
+        }
+    }
 }

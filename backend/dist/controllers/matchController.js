@@ -11,22 +11,14 @@ export const getMatchingSuggestions = async (req, res) => {
         // 3. Match based on Intent alignment (e.g. Founder + Student)
         const suggestions = await prisma.user.findMany({
             where: {
-                id: { not: userId },
-                OR: [
-                    // If I'm a student, look for mentors/founders
-                    { role: { in: ['MENTOR', 'FOUNDER'] } },
-                    // If I have specific skills, look for people with different but complementary ones
-                    { NOT: { skills: { hasSome: user.skills } } }
-                ]
+                id: { not: userId }
             },
             select: {
                 id: true,
                 fullName: true,
-                role: true,
+                userCategory: true,
                 avatarUrl: true,
-                skills: true,
-                college: true,
-                intent: true
+                bio: true
             },
             take: 10
         });

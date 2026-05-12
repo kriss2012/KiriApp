@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
-import com.google.accompanist.flowlayout.FlowRow
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -33,7 +34,7 @@ fun OnboardingScreen(onComplete: () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             Row(
                 modifier = Modifier
@@ -44,7 +45,7 @@ fun OnboardingScreen(onComplete: () -> Unit) {
                 Text(
                     "Skip",
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.clickable { onComplete() }
                 )
             }
@@ -76,11 +77,11 @@ fun RoleSelectionPage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(22.dp)
+            .padding(24.dp)
     ) {
-        Text("Who are you?", style = MaterialTheme.typography.headlineMedium, color = TextPrimary)
+        Text("Who are you?", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(8.dp))
-        Text("Select your primary role in the ecosystem", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        Text("Select your primary role in the ecosystem", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(24.dp))
 
         LazyVerticalGrid(
@@ -96,16 +97,16 @@ fun RoleSelectionPage() {
                         .clickable { selectedRole = role }
                         .border(
                             width = if (isSelected) 2.dp else 1.dp,
-                            color = if (isSelected) OrangePrimary else BorderColor,
+                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                             shape = RoundedCornerShape(12.dp)
                         ),
                     colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected) OrangeLight else Color.White
+                        containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                     ),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(role, style = MaterialTheme.typography.titleMedium, color = TextPrimary)
+                        Text(role, style = MaterialTheme.typography.titleMedium, color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface)
                     }
                 }
             }
@@ -118,9 +119,9 @@ fun CollegeSelectionPage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(22.dp)
+            .padding(24.dp)
     ) {
-        Text("Select your college", style = MaterialTheme.typography.headlineMedium, color = TextPrimary)
+        Text("Select your college", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(24.dp))
 
         OutlinedTextField(
@@ -128,20 +129,21 @@ fun CollegeSelectionPage() {
             onValueChange = {},
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text("Search college...", style = MaterialTheme.typography.bodyMedium) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = TextSecondary) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
             shape = RoundedCornerShape(12.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = BorderColor,
-                focusedBorderColor = OrangePrimary
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedBorderColor = MaterialTheme.colorScheme.primary
             )
         )
         Spacer(Modifier.height(16.dp))
         // Scrollable list placeholder
-        Text("Nearby Colleges", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Text("Nearby Colleges", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         // ... list items would go here
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun InterestSelectionPage() {
     val interests = listOf("Content Creation", "Hackathons", "Fundraising", "Mentorship", "NAAC/NEP", "Events Organizing")
@@ -150,15 +152,15 @@ fun InterestSelectionPage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(22.dp)
+            .padding(24.dp)
     ) {
-        Text("What are your interests?", style = MaterialTheme.typography.headlineMedium, color = TextPrimary)
+        Text("What are your interests?", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
         Spacer(Modifier.height(24.dp))
 
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            mainAxisSpacing = 8.dp,
-            crossAxisSpacing = 8.dp
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             interests.forEach { interest ->
                 val isSelected = selectedInterests.contains(interest)
@@ -169,16 +171,16 @@ fun InterestSelectionPage() {
                     },
                     label = { Text(interest) },
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = OrangePrimary,
-                        selectedLabelColor = Color.White,
-                        containerColor = Color.White,
-                        labelColor = TextSecondary
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        labelColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     border = FilterChipDefaults.filterChipBorder(
                         enabled = true,
                         selected = isSelected,
-                        borderColor = BorderColor,
-                        selectedBorderColor = OrangePrimary,
+                        borderColor = MaterialTheme.colorScheme.outlineVariant,
+                        selectedBorderColor = MaterialTheme.colorScheme.primary,
                         borderWidth = 1.dp
                     )
                 )

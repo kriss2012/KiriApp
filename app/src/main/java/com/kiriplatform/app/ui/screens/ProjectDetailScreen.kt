@@ -25,9 +25,9 @@ import com.kiriplatform.app.ui.components.ClickableUrlText
 @Composable
 fun ProjectDetailScreen(projectName: String) {
     Scaffold(
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Add Artifact */ }, containerColor = OrangePrimary, contentColor = Color.White) {
+            FloatingActionButton(onClick = { /* Add Artifact */ }, containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.onPrimary) {
                 Icon(Icons.Default.Add, null)
             }
         }
@@ -35,9 +35,9 @@ fun ProjectDetailScreen(projectName: String) {
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // Header
             Column(modifier = Modifier.padding(24.dp, 16.dp)) {
-                Text("Project Repository", style = MaterialTheme.typography.labelSmall, color = OrangePrimary, letterSpacing = 2.sp)
-                Text(projectName, style = MaterialTheme.typography.headlineSmall, color = TextPrimary, fontWeight = FontWeight.Black)
-                Text("Smart IP & Artifact Vault", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                Text("Project Repository", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                Text(projectName, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Black)
+                Text("Smart IP & Artifact Vault", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
             // AI Insight Card
@@ -72,15 +72,15 @@ fun AIInsightCard(insight: String) {
     Card(
         modifier = Modifier.padding(horizontal = 24.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = BluePrimary.copy(alpha = 0.05f)),
-        border = BorderStroke(1.dp, BluePrimary.copy(alpha = 0.2f))
+        colors = CardDefaults.cardColors(containerColor = NotionLinkBlue.copy(alpha = 0.05f)),
+        border = BorderStroke(1.dp, NotionLinkBlue.copy(alpha = 0.2f))
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.Top) {
-            Icon(Icons.Default.Info, null, tint = BluePrimary, modifier = Modifier.size(20.dp))
+            Icon(Icons.Default.Info, null, tint = NotionLinkBlue, modifier = Modifier.size(20.dp))
             Spacer(Modifier.width(12.dp))
             ClickableUrlText(
                 text = insight,
-                style = MaterialTheme.typography.bodySmall.copy(color = TextPrimary, lineHeight = 18.sp)
+                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface, lineHeight = 18.sp)
             )
         }
     }
@@ -91,15 +91,15 @@ fun ArtifactCard(title: String, type: String, date: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                Text(type, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+                Text(type, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            Text(date, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text(date, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

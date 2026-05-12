@@ -13,11 +13,11 @@ fun DistrictMapScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream),
+            .background(MaterialTheme.colorScheme.surface),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("District / Taluka Map", style = MaterialTheme.typography.headlineSmall, color = TextPrimary)
-        Text("Google Maps Integration Placeholder", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        Text("District / Taluka Map", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurface)
+        Text("Google Maps Integration Placeholder", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }

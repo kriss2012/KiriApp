@@ -50,52 +50,33 @@ fun InnovationHubScreen(
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
         ) {
-            // Hero Section
-            Box(
+            // Hero Section - Refactored to Notion Style
+            Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.primaryContainer)
-                        )
-                    )
-                    .padding(24.dp)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                color = MaterialTheme.colorScheme.surface
             ) {
-                // Background decoration
-                Box(
-                    modifier = Modifier
-                        .size(300.dp)
-                        .offset(x = 100.dp, y = (-50).dp)
-                        .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(150.dp))
-                )
-
-                Column(modifier = Modifier.align(Alignment.BottomStart)) {
-                    Surface(
-                        color = Color.White.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(12.dp),
-                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.3f))
-                    ) {
-                        Text(
-                            "KIRI INTELLIGENCE LAYER",
-                            modifier = Modifier.padding(12.dp, 6.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White,
-                            letterSpacing = 2.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(Modifier.height(16.dp))
+                Column(modifier = Modifier.padding(24.dp)) {
+                    Text(
+                        "KIRI INTELLIGENCE LAYER",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        letterSpacing = 2.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(Modifier.height(8.dp))
                     Text(
                         "Ecosystem Hub",
                         style = MaterialTheme.typography.headlineLarge,
-                        color = Color.White,
-                        fontWeight = FontWeight.Black
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(Modifier.height(4.dp))
                     Text(
                         "Scaling the Innovation Economy with AI.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White.copy(alpha = 0.8f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -103,11 +84,12 @@ fun InnovationHubScreen(
             // Grid of Features
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
-                    "Network Nodes",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Black,
+                    "NETWORK NODES",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(vertical = 12.dp),
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    letterSpacing = 1.sp
                 )
 
                 hubItems.chunked(2).forEach { rowItems ->
@@ -134,10 +116,10 @@ fun InnovationHubScreen(
 fun HubCard(item: HubItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         onClick = onClick,
-        modifier = modifier.height(180.dp),
-        shape = RoundedCornerShape(28.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f))
+        modifier = modifier.height(160.dp),
+        shape = MaterialTheme.shapes.medium, // 8dp
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp).fillMaxSize(),
@@ -145,25 +127,26 @@ fun HubCard(item: HubItem, modifier: Modifier = Modifier, onClick: () -> Unit) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(item.color.copy(alpha = 0.1f)),
+                    .size(40.dp)
+                    .clip(MaterialTheme.shapes.small) // 6dp
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(item.icon, null, tint = item.color, modifier = Modifier.size(24.dp))
+                Icon(item.icon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
             }
             
             Column {
                 Text(
                     item.title,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Black,
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     item.description,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 14.sp
                 )
             }

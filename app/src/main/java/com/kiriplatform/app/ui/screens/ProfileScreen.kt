@@ -8,7 +8,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,8 +15,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -61,37 +62,39 @@ fun ProfileScreen(
         }
     }
 
-    // Pull-to-refresh state (Material3 1.2.x API)
-    val pullToRefreshState = rememberPullToRefreshState()
-    if (pullToRefreshState.isRefreshing) {
-        LaunchedEffect(true) {
-            if (userId.isNotEmpty()) viewModel.fetchProfile(context, userId)
+    // Pull-to-refresh state (Material3 1.3.x API)
+    var isRefreshing by remember { mutableStateOf(false) }
+    val onRefresh: () -> Unit = {
+        isRefreshing = true
+        if (userId.isNotEmpty()) {
+            viewModel.fetchProfile(context, userId)
         }
     }
+
     // Stop the indicator once the network call resolves
-    if (uiState !is ProfileState.Loading) {
-        LaunchedEffect(uiState) {
-            pullToRefreshState.endRefresh()
+    LaunchedEffect(uiState) {
+        if (uiState !is ProfileState.Loading) {
+            isRefreshing = false
         }
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = BgCream,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = { Spacer(Modifier.height(0.dp)) }
     ) { padding ->
-        Box(
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .nestedScroll(pullToRefreshState.nestedScrollConnection)
+                .padding(padding),
         ) {
             when (val state = uiState) {
                 is ProfileState.Loading -> {
-                    // Show spinner only on first load (no cached data visible yet)
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        color = OrangePrimary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 is ProfileState.Success -> {
@@ -111,25 +114,18 @@ fun ProfileScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.message, color = Color.Red, fontSize = 14.sp)
+                        Text(state.message, color = MaterialTheme.colorScheme.error, fontSize = 14.sp)
                         Spacer(Modifier.height(8.dp))
                         Button(
                             onClick = { viewModel.fetchProfile(context, userId) },
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Retry", color = Color.White)
+                            Text("Retry", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
                 else -> {}
             }
-
-            // Pull-to-refresh indicator overlaid at top
-            PullToRefreshContainer(
-                state = pullToRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter),
-                contentColor = OrangePrimary
-            )
         }
     }
 }
@@ -145,7 +141,6 @@ fun ProfileContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
         item { 
@@ -155,61 +150,96 @@ fun ProfileContent(
             ) 
         }
 
-        // New Resources Section with Clickable Links
-        if (!user.website.isNullOrEmpty() || !user.githubUrl.isNullOrEmpty() || !user.linkedInUrl.isNullOrEmpty()) {
-            item { SectionHeader(title = "Resources & Social", actionText = "", onActionClick = {}) }
+        // Bio / About Section
+        if (!user.bio.isNullOrEmpty()) {
+            item { SectionHeader(title = "About", actionText = "", onActionClick = {}) }
             item {
-                Card(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, BorderColor)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        user.website?.let {
-                            ResourceRow("🌐 Website", it)
-                        }
-                        user.githubUrl?.let {
-                            ResourceRow("💻 GitHub", it)
-                        }
-                        user.linkedInUrl?.let {
-                            ResourceRow("🔗 LinkedIn", it)
-                        }
-                    }
-                }
+                Text(
+                    text = user.bio,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
-        
-        // Digital Persona (AI-Generated)
-        if (!user.digitalPersona.isNullOrEmpty()) {
-            item { SectionHeader(title = "AI Digital Persona", actionText = "Live Analysis", onActionClick = {}) }
+
+        // Skills / Services Section
+        if (!user.services.isNullOrEmpty()) {
+            item { SectionHeader(title = "Expertise & Services", actionText = "", onActionClick = {}) }
             item {
-                Card(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    border = BorderStroke(1.dp, OrangePrimary.copy(alpha = 0.2f))
+                FlowRow(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = user.digitalPersona,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = TextPrimary,
-                            lineHeight = 22.sp
-                        )
-                        Spacer(Modifier.height(12.dp))
-                        Text(
-                            "Generated by KIRI AI based on your activities.",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = OrangePrimary,
-                            fontWeight = FontWeight.Bold
-                        )
+                    user.services.forEach { service ->
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.surface,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        ) {
+                            Text(
+                                text = service.uppercase(),
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 0.5.sp
+                            )
+                        }
                     }
                 }
             }
         }
 
-        item { SectionHeader(title = "My ASG Dashboard", actionText = "", onActionClick = {}) }
+        // Resources & Social Section
+        
+        // Digital Persona (AI-Generated)
+        if (!user.digitalPersona.isNullOrEmpty()) {
+            item { SectionHeader(title = "AI Digital Persona", actionText = "", onActionClick = {}) }
+            item {
+                Surface(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Column(modifier = Modifier.padding(20.dp)) {
+                        Text(
+                            text = "ANALYSIS",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp
+                        )
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            text = user.digitalPersona,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            lineHeight = 22.sp
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Surface(
+                                modifier = Modifier.size(6.dp),
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.primary
+                            ) {}
+                            Text(
+                                "GENERATED BY KIRI INTELLIGENCE",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f),
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 0.5.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        item { SectionHeader(title = "Kiri Dashboard", actionText = "", onActionClick = {}) }
         item { 
             DashboardMenu(
                 onNavigateToConnections = onNavigateToConnections,
@@ -217,16 +247,22 @@ fun ProfileContent(
             ) 
         }
         item {
-            Button(
+            OutlinedButton(
                 onClick = onLogout,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(14.dp, 24.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.Red.copy(alpha = 0.3f)),
-                shape = RoundedCornerShape(12.dp)
+                    .padding(horizontal = 24.dp, vertical = 32.dp)
+                    .height(44.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                shape = RoundedCornerShape(8.dp)
             ) {
-                Text("Secure Logout", color = Color.Red, fontWeight = FontWeight.Bold)
+                Text(
+                    "SECURE LOGOUT", 
+                    color = NotionCharcoal.copy(alpha = 0.6f), 
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.labelSmall,
+                    letterSpacing = 1.sp
+                )
             }
         }
     }
@@ -236,10 +272,11 @@ fun ProfileContent(
 @Composable
 fun ResourceRow(label: String, url: String) {
     Column {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         ClickableUrlText(
             text = url,
-            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+            linkColor = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -249,76 +286,112 @@ fun ProfileHeroSection(
     user: UserDto, 
     onNavigateToEdit: () -> Unit
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(0.dp, 0.dp, 32.dp, 32.dp))
-            .background(Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08))))
-            .padding(24.dp)
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
-        Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            // Avatar - Notion style: simple, clean
+            Surface(
+                modifier = Modifier.size(72.dp),
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
-                // Avatar
-                Box(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Color.White.copy(alpha = 0.2f))
-                        .border(2.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(20.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(user.fullName.take(1).uppercase(), style = MaterialTheme.typography.headlineLarge, color = Color.White, fontWeight = FontWeight.Black)
-                }
-                
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(user.fullName, style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Black)
-                    }
-                    Text(user.role, style = MaterialTheme.typography.labelMedium, color = Color.White.copy(alpha = 0.8f))
-                    if (!user.department.isNullOrEmpty()) {
-                        Text(user.department, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.6f))
-                    }
-                }
-                
-                IconButton(onClick = onNavigateToEdit) {
-                    Icon(
-                        Icons.Default.Edit, 
-                        contentDescription = "Edit Profile", 
-                        tint = Color.White,
-                        modifier = Modifier.size(24.dp)
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        user.fullName.take(1).uppercase(),
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.SemiBold
                     )
                 }
             }
-
-            Spacer(Modifier.height(24.dp))
-
-            // Real Stats Row (Permanent Fix)
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                StatBox(user.eventsCount.toString(), "Events")
-                StatBox(user.connectionsCount.toString(), "Connections")
-                StatBox(user.points.toString(), "Score")
+            
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    user.fullName,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    user.role.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    letterSpacing = 1.sp
+                )
+                if (!user.department.isNullOrEmpty() || !user.college.isNullOrEmpty()) {
+                    Text(
+                        text = listOfNotNull(user.department, user.college).joinToString(" • ").uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        fontSize = 8.sp,
+                        letterSpacing = 0.5.sp
+                    )
+                }
             }
+            
+            IconButton(
+                onClick = onNavigateToEdit,
+                modifier = Modifier
+                    .size(36.dp)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+            ) {
+                Icon(
+                    Icons.Default.Edit, 
+                    contentDescription = "Edit Profile", 
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+
+        Spacer(Modifier.height(32.dp))
+
+        // Stats Row - Subtle Notion blocks
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            StatBox(user.eventsCount.toString(), "Events")
+            StatBox(user.connectionsCount.toString(), "Nodes")
+            StatBox(user.points.toString(), "Score")
         }
     }
 }
 
 @Composable
 fun RowScope.StatBox(value: String, label: String) {
-    Card(
+    Surface(
         modifier = Modifier.weight(1f),
-        shape = RoundedCornerShape(11.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.15f))
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(value, style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Black, fontSize = 17.sp)
-            Text(label, style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.65f), fontWeight = FontWeight.SemiBold, fontSize = 8.sp)
+            Text(
+                value,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                label.uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp
+            )
         }
     }
 }
@@ -329,14 +402,14 @@ fun DashboardMenu(
     onNavigateToActivity: () -> Unit
 ) {
     val menuItems = listOf(
-        DashboardMenuItem("🚀", "My Startup Profile", OrangeLight, "Coming Soon"),
-        DashboardMenuItem("🤝", "Team Requests", GreenLight),
-        DashboardMenuItem("📋", "My Community Activity", BlueInfo)
+        DashboardMenuItem("🚀", "My Startup Profile", "Coming Soon"),
+        DashboardMenuItem("🤝", "Team Requests", null),
+        DashboardMenuItem("📋", "My Community Activity", null)
     )
 
-    Column(modifier = Modifier.padding(horizontal = 14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+    Column(modifier = Modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         if (menuItems.isEmpty()) {
-            Text("No dashboard items available", modifier = Modifier.padding(16.dp), color = TextSecondary)
+            Text("No dashboard items available", modifier = Modifier.padding(24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         } else {
             menuItems.forEach { item ->
                 DashboardMenuCard(
@@ -353,41 +426,53 @@ fun DashboardMenu(
     }
 }
 
-data class DashboardMenuItem(val icon: String, val label: String, val color: Color, val badge: String? = null)
+data class DashboardMenuItem(val icon: String, val label: String, val badge: String? = null)
 
 @Composable
 fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        shape = RoundedCornerShape(13.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
-            modifier = Modifier.padding(10.dp, 12.dp),
+            modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(9.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(item.color),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(item.icon, fontSize = 13.sp)
-            }
-            Text(item.label, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f), fontSize = 11.sp)
+            Text(item.icon, fontSize = 20.sp)
+            
+            Text(
+                item.label,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
+            )
             
             if (item.badge != null) {
-                Surface(color = OrangeLight, shape = RoundedCornerShape(5.dp)) {
-                    Text(item.badge, modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp), style = MaterialTheme.typography.labelSmall, color = OrangeDark, fontWeight = FontWeight.Bold, fontSize = 8.sp)
+                Surface(
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
+                    Text(
+                        item.badge.uppercase(),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 0.5.sp
+                    )
                 }
             } else {
-                Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(12.dp), tint = Color(0xFFCCCCCC))
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                )
             }
         }
     }

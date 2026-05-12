@@ -24,6 +24,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -43,19 +47,24 @@ class MainActivity : ComponentActivity() {
         ApiClient.setToken(sessionManager.getToken())
 
         // Init Sockets & Notifications
-        NotificationHelper.createNotificationChannel(this)
-        SocketHandler.setSocket(com.kiriplatform.app.utils.AppConfig.SOCKET_URL)
-        SocketHandler.establishConnection()
-        
-        // Request Notification Permission (Android 13+)
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            SocketHandler.setSocket(com.kiriplatform.app.utils.AppConfig.SOCKET_URL)
+            SocketHandler.establishConnection()
+            
+            // Notification channel creation moved to KiriApplication
+            
+            // Requesting permissions must be on Main, but the launcher handle is already main-safe
+            withContext(kotlinx.coroutines.Dispatchers.Main) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                }
             }
         }
 
         setContent {
-            val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+            val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.hilt.navigation.compose.hiltViewModel()
             val uiState by mainViewModel.uiState.collectAsState()
             
             KiriAppTheme(
@@ -69,7 +78,11 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = androidx.compose.material3.MaterialTheme.colorScheme.background
                     ) {
-                        KiriNavGraph(navController = navController)
+                        KiriNavGraph(
+                            navController = navController,
+                            hasToken = sessionManager.getToken() != null,
+                            paddingValues = padding
+                        )
                     }
                 }
             }

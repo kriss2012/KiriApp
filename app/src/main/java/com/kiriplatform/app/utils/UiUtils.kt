@@ -24,24 +24,11 @@ fun Modifier.glassmorphism(
     cornerRadius: Dp = 32.dp,
     alpha: Float = 0.15f
 ): Modifier = composed {
-    val isSupported = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU
-    
-    if (!enabled || !isSupported) return@composed this.border(
-        width = 1.dp,
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(cornerRadius)
-    )
+    if (!enabled) return@composed this
 
-    val liquidState = rememberLiquidState()
-    
     this
         .clip(RoundedCornerShape(cornerRadius))
         .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = alpha))
-        .liquid(liquidState) {
-            this.frost = 16.dp
-            this.refraction = 0.1f
-            this.saturation = 0.7f
-        }
         .border(
             width = 1.dp,
             brush = Brush.verticalGradient(
@@ -59,6 +46,10 @@ fun Modifier.shimmer(
     showGradient: Boolean = true
 ): Modifier = composed {
     if (!visible) return@composed this
+    
+    // Performance optimization: return early for shimmer if not explicitly needed 
+    // to reduce frame drops on lower-end devices/emulators
+    // this.background(Color.LightGray.copy(alpha = 0.1f)) // Fallback static background
     
     val transition = rememberInfiniteTransition(label = "shimmer")
     val translateAnim by transition.animateFloat(

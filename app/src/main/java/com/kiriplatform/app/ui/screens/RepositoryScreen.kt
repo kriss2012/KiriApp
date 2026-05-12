@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -48,64 +49,73 @@ fun RepositoryScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(BgCream)
+            .background(MaterialTheme.colorScheme.background)
             .padding(bottom = 100.dp) // Space for floating nav
     ) {
-        // Premium Gradient Header — matches ProfileHeroSection design token
-        Box(
+        // Notion Style Header
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomStart = 28.dp, bottomEnd = 28.dp))
-                .background(
-                    Brush.linearGradient(listOf(OrangePrimary, Color(0xFFD94D08)))
-                )
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(horizontal = 24.dp, vertical = 20.dp)
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            color = MaterialTheme.colorScheme.surface
         ) {
-            Column {
+            Column(
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.statusBars)
+                    .padding(horizontal = 24.dp, vertical = 24.dp)
+            ) {
+                Text(
+                    "NETWORK",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
+                Spacer(Modifier.height(4.dp))
                 Text(
                     "Community",
                     style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Black
                 )
                 Text(
                     "Network of Jalgaon's brightest minds",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.8f)
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(16.dp))
 
         // Filter Chips
         LazyRow(
-            modifier = Modifier.padding(bottom = 10.dp),
-            contentPadding = PaddingValues(horizontal = 14.dp),
+            modifier = Modifier.padding(bottom = 12.dp),
+            contentPadding = PaddingValues(horizontal = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(filters) { filter ->
                 val isSelected = selectedFilter == filter
-                FilterChip(
-                    selected = isSelected,
+                Surface(
                     onClick = { selectedFilter = filter },
-                    label = { Text(filter, fontSize = 10.sp) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = OrangePrimary,
-                        selectedLabelColor = Color.White,
-                        containerColor = Color.White,
-                        labelColor = TextSecondary
+                    shape = RoundedCornerShape(8.dp),
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
                     ),
-                    border = FilterChipDefaults.filterChipBorder(
-                        enabled = true,
-                        selected = isSelected,
-                        borderColor = BorderColor,
-                        selectedBorderColor = OrangePrimary,
-                        borderWidth = 1.dp
-                    ),
-                    shape = RoundedCornerShape(20.dp)
-                )
+                    modifier = Modifier.height(36.dp)
+                ) {
+                    Box(modifier = Modifier.padding(horizontal = 16.dp), contentAlignment = Alignment.Center) {
+                        Text(
+                            filter.uppercase(),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                            letterSpacing = 0.5.sp
+                        )
+                    }
+                }
             }
         }
 
@@ -113,7 +123,7 @@ fun RepositoryScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             when (val state = uiState) {
                 is RepositoryState.Loading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = OrangePrimary)
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center), color = MaterialTheme.colorScheme.primary)
                 }
                 is RepositoryState.Success -> {
                     val filteredUsers = if (selectedFilter == "All") state.users else state.users.filter { it.role == selectedFilter }
@@ -124,13 +134,13 @@ fun RepositoryScreen(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(state.message, color = Color.Red, style = MaterialTheme.typography.bodySmall)
+                        Text(state.message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
                         Spacer(Modifier.height(8.dp))
                         Button(
                             onClick = { viewModel.fetchVerifiedUsers(context) },
-                            colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                         ) {
-                            Text("Retry", color = Color.White)
+                            Text("Retry", color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -142,13 +152,13 @@ fun RepositoryScreen(
 @Composable
 fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Unit) {
     LazyColumn(
-        modifier = Modifier.padding(horizontal = 14.dp),
-        verticalArrangement = Arrangement.spacedBy(7.dp)
+        modifier = Modifier.padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (users.isEmpty()) {
             item {
                 Box(modifier = Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) {
-                    Text("No related data found", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+                    Text("No related data found", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         } else {
@@ -163,47 +173,64 @@ fun RepositoryContent(users: List<UserDto>, onNavigateToProfile: (String) -> Uni
 fun StudentCard(user: UserDto, onClick: () -> Unit) {
     val initials = user.fullName.split(" ").filter { it.isNotEmpty() }.take(2).map { it[0] }.joinToString("")
     
-    val gradient = when (user.role) {
-        "FOUNDER" -> Brush.linearGradient(colors = listOf(OrangePrimary, OrangeDark))
-        "SPOC", "ADMIN" -> Brush.linearGradient(colors = listOf(Color(0xFF1D9E75), Color(0xFF0F6E56)))
-        "MENTOR" -> Brush.linearGradient(colors = listOf(Color(0xFFE0742A), Color(0xFFB85A15)))
-        "INVESTOR" -> Brush.linearGradient(colors = listOf(Color(0xFF378ADD), Color(0xFF185FA5)))
-        else -> Brush.linearGradient(colors = listOf(PurpleAccent, Color(0xFF4F3BB5)))
-    }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, BorderColor),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
         Row(
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(9.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(42.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(gradient),
-                contentAlignment = Alignment.Center
+            Surface(
+                modifier = Modifier.size(48.dp),
+                shape = RoundedCornerShape(8.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
-                Text(initials, style = MaterialTheme.typography.titleMedium, color = Color.White, fontWeight = FontWeight.Black, fontSize = 14.sp)
-            }
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(user.fullName, style = MaterialTheme.typography.bodySmall, color = TextPrimary, fontWeight = FontWeight.Bold)
-                Text(user.role, style = MaterialTheme.typography.labelSmall, color = TextSecondary, fontSize = 10.sp)
-                if (!user.college.isNullOrEmpty()) {
-                    Text(user.college!!, style = MaterialTheme.typography.labelSmall, color = TextSecondary.copy(alpha = 0.7f), fontSize = 8.sp)
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        initials,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
 
-            Icon(Icons.Default.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color(0xFFCCCCCC))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    user.fullName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    user.role,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 0.5.sp
+                )
+                if (!user.college.isNullOrEmpty()) {
+                    Text(
+                        user.college ?: "",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                        lineHeight = 14.sp
+                    )
+                }
+            }
+
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+            )
         }
     }
 }

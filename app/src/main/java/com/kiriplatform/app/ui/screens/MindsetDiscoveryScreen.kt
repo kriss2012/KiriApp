@@ -42,7 +42,7 @@ fun MindsetDiscoveryScreen(
                 }
             )
         },
-        containerColor = BgCream
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier.fillMaxSize().padding(padding).padding(20.dp).verticalScroll(rememberScrollState()),
@@ -51,7 +51,7 @@ fun MindsetDiscoveryScreen(
             Text(
                 "Activity 1: The Entrepreneurial Audit",
                 style = MaterialTheme.typography.labelLarge,
-                color = OrangePrimary,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
             
@@ -63,7 +63,7 @@ fun MindsetDiscoveryScreen(
                 onClick = { onComplete(scores.toMap()) },
                 modifier = Modifier.fillMaxWidth().height(56.dp).padding(vertical = 16.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text("Lock Mindset Data", fontWeight = FontWeight.Black)
             }
@@ -76,14 +76,14 @@ fun QuestionItem(text: String, onScoreChange: (Int) -> Unit) {
     var score by remember { mutableIntStateOf(3) }
     
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text(text, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
         Spacer(Modifier.height(12.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Disagree", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text("Disagree", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Slider(
                 value = score.toFloat(),
                 onValueChange = { 
@@ -93,9 +93,9 @@ fun QuestionItem(text: String, onScoreChange: (Int) -> Unit) {
                 valueRange = 1f..5f,
                 steps = 3,
                 modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
-                colors = SliderDefaults.colors(thumbColor = OrangePrimary, activeTrackColor = OrangePrimary)
+                colors = SliderDefaults.colors(thumbColor = MaterialTheme.colorScheme.primary, activeTrackColor = MaterialTheme.colorScheme.primary)
             )
-            Text("Agree", style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+            Text("Agree", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
