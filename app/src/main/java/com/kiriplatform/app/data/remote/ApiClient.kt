@@ -175,15 +175,25 @@ interface ASGApiService {
 
 object ApiClient {
     private var token: String? = null
+    private var refreshToken: String? = null
+    private var sessionManager: com.kiriplatform.app.data.SessionManager? = null
 
-    fun setToken(newToken: String?) {
+    fun init(manager: com.kiriplatform.app.data.SessionManager) {
+        sessionManager = manager
+        token = manager.getToken()
+        refreshToken = manager.getRefreshToken()
+    }
+
+    fun setToken(newToken: String?, newRefreshToken: String? = null) {
         token = newToken
+        sessionManager?.saveToken(newToken)
+        newRefreshToken?.let {
+            refreshToken = it
+            sessionManager?.saveRefreshToken(it)
+        }
     }
 
     private val client by lazy {
-        val cacheSize = 10 * 1024 * 1024L // 10MB
-        // Note: Cache needs context, usually passed from Application but using a default for now if possible
-        // or just rely on the logging reduction for now if context is hard to access in singleton
         OkHttpClient.Builder()
             .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
