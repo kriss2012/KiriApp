@@ -25,6 +25,14 @@ class SessionManager private constructor(context: Context) {
         return prefs.getString("auth_token", null)
     }
 
+    fun saveRefreshToken(token: String?) {
+        token?.let { prefs.edit().putString("refresh_token", it).apply() }
+    }
+
+    fun getRefreshToken(): String? {
+        return prefs.getString("refresh_token", null)
+    }
+
     fun saveUserId(userId: String?) {
         userId?.let { prefs.edit().putString("user_id", it).apply() }
     }
