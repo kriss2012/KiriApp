@@ -69,7 +69,9 @@ export const register = async (req: Request, res: Response) => {
       bio
     };
 
-    if (role) {
+    // Only create StakeholderRole if it's a valid StakeholderType (FOUNDER, MENTOR, etc.)
+    const validStakeholderTypes = ['FOUNDER', 'SERVICE_PROVIDER', 'MENTOR', 'INVESTOR', 'INCUBATOR', 'GUEST'];
+    if (role && validStakeholderTypes.includes(role)) {
       createData.stakeholderRoles = {
         create: {
           roleName: role
