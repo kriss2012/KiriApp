@@ -75,6 +75,7 @@ model User {
   password         String
   fullName         String
   userCategory     UserCategory  @default(STUDENT)
+  refreshToken     String?       @map("refresh_token")
   digitalPersona   String?       @map("digital_persona") // AI Generated summary
   phoneNumber      String?       @unique
   avatarUrl        String?
