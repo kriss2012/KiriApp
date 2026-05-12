@@ -87,14 +87,36 @@ export const register = async (req: Request, res: Response) => {
       }
     });
 
-    // Generate token
+    // Generate tokens
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || 'secret_key',
-      { expiresIn: '30d' }
+      { expiresIn: '1d' } // Short-lived access token
     );
 
-    res.status(201).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, userCategory: user.userCategory } });
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.REFRESH_SECRET || 'refresh_secret_key',
+      { expiresIn: '30d' } // Long-lived refresh token
+    );
+
+    // Save refresh token to user
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken }
+    });
+
+    res.status(201).json({
+      token,
+      refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        userCategory: user.userCategory,
+        role: role // Return the role sent during registration
+      }
+    });
   } catch (error: any) {
     console.error('Registration Error:', error);
     if (error.message.includes('timed out')) {
@@ -109,7 +131,11 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // Find user
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { stakeholderRoles: true }
+    });
+
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -120,19 +146,76 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Generate token
+    // Generate tokens
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || 'secret_key',
+      { expiresIn: '1d' }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId: user.id },
+      process.env.REFRESH_SECRET || 'refresh_secret_key',
       { expiresIn: '30d' }
     );
 
-    res.status(200).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, userCategory: user.userCategory } });
+    // Update refresh token in DB
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken }
+    });
+
+    // Derive role: prefer StakeholderRole, fallback to UserCategory
+    const role = user.stakeholderRoles.length > 0
+      ? user.stakeholderRoles[0].roleName
+      : user.userCategory;
+
+    res.status(200).json({
+      token,
+      refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        userCategory: user.userCategory,
+        role: role
+      }
+    });
   } catch (error: any) {
     console.error('Login Error:', error);
     if (error.message.includes('timed out')) {
       return res.status(503).json({ message: 'Database connection timed out. Please check RDS Security Groups.', error: error.message });
     }
     res.status(500).json({ message: 'Login failed', error: error.message });
+  }
+};
+
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+      return res.status(401).json({ message: 'Refresh token required' });
+    }
+
+    const secret: string = process.env.REFRESH_SECRET || 'refresh_secret_key';
+    const decoded = jwt.verify(refreshToken, secret) as any;
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId }
+    });
+
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(401).json({ message: 'Invalid refresh token' });
+    }
+
+    const newToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET || 'secret_key',
+      { expiresIn: '1d' }
+    );
+
+    res.json({ token: newToken });
+  } catch (error) {
+    res.status(401).json({ message: 'Session expired. Please log in again.' });
   }
 };
