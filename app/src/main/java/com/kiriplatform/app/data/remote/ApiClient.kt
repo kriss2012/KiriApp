@@ -16,6 +16,9 @@ interface ASGApiService {
     @POST("auth/login")
     suspend fun login(@Body request: LoginRequest): AuthResponse
 
+    @POST("auth/refresh")
+    suspend fun refreshToken(@Body request: Map<String, String>): AuthResponse
+
     @GET("users")
     suspend fun getUsers(
         @retrofit2.http.Query("name") name: String? = null,
