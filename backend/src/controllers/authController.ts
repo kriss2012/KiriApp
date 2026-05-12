@@ -91,7 +91,7 @@ export const register = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || 'secret_key',
-      { expiresIn: '7d' }
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, userCategory: user.userCategory } });
@@ -124,7 +124,7 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || 'secret_key',
-      { expiresIn: '7d' }
+      { expiresIn: '30d' }
     );
 
     res.status(200).json({ token, user: { id: user.id, email: user.email, fullName: user.fullName, userCategory: user.userCategory } });
