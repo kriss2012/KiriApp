@@ -20,7 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kiriplatform.app.data.remote.models.EventDto
 import com.kiriplatform.app.ui.theme.*
+import com.google.gson.Gson
+import java.net.URLDecoder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,10 +34,35 @@ fun EventsScreen(
     var selectedFilter by remember { mutableStateOf("ALL") }
     val filters = listOf("ALL", "HACKATHON", "COMPETITION", "WORKSHOP", "OFFER")
 
+    // Mock data updated to match EventDto structure for better visual representation
     val events = listOf(
-        EventDisplayItem("National AI Hackathon", "HACKATHON", "A 24-hour hackathon to build AI solutions for the future...", "01 EVENT", "PRIZE: TBD"),
-        EventDisplayItem("ASG Tech Quiz", "COMPETITION", "Test your knowledge on the latest tech trends.", "02 EVENTS", "PRIZE: ₹50,000"),
-        EventDisplayItem("Startup Networking", "WORKSHOP", "Connect with like-minded entrepreneurs and mentors.", "03 EVENTS", "FREE ENTRY")
+        EventDto(
+            _id = "1",
+            _title = "National AI Hackathon",
+            type = "HACKATHON",
+            _description = "A 24-hour hackathon to build AI solutions for the future of decentralized ecosystems.",
+            _date = "2024-06-25T10:00:00.000Z",
+            _location = "Innovation Hub, Bangalore",
+            prize = "₹1,00,000 + Incubation"
+        ),
+        EventDto(
+            _id = "2",
+            _title = "Kiri Tech Summit 2024",
+            type = "WORKSHOP",
+            _description = "Join top engineering leads to discuss the future of AI and LLMs in production.",
+            _date = "2024-07-15T09:00:00.000Z",
+            _location = "Virtual via Kiri Portal",
+            prize = "Free Kiri Certifications"
+        ),
+        EventDto(
+            _id = "3",
+            _title = "Startup Pitch Deck Competition",
+            type = "COMPETITION",
+            _description = "Pitch your idea to global investors and get a chance to secure seed funding.",
+            _date = "2024-08-05T14:00:00.000Z",
+            _location = "Main Auditorium",
+            prize = "$5000 AWS Credits"
+        )
     )
 
     Scaffold(
@@ -108,8 +136,12 @@ fun EventsScreen(
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(events.filter { selectedFilter == "ALL" || it.type == selectedFilter }) { event ->
-                    BroadcastCard(event, onClick = { /* Navigation logic */ })
+                val filteredEvents = events.filter { selectedFilter == "ALL" || it.type == selectedFilter }
+                items(filteredEvents) { event ->
+                    BroadcastCard(event, onClick = { 
+                        val json = Gson().toJson(event)
+                        onNavigateToDetail(json)
+                    })
                 }
             }
         }
@@ -143,7 +175,13 @@ data class EventDisplayItem(
 )
 
 @Composable
-fun BroadcastCard(event: EventDisplayItem, onClick: () -> Unit) {
+fun BroadcastCard(event: EventDto, onClick: () -> Unit) {
+    fun String.clean(): String = try {
+        URLDecoder.decode(this.replace("+", " "), "UTF-8")
+    } catch (e: Exception) {
+        this.replace("+", " ")
+    }
+
     Surface(
         modifier = Modifier.fillMaxWidth().clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
@@ -162,7 +200,7 @@ fun BroadcastCard(event: EventDisplayItem, onClick: () -> Unit) {
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        text = event.type,
+                        text = (event.type ?: "GENERAL").uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionBrandPurple800,
@@ -170,12 +208,13 @@ fun BroadcastCard(event: EventDisplayItem, onClick: () -> Unit) {
                     )
                 }
                 
-                // Event Count
+                // Event Count / Date Preview
                 Text(
-                    text = event.count,
+                    text = if (event.type == "HACKATHON") "01 EVENT" else "ACTIVE",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 1.sp
                 )
             }
 
@@ -183,17 +222,17 @@ fun BroadcastCard(event: EventDisplayItem, onClick: () -> Unit) {
 
             // Title - Highlighted visibility
             Text(
-                text = event.title,
+                text = event.title.clean(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Black,
-                color = if (isSystemInDarkTheme()) NotionBrandYellow else MaterialTheme.colorScheme.onSurface
+                color = if (isSystemInDarkTheme()) NotionBrandYellow else NotionPrimary
             )
 
             Spacer(Modifier.height(4.dp))
 
             // Description
             Text(
-                text = event.description,
+                text = event.description.clean(),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 2
@@ -211,16 +250,17 @@ fun BroadcastCard(event: EventDisplayItem, onClick: () -> Unit) {
                 // Prize Info
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "PRIZE: ",
+                        "REWARD: ",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        event.prize,
+                        event.prize?.clean() ?: "TBD",
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionLinkBlue,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
                     )
                 }
 

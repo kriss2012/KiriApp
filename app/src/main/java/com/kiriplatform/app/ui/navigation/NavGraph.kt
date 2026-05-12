@@ -120,6 +120,9 @@ fun KiriNavGraph(
                 onNavigateToSearch = { navController.navigate(Screen.Search.route) },
                 onNavigateToRepository = { navController.navigate(Screen.Repository.route) },
                 onNavigateToEvents = { navController.navigate(Screen.Events.route) },
+                onNavigateToEventDetail = { eventJson -> 
+                    navController.navigate(Screen.EventDetails.createRoute(eventJson))
+                },
                 onNavigateToAddEvent = { navController.navigate(Screen.AddEvent.route) },
                 onNavigateToAal = { navController.navigate(Screen.Organization.route) }
             )
@@ -168,7 +171,12 @@ fun KiriNavGraph(
         }
         
         composable(Screen.Events.route) {
-            EventsScreen(onNavigateBack = { navController.popBackStack() })
+            EventsScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToDetail = { eventJson ->
+                    navController.navigate(Screen.EventDetails.createRoute(eventJson))
+                }
+            )
         }
         
         composable(Screen.Profile.route) {

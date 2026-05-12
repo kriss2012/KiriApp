@@ -48,6 +48,7 @@ fun HomeScreen(
     onNavigateToSearch: () -> Unit = {},
     onNavigateToRepository: () -> Unit = {},
     onNavigateToEvents: () -> Unit = {},
+    onNavigateToEventDetail: (String) -> Unit = {},
     onNavigateToAddEvent: () -> Unit = {},
     onNavigateToAal: () -> Unit = {}
 ) {
@@ -89,6 +90,7 @@ fun HomeScreen(
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToRepository = onNavigateToRepository,
                         onNavigateToEvents = onNavigateToEvents,
+                        onNavigateToEventDetail = onNavigateToEventDetail,
                         onNavigateToAddEvent = onNavigateToAddEvent,
                         onNavigateToAal = onNavigateToAal
                     )
@@ -119,6 +121,7 @@ fun HomeContent(
     onNavigateToSearch: () -> Unit,
     onNavigateToRepository: () -> Unit,
     onNavigateToEvents: () -> Unit,
+    onNavigateToEventDetail: (String) -> Unit,
     onNavigateToAddEvent: () -> Unit,
     onNavigateToAal: () -> Unit
 ) {
@@ -143,6 +146,7 @@ fun HomeContent(
                 events = events, 
                 userRole = user.role,
                 onNavigateToEvents = onNavigateToEvents,
+                onNavigateToEventDetail = onNavigateToEventDetail,
                 onNavigateToAddEvent = onNavigateToAddEvent
             ) 
         }
@@ -438,6 +442,7 @@ fun UpcomingEventsSection(
     events: List<EventDto>, 
     userRole: String,
     onNavigateToEvents: () -> Unit,
+    onNavigateToEventDetail: (String) -> Unit,
     onNavigateToAddEvent: () -> Unit
 ) {
     Column {
@@ -471,7 +476,10 @@ fun UpcomingEventsSection(
                 events.forEach { event ->
                     EventItemCard(
                         event = event,
-                        onClick = onNavigateToEvents
+                        onClick = {
+                            val json = com.google.gson.Gson().toJson(event)
+                            onNavigateToEventDetail(json)
+                        }
                     )
                 }
             }
