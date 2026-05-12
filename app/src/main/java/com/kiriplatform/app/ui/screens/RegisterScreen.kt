@@ -222,6 +222,7 @@ fun RegisterScreen(
                                 val response = ApiClient.service.register(request)
                                 val user = response.user
                                 val token = response.token
+                                val refreshToken = response.refreshToken
                                 
                                 // Validate response data
                                 if (user == null) {
@@ -243,10 +244,11 @@ fun RegisterScreen(
                                 }
                                 
                                 sessionManager.saveToken(token)
+                                sessionManager.saveRefreshToken(refreshToken)
                                 sessionManager.saveUserId(user.id)
                                 sessionManager.saveUserName(user.fullName)
                                 sessionManager.saveUserRole(user.role)
-                                ApiClient.setToken(token)
+                                ApiClient.setToken(token, refreshToken)
 
                                 onRegisterSuccess()
                             } catch (e: Throwable) {
