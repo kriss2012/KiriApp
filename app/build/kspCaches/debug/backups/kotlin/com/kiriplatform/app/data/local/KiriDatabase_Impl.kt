@@ -37,17 +37,17 @@ public class KiriDatabase_Impl : KiriDatabase() {
 
   protected override fun createOpenDelegate(): RoomOpenDelegate {
     val _openDelegate: RoomOpenDelegate = object : RoomOpenDelegate(2,
-        "b13e64d2b3316a3e57bb2c0aee9f14aa", "c1ee2c626fbf089aded2048705c9a4d3") {
+        "45f21ba8a97c0bd29806927b9b8413a6", "206cf96f651d61eabe41781bbdf8855f") {
       public override fun createAllTables(connection: SQLiteConnection) {
         connection.execSQL("CREATE TABLE IF NOT EXISTS `cached_events` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`id`))")
-        connection.execSQL("CREATE TABLE IF NOT EXISTS `users_vault` (`userId` TEXT NOT NULL, `fullName` TEXT, `email` TEXT, `phone` TEXT, `userCategory` TEXT, `digitalPersona` TEXT, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`userId`))")
+        connection.execSQL("CREATE TABLE IF NOT EXISTS `users_vault` (`userId` TEXT NOT NULL, `fullName` TEXT, `email` TEXT, `phone` TEXT, `userCategory` TEXT, `digitalPersona` TEXT, `avatarUrl` TEXT, `lastSyncedAt` INTEGER NOT NULL, PRIMARY KEY(`userId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS `institutions_mdm` (`institutionId` TEXT NOT NULL, `name` TEXT NOT NULL, `spocUserId` TEXT NOT NULL, PRIMARY KEY(`institutionId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS `aal_activities_history` (`activityId` TEXT NOT NULL, `userId` TEXT NOT NULL, `activityNumber` INTEGER NOT NULL, `submissionUrl` TEXT, `status` TEXT NOT NULL, `syncedAt` INTEGER NOT NULL, PRIMARY KEY(`activityId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS `ecosystem_board_cache` (`boardId` TEXT NOT NULL, `authorUserId` TEXT NOT NULL, `postType` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `mediaUrl` TEXT, `createdAt` TEXT NOT NULL, PRIMARY KEY(`boardId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS `ai_matches_vault` (`matchId` TEXT NOT NULL, `sourceUserId` TEXT NOT NULL, `targetUserId` TEXT NOT NULL, `matchReason` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`matchId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS `jobs_projects_mdm` (`listingId` TEXT NOT NULL, `postedBy` TEXT NOT NULL, `type` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`listingId`))")
         connection.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)")
-        connection.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b13e64d2b3316a3e57bb2c0aee9f14aa')")
+        connection.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '45f21ba8a97c0bd29806927b9b8413a6')")
       }
 
       public override fun dropAllTables(connection: SQLiteConnection) {
@@ -110,6 +110,8 @@ public class KiriDatabase_Impl : KiriDatabase() {
             null, TableInfo.CREATED_FROM_ENTITY))
         _columnsUsersVault.put("digitalPersona", TableInfo.Column("digitalPersona", "TEXT", false,
             0, null, TableInfo.CREATED_FROM_ENTITY))
+        _columnsUsersVault.put("avatarUrl", TableInfo.Column("avatarUrl", "TEXT", false, 0, null,
+            TableInfo.CREATED_FROM_ENTITY))
         _columnsUsersVault.put("lastSyncedAt", TableInfo.Column("lastSyncedAt", "INTEGER", true, 0,
             null, TableInfo.CREATED_FROM_ENTITY))
         val _foreignKeysUsersVault: MutableSet<TableInfo.ForeignKey> = mutableSetOf()

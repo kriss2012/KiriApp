@@ -29,12 +29,15 @@ import coil.compose.AsyncImage
 import com.kiriplatform.app.data.remote.models.EventDto
 import com.kiriplatform.app.ui.components.KiriPrimaryButton
 import com.kiriplatform.app.ui.theme.*
+import java.net.URLDecoder
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailsScreen(
     navController: NavController,
-    eventJson: String // We'll pass the event as a JSON string for simplicity in navigation
+    eventJson: String
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -47,26 +50,42 @@ fun EventDetailsScreen(
 
     if (event == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Event not found")
+            Text("Event not found", color = MaterialTheme.colorScheme.onSurface)
         }
         return
+    }
+
+    // Helper functions for cleaning and formatting
+    fun String.clean(): String = try {
+        URLDecoder.decode(this.replace("+", " "), "UTF-8")
+    } catch (e: Exception) {
+        this.replace("+", " ")
+    }
+
+    fun String.formatDate(): String = try {
+        val zonedDateTime = ZonedDateTime.parse(this)
+        zonedDateTime.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy • hh:mm a"))
+    } catch (e: Exception) {
+        this.clean()
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Event Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
+                title = { Text("Event Details", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = NotionInk)
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = NotionCanvas
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onBackground
                 )
             )
         },
-        containerColor = NotionCanvas
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -78,17 +97,15 @@ fun EventDetailsScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .background(Color.Black)
+                    .height(240.dp)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 if (!event.imageUrl.isNullOrEmpty()) {
                     AsyncImage(
                         model = event.imageUrl,
                         contentDescription = "Event Banner",
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                        error = androidx.compose.ui.graphics.painter.ColorPainter(Color.DarkGray),
-                        placeholder = androidx.compose.ui.graphics.painter.ColorPainter(Color.Gray)
+                        contentScale = ContentScale.Crop
                     )
                 } else {
                     Box(
@@ -97,7 +114,9 @@ fun EventDetailsScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("🖼️", fontSize = 48.sp)
-                            Text("No Banner Image Provided", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
+                            Text("No Banner Image Provided", 
+                                color = MaterialTheme.colorScheme.onSurfaceVariant, 
+                                style = MaterialTheme.typography.labelSmall)
                         }
                     }
                 }
@@ -107,77 +126,86 @@ fun EventDetailsScreen(
                 // Type Badge
                 Surface(
                     color = NotionTintLavender,
-                    shape = MaterialTheme.shapes.small, // 6dp
-                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f))
+                    shape = RoundedCornerShape(6.dp),
+                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
                 ) {
                     Text(
-                        text = event.type?.uppercase() ?: "GENERAL",
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        text = (event.type ?: "GENERAL").uppercase(),
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = NotionBrandPurple800,
                         fontWeight = FontWeight.Bold,
-                        letterSpacing = 0.5.sp
+                        letterSpacing = 1.sp
                     )
                 }
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(16.dp))
 
                 // Title
                 Text(
-                    text = event.title,
+                    text = event.title.clean(),
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.ExtraBold
+                    fontWeight = FontWeight.Black,
+                    lineHeight = 34.sp
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(20.dp))
 
                 // Date & Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.DateRange, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text(event.date, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.Default.DateRange, contentDescription = null, 
+                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Text(event.date.formatDate(), 
+                        style = MaterialTheme.typography.bodyMedium, 
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Medium)
                 }
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(12.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
-                    Spacer(Modifier.width(8.dp))
-                    Text(event.location, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Icon(Icons.Default.LocationOn, contentDescription = null, 
+                        tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(12.dp))
+                    Text(event.location.clean(), 
+                        style = MaterialTheme.typography.bodyMedium, 
+                        color = MaterialTheme.colorScheme.onSurface)
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(24.dp))
                 
                 // Coordinator Section
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text("EVENT COORDINATOR", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Spacer(Modifier.height(8.dp))
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("EVENT COORDINATOR", 
+                            style = MaterialTheme.typography.labelSmall, 
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp)
+                        Spacer(Modifier.height(12.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(Icons.Default.Person, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                            Spacer(Modifier.width(8.dp))
-                            Text(event.coordinatorName ?: "ASG Core Team", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                        }
-                        if (!event.coordinatorPhone.isNullOrEmpty()) {
-                            Spacer(Modifier.height(4.dp))
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.Phone, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
-                                Spacer(Modifier.width(8.dp))
-                                Text(event.coordinatorPhone ?: "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
-                            }
+                            Icon(Icons.Default.Person, null, 
+                                tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                            Spacer(Modifier.width(12.dp))
+                            Text(event.coordinatorName?.clean() ?: "ASG Core Team", 
+                                fontWeight = FontWeight.Bold, 
+                                color = MaterialTheme.colorScheme.onSurface)
                         }
                     }
                 }
 
                 if (!event.prize.isNullOrEmpty()) {
                     Spacer(Modifier.height(16.dp))
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F5E9)), // Keeping a success color for prizes
-                        shape = RoundedCornerShape(12.dp)
+                    Surface(
+                        color = NotionTintMint,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        border = BorderStroke(1.dp, NotionBrandGreen.copy(alpha = 0.2f))
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
@@ -186,30 +214,33 @@ fun EventDetailsScreen(
                             Text("🏆", fontSize = 24.sp)
                             Spacer(Modifier.width(12.dp))
                             Column {
-                                Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = Color(0xFF2E7D32))
-                                Text(event.prize ?: "No Prize Info", style = MaterialTheme.typography.bodySmall, color = Color(0xFF1B5E20))
+                                Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = NotionBrandGreen)
+                                Text(event.prize.clean(), style = MaterialTheme.typography.bodySmall, color = NotionBrandGreen)
                             }
                         }
                     }
                 }
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(32.dp))
 
                 // Description
-                Text("About the Event", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Spacer(Modifier.height(8.dp))
+                Text("About the Event", 
+                    style = MaterialTheme.typography.titleLarge, 
+                    fontWeight = FontWeight.Black, 
+                    color = MaterialTheme.colorScheme.onSurface)
+                Spacer(Modifier.height(12.dp))
                 Text(
-                    text = event.description,
+                    text = event.description.clean(),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 24.sp
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                    lineHeight = 26.sp
                 )
 
-                Spacer(Modifier.height(40.dp))
+                Spacer(Modifier.height(48.dp))
 
                 // Apply Button
                 KiriPrimaryButton(
-                    text = if (!event.registrationLink.isNullOrEmpty()) "Register Now / Apply →" else "Apply via Platform",
+                    text = if (!event.registrationLink.isNullOrEmpty()) "Register Now →" else "Apply via Platform",
                     onClick = {
                         if (!event.registrationLink.isNullOrEmpty()) {
                             event.registrationLink?.let { uriHandler.openUri(it) }
@@ -219,14 +250,7 @@ fun EventDetailsScreen(
                     }
                 )
                 
-                if (!event.registrationLink.isNullOrEmpty()) {
-                    Text(
-                        "Note: Clicking this will open an external registration form (e.g., Google Form).",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally)
-                    )
-                }
+                Spacer(Modifier.height(24.dp))
             }
         }
     }

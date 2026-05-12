@@ -6,6 +6,10 @@ import android.view.View;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
+import com.kiriplatform.app.ui.viewmodels.AalViewModel;
+import com.kiriplatform.app.ui.viewmodels.AalViewModel_HiltModules;
+import com.kiriplatform.app.ui.viewmodels.AalViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
+import com.kiriplatform.app.ui.viewmodels.AalViewModel_HiltModules_KeyModule_Provide_LazyMapKey;
 import com.kiriplatform.app.ui.viewmodels.HomeViewModel;
 import com.kiriplatform.app.ui.viewmodels.HomeViewModel_HiltModules;
 import com.kiriplatform.app.ui.viewmodels.HomeViewModel_HiltModules_BindsModule_Binds_LazyMapKey;
@@ -378,7 +382,7 @@ public final class DaggerKiriApplication_HiltComponents_SingletonC {
 
     @Override
     public Map<Class<?>, Boolean> getViewModelKeys() {
-      return LazyClassKeyMap.<Boolean>of(MapBuilder.<String, Boolean>newMapBuilder(2).put(HomeViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, HomeViewModel_HiltModules.KeyModule.provide()).put(MainViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, MainViewModel_HiltModules.KeyModule.provide()).build());
+      return LazyClassKeyMap.<Boolean>of(MapBuilder.<String, Boolean>newMapBuilder(3).put(AalViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, AalViewModel_HiltModules.KeyModule.provide()).put(HomeViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, HomeViewModel_HiltModules.KeyModule.provide()).put(MainViewModel_HiltModules_KeyModule_Provide_LazyMapKey.lazyClassKeyName, MainViewModel_HiltModules.KeyModule.provide()).build());
     }
 
     @Override
@@ -404,6 +408,8 @@ public final class DaggerKiriApplication_HiltComponents_SingletonC {
 
     private final ViewModelCImpl viewModelCImpl = this;
 
+    private Provider<AalViewModel> aalViewModelProvider;
+
     private Provider<HomeViewModel> homeViewModelProvider;
 
     private Provider<MainViewModel> mainViewModelProvider;
@@ -421,13 +427,14 @@ public final class DaggerKiriApplication_HiltComponents_SingletonC {
     @SuppressWarnings("unchecked")
     private void initialize(final SavedStateHandle savedStateHandleParam,
         final ViewModelLifecycle viewModelLifecycleParam) {
-      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
-      this.mainViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
+      this.aalViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 0);
+      this.homeViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 1);
+      this.mainViewModelProvider = new SwitchingProvider<>(singletonCImpl, activityRetainedCImpl, viewModelCImpl, 2);
     }
 
     @Override
     public Map<Class<?>, javax.inject.Provider<ViewModel>> getHiltViewModelMap() {
-      return LazyClassKeyMap.<javax.inject.Provider<ViewModel>>of(MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(2).put(HomeViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) homeViewModelProvider)).put(MainViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) mainViewModelProvider)).build());
+      return LazyClassKeyMap.<javax.inject.Provider<ViewModel>>of(MapBuilder.<String, javax.inject.Provider<ViewModel>>newMapBuilder(3).put(AalViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) aalViewModelProvider)).put(HomeViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) homeViewModelProvider)).put(MainViewModel_HiltModules_BindsModule_Binds_LazyMapKey.lazyClassKeyName, ((Provider) mainViewModelProvider)).build());
     }
 
     @Override
@@ -456,10 +463,13 @@ public final class DaggerKiriApplication_HiltComponents_SingletonC {
       @Override
       public T get() {
         switch (id) {
-          case 0: // com.kiriplatform.app.ui.viewmodels.HomeViewModel 
+          case 0: // com.kiriplatform.app.ui.viewmodels.AalViewModel 
+          return (T) new AalViewModel();
+
+          case 1: // com.kiriplatform.app.ui.viewmodels.HomeViewModel 
           return (T) new HomeViewModel();
 
-          case 1: // com.kiriplatform.app.ui.viewmodels.MainViewModel 
+          case 2: // com.kiriplatform.app.ui.viewmodels.MainViewModel 
           return (T) new MainViewModel();
 
           default: throw new AssertionError(id);

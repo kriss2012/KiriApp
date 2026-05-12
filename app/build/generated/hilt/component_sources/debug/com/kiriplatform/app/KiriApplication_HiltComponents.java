@@ -1,5 +1,6 @@
 package com.kiriplatform.app;
 
+import com.kiriplatform.app.ui.viewmodels.AalViewModel_HiltModules;
 import com.kiriplatform.app.ui.viewmodels.HomeViewModel_HiltModules;
 import com.kiriplatform.app.ui.viewmodels.MainViewModel_HiltModules;
 import dagger.Binds;
@@ -152,6 +153,7 @@ public final class KiriApplication_HiltComponents {
 
   @Subcomponent(
       modules = {
+          AalViewModel_HiltModules.KeyModule.class,
           HiltWrapper_ActivityRetainedComponentManager_LifecycleModule.class,
           HiltWrapper_SavedStateHandleModule.class,
           HomeViewModel_HiltModules.KeyModule.class,
@@ -193,6 +195,7 @@ public final class KiriApplication_HiltComponents {
 
   @Subcomponent(
       modules = {
+          AalViewModel_HiltModules.BindsModule.class,
           HiltWrapper_HiltViewModelFactory_ViewModelModule.class,
           HomeViewModel_HiltModules.BindsModule.class,
           MainViewModel_HiltModules.BindsModule.class
