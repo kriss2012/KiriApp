@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
         
         // Restore session
         val sessionManager = SessionManager.getInstance(this)
-        ApiClient.setToken(sessionManager.getToken())
+        ApiClient.init(sessionManager)
 
         // Init Sockets & Notifications
         lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
