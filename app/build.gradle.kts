@@ -30,8 +30,8 @@ android {
         applicationId = "com.kiriplatform.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -136,13 +136,5 @@ dependencies {
     // Socket.io for Real-time
     implementation("io.socket:socket.io-client:2.1.0")
 
-    // Premium UI Effects
-    implementation("io.github.fletchmckee.liquid:liquid:1.1.0") {
-        exclude(group = "org.jetbrains.compose.foundation")
-        exclude(group = "org.jetbrains.compose.material")
-        exclude(group = "org.jetbrains.compose.material3")
-        exclude(group = "org.jetbrains.compose.runtime")
-        exclude(group = "org.jetbrains.compose.ui")
-        exclude(group = "org.jetbrains.compose.animation")
-    }
+    // Premium UI Effects - using native Compose only for Play Store compliance
 }
