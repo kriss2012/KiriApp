@@ -220,8 +220,9 @@ In the meantime, feel free to ask me about:
         res.json(savedAiMsg);
     }
     catch (error) {
-        console.error("AI Error Detailed:", error.response?.data || error.message);
-        res.status(500).json({ error: "Kiri is having trouble thinking. Please try again later." });
+        const errorDetails = error.response?.data || error.message || String(error);
+        console.error("AI Error Detailed:", errorDetails);
+        res.status(500).json({ error: `Kiri server error: ${JSON.stringify(errorDetails)}` });
     }
 };
 export const updateSpecialization = async (req, res) => {
