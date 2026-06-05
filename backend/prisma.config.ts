@@ -20,7 +20,12 @@ if (existsSync(envPath)) {
   }
 }
 
-const dbUrl = process.env["DATABASE_URL"];
+const cmd = process.argv.join(" ");
+const isBuildTimeCmd = cmd.includes("generate") || cmd.includes("validate") || cmd.includes("format");
+
+const dbUrl = process.env["DATABASE_URL"] ||
+  (isBuildTimeCmd ? "postgresql://build:build@localhost:5432/build" : null);
+
 if (!dbUrl) {
   throw new Error("DATABASE_URL is not set. Add it to Render Environment Variables or your local .env file.");
 }
