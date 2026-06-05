@@ -210,7 +210,7 @@ object ApiClient {
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
-                val builder = chain.request.newBuilder()
+                val builder = chain.request().newBuilder()
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
                 }
