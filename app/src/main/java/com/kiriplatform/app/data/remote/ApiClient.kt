@@ -196,10 +196,10 @@ object ApiClient {
 
     private fun responseCount(response: okhttp3.Response): Int {
         var result = 1
-        var parent = response.priorResponse()
+        var parent = response.priorResponse
         while (parent != null) {
             result++
-            parent = parent.priorResponse()
+            parent = parent.priorResponse
         }
         return result
     }
@@ -210,7 +210,7 @@ object ApiClient {
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
-                val builder = chain.request().newBuilder()
+                val builder = chain.request.newBuilder()
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
                 }
@@ -222,8 +222,8 @@ object ApiClient {
                 }
                 synchronized(this) {
                     val currentToken = token
-                    if (response.request().header("Authorization") != "Bearer $currentToken") {
-                        return@authenticator response.request().newBuilder()
+                    if (response.request.header("Authorization") != "Bearer $currentToken") {
+                        return@authenticator response.request.newBuilder()
                             .header("Authorization", "Bearer $currentToken")
                             .build()
                     }
@@ -233,14 +233,14 @@ object ApiClient {
                             val refreshRequest = okhttp3.Request.Builder()
                                 .url("${AppConfig.BASE_URL}auth/refresh")
                                 .post(okhttp3.RequestBody.create(
-                                    okhttp3.MediaType.parse("application/json"),
+                                    "application/json".toMediaTypeOrNull(),
                                     "{\"refreshToken\":\"$currentRefreshToken\"}"
                                 ))
                                 .build()
                             val clientForRefresh = OkHttpClient()
                             val refreshResponse = clientForRefresh.newCall(refreshRequest).execute()
                             if (refreshResponse.isSuccessful) {
-                                val bodyString = refreshResponse.body()?.string()
+                                val bodyString = refreshResponse.body?.string()
                                 if (bodyString != null) {
                                     val gson = com.google.gson.Gson()
                                     val authResponse = gson.fromJson(bodyString, AuthResponse::class.java)
@@ -248,7 +248,7 @@ object ApiClient {
                                     val newRefreshToken = authResponse.refreshToken
                                     if (newToken.isNotEmpty()) {
                                         setToken(newToken, newRefreshToken)
-                                        return@authenticator response.request().newBuilder()
+                                        return@authenticator response.request.newBuilder()
                                             .header("Authorization", "Bearer $newToken")
                                             .build()
                                     }
