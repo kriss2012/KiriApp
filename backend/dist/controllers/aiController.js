@@ -153,8 +153,50 @@ export const chatWithKiri = async (req, res) => {
             }
         }
         if (!aiResponseText) {
-            console.error("AI Exhaustion: All models failed.", lastError?.response?.data || lastError?.message);
-            return res.status(500).json({ error: "Kiri is currently overwhelmed. Please try again in a few moments." });
+            console.warn("AI OpenRouter request failed or API Key is missing. Falling back to local offline rules.");
+            const query = (content || "").toLowerCase();
+            if (query.includes("hi") || query.includes("hello") || query.includes("hey")) {
+                aiResponseText = `Hello! I am Kiri, your ASG Agentic Orchestrator. 
+
+I am currently running in **offline diagnostic mode** because OpenRouter could not be reached (likely due to a missing or invalid \`OPENROUTER_API_KEY\` in your environment variables).
+
+How can I help you navigate the ASG Community platform today? I can guide you on pitching, connecting with mentors, or setting up your profile!`;
+            }
+            else if (query.includes("pitch") || query.includes("idea") || query.includes("startup")) {
+                aiResponseText = `💡 **How to pitch your startup on ASG:**
+1. Navigate to the **Marketplace** screen in the KiriApp.
+2. Tap the **Submit Pitch** button.
+3. Fill in your project name, tagline, description, target market, and traction.
+4. Submit the pitch to share it with our network of investors and mentors!
+
+*(Note: Kiri is running in offline mode. Please configure your \`OPENROUTER_API_KEY\` to enable AI strategy reviews.)*`;
+            }
+            else if (query.includes("mentor") || query.includes("expert") || query.includes("connection")) {
+                aiResponseText = `🤝 **Connecting with Mentors & Peers:**
+1. Go to the **Discover** tab.
+2. Search and filter profiles by role (Mentor, Founder, Academic).
+3. Open their profile and tap **Request Connection**.
+4. Once accepted, you can message each other directly from the **Chats** tab.
+
+*(Note: Kiri is running in offline mode. Configure your \`OPENROUTER_API_KEY\` to get AI-recommended mentors.)*`;
+            }
+            else {
+                aiResponseText = `Welcome to Kiri Intelligence! 🧠
+
+I am currently operating in **offline diagnostic mode** because your \`OPENROUTER_API_KEY\` environment variable is not configured or OpenRouter is unreachable.
+
+**To enable full AI capabilities:**
+1. Go to your **Render Dashboard** for the backend service.
+2. Under **Environment**, add the variable:
+   * **Key:** \`OPENROUTER_API_KEY\`
+   * **Value:** *(Your OpenRouter API Key)*
+3. Save changes and redeploy.
+
+In the meantime, feel free to ask me about:
+* How to submit a pitch
+* Connecting with mentors and academics
+* Platform navigation`;
+            }
         }
         // 6. Save messages to DB
         await prisma.aiMessage.create({
