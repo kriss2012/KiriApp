@@ -166,9 +166,8 @@ export const login = async (req: Request, res: Response) => {
     });
 
     // Derive role: prefer StakeholderRole, fallback to UserCategory
-    const role = user.stakeholderRoles.length > 0
-      ? user.stakeholderRoles[0].roleName
-      : user.userCategory;
+    const firstRole = user.stakeholderRoles[0];
+    const role = firstRole ? firstRole.roleName : user.userCategory;
 
     res.status(200).json({
       token,
