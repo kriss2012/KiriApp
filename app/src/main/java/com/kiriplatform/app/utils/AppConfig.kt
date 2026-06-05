@@ -20,5 +20,5 @@ object AppConfig {
     /**
      * Timeout configuration for network requests (in seconds).
      */
-    const val NETWORK_TIMEOUT = 60L
+    const val NETWORK_TIMEOUT = 90L
 }
