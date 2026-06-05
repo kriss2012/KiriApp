@@ -1,8 +1,8 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import authRoutes from './routes/authRoutes.js';
@@ -24,8 +24,6 @@ import boardRoutes from './routes/boardRoutes.js';
 import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 import { idempotencyMiddleware } from './middleware/idempotency.js';
-
-dotenv.config();
 
 const app = express();
 
