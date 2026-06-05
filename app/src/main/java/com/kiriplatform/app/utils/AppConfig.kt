@@ -5,12 +5,12 @@ object AppConfig {
      * The primary backend server URL.
      * Ensure this ends with a trailing slash for Retrofit.
      */
-    const val BASE_URL = "https://kiriapp.onrender.com/api/"
+    const val BASE_URL = "https://asgapp.onrender.com/api/"
 
     /**
      * The unified Socket.io server URL.
      */
-    const val SOCKET_URL = "https://kiriapp.onrender.com"
+    const val SOCKET_URL = "https://asgapp.onrender.com"
 
     /**
      * The official community website.
