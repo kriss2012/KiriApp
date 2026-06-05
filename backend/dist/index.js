@@ -22,6 +22,7 @@ import aalRoutes from './routes/aalRoutes.js';
 import boardRoutes from './routes/boardRoutes.js';
 import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
+import { idempotencyMiddleware } from './middleware/idempotency.js';
 dotenv.config();
 const app = express();
 // Trust proxy for Render/Cloudflare/etc to let express-rate-limit see real IPs
@@ -36,6 +37,13 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Global Rate Limiter (Security Guard Principle)
 app.use('/api', apiLimiter);
+// Global Idempotency Guard (Multi-Tap protection for write/update operations)
+app.use('/api', (req, res, next) => {
+    if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+        return idempotencyMiddleware(req, res, next);
+    }
+    next();
+});
 // Routes
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);

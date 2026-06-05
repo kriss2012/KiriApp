@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import com.kiriplatform.app.utils.clickableDebounced
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -161,7 +162,7 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable { onClick() },
+            .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
         color = NotionTintLavender,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
@@ -225,7 +226,7 @@ fun InnovationHubCard(onNavigateToHub: () -> Unit) {
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .clickable { onNavigateToHub() },
+            .clickableDebounced { onNavigateToHub() },
         shape = RoundedCornerShape(8.dp),
         color = NotionTintPeach,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
@@ -347,7 +348,7 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 12.dp)
             .fillMaxWidth()
-            .clickable { onNavigateToSearch() },
+            .clickableDebounced { onNavigateToSearch() },
         shape = RoundedCornerShape(8.dp),
         color = NotionPrimary,
         border = BorderStroke(1.dp, NotionBrandPurple800.copy(alpha = 0.2f))
@@ -410,7 +411,7 @@ fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
         modifier = Modifier
             .width(110.dp)
             .height(100.dp)
-            .clickable { onClick() },
+            .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
         color = item.color,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
@@ -508,7 +509,7 @@ fun EventItemCard(event: EventDto, onClick: () -> Unit) {
     val day = dateParts.lastOrNull() ?: "26"
 
     Surface(
-        modifier = Modifier.fillMaxWidth().clickable { onClick() },
+        modifier = Modifier.fillMaxWidth().clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
         color = MaterialTheme.colorScheme.surface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)

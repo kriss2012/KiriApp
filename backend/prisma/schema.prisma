@@ -330,6 +330,9 @@ model Connection {
   receiverId  String
   receiver    User     @relation("ReceivedRequests", fields: [receiverId], references: [id])
   createdAt   DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
 }
 
 model Message {
@@ -340,6 +343,10 @@ model Message {
   receiverId  String
   receiver    User     @relation("MessagesReceived", fields: [receiverId], references: [id])
   createdAt   DateTime @default(now())
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
 }
 
 model Notification {
@@ -352,6 +359,9 @@ model Notification {
   relatedId String?
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model AiMessage {
@@ -387,6 +397,8 @@ model Pitch {
   founder     User     @relation(fields: [founderId], references: [id])
   backers     Backer[]
   createdAt   DateTime @default(now())
+
+  @@index([founderId])
 }
 
 model Backer {
