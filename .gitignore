@@ -1,1 +1,16 @@
+# Gradle files
+.gradle/
+build/
+app/build/
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+.kotlin/
+
+# Local configuration files
+local.properties
+
+# Log files
+*.log
 *.class
