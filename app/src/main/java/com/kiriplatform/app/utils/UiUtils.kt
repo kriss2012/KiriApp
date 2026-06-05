@@ -1,13 +1,13 @@
 package com.kiriplatform.app.utils
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
@@ -76,5 +76,24 @@ fun Modifier.shimmer(
         this.background(brush)
     } else {
         this
+    }
+}
+
+/**
+ * Throttles quick multiple click inputs to prevent duplicate actions/submissions.
+ * Executes the onClick action instantly, then blocks further clicks for [delayMillis].
+ */
+fun Modifier.clickableDebounced(
+    delayMillis: Long = 500L,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+): Modifier = composed {
+    var lastClickTime = remember { 0L }
+    this.clickable(enabled = enabled) {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastClickTime >= delayMillis) {
+            lastClickTime = currentTime
+            onClick()
+        }
     }
 }
