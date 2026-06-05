@@ -1,8 +1,8 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import authRoutes from './routes/authRoutes.js';
@@ -23,7 +23,6 @@ import boardRoutes from './routes/boardRoutes.js';
 import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 import { idempotencyMiddleware } from './middleware/idempotency.js';
-dotenv.config();
 const app = express();
 // Trust proxy for Render/Cloudflare/etc to let express-rate-limit see real IPs
 app.set('trust proxy', 1);
@@ -66,8 +65,8 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
     res.send('ASG Community API is running...');
 });
-const PORT = process.env.PORT || 5000;
-httpServer.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+const PORT = Number(process.env.PORT) || 5000;
+httpServer.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT} (bound to 0.0.0.0)`);
 });
 //# sourceMappingURL=index.js.map

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 
 import com.kiriplatform.app.data.remote.models.*
 
@@ -57,20 +58,28 @@ class HomeViewModel @Inject constructor() : ViewModel() {
             }
 
             try {
-                // Retrofit handles its own thread switching, but we keep it inside the scope
-                val user = ApiClient.service.getProfile(userId)
-                val events = ApiClient.service.getEvents().take(3)
+                // Fetch all 4 APIs in parallel on the coroutine scope (concurrent execution)
+                val userDeferred = async { ApiClient.service.getProfile(userId) }
+                val eventsDeferred = async { ApiClient.service.getEvents() }
+                val onboardingDeferred = async {
+                    if (userId.isNotEmpty()) ApiClient.service.getAalOnboarding(userId) else null
+                }
+                val activitiesDeferred = async {
+                    if (userId.isNotEmpty()) ApiClient.service.getAalActivities(userId) else emptyList()
+                }
+
+                // Await results
+                val user = userDeferred.await()
+                val events = eventsDeferred.await().take(3)
                 
-                // Fetch AAL data
                 var onboarding: AalOnboardingDto? = null
                 var activities: List<AalActivityDto> = emptyList()
                 try {
-                    // Fetch AAL data if userId is valid
-                    if (userId.isNotEmpty()) {
-                        onboarding = ApiClient.service.getAalOnboarding(userId)
-                        activities = ApiClient.service.getAalActivities(userId)
-                    }
-                } catch (e: Exception) { /* AAL not available for this user */ }
+                    onboarding = onboardingDeferred.await()
+                } catch (e: Exception) { /* AAL not available or fails */ }
+                try {
+                    activities = activitiesDeferred.await()
+                } catch (e: Exception) { /* AAL activities not available or fails */ }
                 
                 // SAVE to cache on IO thread
                 kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
