@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import com.kiriplatform.app.data.remote.models.*
 import com.kiriplatform.app.utils.AppConfig
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.util.concurrent.TimeUnit
 
 interface ASGApiService {
@@ -193,6 +194,16 @@ object ApiClient {
         }
     }
 
+    private fun responseCount(response: okhttp3.Response): Int {
+        var result = 1
+        var parent = response.priorResponse()
+        while (parent != null) {
+            result++
+            parent = parent.priorResponse()
+        }
+        return result
+    }
+
     private val client by lazy {
         OkHttpClient.Builder()
             .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
@@ -204,6 +215,51 @@ object ApiClient {
                     builder.addHeader("Authorization", "Bearer $it")
                 }
                 chain.proceed(builder.build())
+            }
+            .authenticator { _, response ->
+                if (responseCount(response) >= 3) {
+                    return@authenticator null
+                }
+                synchronized(this) {
+                    val currentToken = token
+                    if (response.request().header("Authorization") != "Bearer $currentToken") {
+                        return@authenticator response.request().newBuilder()
+                            .header("Authorization", "Bearer $currentToken")
+                            .build()
+                    }
+                    val currentRefreshToken = refreshToken
+                    if (currentRefreshToken != null) {
+                        try {
+                            val refreshRequest = okhttp3.Request.Builder()
+                                .url("${AppConfig.BASE_URL}auth/refresh")
+                                .post(okhttp3.RequestBody.create(
+                                    okhttp3.MediaType.parse("application/json"),
+                                    "{\"refreshToken\":\"$currentRefreshToken\"}"
+                                ))
+                                .build()
+                            val clientForRefresh = OkHttpClient()
+                            val refreshResponse = clientForRefresh.newCall(refreshRequest).execute()
+                            if (refreshResponse.isSuccessful) {
+                                val bodyString = refreshResponse.body()?.string()
+                                if (bodyString != null) {
+                                    val gson = com.google.gson.Gson()
+                                    val authResponse = gson.fromJson(bodyString, AuthResponse::class.java)
+                                    val newToken = authResponse.token
+                                    val newRefreshToken = authResponse.refreshToken
+                                    if (newToken.isNotEmpty()) {
+                                        setToken(newToken, newRefreshToken)
+                                        return@authenticator response.request().newBuilder()
+                                            .header("Authorization", "Bearer $newToken")
+                                            .build()
+                                    }
+                                }
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                null
             }
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.HEADERS
