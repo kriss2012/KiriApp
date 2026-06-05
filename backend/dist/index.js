@@ -55,6 +55,9 @@ app.use('/api/board', boardRoutes);
 app.get('/', (req, res) => {
     res.send('ASG Community API is running...');
 });
+app.get('/api', (req, res) => {
+    res.send('ASG Community API is running...');
+});
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
