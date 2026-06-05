@@ -28,7 +28,10 @@ export const getProfile = async (req, res) => {
                     website: true,
                     githubUrl: true,
                     linkedInUrl: true,
-                    services: true
+                    services: true,
+                    rollNo: true,
+                    portfolioUrl: true,
+                    achievements: true
                 }
             }),
             prisma.event.count({ where: { ownerId: userId } }),
@@ -89,7 +92,7 @@ export const updateProfile = async (req, res) => {
         if (typeof userId !== 'string') {
             return res.status(400).json({ message: 'Invalid User ID' });
         }
-        const { fullName, bio, avatarUrl, phoneNumber, role, department, college, year, section, website, githubUrl, linkedInUrl, services } = req.body;
+        const { fullName, bio, avatarUrl, phoneNumber, role, department, college, year, section, website, githubUrl, linkedInUrl, services, rollNo, portfolioUrl, achievements } = req.body;
         console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
         // Map role string to UserCategory enum if applicable
         const categoryMapping = {
@@ -99,29 +102,38 @@ export const updateProfile = async (req, res) => {
             'SPOC': 'FACULTY',
             'ALUMNI': 'ALUMNI'
         };
+        // Valid roles for the StakeholderRole table
+        const validStakeholderRoles = ['FOUNDER', 'MENTOR', 'INVESTOR', 'SERVICE_PROVIDER', 'INCUBATOR', 'GUEST'];
         const user = await prisma.user.update({
             where: { id: userId },
             data: {
                 fullName,
-                bio,
+                bio: bio || null,
                 avatarUrl,
-                phoneNumber,
-                department,
-                college,
-                year,
-                section,
-                website,
-                githubUrl,
-                linkedInUrl,
-                services,
+                phoneNumber: phoneNumber || null, // Fix unique constraint issue with empty strings
+                department: department || null,
+                college: college || null,
+                year: year || null,
+                section: section || null,
+                website: website || null,
+                githubUrl: githubUrl || null,
+                linkedInUrl: linkedInUrl || null,
+                services: services || [],
+                rollNo: rollNo || null,
+                portfolioUrl: portfolioUrl || null,
+                achievements: achievements || [],
                 ...(role ? {
-                    userCategory: categoryMapping[role],
-                    stakeholderRoles: {
-                        deleteMany: {}, // Clear existing roles
-                        create: {
-                            roleName: role
+                    userCategory: categoryMapping[role] || 'STUDENT',
+                    stakeholderRoles: validStakeholderRoles.includes(role)
+                        ? {
+                            deleteMany: {}, // Clear existing roles
+                            create: {
+                                roleName: role
+                            }
                         }
-                    }
+                        : {
+                            deleteMany: {} // Basic roles like STUDENT/SPOC don't have StakeholderRole entries
+                        }
                 } : {})
             },
             // Explicit select — returns the same field set as getProfile
@@ -143,7 +155,10 @@ export const updateProfile = async (req, res) => {
                 website: true,
                 githubUrl: true,
                 linkedInUrl: true,
-                services: true
+                services: true,
+                rollNo: true,
+                portfolioUrl: true,
+                achievements: true
             }
         });
         console.log(`[UpdateProfile] ✅ Successfully updated user ${userId} — name: "${user.fullName}"`);
@@ -151,6 +166,14 @@ export const updateProfile = async (req, res) => {
     }
     catch (error) {
         // Log Prisma-specific error codes for faster debugging
+        if (error?.code === 'P2002') {
+            const target = error.meta?.target || [];
+            const field = target.includes('phoneNumber') ? 'Phone Number' : 'Field';
+            return res.status(400).json({
+                message: `${field} is already in use by another account.`,
+                error: error.message
+            });
+        }
         if (error?.code) {
             console.error(`[UpdateProfile] ❌ Prisma error P${error.code} for user ${req.params['userId']}:`, error.meta ?? error.message);
         }
