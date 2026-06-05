@@ -14,9 +14,7 @@ RUN npm install --ignore-scripts
 COPY . .
 
 # Generate Prisma Client
-# DATABASE_URL is not needed for generate (no DB connection), but prisma.config.js
-# needs it defined. We pass a dummy value here; the real URL is set by Render at runtime.
-RUN DATABASE_URL=postgresql://build:build@localhost:5432/build npx prisma generate
+RUN npx prisma generate
 
 # Build TypeScript
 RUN npm run build
