@@ -120,7 +120,7 @@ class KiriAIViewModel : ViewModel() {
                 )
                 _messages.add(KiriMessage(response.content, response.role))
             } catch (e: Exception) {
-                _messages.add(KiriMessage("Connection error. Kiri is having trouble reaching the ASG brain.", "assistant"))
+                _messages.add(KiriMessage("Connection error: ${e.localizedMessage ?: "ASG brain connection timed out"}. Please check backend logs.", "assistant"))
             }
         }
     }
