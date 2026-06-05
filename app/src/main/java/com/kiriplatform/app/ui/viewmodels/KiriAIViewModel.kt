@@ -119,6 +119,9 @@ class KiriAIViewModel : ViewModel() {
                     )
                 )
                 _messages.add(KiriMessage(response.content, response.role))
+            } catch (e: retrofit2.HttpException) {
+                val errorBody = e.response()?.errorBody()?.string() ?: "HTTP ${e.code()}"
+                _messages.add(KiriMessage("Server error: $errorBody", "assistant"))
             } catch (e: Exception) {
                 _messages.add(KiriMessage("Connection error: ${e.localizedMessage ?: "ASG brain connection timed out"}. Please check backend logs.", "assistant"))
             }
