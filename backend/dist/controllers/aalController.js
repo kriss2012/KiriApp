@@ -83,4 +83,87 @@ export const verifyActivity = async (req, res) => {
         res.status(500).json({ message: 'Error verifying activity', error: error.message });
     }
 };
+export const getInstitutions = async (req, res) => {
+    try {
+        const institutions = await prisma.institution.findMany();
+        const formatted = institutions.map(inst => ({
+            institution_id: inst.id,
+            name: inst.name,
+            spoc_user_id: inst.spocUserId
+        }));
+        res.status(200).json(formatted);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching institutions', error: error.message });
+    }
+};
+export const registerForEvent = async (req, res) => {
+    try {
+        const { eventId, userId, formData } = req.body;
+        if (!eventId || !userId) {
+            return res.status(400).json({ message: 'Event ID and User ID are required' });
+        }
+        const registration = await prisma.eventRegistration.create({
+            data: {
+                eventId,
+                userId,
+                status: 'REGISTERED',
+                formData: formData ? JSON.parse(formData) : null
+            }
+        });
+        res.status(201).json({
+            registration_id: registration.id,
+            event_id: registration.eventId,
+            user_id: registration.userId,
+            _status: 'REGISTERED',
+            form_data: formData,
+            qr_scanned_at: null
+        });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error registering for event', error: error.message });
+    }
+};
+export const submitLiveInput = async (req, res) => {
+    try {
+        const { userId, format_type, contentUrl, _context } = req.body;
+        res.status(201).json({
+            input_id: `live_${Date.now()}`,
+            user_id: userId || 'anonymous',
+            format_type: format_type || 'TEXT',
+            content_url: contentUrl || null,
+            _context: _context || 'DAY_TO_DAY',
+            ai_processed: true
+        });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error submitting live input', error: error.message });
+    }
+};
+export const getAiMatches = async (req, res) => {
+    try {
+        const userId = req.params['userId'];
+        const mentors = await prisma.user.findMany({
+            where: {
+                stakeholderRoles: {
+                    some: {
+                        roleName: 'MENTOR'
+                    }
+                }
+            },
+            take: 2
+        });
+        const matches = mentors.map((m) => ({
+            match_id: `match_${userId}_${m.id}`,
+            source_user_id: userId,
+            target_user_id: m.id,
+            match_reason: `Highly aligned match based on interest in ${m.department || 'innovation'}.`,
+            _status: 'SUGGESTED'
+        }));
+        res.status(200).json(matches);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching matches', error: error.message });
+    }
+};
 //# sourceMappingURL=aalController.js.map

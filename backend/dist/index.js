@@ -53,6 +53,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/connections', connectionRoutes);
 app.use('/api/pitch', pitchRoutes);
+app.use('/api/pitches', pitchRoutes);
 app.use('/api/match', matchRoutes);
 app.use('/api/investor', investorRoutes);
 app.use('/api/mentor', mentorRoutes);
