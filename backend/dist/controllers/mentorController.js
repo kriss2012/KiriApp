@@ -56,12 +56,16 @@ export const updateSessionStatus = async (req, res) => {
     try {
         const sessionId = req.params['sessionId'];
         const { status, scheduledAt } = req.body;
+        const updateData = {};
+        if (status) {
+            updateData.status = status;
+        }
+        if (scheduledAt) {
+            updateData.scheduledAt = new Date(scheduledAt);
+        }
         const session = await prisma.mentorSession.update({
             where: { id: sessionId },
-            data: {
-                status,
-                scheduledAt: scheduledAt ? new Date(scheduledAt) : undefined
-            },
+            data: updateData,
             include: {
                 mentor: true,
                 founder: true
