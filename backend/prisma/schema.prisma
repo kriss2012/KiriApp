@@ -429,3 +429,34 @@ model MentorSession {
   @@index([mentorId])
   @@index([founderId])
 }
+
+// --- MARKET INTELLIGENCE MODELS (E1) ---
+
+model MarketSkillTrend {
+  id        String   @id @default(uuid())
+  skillName String   @unique @map("skill_name")
+  category  String   @default("Technical")
+  demand    Float
+  changePct Float    @default(0.0) @map("change_pct")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model MarketSalaryTrend {
+  id        String   @id @default(uuid())
+  roleName  String   @map("role_name")
+  city      String
+  minSalary Float    @map("min_salary")
+  maxSalary Float    @map("max_salary")
+  avgSalary Float    @map("avg_salary")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([roleName, city])
+}
+
+model TopHiringCompany {
+  id          String   @id @default(uuid())
+  companyName String   @unique @map("company_name")
+  openingsCount Int     @default(0) @map("openings_count")
+  logoUrl     String?  @map("logo_url")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
