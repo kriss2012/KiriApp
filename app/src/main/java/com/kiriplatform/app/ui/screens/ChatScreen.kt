@@ -50,6 +50,7 @@ fun ChatScreen(
     var messageText by remember { mutableStateOf("") }
     val uiState by viewModel.uiState.collectAsState()
     var connectionStatus by remember { mutableStateOf<String?>(null) }
+    var isRequestReceiver by remember { mutableStateOf(false) }
     var receiverName by remember { mutableStateOf("User") }
     val coroutineScope = rememberCoroutineScope()
     
@@ -71,12 +72,12 @@ fun ChatScreen(
                     val content = data.optString("content")
                     viewModel.addMessageLocally(
                         MessageDto(
-                            _id = System.currentTimeMillis().toString(),
+                            _id = data.optString("id"),
                             _senderId = senderId,
                             _receiverId = currentUserId,
                             _content = content,
-                            _createdAt = java.util.Date().toString(),
-                            _isRead = false
+                            _createdAt = data.optString("createdAt"),
+                            _isRead = data.optBoolean("isRead", false)
                         )
                     )
                 }
@@ -93,6 +94,7 @@ fun ChatScreen(
                     (it.senderId == receiverId && it.receiverId == currentUserId)
                 }
                 connectionStatus = existing?.status
+                isRequestReceiver = existing?.receiverId == currentUserId
             } catch (e: Exception) {}
         }
     }
@@ -141,7 +143,7 @@ fun ChatScreen(
             ) {
                 Column {
                     // Pending Request Banner
-                    if (connectionStatus == "PENDING") {
+                    if (connectionStatus == "PENDING" && isRequestReceiver) {
                         Surface(
                             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             modifier = Modifier.fillMaxWidth()
@@ -200,10 +202,10 @@ fun ChatScreen(
                         Spacer(Modifier.width(8.dp))
                         IconButton(
                             onClick = {
-                                if (messageText.isNotEmpty()) {
-                                    viewModel.sendMessage(currentUserId, receiverId, messageText)
-                                    SocketHandler.sendMessage(roomId, currentUserId, receiverId, messageText)
-                                    messageText = ""
+                                val text = messageText.trim()
+                                if (text.isNotEmpty()) {
+                                    messageText = "" // Clear text box immediately to prevent multiple sendings
+                                    viewModel.sendMessage(currentUserId, receiverId, text)
                                 }
                             },
                             modifier = Modifier
