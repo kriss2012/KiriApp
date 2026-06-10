@@ -36,6 +36,7 @@ import com.kiriplatform.app.ui.theme.*
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kiriplatform.app.data.SessionManager
+import com.kiriplatform.app.data.remote.ApiClient
 import com.kiriplatform.app.data.remote.models.UserDto
 import com.kiriplatform.app.ui.viewmodels.ProfileState
 import com.kiriplatform.app.ui.viewmodels.ProfileViewModel

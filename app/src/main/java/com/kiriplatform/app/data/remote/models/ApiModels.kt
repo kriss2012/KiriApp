@@ -153,7 +153,8 @@ data class UserResponse(
     @SerializedName("role") val _role: String? = null,
     val userCategory: String? = null,
     val avatarUrl: String? = null,
-    val college: String? = null
+    val college: String? = null,
+    val bio: String? = null
 ) {
     val id: String get() = _id ?: ""
     val fullName: String get() = _fullName ?: "Kiri User"
