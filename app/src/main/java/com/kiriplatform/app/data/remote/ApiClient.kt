@@ -132,6 +132,12 @@ interface ASGApiService {
     @GET("mentor/history")
     suspend fun getMentorHistory(): List<MentorSessionDto>
 
+    @retrofit2.http.PATCH("mentor/{sessionId}")
+    suspend fun updateMentorSessionStatus(
+        @Path("sessionId") sessionId: String,
+        @Body request: Map<String, String>
+    ): MentorSessionDto
+
     @GET("investor/heatmap")
     suspend fun getInnovationHeatmap(): List<HeatMapDto>
 
@@ -237,7 +243,11 @@ object ApiClient {
                                     "{\"refreshToken\":\"$currentRefreshToken\"}"
                                 ))
                                 .build()
-                            val clientForRefresh = OkHttpClient()
+                            val clientForRefresh = OkHttpClient.Builder()
+                                .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                .build()
                             val refreshResponse = clientForRefresh.newCall(refreshRequest).execute()
                             if (refreshResponse.isSuccessful) {
                                 val bodyString = refreshResponse.body?.string()
