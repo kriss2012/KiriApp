@@ -53,16 +53,24 @@ fun PublicProfileScreen(
     LaunchedEffect(userId) {
         try {
             user = ApiClient.service.getProfile(userId)
-            // Check current connection status
-            val connections = ApiClient.service.getUserConnections(currentUserId)
-            val existing = connections.find { 
-                (it.senderId == currentUserId && it.receiverId == userId) || 
-                (it.senderId == userId && it.receiverId == currentUserId)
-            }
-            connectionStatus = existing?.status
-            isLoading = false
         } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
             isLoading = false
+        }
+
+        if (user != null) {
+            try {
+                // Check current connection status
+                val connections = ApiClient.service.getUserConnections(currentUserId)
+                val existing = connections.find { 
+                    (it.senderId == currentUserId && it.receiverId == userId) || 
+                    (it.senderId == userId && it.receiverId == currentUserId)
+                }
+                connectionStatus = existing?.status
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
