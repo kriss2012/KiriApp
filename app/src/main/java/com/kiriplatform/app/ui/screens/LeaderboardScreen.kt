@@ -109,6 +109,35 @@ fun LeaderboardScreen(
         }
     }
 
+    var isRedeemingReward by remember { mutableStateOf(false) }
+
+    fun redeemReward(rewardKey: String) {
+        if (!com.kiriplatform.app.utils.NetworkUtils.isOnline(context)) {
+            Toast.makeText(context, "You need an active internet connection to redeem rewards.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (isRedeemingReward) return
+        isRedeemingReward = true
+
+        scope.launch {
+            try {
+                val response = ApiClient.service.redeemPoints(com.kiriplatform.app.data.remote.models.RedeemRequest(rewardKey = rewardKey))
+                if (response.success) {
+                    Toast.makeText(context, "${response.message}. New Balance: ${response.points} pts", Toast.LENGTH_LONG).show()
+                    loadLeaderboard()
+                } else {
+                    Toast.makeText(context, "Redemption failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                isRedeemingReward = false
+            }
+        }
+    }
+
     LaunchedEffect(Unit) {
         loadLeaderboard()
     }
@@ -230,27 +259,26 @@ fun LeaderboardScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                             }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("Mock Interview with Mentor", style = MaterialTheme.typography.bodySmall)
-                                Text("200 pts", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
-                            }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("Resume AI Pitch Optimization", style = MaterialTheme.typography.bodySmall)
-                                Text("150 pts", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
-                            }
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text("Verified Innovation Badge", style = MaterialTheme.typography.bodySmall)
-                                Text("100 pts", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodySmall)
-                            }
+                            RewardRowItem(
+                                title = "Mock Interview with Mentor",
+                                cost = 200,
+                                isRedeeming = isRedeemingReward,
+                                onRedeem = { redeemReward("mock_interview") }
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                            RewardRowItem(
+                                title = "Resume AI Pitch Optimization",
+                                cost = 150,
+                                isRedeeming = isRedeemingReward,
+                                onRedeem = { redeemReward("resume_opt") }
+                            )
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                            RewardRowItem(
+                                title = "Verified Innovation Badge",
+                                cost = 100,
+                                isRedeeming = isRedeemingReward,
+                                onRedeem = { redeemReward("innovation_badge") }
+                            )
                         }
                     }
                 }
@@ -380,6 +408,35 @@ fun LeaderboardRowItem(user: LeaderboardUserDto) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun RewardRowItem(
+    title: String,
+    cost: Int,
+    isRedeeming: Boolean,
+    onRedeem: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+            Text("${cost} points required", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Button(
+            onClick = onRedeem,
+            enabled = !isRedeeming,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+            modifier = Modifier.height(32.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+        ) {
+            Text("Redeem", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
