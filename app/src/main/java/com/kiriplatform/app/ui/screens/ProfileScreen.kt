@@ -523,7 +523,7 @@ fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
     }
 }
 
-@Composable
+private @Composable
 fun GitHubStatsCard(stats: com.kiriplatform.app.data.remote.models.GitHubStatsResponse, onOpenUrl: (String) -> Unit) {
     Surface(
         modifier = Modifier
@@ -650,7 +650,7 @@ fun GitHubStatsCard(stats: com.kiriplatform.app.data.remote.models.GitHubStatsRe
     }
 }
 
-@Composable
+private @Composable
 fun GitHubStatMetric(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
