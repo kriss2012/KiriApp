@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express';
 import prisma from '../utils/prisma.js';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
@@ -487,6 +488,153 @@ export const redeemPoints = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const getGitHubAuthorizeUrl = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const clientId = process.env.GITHUB_CLIENT_ID || "MOCK_CLIENT_ID";
+    const redirectUri = process.env.GITHUB_REDIRECT_URI || "http://localhost:3000/api/auth/github/callback";
+    
+    // We pass userId in state so we can associate the token with the correct user in the callback
+    const stateToken = jwt.sign({ userId }, process.env.JWT_SECRET || "fallbackSecret", { expiresIn: '15m' });
+    
+    const authorizeUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=read:user,repo&state=${stateToken}`;
+    
+    res.status(200).json({ url: authorizeUrl });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const githubCallback = async (req: Request, res: Response) => {
+  try {
+    const { code, state } = req.query;
+    if (!state || typeof state !== 'string') {
+      return res.status(400).send("Invalid state parameter");
+    }
+
+    let userId: string;
+    try {
+      const decoded = jwt.verify(state, process.env.JWT_SECRET || "fallbackSecret") as { userId: string };
+      userId = decoded.userId;
+    } catch (err) {
+      return res.status(400).send("State validation failed or expired");
+    }
+
+    let username = "mock_user";
+    let githubUrl = "https://github.com/mock_user";
+
+    const clientId = process.env.GITHUB_CLIENT_ID;
+    const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+    if (code && clientId && clientSecret) {
+      // Exchange code for token
+      const tokenRes = await axios.post('https://github.com/login/oauth/access_token', {
+        client_id: clientId,
+        client_secret: clientSecret,
+        code,
+        redirect_uri: process.env.GITHUB_REDIRECT_URI
+      }, {
+        headers: { Accept: 'application/json' }
+      });
+
+      const accessToken = tokenRes.data.access_token;
+      if (accessToken) {
+        // Fetch GitHub profile
+        const userProfileRes = await axios.get('https://api.github.com/user', {
+          headers: { Authorization: `Bearer ${accessToken}` }
+        });
+        username = userProfileRes.data.login;
+        githubUrl = userProfileRes.data.html_url;
+      }
+    } else {
+      // Simulation/mock flow if credentials are missing
+      if (code && typeof code === 'string') {
+        username = code;
+        githubUrl = `https://github.com/${username}`;
+      }
+    }
+
+    // Update user profile in database
+    await prisma.user.update({
+      where: { id: userId },
+      data: { githubUrl }
+    });
+
+    // Notify user
+    await prisma.notification.create({
+      data: {
+        userId,
+        title: "GitHub Connected!",
+        content: `Your account is successfully linked to GitHub user: ${username}`,
+        type: "SYSTEM"
+      }
+    });
+
+    // Send a success HTML template that redirects to the app deep link
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>GitHub Connection Successful</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #f6f8fa;
+            color: #24292f;
+          }
+          .card {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 30px;
+            max-width: 400px;
+            margin: 0 auto;
+            box-shadow: 0 3px 6px rgba(140,149,159,0.15);
+          }
+          .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+          }
+          .btn {
+            background-color: #2da44e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="card">
+          <div class="icon">🎉</div>
+          <h2>Connected to GitHub!</h2>
+          <p>Your profile is now linked to <strong>${username}</strong>.</p>
+          <p>You can close this window now or tap below to return to KiriApp.</p>
+          <a class="btn" href="kiriapp://github-connect?username=${username}">Back to App</a>
+        </div>
+        <script>
+          // Automatically try deep linking back to Android App
+          setTimeout(function() {
+            window.location.href = "kiriapp://github-connect?username=${username}";
+          }, 1000);
+        </script>
+      </body>
+      </html>
+    `);
+  } catch (error: any) {
+    res.status(500).send(`Authentication failed: ${error.message}`);
   }
 };
 

@@ -9,4 +9,7 @@ export declare const verifyActivity: (req: Request, res: Response) => Promise<vo
 export declare const getGitHubStats: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const getLeaderboard: (req: Request, res: Response) => Promise<void>;
 export declare const referUser: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const redeemPoints: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const getGitHubAuthorizeUrl: (req: Request, res: Response) => Promise<void>;
+export declare const githubCallback: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=userController.d.ts.map

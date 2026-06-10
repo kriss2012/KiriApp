@@ -182,6 +182,9 @@ interface ASGApiService {
     @GET("users/github-stats/{username}")
     suspend fun getGitHubStats(@Path("username") username: String): GitHubStatsResponse
 
+    @GET("users/github/connect")
+    suspend fun getGitHubAuthorizeUrl(): GitHubAuthorizeUrlResponse
+
     @GET("market/trends")
     suspend fun getJobMarketTrends(): MarketTrendsResponse
 

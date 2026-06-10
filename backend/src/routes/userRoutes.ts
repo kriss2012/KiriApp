@@ -10,7 +10,8 @@ import {
     getGitHubStats,
     getLeaderboard,
     referUser,
-    redeemPoints
+    redeemPoints,
+    getGitHubAuthorizeUrl
 } from '../controllers/userController.js';
 
 import { authenticate } from '../middlewares/auth.js';
@@ -18,6 +19,7 @@ import { authenticate } from '../middlewares/auth.js';
 const router = Router();
 
 router.get('/', searchUsers);
+router.get('/github/connect', authenticate, getGitHubAuthorizeUrl);
 router.get('/leaderboard', authenticate, getLeaderboard);
 router.post('/refer', authenticate, referUser);
 router.post('/redeem', authenticate, redeemPoints);

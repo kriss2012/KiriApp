@@ -19,3 +19,7 @@ data class GitHubRepoDto(
     val forks: Int,
     val url: String
 )
+
+data class GitHubAuthorizeUrlResponse(
+    val url: String
+)
