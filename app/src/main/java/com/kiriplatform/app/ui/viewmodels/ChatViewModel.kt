@@ -54,7 +54,10 @@ class ChatViewModel : ViewModel() {
     fun addMessageLocally(message: MessageDto) {
         val currentState = _uiState.value
         if (currentState is ChatState.Success) {
-            _uiState.value = ChatState.Success(currentState.messages + message)
+            val exists = currentState.messages.any { it.id == message.id }
+            if (!exists) {
+                _uiState.value = ChatState.Success(currentState.messages + message)
+            }
         }
     }
 
