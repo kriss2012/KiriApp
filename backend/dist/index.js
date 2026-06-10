@@ -60,6 +60,9 @@ app.use('/api/mentor', mentorRoutes);
 app.use('/api/invite', inviteRoutes);
 app.use('/api/aal', aalRoutes);
 app.use('/api/board', boardRoutes);
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
+});
 app.get('/', (req, res) => {
     res.send('ASG Community API is running...');
 });

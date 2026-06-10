@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -138,6 +139,28 @@ fun ProfileContent(
     onNavigateToActivity: () -> Unit,
     onLogout: () -> Unit
 ) {
+    var githubStats by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.GitHubStatsResponse?>(null) }
+    var isGithubLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(user) {
+        val gitUrl = user.githubUrl
+        if (!gitUrl.isNullOrBlank()) {
+            val username = gitUrl.substringAfterLast("github.com/")
+                .substringAfterLast("/")
+                .trim()
+            if (username.isNotEmpty()) {
+                isGithubLoading = true
+                try {
+                    githubStats = ApiClient.service.getGitHubStats(username)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    isGithubLoading = false
+                }
+            }
+        }
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -186,6 +209,28 @@ fun ProfileContent(
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.5.sp
                             )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isGithubLoading) {
+            item {
+                Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                }
+            }
+        } else if (githubStats != null) {
+            item { SectionHeader(title = "GitHub Statistics", actionText = "", onActionClick = {}) }
+            item {
+                val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+                Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                    GitHubStatsCard(stats = githubStats!!) { url ->
+                        try {
+                            uriHandler.openUri(url)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
                 }
@@ -475,6 +520,150 @@ fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun GitHubStatsCard(stats: com.kiriplatform.app.data.remote.models.GitHubStatsResponse, onOpenUrl: (String) -> Unit) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        shape = MaterialTheme.shapes.large,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Git",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = "GitHub Statistics",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            
+            Spacer(Modifier.height(16.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                GitHubStatMetric("Repositories", stats.public_repos.toString())
+                GitHubStatMetric("Followers", stats.followers.toString())
+                GitHubStatMetric("Following", stats.following.toString())
+            }
+            
+            if (stats.repos.isNotEmpty()) {
+                Spacer(Modifier.height(20.dp))
+                Text(
+                    text = "Recent Repositories",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(10.dp))
+                
+                stats.repos.take(3).forEach { repo ->
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 6.dp)
+                            .clickable { onOpenUrl(repo.url) },
+                        shape = MaterialTheme.shapes.medium,
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = repo.name,
+                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Default.Star,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(14.dp),
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                    Spacer(Modifier.width(4.dp))
+                                    Text(
+                                        text = repo.stars.toString(),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                            if (!repo.description.isNullOrEmpty()) {
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    text = repo.description,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 2
+                                )
+                            }
+                            if (!repo.language.isNullOrEmpty()) {
+                                Spacer(Modifier.height(8.dp))
+                                Surface(
+                                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                                    shape = CircleShape
+                                ) {
+                                    Text(
+                                        text = repo.language,
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontSize = 10.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GitHubStatMetric(label: String, value: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 

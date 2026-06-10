@@ -6,7 +6,8 @@ import {
     updateProfile,
     getActivities,
     getUserStats,
-    verifyActivity
+    verifyActivity,
+    getGitHubStats
 } from '../controllers/userController.js';
 
 import { authenticate } from '../middlewares/auth.js';
@@ -20,5 +21,6 @@ router.get('/verified', getAllVerifiedUsers);
 router.get('/activities/:userId', getActivities);
 router.get('/stats/:userId', getUserStats);
 router.patch('/activity/:activityId/verify', verifyActivity);
+router.get('/github-stats/:username', getGitHubStats);
 
 export default router;

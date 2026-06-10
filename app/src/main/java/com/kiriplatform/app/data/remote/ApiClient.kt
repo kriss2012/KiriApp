@@ -178,6 +178,9 @@ interface ASGApiService {
 
     @GET("aal/jobs-projects")
     suspend fun getJobsProjects(): List<JobProjectDto>
+
+    @GET("users/github-stats/{username}")
+    suspend fun getGitHubStats(@Path("username") username: String): GitHubStatsResponse
 }
 
 object ApiClient {
@@ -216,9 +219,15 @@ object ApiClient {
             .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor { chain ->
-                val builder = chain.request().newBuilder()
+                val request = chain.request()
+                val builder = request.newBuilder()
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
+                }
+                val method = request.method
+                if (method == "POST" || method == "PATCH" || method == "DELETE") {
+                    val idempotencyKey = java.util.UUID.randomUUID().toString()
+                    builder.addHeader("X-Idempotency-Key", idempotencyKey)
                 }
                 chain.proceed(builder.build())
             }

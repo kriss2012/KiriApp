@@ -1,4 +1,5 @@
 import prisma from '../utils/prisma.js';
+import axios from 'axios';
 export const getProfile = async (req, res) => {
     try {
         const userId = req.params['userId'];
@@ -261,6 +262,45 @@ export const verifyActivity = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({ error: error.message });
+    }
+};
+export const getGitHubStats = async (req, res) => {
+    try {
+        const username = req.params['username'];
+        if (!username || typeof username !== 'string') {
+            return res.status(400).json({ message: 'GitHub username is required' });
+        }
+        const headers = {
+            'User-Agent': 'ASG-Community-App'
+        };
+        if (process.env.GITHUB_TOKEN) {
+            headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+        }
+        const userRes = await axios.get(`https://api.github.com/users/${username}`, { headers, timeout: 10000 });
+        const reposRes = await axios.get(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`, { headers, timeout: 10000 });
+        const profileData = userRes.data;
+        const reposData = reposRes.data.map((repo) => ({
+            name: repo.name,
+            description: repo.description,
+            language: repo.language,
+            stars: repo.stargazers_count,
+            forks: repo.forks_count,
+            url: repo.html_url
+        }));
+        res.status(200).json({
+            login: profileData.login,
+            name: profileData.name,
+            followers: profileData.followers,
+            following: profileData.following,
+            public_repos: profileData.public_repos,
+            bio: profileData.bio,
+            avatar_url: profileData.avatar_url,
+            repos: reposData
+        });
+    }
+    catch (error) {
+        console.error(`Failed to fetch GitHub stats for ${req.params['username']}: ${error.message}`);
+        res.status(500).json({ message: 'Failed to fetch GitHub stats', error: error.message });
     }
 };
 //# sourceMappingURL=userController.js.map
