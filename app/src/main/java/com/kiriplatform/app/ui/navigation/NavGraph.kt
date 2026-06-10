@@ -270,7 +270,12 @@ fun KiriNavGraph(
             MatchmakerScreen(onBack = { navController.popBackStack() })
         }
         composable(Screen.Mentorship.route) {
-            MentorSessionScreen(onBack = { navController.popBackStack() })
+            MentorSessionScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToProfile = { userId ->
+                    navController.navigate(Screen.PublicProfile.createRoute(userId))
+                }
+            )
         }
         composable(Screen.Investor.route) {
             InvestorDashboardScreen(onBack = { navController.popBackStack() })
