@@ -20,6 +20,9 @@ import mentorRoutes from './routes/mentorRoutes.js';
 import inviteRoutes from './routes/inviteRoutes.js';
 import aalRoutes from './routes/aalRoutes.js';
 import boardRoutes from './routes/boardRoutes.js';
+import marketRoutes from './routes/marketRoutes.js';
+import badgeRoutes from './routes/badgeRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
 import { initSocket } from './utils/socket.js';
 import { apiLimiter, authLimiter } from './middleware/rateLimiter.js';
 import { idempotencyMiddleware } from './middleware/idempotency.js';
@@ -32,6 +35,9 @@ initSocket(httpServer);
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
+app.get('/favicon.ico', (req, res) => {
+    res.status(204).end();
+});
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 // Global Rate Limiter (Security Guard Principle)
@@ -60,9 +66,9 @@ app.use('/api/mentor', mentorRoutes);
 app.use('/api/invite', inviteRoutes);
 app.use('/api/aal', aalRoutes);
 app.use('/api/board', boardRoutes);
-app.get('/favicon.ico', (req, res) => {
-    res.status(204).end();
-});
+app.use('/api/market', marketRoutes);
+app.use('/api/badges', badgeRoutes);
+app.use('/api/projects', projectRoutes);
 app.get('/', (req, res) => {
     res.send('ASG Community API is running...');
 });

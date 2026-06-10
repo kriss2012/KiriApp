@@ -181,6 +181,48 @@ interface ASGApiService {
 
     @GET("users/github-stats/{username}")
     suspend fun getGitHubStats(@Path("username") username: String): GitHubStatsResponse
+
+    @GET("market/trends")
+    suspend fun getJobMarketTrends(): MarketTrendsResponse
+
+    @POST("ai/resume/generate")
+    suspend fun generateResume(@Body request: ResumeGenerateRequest): ResumeGenerateResponse
+
+    @GET("badges")
+    suspend fun getMyBadges(): BadgeResponse
+
+    @GET("badges/user/{userId}")
+    suspend fun getUserBadges(@Path("userId") userId: String): BadgeResponse
+
+    @POST("badges/award")
+    suspend fun awardBadge(@Body request: AwardBadgeRequest): AwardBadgeResponse
+
+    @GET("projects")
+    suspend fun getProjects(
+        @Query("studentId") studentId: String? = null,
+        @Query("featured") featured: String? = null
+    ): ProjectListResponse
+
+    @POST("projects")
+    suspend fun submitProject(@Body request: ProjectSubmitRequest): ProjectSubmitResponse
+
+    @POST("projects/{projectId}/reviews")
+    suspend fun submitProjectReview(
+        @Path("projectId") projectId: String,
+        @Body request: ProjectReviewRequest
+    ): ProjectReviewResponse
+
+    @GET("users/leaderboard")
+    suspend fun getLeaderboard(): LeaderboardResponse
+
+    @POST("users/refer")
+    suspend fun referUser(@Body request: ReferralRequest): ReferralResponse
+
+    @POST("users/redeem")
+    suspend fun redeemPoints(@Body request: RedeemRequest): RedeemResponse
+
+    @POST("ai/mock-interview")
+    suspend fun mockInterview(@Body request: MockInterviewRequest): MockInterviewResponse
 }
 
 object ApiClient {

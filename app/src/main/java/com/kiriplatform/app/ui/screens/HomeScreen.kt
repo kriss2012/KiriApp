@@ -51,7 +51,12 @@ fun HomeScreen(
     onNavigateToEvents: () -> Unit = {},
     onNavigateToEventDetail: (String) -> Unit = {},
     onNavigateToAddEvent: () -> Unit = {},
-    onNavigateToAal: () -> Unit = {}
+    onNavigateToAal: () -> Unit = {},
+    onNavigateToResumeBuilder: () -> Unit = {},
+    onNavigateToBadges: () -> Unit = {},
+    onNavigateToProjectShowcase: () -> Unit = {},
+    onNavigateToLeaderboard: () -> Unit = {},
+    onNavigateToInterviewSandbox: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager.getInstance(context) }
@@ -93,7 +98,12 @@ fun HomeScreen(
                         onNavigateToEvents = onNavigateToEvents,
                         onNavigateToEventDetail = onNavigateToEventDetail,
                         onNavigateToAddEvent = onNavigateToAddEvent,
-                        onNavigateToAal = onNavigateToAal
+                        onNavigateToAal = onNavigateToAal,
+                        onNavigateToResumeBuilder = onNavigateToResumeBuilder,
+                        onNavigateToBadges = onNavigateToBadges,
+                        onNavigateToProjectShowcase = onNavigateToProjectShowcase,
+                        onNavigateToLeaderboard = onNavigateToLeaderboard,
+                        onNavigateToInterviewSandbox = onNavigateToInterviewSandbox
                     )
                 }
                 is HomeState.Error -> {
@@ -124,7 +134,12 @@ fun HomeContent(
     onNavigateToEvents: () -> Unit,
     onNavigateToEventDetail: (String) -> Unit,
     onNavigateToAddEvent: () -> Unit,
-    onNavigateToAal: () -> Unit
+    onNavigateToAal: () -> Unit,
+    onNavigateToResumeBuilder: () -> Unit,
+    onNavigateToBadges: () -> Unit,
+    onNavigateToProjectShowcase: () -> Unit,
+    onNavigateToLeaderboard: () -> Unit,
+    onNavigateToInterviewSandbox: () -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -140,6 +155,11 @@ fun HomeContent(
 
         item { InnovationProgressCard(points = user.pointsCount) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
+        item { ResumeBuilderCard(onClick = onNavigateToResumeBuilder) }
+        item { MicroCredentialsCard(onClick = onNavigateToBadges) }
+        item { ProjectShowcaseCard(onClick = onNavigateToProjectShowcase) }
+        item { CampusAmbassadorCard(onClick = onNavigateToLeaderboard) }
+        item { InterviewSandboxCard(onClick = onNavigateToInterviewSandbox) }
         item { InnovationHubCard(onNavigateToHub = { /* Handled in MainScaffold */ }) }
         item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
         item { 
@@ -150,6 +170,131 @@ fun HomeContent(
                 onNavigateToEventDetail = onNavigateToEventDetail,
                 onNavigateToAddEvent = onNavigateToAddEvent
             ) 
+        }
+    }
+}
+
+@Composable
+fun ResumeBuilderCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .clickableDebounced { onClick() },
+        shape = RoundedCornerShape(8.dp),
+        color = NotionTintSky,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("AI CAREER TOOLS", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple800.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("ATS Resume Builder", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
+                Text("Generate target-role optimized resume with Google X-Y-Z formula.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+            }
+            KiriIconBadge(icon = "📄", backgroundColor = NotionCanvas)
+        }
+    }
+}
+
+@Composable
+fun MicroCredentialsCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .clickableDebounced { onClick() },
+        shape = RoundedCornerShape(8.dp),
+        color = NotionTintYellow,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("VERIFIABLE CREDENTIALS", style = MaterialTheme.typography.labelSmall, color = NotionBrandBrown.copy(alpha = 0.8f), letterSpacing = 1.sp)
+                Text("Badges & Certifications", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
+                Text("Showcase skill badges, achievements, and roadmap milestones.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+            }
+            KiriIconBadge(icon = "🥇", backgroundColor = NotionCanvas)
+        }
+    }
+}
+
+@Composable
+fun ProjectShowcaseCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .clickableDebounced { onClick() },
+        shape = RoundedCornerShape(8.dp),
+        color = NotionTintMint,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("PEER CODE REVIEW", style = MaterialTheme.typography.labelSmall, color = NotionBrandTeal.copy(alpha = 0.8f), letterSpacing = 1.sp)
+                Text("Project Showcase", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
+                Text("Submit repositories, get peer feedback, and feature your projects.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+            }
+            KiriIconBadge(icon = "💻", backgroundColor = NotionCanvas)
+        }
+    }
+}
+
+@Composable
+fun CampusAmbassadorCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .clickableDebounced { onClick() },
+        shape = RoundedCornerShape(8.dp),
+        color = NotionTintLavender,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("CAMPUS AMBASSADOR", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple.copy(alpha = 0.8f), letterSpacing = 1.sp)
+                Text("Leaderboard & Referrals", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
+                Text("Invite friends, earn points, and climb the campus rank list.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+            }
+            KiriIconBadge(icon = "📣", backgroundColor = NotionCanvas)
+        }
+    }
+}
+
+@Composable
+fun InterviewSandboxCard(onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .clickableDebounced { onClick() },
+        shape = RoundedCornerShape(8.dp),
+        color = NotionTintRose,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("AI CAREER SANDBOX", style = MaterialTheme.typography.labelSmall, color = NotionBrandPinkDeep.copy(alpha = 0.8f), letterSpacing = 1.sp)
+                Text("Interview Practice Sandbox", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
+                Text("Practice domain-specific interviews and get a confidence evaluation report.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+            }
+            KiriIconBadge(icon = "🎙️", backgroundColor = NotionCanvas)
         }
     }
 }

@@ -98,6 +98,11 @@ fun AIAgentScreen(
                 onSelected = { vm.setSpecialization(it) }
             )
 
+            LanguageSelector(
+                selected = vm.currentLanguage.collectAsState().value,
+                onSelected = { vm.setLanguage(it) }
+            )
+
             // ── Messages 
             Box(modifier = Modifier.weight(1f)) {
                 if (messages.isEmpty()) {
@@ -309,6 +314,36 @@ fun SpecializationSelector(selected: String, onSelected: (String) -> Unit) {
                         style = MaterialTheme.typography.labelSmall, 
                         fontWeight = FontWeight.Bold,
                         color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                        letterSpacing = 0.5.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun LanguageSelector(selected: String, onSelected: (String) -> Unit) {
+    val options = listOf("English", "Hindi", "Marathi", "Tamil", "Telugu", "Bengali", "Kannada")
+    androidx.compose.foundation.lazy.LazyRow(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(options) { option ->
+            val isSelected = selected == option
+            Surface(
+                onClick = { onSelected(option) },
+                shape = RoundedCornerShape(8.dp),
+                color = if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outlineVariant),
+                modifier = Modifier.height(32.dp)
+            ) {
+                Box(modifier = Modifier.padding(horizontal = 12.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        option, 
+                        style = MaterialTheme.typography.labelSmall, 
+                        fontWeight = FontWeight.Bold,
+                        color = if (isSelected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
                         letterSpacing = 0.5.sp
                     )
                 }

@@ -16,6 +16,14 @@ data class EventEntity(
     val type: String
 )
 
+@Entity(tableName = "offline_actions")
+data class OfflineActionEntity(
+    @PrimaryKey val id: String = java.util.UUID.randomUUID().toString(),
+    val actionType: String,
+    val payload: String,
+    val createdAt: Long = System.currentTimeMillis()
+)
+
 @Dao
 interface EventDao {
     @Query("SELECT * FROM cached_events")
@@ -25,9 +33,22 @@ interface EventDao {
     suspend fun insertEvents(events: List<EventEntity>)
 }
 
+@Dao
+interface OfflineActionDao {
+    @Query("SELECT * FROM offline_actions ORDER BY createdAt ASC")
+    suspend fun getPendingActions(): List<OfflineActionEntity>
+
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    suspend fun insertAction(action: OfflineActionEntity)
+
+    @Query("DELETE FROM offline_actions WHERE id = :id")
+    suspend fun deleteAction(id: String)
+}
+
 @Database(
     entities = [
         EventEntity::class,
+        OfflineActionEntity::class,
         AalUserEntity::class,
         InstitutionEntity::class,
         AalActivityEntity::class,
@@ -35,12 +56,32 @@ interface EventDao {
         AiResourceMatchEntity::class,
         JobProjectEntity::class
     ],
-    version = 2, // Incremented version for the new structure
+    version = 3, // Incremented version for the new structure
     exportSchema = false
 )
 abstract class KiriDatabase : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun aalDao(): AalDao
+    abstract fun offlineActionDao(): OfflineActionDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: KiriDatabase? = null
+
+        fun getDatabase(context: android.content.Context): KiriDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = androidx.room.Room.databaseBuilder(
+                    context.applicationContext,
+                    KiriDatabase::class.java,
+                    "kiri_database"
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }
 
 @Dao

@@ -7,6 +7,17 @@ export const requestSession = async (req, res) => {
         if (!mentorId || !topic) {
             return res.status(400).json({ error: 'mentorId and topic are required' });
         }
+        // Prevent duplicate pending requests
+        const existingSession = await prisma.mentorSession.findFirst({
+            where: {
+                mentorId,
+                founderId,
+                status: 'PENDING'
+            }
+        });
+        if (existingSession) {
+            return res.status(400).json({ error: 'You already have a pending sprint request with this mentor.' });
+        }
         const session = await prisma.mentorSession.create({
             data: {
                 mentorId,

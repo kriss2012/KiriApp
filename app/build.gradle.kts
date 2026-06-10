@@ -136,5 +136,8 @@ dependencies {
     // Socket.io for Real-time
     implementation("io.socket:socket.io-client:2.1.0")
 
+    // WorkManager for Offline Synchronization
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
     // Premium UI Effects - using native Compose only for Play Store compliance
 }

@@ -7,8 +7,8 @@ export declare const createNotification: (userId: string, title: string, content
     createdAt: Date;
     userId: string;
     title: string;
-    type: string;
     content: string;
+    type: string;
     relatedId: string | null;
     isRead: boolean;
 } | undefined>;

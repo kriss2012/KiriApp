@@ -134,6 +134,9 @@ model User {
   
   sentMentorSessions     MentorSession[] @relation("FounderSessions")
   receivedMentorSessions MentorSession[] @relation("MentorSessions")
+  badges                 Badge[]
+  projects               ProjectShowcase[] @relation("StudentProjects")
+  reviewsGiven           ProjectReview[] @relation("ReviewerReviews")
 }
 
 model StakeholderRole {
@@ -459,4 +462,53 @@ model TopHiringCompany {
   openingsCount Int     @default(0) @map("openings_count")
   logoUrl     String?  @map("logo_url")
   updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+// --- MICRO-CREDENTIAL & BADGE SYSTEM (E3) ---
+
+model Badge {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String   // e.g. "SQL Certified", "ATS Champion", "Sprint Master"
+  description String
+  badgeType   String   @map("badge_type") // SKILL, ACHIEVEMENT, MILESTONE
+  icon        String   // e.g. "🥇", "💻", "🚀"
+  earnedAt    DateTime @default(now()) @map("earned_at")
+
+  @@index([userId])
+}
+
+// --- PEER CODE REVIEW & PROJECT SHOWCASE (E4) ---
+
+model ProjectShowcase {
+  id          String          @id @default(uuid())
+  studentId   String          @map("student_id")
+  student     User            @relation("StudentProjects", fields: [studentId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  githubUrl   String          @map("github_url")
+  techStack   String[]        @default([]) @map("tech_stack")
+  isFeatured  Boolean         @default(false) @map("is_featured")
+  reviews     ProjectReview[]
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  @@index([studentId])
+}
+
+model ProjectReview {
+  id            String          @id @default(uuid())
+  projectId     String          @map("project_id")
+  project       ProjectShowcase @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reviewerId    String          @map("reviewer_id")
+  reviewer      User            @relation("ReviewerReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  codeQuality   Int             @map("code_quality") // 1-5 rating
+  documentation Int             // 1-5 rating
+  architecture  Int             // 1-5 rating
+  innovation    Int             // 1-5 rating
+  comment       String
+  createdAt     DateTime        @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@index([reviewerId])
 }

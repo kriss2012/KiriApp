@@ -33,6 +33,13 @@ class KiriAIViewModel : ViewModel() {
     private val _currentSpecialization = MutableStateFlow("GENERAL")
     val currentSpecialization: StateFlow<String> = _currentSpecialization
 
+    private val _currentLanguage = MutableStateFlow("English")
+    val currentLanguage: StateFlow<String> = _currentLanguage
+
+    fun setLanguage(language: String) {
+        _currentLanguage.value = language
+    }
+
     init {
         loadHistory()
     }
@@ -115,7 +122,8 @@ class KiriAIViewModel : ViewModel() {
                     AiMessageRequest(
                         content = content,
                         fileData = base64Data,
-                        mimeType = mimeType
+                        mimeType = mimeType,
+                        language = _currentLanguage.value
                     )
                 )
                 _messages.add(KiriMessage(response.content, response.role))

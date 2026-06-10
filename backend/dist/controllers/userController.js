@@ -303,4 +303,62 @@ export const getGitHubStats = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch GitHub stats', error: error.message });
     }
 };
+export const getLeaderboard = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+        const collegeFilter = currentUser?.college || "Global Campus";
+        // Fetch users of same college ordered by points desc
+        const users = await prisma.user.findMany({
+            where: currentUser?.college ? { college: currentUser.college } : {},
+            select: {
+                id: true,
+                fullName: true,
+                avatarUrl: true,
+                points: true,
+                college: true,
+                userCategory: true
+            },
+            orderBy: { points: 'desc' }
+        });
+        const mappedUsers = users.map((u, index) => ({
+            ...u,
+            rank: index + 1,
+            isCampusLead: index < 3 // Top 3 are Campus Leads
+        }));
+        res.status(200).json({ success: true, college: collegeFilter, leaderboard: mappedUsers });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+export const referUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ success: false, error: 'Email to refer is required' });
+        }
+        // Reward referring user with 50 points
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: {
+                points: { increment: 50 }
+            }
+        });
+        // Create notification
+        await prisma.notification.create({
+            data: {
+                userId,
+                title: "Referral Success!",
+                content: `You referred ${email} to KiriPlatform and earned 50 points!`,
+                type: "REFERRAL"
+            }
+        });
+        res.status(200).json({ success: true, message: `Successfully referred ${email}`, points: updatedUser.points });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
 //# sourceMappingURL=userController.js.map

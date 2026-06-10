@@ -7,4 +7,6 @@ export declare const getActivities: (req: Request, res: Response) => Promise<voi
 export declare const getUserStats: (req: Request, res: Response) => Promise<void>;
 export declare const verifyActivity: (req: Request, res: Response) => Promise<void>;
 export declare const getGitHubStats: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const getLeaderboard: (req: Request, res: Response) => Promise<void>;
+export declare const referUser: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=userController.d.ts.map

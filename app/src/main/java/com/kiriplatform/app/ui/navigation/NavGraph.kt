@@ -124,7 +124,12 @@ fun KiriNavGraph(
                     navController.navigate(Screen.EventDetails.createRoute(eventJson))
                 },
                 onNavigateToAddEvent = { navController.navigate(Screen.AddEvent.route) },
-                onNavigateToAal = { navController.navigate(Screen.Organization.route) }
+                onNavigateToAal = { navController.navigate(Screen.Organization.route) },
+                onNavigateToResumeBuilder = { navController.navigate(Screen.ResumeBuilder.route) },
+                onNavigateToBadges = { navController.navigate(Screen.Badges.route) },
+                onNavigateToProjectShowcase = { navController.navigate(Screen.ProjectShowcase.route) },
+                onNavigateToLeaderboard = { navController.navigate(Screen.Leaderboard.route) },
+                onNavigateToInterviewSandbox = { navController.navigate(Screen.InterviewSandbox.route) }
             )
         }
         
@@ -288,6 +293,24 @@ fun KiriNavGraph(
         }
         composable(Screen.Admin.route) {
             AdminDashboardScreen(onBack = { navController.popBackStack() })
+        }
+        composable(Screen.MarketTrends.route) {
+            MarketIntelligenceScreen(navController = navController)
+        }
+        composable(Screen.ResumeBuilder.route) {
+            ResumeBuilderScreen(navController = navController)
+        }
+        composable(Screen.Badges.route) {
+            BadgesScreen(navController = navController)
+        }
+        composable(Screen.ProjectShowcase.route) {
+            ProjectShowcaseScreen(navController = navController)
+        }
+        composable(Screen.Leaderboard.route) {
+            LeaderboardScreen(navController = navController)
+        }
+        composable(Screen.InterviewSandbox.route) {
+            InterviewSandboxScreen(navController = navController)
         }
     }
 }

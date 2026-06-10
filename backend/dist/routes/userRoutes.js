@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { getAllVerifiedUsers, getProfile, searchUsers, updateProfile, getActivities, getUserStats, verifyActivity, getGitHubStats } from '../controllers/userController.js';
+import { getAllVerifiedUsers, getProfile, searchUsers, updateProfile, getActivities, getUserStats, verifyActivity, getGitHubStats, getLeaderboard, referUser } from '../controllers/userController.js';
 import { authenticate } from '../middlewares/auth.js';
 const router = Router();
 router.get('/', searchUsers);
+router.get('/leaderboard', authenticate, getLeaderboard);
+router.post('/refer', authenticate, referUser);
 router.get('/profile/:userId', authenticate, getProfile);
 router.put('/profile/:userId', authenticate, updateProfile);
 router.get('/verified', getAllVerifiedUsers);

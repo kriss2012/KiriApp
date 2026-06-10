@@ -47,6 +47,12 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Vault : Screen("vault", "IP Vault")
     object Organization : Screen("organization", "Kiri Organization")
     object Admin : Screen("admin", "System Portal")
+    object MarketTrends : Screen("market_trends", "Market Intelligence")
+    object ResumeBuilder : Screen("resume_builder", "Resume Builder")
+    object Badges : Screen("badges", "Badges")
+    object ProjectShowcase : Screen("project_showcase", "Project Showcase")
+    object Leaderboard : Screen("leaderboard", "Leaderboard")
+    object InterviewSandbox : Screen("interview_sandbox", "Interview Sandbox")
 }
 
 val BottomNavItems = listOf(

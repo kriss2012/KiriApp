@@ -201,7 +201,8 @@ data class UserCountDto(
 data class AiMessageRequest(
     val content: String,
     val fileData: String? = null,
-    val mimeType: String? = null
+    val mimeType: String? = null,
+    val language: String? = null
 )
 
 data class AiMessageResponse(

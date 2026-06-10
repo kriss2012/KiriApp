@@ -285,8 +285,9 @@ fun MentorSessionScreen(
                             Toast.makeText(context, "Please provide a session topic", Toast.LENGTH_SHORT).show()
                             return@Button
                         }
+                        if (isSubmittingBooking) return@Button
+                        isSubmittingBooking = true
                         scope.launch {
-                            isSubmittingBooking = true
                             try {
                                 ApiClient.service.requestMentorSession(
                                     MentorSessionRequest(

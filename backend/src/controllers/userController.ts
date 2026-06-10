@@ -344,3 +344,149 @@ export const getGitHubStats = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to fetch GitHub stats', error: error.message });
   }
 };
+
+export const getLeaderboard = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+    
+    const collegeFilter = currentUser?.college || "Global Campus";
+    
+    // Fetch users of same college ordered by points desc
+    const users = await prisma.user.findMany({
+      where: currentUser?.college ? { college: currentUser.college } : {},
+      select: {
+        id: true,
+        fullName: true,
+        avatarUrl: true,
+        points: true,
+        college: true,
+        userCategory: true
+      },
+      orderBy: { points: 'desc' }
+    });
+
+    const mappedUsers = users.map((u, index) => ({
+      ...u,
+      rank: index + 1,
+      isCampusLead: index < 3 // Top 3 are Campus Leads
+    }));
+
+    res.status(200).json({ success: true, college: collegeFilter, leaderboard: mappedUsers });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const referUser = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email to refer is required' });
+    }
+
+    // Reward referring user with 50 points
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        points: { increment: 50 }
+      }
+    });
+
+    // Create notification
+    await prisma.notification.create({
+      data: {
+        userId,
+        title: "Referral Success!",
+        content: `You referred ${email} to KiriPlatform and earned 50 points!`,
+        type: "REFERRAL"
+      }
+    });
+
+    res.status(200).json({ success: true, message: `Successfully referred ${email}`, points: updatedUser.points });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const redeemPoints = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { rewardKey } = req.body;
+
+    if (!rewardKey) {
+      return res.status(400).json({ success: false, error: 'rewardKey is required' });
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    let cost = 0;
+    let title = "";
+    let description = "";
+
+    if (rewardKey === "mock_interview") {
+      cost = 200;
+      title = "Mock Interview Sprint";
+      description = "Unlocked one mock interview session with an elite mentor.";
+    } else if (rewardKey === "resume_opt") {
+      cost = 150;
+      title = "Resume AI Pitch Optimization";
+      description = "Unlocked premium ATS-targeted resume feedback session.";
+    } else if (rewardKey === "innovation_badge") {
+      cost = 100;
+      title = "Verified Innovation Badge";
+      description = "Unlocked the premium badge to show on public profiles.";
+    } else {
+      return res.status(400).json({ success: false, error: 'Invalid rewardKey' });
+    }
+
+    if (user.points < cost) {
+      return res.status(400).json({ success: false, error: `Insufficient points. Requires ${cost} points (You have ${user.points}).` });
+    }
+
+    // Deduct points
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        points: { decrement: cost }
+      }
+    });
+
+    // Award badge if it is the badge reward
+    if (rewardKey === "innovation_badge") {
+      await prisma.badge.create({
+        data: {
+          userId,
+          title: "Verified Innovation Badge",
+          description: "Earned by redeeming points in the Campus Ambassador Reward Store",
+          badgeType: "MILESTONE",
+          icon: "🚀"
+        }
+      });
+    }
+
+    // Create notification
+    await prisma.notification.create({
+      data: {
+        userId,
+        title: "Reward Redeemed!",
+        content: `Successfully redeemed ${title} for ${cost} points!`,
+        type: "REWARD"
+      }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: `Successfully redeemed ${title}`,
+      points: updatedUser.points
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
