@@ -152,9 +152,11 @@ fun ProfileContent(
 ) {
     var githubStats by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.GitHubStatsResponse?>(null) }
     var isGithubLoading by remember { mutableStateOf(false) }
+    var githubError by remember { mutableStateOf<String?>(null) }
 
     var employabilityScore by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.EmployabilityScoreResponse?>(null) }
     var isScoreLoading by remember { mutableStateOf(false) }
+    var scoreError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(user.githubUrl) {
         val gitUrl = user.githubUrl
@@ -163,10 +165,12 @@ fun ProfileContent(
                 .trim()
             if (username.isNotEmpty() && username != "github.com") {
                 isGithubLoading = true
+                githubError = null
                 try {
                     githubStats = ApiClient.service.getGitHubStats(username)
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    githubError = "GitHub integration is temporarily unavailable. Please try again later."
                 } finally {
                     isGithubLoading = false
                 }
@@ -176,10 +180,12 @@ fun ProfileContent(
 
     LaunchedEffect(user) {
         isScoreLoading = true
+        scoreError = null
         try {
             employabilityScore = ApiClient.service.getEmployabilityScore()
         } catch (e: Exception) {
             e.printStackTrace()
+            scoreError = "Unable to calculate employability score at this time."
         } finally {
             isScoreLoading = false
         }
@@ -319,6 +325,23 @@ fun ProfileContent(
                     }
                 }
             }
+        } else if (githubError != null && !user.githubUrl.isNullOrBlank()) {
+            item { SectionHeader(title = "GitHub Statistics", actionText = "", onActionClick = {}) }
+            item {
+                Surface(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.2f))
+                ) {
+                    Text(
+                        text = githubError!!,
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
         }
 
         // Resources & Social Section
@@ -378,6 +401,23 @@ fun ProfileContent(
             item { SectionHeader(title = "AI Employability Index", actionText = "", onActionClick = {}) }
             item {
                 EmployabilityScoreCard(scoreResponse = employabilityScore!!)
+            }
+        } else if (scoreError != null) {
+            item { SectionHeader(title = "AI Employability Index", actionText = "", onActionClick = {}) }
+            item {
+                Surface(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Text(
+                        text = scoreError!!,
+                        modifier = Modifier.padding(16.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
 
