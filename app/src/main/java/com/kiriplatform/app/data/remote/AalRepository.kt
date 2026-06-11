@@ -4,7 +4,6 @@ import com.kiriplatform.app.data.remote.models.*
 import com.kiriplatform.app.data.local.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
 
 /**
  * Repository for handling APEX Kiri Organization (AAL) and ASG Ecosystem data operations.
@@ -117,11 +116,11 @@ class AalRepository(
     // --- Mappers for Data Transformation Layer ---
 
     private fun AalActivityDto.toEntity() = AalActivityEntity(
-        activityId = activityId ?: "",
-        userId = userId ?: "",
+        activityId = activityId?.toString() ?: "",
+        userId = userId?.toString() ?: "",
         activityNumber = activityNumber ?: 0,
-        submissionUrl = submissionUrl,
-        status = status.name
+        submissionUrl = submissionUrl?.toString(),
+        status = status?.name ?: "SUBMITTED"
     )
 
     private fun AalActivityEntity.toDto() = AalActivityDto(
@@ -129,23 +128,23 @@ class AalRepository(
         userId = userId,
         activityNumber = activityNumber,
         submissionUrl = submissionUrl,
-        _status = safeValueOf<ActivityStatus>(status, ActivityStatus.SUBMITTED)
+        status = safeValueOf<ActivityStatus>(status, ActivityStatus.SUBMITTED)
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(
-        boardId = boardId ?: "",
-        authorUserId = authorUserId ?: "",
-        postType = _postType?.name ?: "NEWS",
-        title = title ?: "",
-        description = description ?: "",
-        mediaUrl = mediaUrl,
-        createdAt = createdAt ?: ""
+        boardId = boardId?.toString() ?: "",
+        authorUserId = authorUserId?.toString() ?: "",
+        postType = postType?.name ?: "NEWS",
+        title = title?.toString() ?: "",
+        description = description?.toString() ?: "",
+        mediaUrl = mediaUrl?.toString(),
+        createdAt = createdAt?.toString() ?: ""
     )
 
     private fun EcosystemBoardEntity.toDto() = EcosystemBoardDto(
         boardId = boardId,
         authorUserId = authorUserId,
-        _postType = safeValueOf<PostType>(postType, PostType.NEWS),
+        postType = safeValueOf<PostType>(postType, PostType.NEWS),
         title = title,
         description = description,
         mediaUrl = mediaUrl,
@@ -153,21 +152,21 @@ class AalRepository(
     )
 
     private fun JobProjectDto.toEntity() = JobProjectEntity(
-        listingId = listingId ?: "",
-        postedBy = postedBy ?: "",
-        type = _type?.name ?: "JOB",
-        title = title ?: "",
-        description = description ?: "",
-        status = _status?.name ?: "OPEN"
+        listingId = listingId?.toString() ?: "",
+        postedBy = postedBy?.toString() ?: "",
+        type = type?.name ?: "JOB",
+        title = title?.toString() ?: "",
+        description = description?.toString() ?: "",
+        status = status?.name ?: "OPEN"
     )
 
     private fun JobProjectEntity.toDto() = JobProjectDto(
         listingId = listingId,
         postedBy = postedBy,
-        _type = safeValueOf<JobType>(type, JobType.JOB),
+        type = safeValueOf<JobType>(type, JobType.JOB),
         title = title,
         description = description,
-        _status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
+        status = safeValueOf<JobStatus>(status, JobStatus.OPEN)
     )
 
     private inline fun <reified T : Enum<T>> safeValueOf(value: String, default: T): T {

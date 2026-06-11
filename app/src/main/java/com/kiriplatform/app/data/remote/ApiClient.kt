@@ -60,7 +60,7 @@ interface ASGApiService {
     suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
 
     @POST("connections/accept")
-    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
+    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): AcceptConnectionResponse
 
     @GET("connections/{userId}")
     suspend fun getUserConnections(@Path("userId") userId: String): List<ConnectionDto>

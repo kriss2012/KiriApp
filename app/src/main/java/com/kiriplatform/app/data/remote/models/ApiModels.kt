@@ -415,3 +415,10 @@ data class ConnectionDto(
     val id: String get() = _id ?: ""
     val status: String get() = _status ?: "PENDING"
 }
+
+data class AcceptConnectionResponse(
+    @SerializedName("message") val _message: String? = null,
+    val connection: ConnectionDto? = null
+) {
+    val message: String get() = _message ?: ""
+}
