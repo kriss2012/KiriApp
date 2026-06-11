@@ -24,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,6 +70,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.hilt.navigation.compose.hiltViewModel()
             val uiState by mainViewModel.uiState.collectAsState()
+            
+            // Sync initial and future login states
+            LaunchedEffect(Unit) {
+                mainViewModel.setLoggedIn(sessionManager.getToken() != null)
+            }
             
             KiriAppTheme(
                 darkTheme = uiState.isDarkTheme ?: androidx.compose.foundation.isSystemInDarkTheme(),
