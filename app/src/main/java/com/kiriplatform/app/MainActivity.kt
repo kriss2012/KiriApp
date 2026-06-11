@@ -74,6 +74,11 @@ class MainActivity : ComponentActivity() {
             // Sync initial and future login states
             LaunchedEffect(Unit) {
                 mainViewModel.setLoggedIn(sessionManager.getToken() != null)
+                com.kiriplatform.app.data.SessionBus.events.collect { event ->
+                    if (event is com.kiriplatform.app.data.SessionEvent.Logout) {
+                        mainViewModel.setLoggedIn(false)
+                    }
+                }
             }
             
             KiriAppTheme(
