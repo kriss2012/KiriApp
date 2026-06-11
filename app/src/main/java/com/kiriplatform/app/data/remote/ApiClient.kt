@@ -40,7 +40,7 @@ interface ASGApiService {
     suspend fun updateProfile(@Path("userId") userId: String, @Body request: UpdateProfileRequest): UserDto
 
     @PUT("users/toggle-access/{userId}")
-    suspend fun toggleAccess(@Path("userId") userId: String, @Body data: Map<String, Boolean>): Map<String, String>
+    suspend fun toggleAccess(@Path("userId") userId: String, @Body data: Map<String, Boolean>): Map<String, Any>
 
     @GET("users/verified")
     suspend fun getVerifiedUsers(): List<UserDto>
@@ -53,14 +53,14 @@ interface ASGApiService {
     suspend fun markNotificationAsRead(@Path("id") id: String): NotificationDto
 
     @retrofit2.http.PATCH("notifications/mark-all-read/{userId}")
-    suspend fun markAllNotificationsAsRead(@Path("userId") userId: String): Map<String, String>
+    suspend fun markAllNotificationsAsRead(@Path("userId") userId: String): Map<String, Any>
 
     // Connections
     @POST("connections/send")
-    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, String>
+    suspend fun sendConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
 
     @POST("connections/accept")
-    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, String>
+    suspend fun acceptConnectionRequest(@Body request: Map<String, String>): Map<String, Any>
 
     @GET("connections/{userId}")
     suspend fun getUserConnections(@Path("userId") userId: String): List<ConnectionDto>
@@ -93,7 +93,7 @@ interface ASGApiService {
     suspend fun sendAiMessage(@Body request: AiMessageRequest): AiMessageResponse
 
     @PUT("ai/specialization")
-    suspend fun updateSpecialization(@Body request: Map<String, String>): Map<String, String>
+    suspend fun updateSpecialization(@Body request: Map<String, String>): Map<String, Any>
 
     @GET("users/activities/{userId}")
     suspend fun getActivities(@Path("userId") userId: String): List<ActivityDto>
@@ -109,7 +109,7 @@ interface ASGApiService {
     suspend fun createPitch(@Body request: CreatePitchRequest): PitchDto
 
     @POST("pitches/back")
-    suspend fun backPitch(@Body request: Map<String, String>): Map<String, String>
+    suspend fun backPitch(@Body request: Map<String, String>): Map<String, Any>
 
     @GET("match/suggestions")
     suspend fun getMatchSuggestions(): List<MatchSuggestionDto>

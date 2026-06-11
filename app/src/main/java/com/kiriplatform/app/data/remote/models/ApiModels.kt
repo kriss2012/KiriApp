@@ -385,21 +385,23 @@ data class UserDto(
 }
 
 data class NotificationDto(
-    @SerializedName("id") val _id: String? = null,
-    val userId: String? = null,
-    @SerializedName("title") val _title: String? = null,
-    @SerializedName("content") val _content: String? = null,
-    @SerializedName("type") val _type: String? = null,
-    val relatedId: String? = null,
+    @SerializedName("id") val _id: Any? = null,
+    @SerializedName("userId") val _userId: Any? = null,
+    @SerializedName("title") val _title: Any? = null,
+    @SerializedName("content") val _content: Any? = null,
+    @SerializedName("type") val _type: Any? = null,
+    @SerializedName("relatedId") val _relatedId: Any? = null,
     @SerializedName("isRead") val _isRead: Boolean? = null,
-    @SerializedName("createdAt") val _createdAt: String? = null
+    @SerializedName("createdAt") val _createdAt: Any? = null
 ) {
-    val id: String get() = _id ?: ""
-    val title: String get() = _title ?: "Notification"
-    val content: String get() = _content ?: ""
-    val type: String get() = _type ?: "ALERT"
+    val id: String get() = _id?.toString() ?: ""
+    val userId: String get() = _userId?.toString() ?: ""
+    val title: String get() = _title?.toString() ?: "Notification"
+    val content: String get() = _content?.toString() ?: ""
+    val type: String get() = _type?.toString() ?: "ALERT"
+    val relatedId: String? get() = _relatedId?.toString()
     val isRead: Boolean get() = _isRead ?: false
-    val createdAt: String get() = _createdAt ?: ""
+    val createdAt: String get() = _createdAt?.toString() ?: ""
 }
 
 data class ConnectionDto(
