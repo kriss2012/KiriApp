@@ -59,8 +59,12 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
             try {
                 // Fetch all 4 APIs in parallel on the coroutine scope (concurrent execution)
-                val userDeferred = async { ApiClient.service.getProfile(userId) }
-                val eventsDeferred = async { ApiClient.service.getEvents() }
+                val userDeferred = async { 
+                    try { ApiClient.service.getProfile(userId) } catch(e: Exception) { null }
+                }
+                val eventsDeferred = async { 
+                    try { ApiClient.service.getEvents() } catch(e: Exception) { emptyList() }
+                }
                 val onboardingDeferred = async {
                     try {
                         if (userId.isNotEmpty()) ApiClient.service.getAalOnboarding(userId) else null
@@ -82,6 +86,11 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 
                 val onboarding = onboardingDeferred.await()
                 val activities = activitiesDeferred.await()
+                
+                if (user == null) {
+                    _uiState.value = HomeState.Error("Failed to load user profile. Please check connection.")
+                    return@launch
+                }
                 
                 // SAVE to cache on IO thread
                 kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {

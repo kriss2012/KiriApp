@@ -286,6 +286,7 @@ object ApiClient {
                 }
                 synchronized(this) {
                     val currentToken = token
+                    // If the token has already been updated by another thread, retry with the new token
                     if (response.request.header("Authorization") != "Bearer $currentToken") {
                         return@authenticator response.request.newBuilder()
                             .header("Authorization", "Bearer $currentToken")
@@ -294,15 +295,20 @@ object ApiClient {
                     val currentRefreshToken = refreshToken
                     if (currentRefreshToken != null) {
                         try {
+                            // Call the refresh endpoint synchronously
                             val refreshRequest = okhttp3.Request.Builder()
                                 .url("${AppConfig.BASE_URL}auth/refresh")
-                                .post("{\"refreshToken\":\"$currentRefreshToken\"}".toRequestBody("application/json".toMediaTypeOrNull()))
+                                .post(com.google.gson.JsonObject().apply {
+                                    addProperty("refreshToken", currentRefreshToken)
+                                }.toString().toRequestBody("application/json".toMediaTypeOrNull()))
                                 .build()
+                            
                             val clientForRefresh = OkHttpClient.Builder()
                                 .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
                                 .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
                                 .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
                                 .build()
+                            
                             val refreshResponse = clientForRefresh.newCall(refreshRequest).execute()
                             if (refreshResponse.isSuccessful) {
                                 val bodyString = refreshResponse.body?.string()
@@ -318,6 +324,11 @@ object ApiClient {
                                             .build()
                                     }
                                 }
+                            } else if (refreshResponse.code == 401 || refreshResponse.code == 403) {
+                                // Refresh token expired - clear session
+                                sessionManager?.logout()
+                                token = null
+                                refreshToken = null
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

@@ -81,8 +81,10 @@ object SocketHandler {
 
     fun listenForMessages(onMessage: (JSONObject) -> Unit) {
         mSocket?.on("receive_message") { args ->
-            val data = args[0] as JSONObject
-            onMessage(data)
+            if (args.isNotEmpty()) {
+                val data = args[0] as? JSONObject
+                data?.let { onMessage(it) }
+            }
         }
     }
 

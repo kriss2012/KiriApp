@@ -392,34 +392,92 @@ fun InnovationHubCard(onNavigateToHub: () -> Unit) {
 
 @Composable
 fun InnovationProgressCard(points: Int) {
+    val rankInfo = remember(points) {
+        when {
+            points >= 10000 -> Triple("Neural Tier 5 (Apex)", 1.0f, NotionBrandPurple)
+            points >= 5000 -> Triple("Neural Tier 4 (Elite)", (points - 5000) / 5000f, NotionBrandPink)
+            points >= 2500 -> Triple("Neural Tier 3 (Advanced)", (points - 2500) / 2500f, NotionBrandOrange)
+            points >= 1000 -> Triple("Neural Tier 2 (Growth)", (points - 1000) / 1500f, NotionBrandTeal)
+            else -> Triple("Neural Tier 1 (Initiate)", (points / 1000f), NotionPrimary)
+        }
+    }
+
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+        shadowElevation = 1.dp
     ) {
-        Row(
-            modifier = Modifier.padding(20.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text("💎", fontSize = 24.sp)
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text("INTELLIGENCE RANK", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), letterSpacing = 1.sp)
-                Text("Neural Tier 1", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                LinearProgressIndicator(
-                    progress = { (points % 1000) / 1000f },
-                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape).padding(vertical = 4.dp),
-                    color = NotionPrimary,
-                    trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        Box(modifier = Modifier.background(
+            Brush.horizontalGradient(
+                colors = listOf(
+                    rankInfo.third.copy(alpha = 0.05f),
+                    Color.Transparent
                 )
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(points.toString(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-                Text("UNITS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), fontSize = 8.sp)
+            )
+        )) {
+            Row(
+                modifier = Modifier.padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(52.dp)
+                        .clip(CircleShape)
+                        .background(rankInfo.third.copy(alpha = 0.1f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("💎", fontSize = 28.sp)
+                }
+                
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        "INTELLIGENCE RANK", 
+                        style = MaterialTheme.typography.labelSmall, 
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), 
+                        letterSpacing = 1.2.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        rankInfo.first, 
+                        style = MaterialTheme.typography.titleMedium, 
+                        fontWeight = FontWeight.Black, 
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    
+                    Spacer(Modifier.height(8.dp))
+                    
+                    LinearProgressIndicator(
+                        progress = { rankInfo.second.coerceIn(0f, 1f) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(10.dp)
+                            .clip(CircleShape),
+                        color = rankInfo.third,
+                        trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f),
+                        strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
+                    )
+                }
+                
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        points.toString(), 
+                        style = MaterialTheme.typography.headlineSmall, 
+                        fontWeight = FontWeight.Black, 
+                        color = rankInfo.third
+                    )
+                    Text(
+                        "UNITS", 
+                        style = MaterialTheme.typography.labelSmall, 
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), 
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
