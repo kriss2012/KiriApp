@@ -38,23 +38,21 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState) // Keep this first
+        super.onCreate(savedInstanceState)
         androidx.core.view.WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
         
-        // Restore session
+        // 1. Load session data off-main thread
         val sessionManager = SessionManager.getInstance(this)
-        ApiClient.init(sessionManager)
-
-        // Init Sockets & Notifications
-        lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            ApiClient.init(sessionManager)
+            
+            // 2. Async Init Sockets
             SocketHandler.setSocket(com.kiriplatform.app.utils.AppConfig.SOCKET_URL)
             SocketHandler.establishConnection()
             
-            // Notification channel creation moved to KiriApplication
-            
-            // Requesting permissions must be on Main, but the launcher handle is already main-safe
-            withContext(kotlinx.coroutines.Dispatchers.Main) {
+            // 3. Permission checks
+            withContext(Dispatchers.Main) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
@@ -78,6 +76,8 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = androidx.compose.material3.MaterialTheme.colorScheme.background
                     ) {
+                        // Pass token-check as a derived state or from VM later, 
+                        // for now use sessionManager directly but outside critical hot paths if possible.
                         KiriNavGraph(
                             navController = navController,
                             hasToken = sessionManager.getToken() != null,

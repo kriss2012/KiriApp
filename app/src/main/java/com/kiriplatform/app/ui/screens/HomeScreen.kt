@@ -59,8 +59,7 @@ fun HomeScreen(
     onNavigateToInterviewSandbox: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val sessionManager = remember { SessionManager.getInstance(context) }
-    val userId = sessionManager.getUserId() ?: ""
+    val userId = remember { SessionManager.getInstance(context).getUserId() ?: "" }
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(userId) {

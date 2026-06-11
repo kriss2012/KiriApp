@@ -3,37 +3,45 @@ package com.kiriplatform.app.data
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.FileOutputStream
+import java.io.FileInputStream
 
 object CacheManager {
     private val gson = Gson()
 
-    fun <T> saveCache(context: Context, key: String, data: T) {
+    suspend fun <T> saveCache(context: Context, key: String, data: T) = withContext(Dispatchers.IO) {
         try {
             val json = gson.toJson(data)
             val file = File(context.filesDir, "$key.json")
-            file.writeText(json)
+            // Use buffered writer for better performance on large strings
+            file.bufferedWriter().use { out ->
+                out.write(json)
+            }
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e("CacheManager", "Error saving cache: $key", e)
         }
     }
 
-    fun <T> getCache(context: Context, key: String, typeToken: TypeToken<T>): T? {
-        return try {
+    suspend fun <T> getCache(context: Context, key: String, typeToken: TypeToken<T>): T? = withContext(Dispatchers.IO) {
+        try {
             val file = File(context.filesDir, "$key.json")
             if (file.exists()) {
-                val json = file.readText()
-                gson.fromJson(json, typeToken.type)
+                file.bufferedReader().use { reader ->
+                    gson.fromJson(reader, typeToken.type)
+                }
             } else {
                 null
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            android.util.Log.e("CacheManager", "Error reading cache: $key", e)
             null
         }
     }
 
-    fun clearCache(context: Context) {
+    suspend fun clearCache(context: Context) = withContext(Dispatchers.IO) {
         context.filesDir.listFiles()?.forEach { 
             if (it.name.endsWith(".json")) it.delete()
         }

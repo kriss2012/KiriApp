@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.async
+import kotlinx.coroutines.supervisorScope
 
 import com.kiriplatform.app.data.remote.models.*
 
@@ -34,74 +35,74 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
     fun loadHomeData(context: android.content.Context, userId: String) {
         viewModelScope.launch {
+            // 1. Load from Cache immediately
             try {
-                // First, try to load from cache on IO thread to prevent main-thread lag
-                val cachedData = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                    val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
-                    val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
-                    user to events
-                }
+                val user = com.kiriplatform.app.data.CacheManager.getCache(context, "profile_$userId", object : com.google.gson.reflect.TypeToken<UserDto>() {})
+                val events = com.kiriplatform.app.data.CacheManager.getCache(context, "home_events", object : com.google.gson.reflect.TypeToken<List<EventDto>>() {})
                 
-                val cachedUser = cachedData.first
-                val cachedEvents = cachedData.second
-                
-                if (cachedUser is UserDto && cachedEvents is List<*>) {
-                    @Suppress("UNCHECKED_CAST")
-                    val validEvents = cachedEvents as List<EventDto>
-                    _uiState.value = HomeState.Success(cachedUser, validEvents)
-                } else {
-                    _uiState.value = HomeState.Loading
+                if (user != null) {
+                    _uiState.value = HomeState.Success(
+                        user = user,
+                        upcomingEvents = (events ?: emptyList()) as List<EventDto>
+                    )
                 }
             } catch (e: Exception) {
-                // Ignore cache errors and proceed to network
-                _uiState.value = HomeState.Loading
+                // Cache failure is non-fatal
             }
 
-            try {
-                // Fetch all 4 APIs in parallel on the coroutine scope (concurrent execution)
-                val userDeferred = async { 
-                    try { ApiClient.service.getProfile(userId) } catch(e: Exception) { null }
-                }
-                val eventsDeferred = async { 
-                    try { ApiClient.service.getEvents() } catch(e: Exception) { emptyList() }
-                }
-                val onboardingDeferred = async {
-                    try {
-                        if (userId.isNotEmpty()) ApiClient.service.getAalOnboarding(userId) else null
-                    } catch (e: Exception) {
-                        null
-                    }
-                }
-                val activitiesDeferred = async {
-                    try {
-                        if (userId.isNotEmpty()) ApiClient.service.getAalActivities(userId) else emptyList()
-                    } catch (e: Exception) {
-                        emptyList()
-                    }
+            // 2. Fetch Network Data incrementally
+            supervisorScope {
+                val userDeferred = async { ApiClient.service.getProfile(userId) }
+                val eventsDeferred = async { ApiClient.service.getEvents() }
+                val onboardingDeferred = async { ApiClient.service.getAalOnboarding(userId) }
+                val activitiesDeferred = async { ApiClient.service.getAalActivities(userId) }
+
+                // Use a local copy to update state incrementally
+                var currentUser: UserDto? = (uiState.value as? HomeState.Success)?.user
+                var currentEvents: List<EventDto> = (uiState.value as? HomeState.Success)?.upcomingEvents ?: emptyList()
+                var currentOnboarding: AalOnboardingDto? = (uiState.value as? HomeState.Success)?.aalOnboarding
+                var currentActivities: List<AalActivityDto> = (uiState.value as? HomeState.Success)?.aalActivities ?: emptyList()
+
+                // Update Profile & Events first as they are critical
+                try {
+                    val user = userDeferred.await()
+                    currentUser = user
+                    _uiState.value = HomeState.Success(user, currentEvents, currentOnboarding, currentActivities)
+                    
+                    // Save critical path to cache
+                    com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
+                } catch (e: Exception) {
+                    android.util.Log.e("HomeViewModel", "Profile fetch failed", e)
                 }
 
-                // Await results
-                val user = userDeferred.await()
-                val events = eventsDeferred.await().take(3)
-                
-                val onboarding = onboardingDeferred.await()
-                val activities = activitiesDeferred.await()
-                
-                if (user == null) {
-                    _uiState.value = HomeState.Error("Failed to load user profile. Please check connection.")
-                    return@launch
-                }
-                
-                // SAVE to cache on IO thread
-                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                    com.kiriplatform.app.data.CacheManager.saveCache(context, "profile_$userId", user)
+                try {
+                    val events = eventsDeferred.await().take(3)
+                    currentEvents = events
+                    currentUser?.let {
+                        _uiState.value = HomeState.Success(it, events, currentOnboarding, currentActivities)
+                    }
                     com.kiriplatform.app.data.CacheManager.saveCache(context, "home_events", events)
+                } catch (e: Exception) {
+                    android.util.Log.e("HomeViewModel", "Events fetch failed", e)
                 }
-                
-                _uiState.value = HomeState.Success(user, events, onboarding, activities)
-            } catch (e: Exception) {
-                if (_uiState.value !is HomeState.Success) {
-                    _uiState.value = HomeState.Error(e.message ?: "Failed to load home data")
+
+                // Update AAL data as it arrives - handle 404s specifically if needed, 
+                // but supervisorScope + try-catch is already much safer.
+                try {
+                    currentOnboarding = onboardingDeferred.await()
+                } catch (e: Exception) {
+                    android.util.Log.e("HomeViewModel", "Onboarding fetch failed", e)
+                }
+
+                try {
+                    currentActivities = activitiesDeferred.await()
+                } catch (e: Exception) {
+                    android.util.Log.e("HomeViewModel", "Activities fetch failed", e)
+                }
+
+                // Push final state update for AAL if we have a user
+                currentUser?.let {
+                    _uiState.value = HomeState.Success(it, currentEvents, currentOnboarding, currentActivities)
                 }
             }
         }
