@@ -246,9 +246,9 @@ object ApiClient {
     fun setToken(newToken: String?, newRefreshToken: String? = null) {
         token = newToken
         sessionManager?.saveToken(newToken)
-        newRefreshToken?.let {
-            refreshToken = it
-            sessionManager?.saveRefreshToken(it)
+        if (!newRefreshToken.isNullOrEmpty()) {
+            refreshToken = newRefreshToken
+            sessionManager?.saveRefreshToken(newRefreshToken)
         }
     }
 
@@ -271,7 +271,7 @@ object ApiClient {
                 val request = chain.request()
                 val builder = request.newBuilder()
                 token?.let {
-                    builder.addHeader("Authorization", "Bearer $it")
+                    builder.header("Authorization", "Bearer $it")
                 }
                 val method = request.method
                 if (method == "POST" || method == "PATCH" || method == "DELETE") {

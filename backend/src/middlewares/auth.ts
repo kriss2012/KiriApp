@@ -8,11 +8,13 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.setHeader('WWW-Authenticate', 'Bearer');
       return res.status(401).json({ message: 'Authentication required' });
     }
 
     const token = authHeader.split(' ')[1];
     if (!token) {
+      res.setHeader('WWW-Authenticate', 'Bearer error="invalid_token"');
       return res.status(401).json({ message: 'No token provided' });
     }
 
@@ -20,6 +22,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     const decoded = jwt.verify(token, secret) as any;
 
     if (!decoded || !decoded.userId) {
+      res.setHeader('WWW-Authenticate', 'Bearer error="invalid_token"');
       return res.status(401).json({ message: 'Invalid token' });
     }
 
@@ -32,6 +35,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     next();
   } catch (error) {
     console.error('Auth Middleware Error:', error);
+    res.setHeader('WWW-Authenticate', 'Bearer error="invalid_token"');
     return res.status(401).json({ message: 'Authentication failed' });
   }
 };
