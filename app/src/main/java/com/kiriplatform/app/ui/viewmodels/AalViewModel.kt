@@ -30,8 +30,16 @@ class AalViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _uiState.value = AalState.Loading
             try {
-                val onboarding = ApiClient.service.getAalOnboarding(userId)
-                val activities = ApiClient.service.getAalActivities(userId)
+                val onboarding = try {
+                    ApiClient.service.getAalOnboarding(userId)
+                } catch (e: Exception) {
+                    null
+                }
+                val activities = try {
+                    ApiClient.service.getAalActivities(userId)
+                } catch (e: Exception) {
+                    emptyList()
+                }
                 _uiState.value = AalState.Success(onboarding, activities)
             } catch (e: Exception) {
                 _uiState.value = AalState.Error(e.message ?: "Failed to load AAL data")

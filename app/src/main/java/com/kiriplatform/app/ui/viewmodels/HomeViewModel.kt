@@ -62,24 +62,26 @@ class HomeViewModel @Inject constructor() : ViewModel() {
                 val userDeferred = async { ApiClient.service.getProfile(userId) }
                 val eventsDeferred = async { ApiClient.service.getEvents() }
                 val onboardingDeferred = async {
-                    if (userId.isNotEmpty()) ApiClient.service.getAalOnboarding(userId) else null
+                    try {
+                        if (userId.isNotEmpty()) ApiClient.service.getAalOnboarding(userId) else null
+                    } catch (e: Exception) {
+                        null
+                    }
                 }
                 val activitiesDeferred = async {
-                    if (userId.isNotEmpty()) ApiClient.service.getAalActivities(userId) else emptyList()
+                    try {
+                        if (userId.isNotEmpty()) ApiClient.service.getAalActivities(userId) else emptyList()
+                    } catch (e: Exception) {
+                        emptyList()
+                    }
                 }
 
                 // Await results
                 val user = userDeferred.await()
                 val events = eventsDeferred.await().take(3)
                 
-                var onboarding: AalOnboardingDto? = null
-                var activities: List<AalActivityDto> = emptyList()
-                try {
-                    onboarding = onboardingDeferred.await()
-                } catch (e: Exception) { /* AAL not available or fails */ }
-                try {
-                    activities = activitiesDeferred.await()
-                } catch (e: Exception) { /* AAL activities not available or fails */ }
+                val onboarding = onboardingDeferred.await()
+                val activities = activitiesDeferred.await()
                 
                 // SAVE to cache on IO thread
                 kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
