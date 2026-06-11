@@ -304,7 +304,7 @@ object ApiClient {
                             .build()
                     }
                     val currentRefreshToken = refreshToken
-                    if (currentRefreshToken != null) {
+                    if (!currentRefreshToken.isNullOrEmpty()) {
                         try {
                             // Call the refresh endpoint synchronously
                             val refreshResponse = try {
@@ -351,6 +351,14 @@ object ApiClient {
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
+                        }
+                    } else {
+                        // No refresh token available to recover - clear session and log out
+                        sessionManager?.logout()
+                        token = null
+                        refreshToken = null
+                        scope.launch {
+                            com.kiriplatform.app.data.SessionBus.emit(com.kiriplatform.app.data.SessionEvent.Logout)
                         }
                     }
                 }
