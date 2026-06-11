@@ -118,6 +118,7 @@ fun ProfileScreen(
                         onNavigateToActivity = onNavigateToActivity,
                         onLogout = {
                             sessionManager.logout()
+                            ApiClient.setToken(null, null)
                             onLogout()
                         }
                     )

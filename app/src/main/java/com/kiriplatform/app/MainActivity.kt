@@ -71,29 +71,32 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: com.kiriplatform.app.ui.viewmodels.MainViewModel = androidx.hilt.navigation.compose.hiltViewModel()
             val uiState by mainViewModel.uiState.collectAsState()
             
-            // Sync initial and future login states
-            LaunchedEffect(Unit) {
-                mainViewModel.setLoggedIn(sessionManager.getToken() != null)
-                com.kiriplatform.app.data.SessionBus.events.collect { event ->
-                    if (event is com.kiriplatform.app.data.SessionEvent.Logout) {
-                        mainViewModel.setLoggedIn(false)
-                    }
-                }
-            }
-            
             KiriAppTheme(
                 darkTheme = uiState.isDarkTheme ?: androidx.compose.foundation.isSystemInDarkTheme(),
                 appTheme = uiState.currentColorTheme,
                 isAmoledTheme = uiState.isAmoledTheme
             ) {
                 val navController = rememberNavController()
+                
+                // Sync initial and future login states and handle automatic redirects
+                LaunchedEffect(Unit) {
+                    mainViewModel.setLoggedIn(sessionManager.getToken() != null)
+                    com.kiriplatform.app.data.SessionBus.events.collect { event ->
+                        if (event is com.kiriplatform.app.data.SessionEvent.Logout) {
+                            mainViewModel.setLoggedIn(false)
+                            // Redirect to login screen and clear backstack
+                            navController.navigate(com.kiriplatform.app.ui.navigation.Screen.Login.route) {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
+                    }
+                }
+                
                 MainScaffold(navController = navController) { padding ->
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = androidx.compose.material3.MaterialTheme.colorScheme.background
                     ) {
-                        // Pass token-check as a derived state or from VM later, 
-                        // for now use sessionManager directly but outside critical hot paths if possible.
                         KiriNavGraph(
                             navController = navController,
                             hasToken = uiState.isLoggedIn,
