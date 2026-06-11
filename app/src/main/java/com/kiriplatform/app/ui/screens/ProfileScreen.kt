@@ -58,11 +58,19 @@ fun ProfileScreen(
     val userId = sessionManager.getUserId() ?: ""
     val uiState by viewModel.uiState.collectAsState()
 
-    // Stable initial fetch — only re-runs when userId actually changes.
-    // No DisposableEffect ON_RESUME observer to prevent infinite request loops.
-    LaunchedEffect(userId) {
-        if (userId.isNotEmpty()) {
-            viewModel.fetchProfile(context, userId)
+    // Refresh profile on resume to catch GitHub OAuth completion
+    val lifecycleOwner = androidx.lifecycle.LifecycleOwner.current
+    DisposableEffect(lifecycleOwner, userId) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                if (userId.isNotEmpty()) {
+                    viewModel.fetchProfile(context, userId)
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 
