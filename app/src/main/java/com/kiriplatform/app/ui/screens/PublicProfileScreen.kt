@@ -55,6 +55,7 @@ fun PublicProfileScreen(
 
     var githubStats by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.GitHubStatsResponse?>(null) }
     var isGithubLoading by remember { mutableStateOf(false) }
+    var githubError by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(userId) {
         try {
@@ -88,10 +89,12 @@ fun PublicProfileScreen(
                 .trim()
             if (username.isNotEmpty()) {
                 isGithubLoading = true
+                githubError = null
                 try {
                     githubStats = ApiClient.service.getGitHubStats(username)
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    githubError = "GitHub integration is temporarily unavailable."
                 } finally {
                     isGithubLoading = false
                 }
@@ -203,6 +206,21 @@ fun PublicProfileScreen(
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
+                        }
+                        Spacer(Modifier.height(24.dp))
+                    } else if (githubError != null) {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+                            shape = MaterialTheme.shapes.large,
+                            color = MaterialTheme.colorScheme.surface,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        ) {
+                            Text(
+                                text = githubError!!,
+                                modifier = Modifier.padding(20.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                         Spacer(Modifier.height(24.dp))
                     }
