@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
             ApiClient.init(sessionManager)
             
             // 2. Async Init Sockets
-            SocketHandler.setSocket(com.kiriplatform.app.utils.AppConfig.SOCKET_URL)
+            SocketHandler.setSocket(com.kiriplatform.app.utils.AppConfig.SOCKET_URL, sessionManager.getToken())
             SocketHandler.establishConnection()
             
             // 3. Permission checks

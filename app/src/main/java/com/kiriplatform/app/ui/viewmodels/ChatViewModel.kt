@@ -74,6 +74,7 @@ class ChatViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        SocketHandler.closeConnection()
+        // DO NOT close connection here as it's a global singleton used for background notifications
+        // SocketHandler.closeConnection()
     }
 }

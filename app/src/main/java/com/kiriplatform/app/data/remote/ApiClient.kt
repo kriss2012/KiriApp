@@ -233,8 +233,8 @@ interface ASGApiService {
 }
 
 object ApiClient {
-    private var token: String? = null
-    private var refreshToken: String? = null
+    @Volatile private var token: String? = null
+    @Volatile private var refreshToken: String? = null
     private var sessionManager: com.kiriplatform.app.data.SessionManager? = null
 
     fun init(manager: com.kiriplatform.app.data.SessionManager) {
@@ -243,12 +243,18 @@ object ApiClient {
         refreshToken = manager.getRefreshToken()
     }
 
+    @Synchronized
     fun setToken(newToken: String?, newRefreshToken: String? = null) {
         token = newToken
         sessionManager?.saveToken(newToken)
         if (!newRefreshToken.isNullOrEmpty()) {
             refreshToken = newRefreshToken
             sessionManager?.saveRefreshToken(newRefreshToken)
+        }
+        
+        // Re-initialize socket with new token if it exists
+        if (newToken != null) {
+            SocketHandler.updateToken(newToken)
         }
     }
 
@@ -296,21 +302,26 @@ object ApiClient {
                     if (currentRefreshToken != null) {
                         try {
                             // Call the refresh endpoint synchronously
-                            val refreshRequest = okhttp3.Request.Builder()
-                                .url("${AppConfig.BASE_URL}auth/refresh")
-                                .post(com.google.gson.JsonObject().apply {
-                                    addProperty("refreshToken", currentRefreshToken)
-                                }.toString().toRequestBody("application/json".toMediaTypeOrNull()))
-                                .build()
-                            
-                            val clientForRefresh = OkHttpClient.Builder()
-                                .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-                                .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-                                .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
-                                .build()
-                            
-                            val refreshResponse = clientForRefresh.newCall(refreshRequest).execute()
-                            if (refreshResponse.isSuccessful) {
+                            val refreshResponse = try {
+                                val refreshRequest = okhttp3.Request.Builder()
+                                    .url("${AppConfig.BASE_URL}auth/refresh")
+                                    .post(com.google.gson.JsonObject().apply {
+                                        addProperty("refreshToken", currentRefreshToken)
+                                    }.toString().toRequestBody("application/json".toMediaTypeOrNull()))
+                                    .build()
+                                
+                                val clientForRefresh = OkHttpClient.Builder()
+                                    .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                    .readTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                    .writeTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)
+                                    .build()
+                                
+                                clientForRefresh.newCall(refreshRequest).execute()
+                            } catch (e: Exception) {
+                                null
+                            }
+
+                            if (refreshResponse?.isSuccessful == true) {
                                 val bodyString = refreshResponse.body?.string()
                                 if (bodyString != null) {
                                     val gson = com.google.gson.Gson()
@@ -324,8 +335,8 @@ object ApiClient {
                                             .build()
                                     }
                                 }
-                            } else if (refreshResponse.code == 401 || refreshResponse.code == 403) {
-                                // Refresh token expired - clear session
+                            } else if (refreshResponse?.code == 401 || refreshResponse?.code == 403 || refreshResponse?.code == 400) {
+                                // Refresh token expired or invalid - clear session
                                 sessionManager?.logout()
                                 token = null
                                 refreshToken = null

@@ -345,8 +345,8 @@ data class RegisterRequest(
 )
 
 data class AuthResponse(
-    @SerializedName("token") val _token: String? = null,
-    @SerializedName("refreshToken") val _refreshToken: String? = null,
+    @SerializedName(value = "token", alternate = ["accessToken"]) val _token: String? = null,
+    @SerializedName(value = "refreshToken") val _refreshToken: String? = null,
     val user: UserDto? = null
 ) {
     val token: String get() = _token ?: ""

@@ -19,7 +19,20 @@ class AalRepository(
      * Fetches the AAL onboarding status for a user.
      */
     fun getOnboarding(userId: String): Flow<AalOnboardingDto> = flow {
-        emit(apiService.getAalOnboarding(userId))
+        // 1. Emit from cache first
+        val cached = aalDao.getOnboarding(userId)?.toDto()
+        if (cached != null) emit(cached)
+
+        // 2. Fetch from network
+        try {
+            val remote = apiService.getAalOnboarding(userId)
+            // 3. Save to cache (Data Vault)
+            aalDao.insertOnboarding(remote.toEntity())
+            // 4. Emit fresh data
+            emit(remote)
+        } catch (e: Exception) {
+            // Log or handle error, cache is already emitted
+        }
     }
 
     /**
@@ -129,6 +142,24 @@ class AalRepository(
         activityNumber = activityNumber,
         submissionUrl = submissionUrl,
         status = safeValueOf<ActivityStatus>(status, ActivityStatus.SUBMITTED)
+    )
+
+    private fun AalOnboardingDto.toEntity() = AalOnboardingEntity(
+        aalId = aalId?.toString() ?: "",
+        userId = userId?.toString() ?: "",
+        mindsetScore = mindsetScore?.toString(),
+        lmsStatus = lmsStatus?.name ?: "ENROLLED",
+        certificateUrl = certificateUrl?.toString(),
+        interviewStatus = interviewStatus?.name ?: "PENDING"
+    )
+
+    private fun AalOnboardingEntity.toDto() = AalOnboardingDto(
+        aalId = aalId,
+        userId = userId,
+        mindsetScore = mindsetScore,
+        lmsStatus = safeValueOf<LmsStatus>(lmsStatus, LmsStatus.ENROLLED),
+        certificateUrl = certificateUrl,
+        interviewStatus = safeValueOf<InterviewStatus>(interviewStatus, InterviewStatus.PENDING)
     )
 
     private fun EcosystemBoardDto.toEntity() = EcosystemBoardEntity(

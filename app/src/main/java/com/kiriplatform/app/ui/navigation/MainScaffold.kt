@@ -72,6 +72,11 @@ fun MainScaffold(
         lifecycleOwner.lifecycle.addObserver(observer)
 
         if (!userId.isNullOrEmpty()) {
+            // Re-establish connection on app startup or userId change
+            SocketHandler.setSocket(AppConfig.SOCKET_URL, sessionManager.getToken())
+            SocketHandler.establishConnection()
+            SocketHandler.joinRoom("user_$userId")
+
             // Unified Global Alert Hub
             SocketHandler.setupGlobalListeners(
                 onNotification = { data ->

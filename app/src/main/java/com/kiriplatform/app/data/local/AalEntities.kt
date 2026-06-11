@@ -67,3 +67,14 @@ data class JobProjectEntity(
     val description: String,
     val status: String
 )
+
+@Entity(tableName = "aal_onboarding_vault")
+data class AalOnboardingEntity(
+    @PrimaryKey val aalId: String,
+    val userId: String,
+    val mindsetScore: String?,
+    val lmsStatus: String,
+    val certificateUrl: String?,
+    val interviewStatus: String,
+    val syncedAt: Long = System.currentTimeMillis()
+)

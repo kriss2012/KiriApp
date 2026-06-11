@@ -54,9 +54,10 @@ interface OfflineActionDao {
         AalActivityEntity::class,
         EcosystemBoardEntity::class,
         AiResourceMatchEntity::class,
-        JobProjectEntity::class
+        JobProjectEntity::class,
+        AalOnboardingEntity::class
     ],
-    version = 3, // Incremented version for the new structure
+    version = 4, // Incremented version to include AalOnboardingEntity
     exportSchema = false
 )
 abstract class KiriDatabase : RoomDatabase() {
@@ -121,4 +122,10 @@ interface AalDao {
 
     @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
     suspend fun insertJobs(jobs: List<JobProjectEntity>)
+
+    @Query("SELECT * FROM aal_onboarding_vault WHERE userId = :userId")
+    suspend fun getOnboarding(userId: String): AalOnboardingEntity?
+
+    @Insert(onConflict = androidx.room.OnConflictStrategy.REPLACE)
+    suspend fun insertOnboarding(onboarding: AalOnboardingEntity)
 }

@@ -7,18 +7,48 @@ import java.net.URISyntaxException
 
 object SocketHandler {
     private var mSocket: Socket? = null
+    private var currentToken: String? = null
+    private var lastBaseUrl: String? = null
 
     @Synchronized
-    fun setSocket(baseUrl: String) {
+    fun setSocket(baseUrl: String, token: String? = null) {
+        lastBaseUrl = baseUrl
+        currentToken = token
+        
         if (mSocket == null) {
             try {
                 val opts = IO.Options()
                 opts.forceNew = true
                 opts.reconnection = true
+                
+                // Add authentication token if available
+                token?.let {
+                    val auth = JSONObject()
+                    auth.put("token", it)
+                    opts.auth = mapOf("token" to it) // For newer Socket.io
+                    // Some servers expect it in query or extraHeaders
+                    opts.query = "token=$it"
+                }
+
                 mSocket = IO.socket(baseUrl, opts)
             } catch (e: URISyntaxException) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    @Synchronized
+    fun updateToken(newToken: String) {
+        if (currentToken == newToken) return
+        
+        currentToken = newToken
+        // If socket exists, we might need to reconnect with new credentials
+        mSocket?.let { socket ->
+            val wasConnected = socket.connected()
+            closeConnection()
+            mSocket = null
+            lastBaseUrl?.let { setSocket(it, newToken) }
+            if (wasConnected) establishConnection()
         }
     }
 
@@ -29,7 +59,9 @@ object SocketHandler {
 
     @Synchronized
     fun establishConnection() {
-        mSocket?.connect()
+        if (mSocket?.connected() == false) {
+            mSocket?.connect()
+        }
     }
 
     @Synchronized

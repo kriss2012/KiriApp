@@ -148,13 +148,12 @@ fun ProfileContent(
     var employabilityScore by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.EmployabilityScoreResponse?>(null) }
     var isScoreLoading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(user) {
+    LaunchedEffect(user.githubUrl) {
         val gitUrl = user.githubUrl
         if (!gitUrl.isNullOrBlank()) {
-            val username = gitUrl.substringAfterLast("github.com/")
-                .substringAfterLast("/")
+            val username = gitUrl.removeSuffix("/").substringAfterLast("/")
                 .trim()
-            if (username.isNotEmpty()) {
+            if (username.isNotEmpty() && username != "github.com") {
                 isGithubLoading = true
                 try {
                     githubStats = ApiClient.service.getGitHubStats(username)
