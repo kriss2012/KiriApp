@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                         // for now use sessionManager directly but outside critical hot paths if possible.
                         KiriNavGraph(
                             navController = navController,
-                            hasToken = sessionManager.getToken() != null,
+                            hasToken = uiState.isLoggedIn,
                             paddingValues = padding
                         )
                     }

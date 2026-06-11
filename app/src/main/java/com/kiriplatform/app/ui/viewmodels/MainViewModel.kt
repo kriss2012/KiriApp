@@ -12,7 +12,8 @@ data class MainState(
     val currentColorTheme: AppTheme = AppTheme.NOTION,
     val isDarkTheme: Boolean? = null, // null follows system
     val isAmoledTheme: Boolean = false,
-    val isLiquidGlassEnabled: Boolean = true
+    val isLiquidGlassEnabled: Boolean = true,
+    val isLoggedIn: Boolean = true
 )
 
 @HiltViewModel
@@ -34,5 +35,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     fun toggleLiquidGlass(enabled: Boolean) {
         _uiState.value = _uiState.value.copy(isLiquidGlassEnabled = enabled)
+    }
+
+    fun setLoggedIn(loggedIn: Boolean) {
+        _uiState.value = _uiState.value.copy(isLoggedIn = loggedIn)
     }
 }
