@@ -340,6 +340,9 @@ object ApiClient {
                                 sessionManager?.logout()
                                 token = null
                                 refreshToken = null
+                                scope.launch {
+                                    com.kiriplatform.app.data.SessionBus.emit(com.kiriplatform.app.data.SessionEvent.Logout)
+                                }
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
