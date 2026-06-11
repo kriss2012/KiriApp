@@ -15,7 +15,7 @@ object AalDataProcessor {
     fun cleanseLiveInput(input: LiveInputDto): LiveInputDto {
         // Example: Trim whitespace, normalize text context
         return input.copy(
-            contentUrl = input.contentUrl?.trim()
+            contentUrl = input.contentUrl?.toString()?.trim()
         )
     }
 
@@ -23,7 +23,7 @@ object AalDataProcessor {
      * Deduplicates and validates ecosystem board posts.
      */
     fun validateBoardItem(item: EcosystemBoardDto): Boolean {
-        return !item.title.isNullOrBlank() && (item.description?.length ?: 0) > 10
+        return !item.title?.toString().isNullOrBlank() && (item.description?.toString()?.length ?: 0) > 10
     }
 
     /**
@@ -31,7 +31,7 @@ object AalDataProcessor {
      */
     fun normalizeActivity(activity: AalActivityDto): AalActivityDto {
         return activity.copy(
-            submissionUrl = activity.submissionUrl?.lowercase()
+            submissionUrl = activity.submissionUrl?.toString()?.lowercase()
         )
     }
     

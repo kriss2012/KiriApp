@@ -72,7 +72,7 @@ fun AalOrganizationScreen(
                 }
             }
             is AalState.Success -> {
-                val completedCount = currentState.activities.count { it.status.name == "COMPLETED" || it.status.name == "VERIFIED" }
+                val completedCount = currentState.activities.count { it.status?.name == "COMPLETED" || it.status?.name == "VERIFIED" }
                 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize().padding(padding),

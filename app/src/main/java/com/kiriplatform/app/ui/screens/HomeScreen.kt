@@ -327,7 +327,7 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
                     border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
                 ) {
                     Text(
-                        onboarding.lmsStatus.name,
+                        onboarding.lmsStatus?.name ?: "ENROLLED",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         color = NotionPrimary,
