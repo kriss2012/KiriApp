@@ -11,7 +11,8 @@ import {
     getLeaderboard,
     referUser,
     redeemPoints,
-    getGitHubAuthorizeUrl
+    getGitHubAuthorizeUrl,
+    getEmployabilityScore
 } from '../controllers/userController.js';
 
 import { authenticate } from '../middlewares/auth.js';
@@ -20,6 +21,7 @@ const router = Router();
 
 router.get('/', searchUsers);
 router.get('/github/connect', authenticate, getGitHubAuthorizeUrl);
+router.get('/employability-score', authenticate, getEmployabilityScore);
 router.get('/leaderboard', authenticate, getLeaderboard);
 router.post('/refer', authenticate, referUser);
 router.post('/redeem', authenticate, redeemPoints);

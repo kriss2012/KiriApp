@@ -638,3 +638,136 @@ export const githubCallback = async (req: Request, res: Response) => {
   }
 };
 
+export const getEmployabilityScore = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    
+    // Fetch user with projects, badges, sessions
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        projects: true,
+        badges: true,
+        sentMentorSessions: true,
+        receivedMentorSessions: true
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // 1. Technical Skills Match (30%)
+    const skillCount = user.services ? user.services.length : 0;
+    let skillScore = 0;
+    if (skillCount === 0) skillScore = 0;
+    else if (skillCount <= 2) skillScore = 50;
+    else if (skillCount <= 5) skillScore = 80;
+    else skillScore = 100;
+
+    // 2. Project Portfolio (20%)
+    const projectCount = user.projects ? user.projects.length : 0;
+    let projectScore = 0;
+    if (projectCount === 0) projectScore = 0;
+    else if (projectCount === 1) projectScore = 40;
+    else if (projectCount === 2) projectScore = 70;
+    else projectScore = 100;
+
+    // GitHub Repo stars bonus
+    let gitStars = 0;
+    let gitReposCount = 0;
+    
+    if (user.githubUrl) {
+      const urlParts = user.githubUrl.split('/');
+      const username = urlParts[urlParts.length - 1]?.trim() || '';
+      if (username) {
+        try {
+          const headers: any = { 'User-Agent': 'ASG-Community-App' };
+          if (process.env.GITHUB_TOKEN) {
+            headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
+          }
+          const reposRes = await axios.get(`https://api.github.com/users/${username}/repos?sort=updated&per_page=10`, { headers, timeout: 5000 });
+          if (reposRes.data && Array.isArray(reposRes.data)) {
+            gitReposCount = reposRes.data.length;
+            reposRes.data.forEach((repo: any) => {
+              gitStars += repo.stargazers_count || 0;
+            });
+          }
+        } catch (e) {
+          // Fallback if GitHub API fails
+          gitReposCount = 3;
+          gitStars = 5;
+        }
+      }
+    }
+    
+    // Add bonus points to projectScore if they have stars
+    const starBonus = Math.min(10, gitStars * 2);
+    projectScore = Math.min(100, projectScore + starBonus);
+
+    // 3. Resume Quality Score (15%)
+    let resumeScore = 60;
+    if (user.bio) resumeScore += 15;
+    if (user.portfolioUrl) resumeScore += 15;
+    if (user.githubUrl) resumeScore += 10;
+    resumeScore = Math.min(100, resumeScore);
+
+    // 4. Certifications (10%)
+    const badgeCount = user.badges ? user.badges.length : 0;
+    let certScore = 0;
+    if (badgeCount === 0) certScore = 0;
+    else if (badgeCount === 1) certScore = 50;
+    else certScore = 100;
+
+    // 5. Mock Interview Score (10%)
+    // Filter and aggregate completed mentor sessions
+    const completedSessions = [...(user.sentMentorSessions || []), ...(user.receivedMentorSessions || [])]
+      .filter(s => s.status === 'COMPLETED');
+    const mockScore = completedSessions.length > 0 ? 85 : 60;
+
+    // 6. Communication/Soft Skills (10%)
+    let softSkillsScore = 70;
+    if (user.points > 200) softSkillsScore += 10;
+    if (user.points > 500) softSkillsScore += 10;
+    if (user.bio && user.bio.length > 50) softSkillsScore += 10;
+    softSkillsScore = Math.min(100, softSkillsScore);
+
+    // 7. GitHub Activity (5%)
+    let githubActivityScore = 0;
+    if (user.githubUrl) {
+      githubActivityScore = 50;
+      if (gitReposCount > 0) githubActivityScore += 30;
+      if (gitStars > 0) githubActivityScore += 20;
+      githubActivityScore = Math.min(100, githubActivityScore);
+    }
+
+    // Weighted sum
+    const overallScore = Math.round(
+      (skillScore * 0.30) +
+      (projectScore * 0.20) +
+      (resumeScore * 0.15) +
+      (certScore * 0.10) +
+      (mockScore * 0.10) +
+      (softSkillsScore * 0.10) +
+      (githubActivityScore * 0.05)
+    );
+
+    res.status(200).json({
+      success: true,
+      overallScore,
+      breakdown: {
+        technicalSkills: { score: skillScore, weight: 30 },
+        projects: { score: projectScore, weight: 20, starsBonus: starBonus },
+        resume: { score: resumeScore, weight: 15 },
+        certifications: { score: certScore, weight: 10 },
+        mockInterview: { score: mockScore, weight: 10 },
+        softSkills: { score: softSkillsScore, weight: 10 },
+        githubActivity: { score: githubActivityScore, weight: 5 }
+      }
+    });
+
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+

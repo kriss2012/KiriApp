@@ -18,4 +18,5 @@ const prisma = new PrismaClient({
     log: ['error', 'warn']
 });
 export default prisma;
+// Trigger IDE re-indexing
 //# sourceMappingURL=prisma.js.map

@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import com.kiriplatform.app.data.remote.models.*
 import com.kiriplatform.app.utils.AppConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
 
 interface ASGApiService {
@@ -185,6 +186,9 @@ interface ASGApiService {
     @GET("users/github/connect")
     suspend fun getGitHubAuthorizeUrl(): GitHubAuthorizeUrlResponse
 
+    @GET("users/employability-score")
+    suspend fun getEmployabilityScore(): EmployabilityScoreResponse
+
     @GET("market/trends")
     suspend fun getJobMarketTrends(): MarketTrendsResponse
 
@@ -292,10 +296,7 @@ object ApiClient {
                         try {
                             val refreshRequest = okhttp3.Request.Builder()
                                 .url("${AppConfig.BASE_URL}auth/refresh")
-                                .post(okhttp3.RequestBody.create(
-                                    "application/json".toMediaTypeOrNull(),
-                                    "{\"refreshToken\":\"$currentRefreshToken\"}"
-                                ))
+                                .post("{\"refreshToken\":\"$currentRefreshToken\"}".toRequestBody("application/json".toMediaTypeOrNull()))
                                 .build()
                             val clientForRefresh = OkHttpClient.Builder()
                                 .connectTimeout(AppConfig.NETWORK_TIMEOUT, TimeUnit.SECONDS)

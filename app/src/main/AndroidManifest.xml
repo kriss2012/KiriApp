@@ -31,6 +31,12 @@
             android:exported="true"
             android:theme="@style/Theme.KiriApp"
             android:windowSoftInputMode="adjustResize">
+            <intent-filter android:label="GitHub Connect">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="kiriapp" android:host="github-connect" />
+            </intent-filter>
         </activity>
     </application>
 

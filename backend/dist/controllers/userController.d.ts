@@ -12,4 +12,5 @@ export declare const referUser: (req: Request, res: Response) => Promise<Respons
 export declare const redeemPoints: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 export declare const getGitHubAuthorizeUrl: (req: Request, res: Response) => Promise<void>;
 export declare const githubCallback: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+export declare const getEmployabilityScore: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
 //# sourceMappingURL=userController.d.ts.map

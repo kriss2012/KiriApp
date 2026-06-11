@@ -23,3 +23,25 @@ data class GitHubRepoDto(
 data class GitHubAuthorizeUrlResponse(
     val url: String
 )
+
+data class ScoreBreakdownItem(
+    val score: Int,
+    val weight: Int,
+    val starsBonus: Int? = null
+)
+
+data class EmployabilityBreakdown(
+    val technicalSkills: ScoreBreakdownItem,
+    val projects: ScoreBreakdownItem,
+    val resume: ScoreBreakdownItem,
+    val certifications: ScoreBreakdownItem,
+    val mockInterview: ScoreBreakdownItem,
+    val softSkills: ScoreBreakdownItem,
+    val githubActivity: ScoreBreakdownItem
+)
+
+data class EmployabilityScoreResponse(
+    val success: Boolean,
+    val overallScore: Int,
+    val breakdown: EmployabilityBreakdown
+)

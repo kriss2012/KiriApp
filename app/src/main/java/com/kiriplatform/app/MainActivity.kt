@@ -87,6 +87,20 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        handleDeepLink(intent)
+    }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: android.content.Intent) {
+        val data = intent.data
+        if (data != null && data.scheme == "kiriapp" && data.host == "github-connect") {
+            android.widget.Toast.makeText(this, "GitHub connection completed! Refreshing profile...", android.widget.Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onDestroy() {

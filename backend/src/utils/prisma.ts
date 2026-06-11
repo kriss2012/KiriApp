@@ -22,3 +22,4 @@ const prisma = new PrismaClient({
 });
 
 export default prisma;
+// Trigger IDE re-indexing

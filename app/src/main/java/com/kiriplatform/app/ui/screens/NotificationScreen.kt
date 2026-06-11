@@ -10,7 +10,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -81,7 +82,7 @@ fun NotificationScreen(
                             .size(36.dp)
                             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
                     ) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
                     }
                 },
                 actions = {
@@ -168,7 +169,7 @@ fun NotificationItem(
     val icon = when (notification.type) {
         "EVENT" -> Icons.Default.CalendarMonth
         "REQUEST" -> Icons.Default.PersonAdd
-        "MESSAGE" -> Icons.Default.Chat
+        "MESSAGE" -> Icons.AutoMirrored.Filled.Chat
         else -> Icons.Default.Notifications
     }
     

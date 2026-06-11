@@ -1,6 +1,8 @@
 package com.kiriplatform.app.ui.screens
 
+import android.widget.Toast
 import com.kiriplatform.app.ui.components.ClickableUrlText
+import kotlinx.coroutines.launch
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -143,6 +145,9 @@ fun ProfileContent(
     var githubStats by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.GitHubStatsResponse?>(null) }
     var isGithubLoading by remember { mutableStateOf(false) }
 
+    var employabilityScore by remember { mutableStateOf<com.kiriplatform.app.data.remote.models.EmployabilityScoreResponse?>(null) }
+    var isScoreLoading by remember { mutableStateOf(false) }
+
     LaunchedEffect(user) {
         val gitUrl = user.githubUrl
         if (!gitUrl.isNullOrBlank()) {
@@ -159,6 +164,17 @@ fun ProfileContent(
                     isGithubLoading = false
                 }
             }
+        }
+    }
+
+    LaunchedEffect(user) {
+        isScoreLoading = true
+        try {
+            employabilityScore = ApiClient.service.getEmployabilityScore()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            isScoreLoading = false
         }
     }
 
@@ -210,6 +226,66 @@ fun ProfileContent(
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 0.5.sp
                             )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (user.githubUrl.isNullOrBlank()) {
+            item { SectionHeader(title = "GitHub Integration", actionText = "", onActionClick = {}) }
+            item {
+                Surface(
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Connect GitHub Profile",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Link your account to import your repository metrics, star counts, and display your coding activity directly on your profile.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                        
+                        var isConnecting by remember { mutableStateOf(false) }
+                        val context = LocalContext.current
+                        val scope = rememberCoroutineScope()
+                        
+                        Button(
+                            onClick = {
+                                if (isConnecting) return@Button
+                                isConnecting = true
+                                scope.launch {
+                                    try {
+                                        val response = ApiClient.service.getGitHubAuthorizeUrl()
+                                        if (response.url.isNotEmpty()) {
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(response.url))
+                                            context.startActivity(intent)
+                                        } else {
+                                            Toast.makeText(context, "Failed to fetch authorization URL", Toast.LENGTH_SHORT).show()
+                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    } finally {
+                                        isConnecting = false
+                                    }
+                                }
+                            },
+                            enabled = !isConnecting,
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(if (isConnecting) "Loading..." else "Connect GitHub Account")
                         }
                     }
                 }
@@ -282,6 +358,19 @@ fun ProfileContent(
                         }
                     }
                 }
+            }
+        }
+
+        if (isScoreLoading) {
+            item {
+                Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                }
+            }
+        } else if (employabilityScore != null) {
+            item { SectionHeader(title = "AI Employability Index", actionText = "", onActionClick = {}) }
+            item {
+                EmployabilityScoreCard(scoreResponse = employabilityScore!!)
             }
         }
 
@@ -664,6 +753,127 @@ fun GitHubStatMetric(label: String, value: String) {
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun EmployabilityScoreCard(
+    scoreResponse: com.kiriplatform.app.data.remote.models.EmployabilityScoreResponse
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Circular overall score indicator
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "${scoreResponse.overallScore}%",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "Score",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Employability Index",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    val statusText = when {
+                        scoreResponse.overallScore >= 85 -> "Ready for hire"
+                        scoreResponse.overallScore >= 70 -> "High potential"
+                        scoreResponse.overallScore >= 50 -> "Developing skills"
+                        else -> "Needs project building"
+                    }
+                    Text(
+                        text = "Current Status: $statusText",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "Score Breakdown",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            val breakdown = scoreResponse.breakdown
+            BreakdownRow("Technical Skills Match", breakdown.technicalSkills.score, breakdown.technicalSkills.weight)
+            BreakdownRow("Project Portfolio", breakdown.projects.score, breakdown.projects.weight)
+            BreakdownRow("Resume Quality ATS Score", breakdown.resume.score, breakdown.resume.weight)
+            BreakdownRow("Industry Certifications", breakdown.certifications.score, breakdown.certifications.weight)
+            BreakdownRow("Mock Interviews", breakdown.mockInterview.score, breakdown.mockInterview.weight)
+            BreakdownRow("Communication & Soft Skills", breakdown.softSkills.score, breakdown.softSkills.weight)
+            BreakdownRow("GitHub Activity Metrics", breakdown.githubActivity.score, breakdown.githubActivity.weight)
+        }
+    }
+}
+
+@Composable
+private fun BreakdownRow(label: String, score: Int, weight: Int) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = "$score/100 (Weight: $weight%)",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        LinearProgressIndicator(
+            progress = { score / 100f },
+            modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+            color = if (score >= 80) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
+            trackColor = MaterialTheme.colorScheme.outlineVariant
         )
     }
 }
