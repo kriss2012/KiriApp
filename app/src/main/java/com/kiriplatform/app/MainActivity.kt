@@ -53,6 +53,11 @@ class MainActivity : ComponentActivity() {
             
             // 3. Permission checks
             withContext(Dispatchers.Main) {
+                // Set initial login state
+                // Note: We'll need a way to inject MainViewModel or set its state
+                // Since MainViewModel is hilt-managed in setContent, 
+                // we'll handle initial state there or via a shared repository.
+
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
                     if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                         requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
