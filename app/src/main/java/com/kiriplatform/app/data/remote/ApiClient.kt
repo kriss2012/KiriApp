@@ -10,6 +10,9 @@ import com.kiriplatform.app.utils.AppConfig
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.launch
+import com.kiriplatform.app.data.SessionBus
+import com.kiriplatform.app.data.SessionEvent
 
 interface ASGApiService {
     @POST("auth/register")
@@ -236,6 +239,8 @@ object ApiClient {
     @Volatile private var token: String? = null
     @Volatile private var refreshToken: String? = null
     private var sessionManager: com.kiriplatform.app.data.SessionManager? = null
+    
+    private val scope = kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO + kotlinx.coroutines.SupervisorJob())
 
     fun init(manager: com.kiriplatform.app.data.SessionManager) {
         sessionManager = manager
