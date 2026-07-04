@@ -295,6 +295,7 @@ data class UpdateProfileRequest(
     val website: String? = null,
     val githubUrl: String? = null,
     val linkedInUrl: String? = null,
+    val avatarUrl: String? = null,
     val services: List<String> = emptyList()
 )
 

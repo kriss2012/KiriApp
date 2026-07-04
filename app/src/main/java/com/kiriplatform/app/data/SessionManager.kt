@@ -72,4 +72,20 @@ class SessionManager private constructor(context: Context) {
     fun getUserName(): String? {
         return prefs.getString("user_name", null)
     }
+
+    fun saveUserBanner(bannerUrl: String?) {
+        prefs.edit().putString("user_banner", bannerUrl).apply()
+    }
+
+    fun getUserBanner(): String? {
+        return prefs.getString("user_banner", null)
+    }
+
+    fun saveUserAvatar(avatarUrl: String?) {
+        prefs.edit().putString("user_avatar", avatarUrl).apply()
+    }
+
+    fun getUserAvatar(): String? {
+        return prefs.getString("user_avatar", null)
+    }
 }
