@@ -8,15 +8,20 @@ export const getOnboarding = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ message: 'User ID is required' });
         }
+        // Check if user exists first to be strictly correct
+        const user = await prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
         const onboarding = await prisma.aalOnboarding.findUnique({
             where: { userId }
         });
-        if (!onboarding) {
-            return res.status(404).json({ message: 'AAL Onboarding not found' });
-        }
-        res.status(200).json(onboarding);
+        // Instead of 404, return 200 with null if not onboarded yet
+        // This avoids throwing exceptions in Android Retrofit client
+        res.status(200).json(onboarding || null);
     }
     catch (error) {
+        console.error(`[AAL] Error fetching onboarding for ${req.params['userId']}:`, error);
         res.status(500).json({ message: 'Error fetching onboarding', error: error.message });
     }
 };
@@ -103,12 +108,22 @@ export const registerForEvent = async (req, res) => {
         if (!eventId || !userId) {
             return res.status(400).json({ message: 'Event ID and User ID are required' });
         }
+        // Resilience: handle both stringified and object form data
+        let parsedData = formData;
+        if (typeof formData === 'string') {
+            try {
+                parsedData = JSON.parse(formData);
+            }
+            catch (e) {
+                parsedData = { raw: formData };
+            }
+        }
         const registration = await prisma.eventRegistration.create({
             data: {
                 eventId,
                 userId,
                 status: 'REGISTERED',
-                formData: formData ? JSON.parse(formData) : null
+                formData: parsedData
             }
         });
         res.status(201).json({
@@ -116,11 +131,12 @@ export const registerForEvent = async (req, res) => {
             event_id: registration.eventId,
             user_id: registration.userId,
             _status: 'REGISTERED',
-            form_data: formData,
+            form_data: parsedData,
             qr_scanned_at: null
         });
     }
     catch (error) {
+        console.error('[AAL] Registration Error:', error);
         res.status(500).json({ message: 'Error registering for event', error: error.message });
     }
 };

@@ -19,6 +19,7 @@ export const getProfile = async (req, res) => {
                     digitalPersona: true,
                     bio: true,
                     avatarUrl: true,
+                    bannerUrl: true,
                     phoneNumber: true,
                     points: true,
                     createdAt: true,
@@ -94,7 +95,7 @@ export const updateProfile = async (req, res) => {
         if (typeof userId !== 'string') {
             return res.status(400).json({ message: 'Invalid User ID' });
         }
-        const { fullName, bio, avatarUrl, phoneNumber, role, department, college, year, section, website, githubUrl, linkedInUrl, services, rollNo, portfolioUrl, achievements } = req.body;
+        const { fullName, bio, avatarUrl, bannerUrl, phoneNumber, role, department, college, year, section, website, githubUrl, linkedInUrl, services, rollNo, portfolioUrl, achievements } = req.body;
         console.log(`[UpdateProfile] Incoming payload for user ${userId}:`, JSON.stringify(req.body, null, 2));
         // Map role string to UserCategory enum if applicable
         const categoryMapping = {
@@ -112,6 +113,7 @@ export const updateProfile = async (req, res) => {
                 fullName,
                 bio: bio || null,
                 avatarUrl,
+                bannerUrl: bannerUrl || null,
                 phoneNumber: phoneNumber || null, // Fix unique constraint issue with empty strings
                 department: department || null,
                 college: college || null,
