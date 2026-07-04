@@ -145,21 +145,44 @@ fun NotificationList(
     onAccept: (String, String) -> Unit,
     onNavigate: (String, String?) -> Unit
 ) {
+    val grouped = remember(notifications) {
+        notifications.groupBy { getDayBucket(it.createdAt) }
+    }
+
+    val bucketOrder = listOf("Today", "Yesterday", "This Week", "Older")
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(24.dp),
+        contentPadding = PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        items(notifications, key = { it.id }) { notification ->
-            NotificationItem(
-                notification = notification, 
-                onClick = { 
-                    onMarkRead(notification.id)
-                    onNavigate(notification.type, notification.relatedId)
-                },
-                onAccept = { connId -> onAccept(notification.id, connId) },
-                onDecline = { onMarkRead(notification.id) }
-            )
+        bucketOrder.forEach { bucket ->
+            val itemsInBucket = grouped[bucket] ?: emptyList()
+            if (itemsInBucket.isNotEmpty()) {
+                item {
+                    Text(
+                        text = bucket.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                        letterSpacing = 1.sp
+                    )
+                }
+                items(itemsInBucket, key = { it.id }) { notification ->
+                    Box(modifier = Modifier.padding(horizontal = 24.dp)) {
+                        NotificationItem(
+                            notification = notification, 
+                            onClick = { 
+                                onMarkRead(notification.id)
+                                onNavigate(notification.type, notification.relatedId)
+                            },
+                            onAccept = { connId -> onAccept(notification.id, connId) },
+                            onDecline = { onMarkRead(notification.id) }
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -175,6 +198,8 @@ fun NotificationItem(
         "EVENT" -> Icons.Default.CalendarMonth
         "REQUEST" -> Icons.Default.PersonAdd
         "MESSAGE" -> Icons.AutoMirrored.Filled.Chat
+        "REFERRAL" -> Icons.Default.CardGiftcard
+        "REWARD" -> Icons.Default.WorkspacePremium
         else -> Icons.Default.Notifications
     }
     
@@ -182,6 +207,8 @@ fun NotificationItem(
         "EVENT" -> MaterialTheme.colorScheme.primary
         "REQUEST" -> MaterialTheme.colorScheme.secondary
         "MESSAGE" -> MaterialTheme.colorScheme.tertiary
+        "REFERRAL" -> NotionBrandPink
+        "REWARD" -> NotionTintYellow
         else -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
     }
 
@@ -272,15 +299,56 @@ fun NotificationItem(
     }
 }
 
+fun getDayBucket(dateStr: String): String {
+    return try {
+        val isoFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.US)
+        isoFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
+        val date = isoFormat.parse(dateStr) ?: return "Older"
+        
+        val now = java.util.Calendar.getInstance()
+        val notifCal = java.util.Calendar.getInstance()
+        notifCal.time = date
+        
+        val diffMillis = now.timeInMillis - notifCal.timeInMillis
+        val diffDays = diffMillis / (24 * 60 * 60 * 1000)
+        
+        when {
+            diffDays < 1 && now.get(java.util.Calendar.DAY_OF_YEAR) == notifCal.get(java.util.Calendar.DAY_OF_YEAR) -> "Today"
+            diffDays < 2 && (now.get(java.util.Calendar.DAY_OF_YEAR) - notifCal.get(java.util.Calendar.DAY_OF_YEAR) == 1) -> "Yesterday"
+            diffDays < 7 -> "This Week"
+            else -> "Older"
+        }
+    } catch (e: Exception) {
+        "Older"
+    }
+}
+
 fun getRelativeTime(dateStr: String): String {
     return try {
-        // Simple relative time logic for demo
-        val parts = dateStr.split("T")
-        if (parts.size > 1) {
-            val time = parts[1].substring(0, 5)
-            "at $time"
-        } else "Recent"
-    } catch (e: Exception) { "Just now" }
+        val isoFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", java.util.Locale.US)
+        isoFormat.timeZone = java.util.TimeZone.getTimeZone("UTC")
+        val date = isoFormat.parse(dateStr) ?: return "Recent"
+        
+        val now = java.util.Calendar.getInstance()
+        val notifCal = java.util.Calendar.getInstance()
+        notifCal.time = date
+        
+        val diffMillis = now.timeInMillis - notifCal.timeInMillis
+        val diffMinutes = diffMillis / (60 * 1000)
+        val diffHours = diffMinutes / 60
+        
+        when {
+            diffMinutes < 1 -> "Just now"
+            diffMinutes < 60 -> "$diffMinutes min ago"
+            diffHours < 24 -> "$diffHours hr ago"
+            else -> {
+                val outFormat = java.text.SimpleDateFormat("MMM dd, yyyy", java.util.Locale.US)
+                outFormat.format(date)
+            }
+        }
+    } catch (e: Exception) {
+        "Recent"
+    }
 }
 
 @Composable

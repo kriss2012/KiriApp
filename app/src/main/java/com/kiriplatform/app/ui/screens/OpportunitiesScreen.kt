@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusinessCenter
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
@@ -139,13 +140,29 @@ fun OpportunitiesScreen(
 
 @Composable
 fun JobsTabContent(jobsList: List<JobOpportunity>) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(jobsList) { job ->
-            JobCard(job = job)
+    var searchQuery by remember { mutableStateOf("") }
+    val filteredJobs = remember(searchQuery, jobsList) {
+        jobsList.filter {
+            it.title.contains(searchQuery, ignoreCase = true) ||
+            it.company.contains(searchQuery, ignoreCase = true)
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        com.kiriplatform.app.ui.components.UnifiedSearchBar(
+            query = searchQuery,
+            onQueryChange = { searchQuery = it },
+            placeholder = "Search jobs, skills, or roles...",
+            customModifier = Modifier.padding(16.dp)
+        )
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().weight(1f),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(filteredJobs) { job ->
+                JobCard(job = job)
+            }
         }
     }
 }
@@ -282,8 +299,16 @@ fun JobCard(job: JobOpportunity) {
                     ButtonDefaults.buttonColors()
                 }
             ) {
+                if (applied) {
+                    Icon(
+                        imageVector = androidx.compose.material.icons.Icons.Default.Check,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                }
                 Text(
-                    text = if (applied) "Applied ✓" else "Apply Now",
+                    text = if (applied) "Applied" else "Apply Now",
                     fontWeight = FontWeight.Bold
                 )
             }

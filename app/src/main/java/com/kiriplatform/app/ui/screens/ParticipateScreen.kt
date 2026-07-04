@@ -141,20 +141,11 @@ fun ParticipateScreen(
                 .fillMaxSize()
         ) {
             // Search Input
-            OutlinedTextField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                placeholder = { Text("Search Hackathons") },
-                leadingIcon = { Icon(Icons.Default.Search, null) },
-                singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-                )
+            com.kiriplatform.app.ui.components.UnifiedSearchBar(
+                query = searchQuery,
+                onQueryChange = { searchQuery = it },
+                placeholder = "Search Hackathons...",
+                customModifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
 
             // Filter Pills Bar

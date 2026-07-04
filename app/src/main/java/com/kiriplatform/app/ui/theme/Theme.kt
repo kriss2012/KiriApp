@@ -62,11 +62,11 @@ enum class AppTheme(
 
 @Composable
 fun KiriAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     appTheme: AppTheme = AppTheme.NOTION,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) appTheme.darkScheme else appTheme.lightScheme
+    val colorScheme = appTheme.lightScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -75,8 +75,8 @@ fun KiriAppTheme(
             activity?.window?.let { window ->
                 window.statusBarColor = colorScheme.background.toArgb()
                 val insetsController = WindowCompat.getInsetsController(window, view)
-                insetsController.isAppearanceLightStatusBars = !darkTheme
-                insetsController.isAppearanceLightNavigationBars = !darkTheme
+                insetsController.isAppearanceLightStatusBars = true
+                insetsController.isAppearanceLightNavigationBars = true
             }
         }
     }

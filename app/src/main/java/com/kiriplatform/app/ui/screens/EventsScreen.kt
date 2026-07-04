@@ -33,53 +33,19 @@ import java.net.URLDecoder
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventsScreen(
+    viewModel: com.kiriplatform.app.ui.viewmodels.EventsViewModel = androidx.hilt.navigation.compose.hiltViewModel(),
     onNavigateBack: () -> Unit = {},
     onNavigateToDetail: (String) -> Unit = {}
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchEvents(context)
+    }
+
     var selectedFilter by remember { mutableStateOf("ALL") }
     val filters = listOf("ALL", "HACKATHON", "COMPETITION", "WORKSHOP", "OFFER")
-
-    val events = listOf(
-        EventDto(
-            _id = "1",
-            _title = "Kiri AI Innovation Summit 2026",
-            type = "HACKATHON",
-            _description = "Join developers, founders, and creators to showcase next-generation AI platforms, agents, and local language models.",
-            _date = "2026-07-07T10:00:00.000Z",
-            _location = "Virtual / Kiri Hub",
-            coordinatorName = "Aditi Sharma",
-            coordinatorPhone = "+91 98765 43210",
-            prize = "₹5,00,000 + Incubation",
-            imageUrl = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop",
-            registrationLink = "https://forms.gle/KiriSummit2026"
-        ),
-        EventDto(
-            _id = "2",
-            _title = "Global Builders Hackathon",
-            type = "COMPETITION",
-            _description = "A 48-hour virtual hackathon focused on building open-source projects, peer review, and developer collaboration.",
-            _date = "2026-07-24T14:00:00.000Z",
-            _location = "Kiri Sandbox / Discord",
-            coordinatorName = "Rohan Verma",
-            coordinatorPhone = "+91 99999 88888",
-            prize = "$10,000 Seed Grant",
-            imageUrl = "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&auto=format&fit=crop",
-            registrationLink = "https://forms.gle/KiriHackathon2026"
-        ),
-        EventDto(
-            _id = "3",
-            _title = "Startup Pitch Deck Workshop",
-            type = "WORKSHOP",
-            _description = "Pitch your idea to global investors and get a chance to secure seed funding.",
-            _date = "2026-08-05T14:00:00.000Z",
-            _location = "Main Auditorium",
-            coordinatorName = "ASG Core Team",
-            coordinatorPhone = null,
-            prize = "$5000 AWS Credits",
-            imageUrl = "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop",
-            registrationLink = "https://forms.gle/KiriWorkshop2026"
-        )
-    )
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -150,14 +116,34 @@ fun EventsScreen(
             // Events List
             LazyColumn(
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize()
             ) {
-                val filteredEvents = events.filter { selectedFilter == "ALL" || it.type == selectedFilter }
-                items(filteredEvents) { event ->
-                    BroadcastCard(event, onClick = { 
-                        val json = Gson().toJson(event)
-                        onNavigateToDetail(json)
-                    })
+                val eventsList = when (val state = uiState) {
+                    is com.kiriplatform.app.ui.viewmodels.EventsState.Success -> state.events
+                    else -> emptyList()
+                }
+                val filteredEvents = eventsList.filter { selectedFilter == "ALL" || it.type == selectedFilter }
+
+                if (uiState is com.kiriplatform.app.ui.viewmodels.EventsState.Loading && eventsList.isEmpty()) {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
+                } else if (filteredEvents.isEmpty()) {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                            Text("No events found.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                } else {
+                    items(filteredEvents) { event ->
+                        BroadcastCard(event, onClick = { 
+                            val json = Gson().toJson(event)
+                            onNavigateToDetail(json)
+                        })
+                    }
                 }
             }
         }

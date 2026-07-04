@@ -96,7 +96,7 @@ fun MainScaffold(
                 },
                 onMatchSuggested = { data ->
                     val reason = data.optString("matchReason", "The AI Agent found a new resource for you.")
-                    com.kiriplatform.app.utils.NotificationHelper.showNotification(context, "New Resource Match 🚀", reason)
+                    com.kiriplatform.app.utils.NotificationHelper.showNotification(context, "New Resource Match", reason)
                 }
             )
         }

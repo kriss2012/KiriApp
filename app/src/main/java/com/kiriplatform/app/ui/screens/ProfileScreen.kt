@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+import coil.compose.AsyncImage
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -504,63 +505,103 @@ fun ProfileHeroSection(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
-            .padding(horizontal = 24.dp, vertical = 24.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
         ) {
-            // Avatar - Notion style: simple, clean
+            // LinkedIn-style Profile Banner
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(110.dp)
+                    .background(
+                        Brush.horizontalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.secondaryContainer
+                            )
+                        )
+                    )
+            )
+
+            // Profile Avatar overlapping the banner
             Surface(
-                modifier = Modifier.size(72.dp),
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant
+                modifier = Modifier
+                    .padding(start = 24.dp)
+                    .align(Alignment.BottomStart)
+                    .size(80.dp),
+                shape = CircleShape,
+                border = BorderStroke(3.dp, MaterialTheme.colorScheme.surface),
+                color = MaterialTheme.colorScheme.primaryContainer
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        user.fullName.take(1).uppercase(),
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    if (!user.avatarUrl.isNullOrEmpty()) {
+                        AsyncImage(
+                            model = user.avatarUrl,
+                            contentDescription = "Profile Photo",
+                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                        )
+                    } else {
+                        Text(
+                            text = user.fullName.take(1).uppercase(),
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
             }
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    user.fullName,
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    user.role.uppercase(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-                    letterSpacing = 1.sp
-                )
-                if (!user.department.isNullOrEmpty() || !user.college.isNullOrEmpty()) {
-                    Text(
-                        text = listOfNotNull(user.department, user.college).joinToString(" • ").uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                        fontSize = 8.sp,
-                        letterSpacing = 0.5.sp
-                    )
-                }
-            }
-            
+
+            // Edit Button aligning to bottom-end of banner
             IconButton(
                 onClick = onNavigateToEdit,
                 modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 24.dp, bottom = 8.dp)
                     .size(36.dp)
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
             ) {
                 Icon(
-                    Icons.Default.Edit, 
+                    imageVector = Icons.Default.Edit, 
                     contentDescription = "Edit Profile", 
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
+
+        Spacer(Modifier.height(12.dp))
+
+        // User Info details
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
+            Text(
+                text = user.fullName,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Text(
+                text = if (!user.bio.isNullOrEmpty()) user.bio else "${user.role} | Student & Builder",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+            )
+
+            Spacer(Modifier.height(6.dp))
+
+            if (!user.department.isNullOrEmpty() || !user.college.isNullOrEmpty()) {
+                Text(
+                    text = listOfNotNull(user.department, user.college).joinToString(" • "),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

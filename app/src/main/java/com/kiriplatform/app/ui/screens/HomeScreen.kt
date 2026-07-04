@@ -47,7 +47,6 @@ fun HomeScreen(
     onNavigateToNotifications: () -> Unit = {},
     onNavigateToChats: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
-    onNavigateToRepository: () -> Unit = {},
     onNavigateToEvents: () -> Unit = {},
     onNavigateToEventDetail: (String) -> Unit = {},
     onNavigateToAddEvent: () -> Unit = {},
@@ -95,7 +94,6 @@ fun HomeScreen(
                         onNavigateToNotifications = onNavigateToNotifications,
                         onNavigateToChats = onNavigateToChats,
                         onNavigateToSearch = onNavigateToSearch,
-                        onNavigateToRepository = onNavigateToRepository,
                         onNavigateToEvents = onNavigateToEvents,
                         onNavigateToEventDetail = onNavigateToEventDetail,
                         onNavigateToAddEvent = onNavigateToAddEvent,
@@ -133,7 +131,6 @@ fun HomeContent(
     onNavigateToNotifications: () -> Unit,
     onNavigateToChats: () -> Unit,
     onNavigateToSearch: () -> Unit,
-    onNavigateToRepository: () -> Unit,
     onNavigateToEvents: () -> Unit,
     onNavigateToEventDetail: (String) -> Unit,
     onNavigateToAddEvent: () -> Unit,
@@ -146,6 +143,53 @@ fun HomeContent(
     onNavigateToProfile: () -> Unit
 ) {
     val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+
+    val mockFeedItems = remember {
+        listOf(
+            ActivityFeedItem(
+                id = "1",
+                actorName = "Rohit Sharma",
+                actorHeadline = "Lead Recruiter @ KiriGen Tech",
+                actorAvatarText = "RS",
+                actionText = "posted a new job opportunity",
+                timeAgo = "2h ago",
+                contentText = "We are looking for an ambitious Android Developer Intern to join our Pune engineering hub. Tech stack: Kotlin, Jetpack Compose, Coroutines, Clean Architecture.",
+                attachmentTitle = "Android Developer Intern",
+                attachmentSubtitle = "KiriGen Tech • Pune (Hybrid) • Stipend: ₹25,000/mo",
+                attachmentIcon = Icons.Default.WorkOutline,
+                likesCount = 24,
+                commentsCount = 8
+            ),
+            ActivityFeedItem(
+                id = "2",
+                actorName = "Neha Patel",
+                actorHeadline = "BCA Student @ GH Raisoni College",
+                actorAvatarText = "NP",
+                actionText = "earned a new Verified Credential",
+                timeAgo = "5h ago",
+                contentText = "Thrilled to share that I have verified my Java Development foundations badge today! Huge thanks to the Kiri verification engine for this milestone.",
+                attachmentTitle = "Java Development Professional Badge",
+                attachmentSubtitle = "Verified on-chain via Kiri Platform",
+                attachmentIcon = Icons.Default.WorkspacePremium,
+                likesCount = 42,
+                commentsCount = 12
+            ),
+            ActivityFeedItem(
+                id = "3",
+                actorName = "KiriGen Platform",
+                actorHeadline = "Official Ecosystem Agent",
+                actorAvatarText = "KG",
+                actionText = "announced a new national challenge",
+                timeAgo = "1d ago",
+                contentText = "Register for the upcoming national AI for Bharat Hackathon 2026. Stand a chance to get mentorship and live internship offers.",
+                attachmentTitle = "AI for Bharat Hackathon 2026",
+                attachmentSubtitle = "July 7, 2026 • Indraprastha Institute, Delhi",
+                attachmentIcon = Icons.Default.Campaign,
+                likesCount = 105,
+                commentsCount = 37
+            )
+        )
+    }
 
     LazyColumn(
         modifier = Modifier
@@ -160,31 +204,35 @@ fun HomeContent(
                 onNavigateToProfile = onNavigateToProfile
             ) 
         }
-        item { PersistentSearchBar(onClick = onNavigateToSearch) }
-        item { GreetingSection(userName = user.fullName) }
+        item {
+            com.kiriplatform.app.ui.components.UnifiedSearchBar(
+                query = "",
+                onQueryChange = {},
+                placeholder = "Search jobs, skills, or resources...",
+                readOnly = true,
+                onClick = onNavigateToSearch,
+                customModifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
+            )
+        }
         
+        item { ProfileSummaryStrip(user = user, onClick = onNavigateToProfile) }
+
+        item {
+            QuickToolsRow(
+                onNavigateToResumeBuilder = onNavigateToResumeBuilder,
+                onNavigateToInterviewSandbox = onNavigateToInterviewSandbox,
+                onNavigateToAal = onNavigateToAal,
+                onNavigateToBadges = onNavigateToBadges,
+                onNavigateToProjectShowcase = onNavigateToProjectShowcase
+            )
+        }
+
         if (aalOnboarding != null) {
             item { AalInternshipCard(aalOnboarding, aalActivities, onClick = onNavigateToAal) }
         }
  
         item { InnovationProgressCard(points = user.pointsCount) }
-        item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
-        item { ResumeBuilderCard(onClick = onNavigateToResumeBuilder) }
-        item { MicroCredentialsCard(onClick = onNavigateToBadges) }
-        item { ProjectShowcaseCard(onClick = onNavigateToProjectShowcase) }
-        item { CampusAmbassadorCard(onClick = onNavigateToLeaderboard) }
-        item { InterviewSandboxCard(onClick = onNavigateToInterviewSandbox) }
-        item { 
-            InnovationHubCard(
-                onNavigateToHub = {
-                    try {
-                        uriHandler.openUri(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            )
-        }
+
         item { 
             UpcomingEventsSection(
                 events = events, 
@@ -193,6 +241,21 @@ fun HomeContent(
                 onNavigateToEventDetail = onNavigateToEventDetail,
                 onNavigateToAddEvent = onNavigateToAddEvent
             ) 
+        }
+
+        item {
+            Text(
+                text = "COMMUNITY FEED",
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                letterSpacing = 1.sp
+            )
+        }
+
+        items(mockFeedItems) { feedItem ->
+            ActivityFeedItemCard(item = feedItem)
         }
     }
 }
@@ -795,6 +858,387 @@ fun EventItemCard(event: EventDto, onClick: () -> Unit) {
                 modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
             )
+        }
+    }
+}
+
+// LinkedIn/Naukri styled feed & tools helper components
+data class ActivityFeedItem(
+    val id: String,
+    val actorName: String,
+    val actorHeadline: String,
+    val actorAvatarText: String,
+    val actionText: String,
+    val timeAgo: String,
+    val contentText: String? = null,
+    val attachmentTitle: String? = null,
+    val attachmentSubtitle: String? = null,
+    val attachmentIcon: androidx.compose.ui.graphics.vector.ImageVector? = null,
+    val likesCount: Int = 0,
+    val commentsCount: Int = 0
+)
+
+@Composable
+fun ProfileSummaryStrip(user: UserDto, onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f))
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(54.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = user.fullName.take(1).uppercase(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = user.fullName,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = if (!user.department.isNullOrEmpty()) "${user.role} in ${user.department}" else user.role,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (!user.college.isNullOrEmpty()) {
+                    Text(
+                        text = user.college,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                }
+            }
+
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = "View Profile",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+fun QuickToolsRow(
+    onNavigateToResumeBuilder: () -> Unit,
+    onNavigateToInterviewSandbox: () -> Unit,
+    onNavigateToAal: () -> Unit,
+    onNavigateToBadges: () -> Unit,
+    onNavigateToProjectShowcase: () -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 12.dp)) {
+        Text(
+            text = "QUICK TOOLS",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp),
+            letterSpacing = 1.sp
+        )
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            item {
+                QuickToolItem(
+                    title = "Resume",
+                    description = "ATS Builder",
+                    icon = Icons.Default.Description,
+                    color = NotionTintSky,
+                    onClick = onNavigateToResumeBuilder
+                )
+            }
+            item {
+                QuickToolItem(
+                    title = "Interview",
+                    description = "AI Sandbox",
+                    icon = Icons.Default.Mic,
+                    color = NotionTintRose,
+                    onClick = onNavigateToInterviewSandbox
+                )
+            }
+            item {
+                QuickToolItem(
+                    title = "LMS / AAL",
+                    description = "Internship",
+                    icon = Icons.Default.School,
+                    color = NotionTintLavender,
+                    onClick = onNavigateToAal
+                )
+            }
+            item {
+                QuickToolItem(
+                    title = "Badges",
+                    description = "Credentials",
+                    icon = Icons.Default.WorkspacePremium,
+                    color = NotionTintYellow,
+                    onClick = onNavigateToBadges
+                )
+            }
+            item {
+                QuickToolItem(
+                    title = "Projects",
+                    description = "Showcase",
+                    icon = Icons.Default.Code,
+                    color = NotionTintMint,
+                    onClick = onNavigateToProjectShowcase
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun QuickToolItem(
+    title: String,
+    description: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    color: Color,
+    onClick: () -> Unit
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .width(130.dp)
+            .height(110.dp),
+        shape = RoundedCornerShape(12.dp),
+        color = color.copy(alpha = 0.15f),
+        border = BorderStroke(1.dp, color.copy(alpha = 0.5f))
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(color.copy(alpha = 0.3f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+            Column {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun ActivityFeedItemCard(item: ActivityFeedItem) {
+    Surface(
+        modifier = Modifier
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)),
+        color = MaterialTheme.colorScheme.surface
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = item.actorAvatarText,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Text(
+                            text = item.actorName,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = "• ${item.timeAgo}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        )
+                    }
+                    Text(
+                        text = item.actorHeadline,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // Subtitle action summary (e.g. "Shared a new badge")
+            Text(
+                text = item.actionText,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.Medium
+            )
+
+            if (!item.contentText.isNullOrEmpty()) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = item.contentText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            // Attachment Card (e.g., job details, project showcase, badge card)
+            if (item.attachmentTitle != null) {
+                Spacer(Modifier.height(12.dp))
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = item.attachmentIcon ?: Icons.Default.Description,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Column {
+                            Text(
+                                text = item.attachmentTitle,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            if (item.attachmentSubtitle != null) {
+                                Text(
+                                    text = item.attachmentSubtitle,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
+            Spacer(Modifier.height(8.dp))
+
+            // Interactions
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.clickable { }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ThumbUp,
+                            contentDescription = "Like",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = item.likesCount.toString(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = Modifier.clickable { }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Comment,
+                            contentDescription = "Comment",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = item.commentsCount.toString(),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
         }
     }
 }

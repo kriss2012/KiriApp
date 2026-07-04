@@ -272,7 +272,12 @@ fun BadgesScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text("📭", fontSize = 48.sp)
+                    Icon(
+                        imageVector = Icons.Default.MilitaryTech,
+                        contentDescription = null,
+                        modifier = Modifier.size(48.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "No Badges Yet",
@@ -294,7 +299,7 @@ fun BadgesScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-
+ 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier.weight(1f),
@@ -311,17 +316,14 @@ fun BadgesScreen(
             }
         }
     }
-
+ 
     // Detail Dialog
     if (showDetailDialog && selectedBadgeForDetail != null) {
         val badge = selectedBadgeForDetail!!
         AlertDialog(
             onDismissRequest = { showDetailDialog = false },
             icon = {
-                Text(
-                    text = badge.icon,
-                    fontSize = 54.sp
-                )
+                BadgeIcon(iconStr = badge.icon, size = 54.dp)
             },
             title = {
                 Text(
@@ -353,7 +355,7 @@ fun BadgesScreen(
                     } catch (e: Exception) {
                         badge.earnedAt
                     }
-
+ 
                     Text(
                         text = "Earned on: $formattedDate",
                         style = MaterialTheme.typography.labelSmall,
@@ -369,7 +371,7 @@ fun BadgesScreen(
         )
     }
 }
-
+ 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BadgeItem(
@@ -394,10 +396,7 @@ fun BadgeItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = badge.icon,
-                fontSize = 32.sp
-            )
+            BadgeIcon(iconStr = badge.icon, size = 32.dp)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = badge.title,
@@ -420,7 +419,7 @@ fun BadgeItem(
         }
     }
 }
-
+ 
 @Composable
 fun BadgeTypeTag(badgeType: String) {
     val containerColor = when (badgeType) {
@@ -433,7 +432,7 @@ fun BadgeTypeTag(badgeType: String) {
         "ACHIEVEMENT" -> MaterialTheme.colorScheme.onSecondaryContainer
         else -> MaterialTheme.colorScheme.onTertiaryContainer
     }
-
+ 
     Box(
         modifier = Modifier
             .background(containerColor, shape = RoundedCornerShape(8.dp))
@@ -446,4 +445,19 @@ fun BadgeTypeTag(badgeType: String) {
             fontWeight = FontWeight.Bold
         )
     }
+}
+
+@Composable
+fun BadgeIcon(iconStr: String, size: androidx.compose.ui.unit.Dp, modifier: Modifier = Modifier) {
+    val iconVector = when (iconStr) {
+        "🏆", "hackathon", "ACHIEVEMENT" -> Icons.Default.EmojiEvents
+        "🌟", "skill", "SKILL" -> Icons.Default.MilitaryTech
+        else -> Icons.Default.MilitaryTech
+    }
+    Icon(
+        imageVector = iconVector,
+        contentDescription = null,
+        modifier = modifier.size(size),
+        tint = MaterialTheme.colorScheme.primary
+    )
 }

@@ -119,7 +119,6 @@ fun KiriNavGraph(
                 onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) },
                 onNavigateToChats = { navController.navigate(Screen.Chats.route) },
                 onNavigateToSearch = { navController.navigate(Screen.Opportunities.route) },
-                onNavigateToRepository = { navController.navigate(Screen.Opportunities.route) },
                 onNavigateToEvents = { navController.navigate(Screen.Participate.route) },
                 onNavigateToEventDetail = { eventJson -> 
                     navController.navigate(Screen.EventDetails.createRoute(eventJson))
@@ -165,9 +164,12 @@ fun KiriNavGraph(
         }
         
         composable(Screen.Search.route) {
-            SearchScreen(
+            NetworkScreen(
                 onNavigateToProfile = { userId -> 
                     navController.navigate(Screen.PublicProfile.createRoute(userId))
+                },
+                onNavigateToChat = { receiverId ->
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
                 }
             )
         }

@@ -104,7 +104,7 @@ class KiriAIViewModel : ViewModel() {
         val fileName = _selectedFileName.value
         
         // Optimistic update
-        val displayContent = if (fileName != null) "$content\n📎 $fileName" else content
+        val displayContent = if (fileName != null) "$content\n[Attachment] $fileName" else content
         _messages.add(KiriMessage(displayContent, "user"))
         
         viewModelScope.launch {

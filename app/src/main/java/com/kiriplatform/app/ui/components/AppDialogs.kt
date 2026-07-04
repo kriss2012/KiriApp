@@ -31,7 +31,7 @@ fun SuccessDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("✅ Success", style = MaterialTheme.typography.titleLarge, color = GreenSuccess, fontWeight = FontWeight.Black)
+                Text("Success", style = MaterialTheme.typography.titleLarge, color = GreenSuccess, fontWeight = FontWeight.Black)
                 Text(message, style = MaterialTheme.typography.bodyMedium, color = TextPrimary, textAlign = TextAlign.Center)
                 Button(
                     onClick = onDismiss,
@@ -64,7 +64,7 @@ fun ErrorDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("⚠️ Error", style = MaterialTheme.typography.titleLarge, color = Color.Red, fontWeight = FontWeight.Black)
+                Text("Error", style = MaterialTheme.typography.titleLarge, color = Color.Red, fontWeight = FontWeight.Black)
                 Text(title, style = MaterialTheme.typography.titleSmall, color = TextPrimary, fontWeight = FontWeight.Bold)
                 Text(message, style = MaterialTheme.typography.bodySmall, color = TextSecondary, textAlign = TextAlign.Center)
                 Button(
