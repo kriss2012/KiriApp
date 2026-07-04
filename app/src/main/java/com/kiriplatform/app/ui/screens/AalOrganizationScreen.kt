@@ -28,6 +28,10 @@ import com.kiriplatform.app.ui.viewmodels.AalViewModel
 @Composable
 fun AalOrganizationScreen(
     onBack: () -> Unit = {},
+    onNavigateToMindsetDiscovery: () -> Unit = {},
+    onNavigateToMarketTrends: () -> Unit = {},
+    onNavigateToProjectShowcase: () -> Unit = {},
+    onNavigateToPitches: () -> Unit = {},
     viewModel: AalViewModel = hiltViewModel()
 ) {
     val activities = remember {
@@ -116,7 +120,18 @@ fun AalOrganizationScreen(
                             title = activities[index],
                             isCompleted = isCompleted,
                             isCurrent = isCurrent,
-                            onClick = { /* Navigate to activity submission */ }
+                            onClick = {
+                                when (activityNumber) {
+                                    1 -> onNavigateToMindsetDiscovery()
+                                    3 -> onNavigateToMarketTrends()
+                                    5 -> onNavigateToProjectShowcase()
+                                    6 -> onNavigateToPitches()
+                                    else -> {
+                                        // Default behavior for other steps
+                                        onNavigateToMindsetDiscovery()
+                                    }
+                                }
+                            }
                         )
                     }
                 }

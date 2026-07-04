@@ -118,7 +118,7 @@ fun KiriNavGraph(
             HomeScreen(
                 onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) },
                 onNavigateToChats = { navController.navigate(Screen.Chats.route) },
-                onNavigateToSearch = { navController.navigate(Screen.Opportunities.route) },
+                onNavigateToSearch = { navController.navigate(Screen.Network.route) },
                 onNavigateToEvents = { navController.navigate(Screen.Participate.route) },
                 onNavigateToEventDetail = { eventJson -> 
                     navController.navigate(Screen.EventDetails.createRoute(eventJson))
@@ -130,7 +130,8 @@ fun KiriNavGraph(
                 onNavigateToProjectShowcase = { navController.navigate(Screen.ProjectShowcase.route) },
                 onNavigateToLeaderboard = { navController.navigate(Screen.Leaderboard.route) },
                 onNavigateToInterviewSandbox = { navController.navigate(Screen.InterviewSandbox.route) },
-                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+                onNavigateToProfile = { navController.navigate(Screen.Profile.route) },
+                onNavigateToOpportunities = { navController.navigate(Screen.Opportunities.route) }
             )
         }
 
@@ -324,9 +325,17 @@ fun KiriNavGraph(
         composable(Screen.Vault.route) {
             NAACRecordsScreen(onBack = { navController.popBackStack() })
         }
+
         composable(Screen.Organization.route) {
-            AalOrganizationScreen(onBack = { navController.popBackStack() })
+            AalOrganizationScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToMindsetDiscovery = { navController.navigate(Screen.MindsetDiscovery.route) },
+                onNavigateToMarketTrends = { navController.navigate(Screen.MarketTrends.route) },
+                onNavigateToProjectShowcase = { navController.navigate(Screen.ProjectShowcase.route) },
+                onNavigateToPitches = { navController.navigate(Screen.Marketplace.route) }
+            )
         }
+
         composable(Screen.Admin.route) {
             AdminDashboardScreen(onBack = { navController.popBackStack() })
         }

@@ -103,6 +103,7 @@ fun NotificationScreen(
                 )
             )
         },
+        contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {

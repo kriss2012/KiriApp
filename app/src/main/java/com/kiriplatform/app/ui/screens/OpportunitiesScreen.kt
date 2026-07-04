@@ -94,46 +94,15 @@ fun OpportunitiesScreen(
                 )
             )
         },
+        contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            // Sliding Tabs at the top
-            TabRow(
-                selectedTabIndex = selectedTab,
-                containerColor = MaterialTheme.colorScheme.surface,
-                contentColor = MaterialTheme.colorScheme.primary,
-                divider = { Divider(color = MaterialTheme.colorScheme.outlineVariant) }
-            ) {
-                tabTitles.forEachIndexed { index, title ->
-                    Tab(
-                        selected = selectedTab == index,
-                        onClick = { selectedTab = index },
-                        text = { 
-                            Text(
-                                title, 
-                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Medium,
-                                fontSize = 14.sp
-                            ) 
-                        }
-                    )
-                }
-            }
-
-            Box(modifier = Modifier.weight(1f)) {
-                if (selectedTab == 0) {
-                    JobsTabContent(jobsList = mockJobs)
-                } else {
-                    // Reuse the complete, fully featured NetworkScreen!
-                    NetworkScreen(
-                        onNavigateToProfile = onNavigateToProfile,
-                        onNavigateToChat = onNavigateToChat
-                    )
-                }
-            }
+            JobsTabContent(jobsList = mockJobs)
         }
     }
 }

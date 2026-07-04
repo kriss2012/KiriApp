@@ -133,6 +133,7 @@ fun ParticipateScreen(
                 )
             )
         },
+        contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(

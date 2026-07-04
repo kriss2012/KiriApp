@@ -43,6 +43,7 @@ fun PrepareScreen(
                 )
             )
         },
+        contentWindowInsets = WindowInsets(0),
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
