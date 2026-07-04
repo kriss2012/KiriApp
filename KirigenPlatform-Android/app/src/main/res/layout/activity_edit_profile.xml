@@ -16,7 +16,7 @@
             android:background="@color/background_secondary"
             app:title="Edit Profile"
             app:titleTextColor="@color/white"
-            app:navigationIcon="@drawable/ic_back" />
+            app:navigationIcon="@android:drawable/ic_menu_revert" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
