@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - Blue theme -->
+    <color name="primary_blue">#0A66C2</color>
+    <color name="primary_blue_dark">#004182</color>
+    <color name="primary_blue_light">#4A90D9</color>
+    
+    <!-- Navy Blue - 20% usage -->
+    <color name="navy_blue">#1E3A5F</color>
+    <color name="navy_blue_dark">#152A45</color>
+    <color name="navy_blue_light">#2D5A8A</color>
+    
+    <!-- White and Grays -->
+    <color name="white">#FFFFFF</color>
+    <color name="off_white">#F5F5F5</color>
+    <color name="light_gray">#E8E8E8</color>
+    <color name="medium_gray">#9CA3AF</color>
+    <color name="dark_gray">#4B5563</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#191919</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    <color name="text_on_navy">#FFFFFF</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="error">#EF4444</color>
+    
+    <!-- Background Colors -->
+    <color name="background_primary">#FFFFFF</color>
+    <color name="background_secondary">#F3F4F6</color>
+    <color name="background_navy">#1E3A5F</color>
+    
+    <!-- Accent Colors -->
+    <color name="accent_blue">#0077B5</color>
+    <color name="accent_light">#E3F2FD</color>
+    
+    <!-- Divider -->
+    <color name="divider">#E5E7EB</color>
+</resources>
