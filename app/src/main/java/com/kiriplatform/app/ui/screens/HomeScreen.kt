@@ -1,5 +1,6 @@
 package com.kiriplatform.app.ui.screens
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,8 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +31,6 @@ import com.kiriplatform.app.ui.components.AIStatusChip
 import com.kiriplatform.app.ui.components.KiriIconBadge
 import com.kiriplatform.app.ui.components.SectionHeader
 import com.kiriplatform.app.ui.theme.*
-import com.kiriplatform.app.utils.glassmorphism
 import com.kiriplatform.app.utils.shimmer
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,6 +45,7 @@ import androidx.compose.runtime.*
 fun HomeScreen(
     viewModel: HomeViewModel = androidx.hilt.navigation.compose.hiltViewModel(),
     onNavigateToNotifications: () -> Unit = {},
+    onNavigateToChats: () -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onNavigateToRepository: () -> Unit = {},
     onNavigateToEvents: () -> Unit = {},
@@ -56,7 +56,8 @@ fun HomeScreen(
     onNavigateToBadges: () -> Unit = {},
     onNavigateToProjectShowcase: () -> Unit = {},
     onNavigateToLeaderboard: () -> Unit = {},
-    onNavigateToInterviewSandbox: () -> Unit = {}
+    onNavigateToInterviewSandbox: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val userId = remember { SessionManager.getInstance(context).getUserId() ?: "" }
@@ -71,7 +72,7 @@ fun HomeScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { Spacer(Modifier.height(0.dp)) }
+        contentWindowInsets = WindowInsets(0)
     ) { padding ->
         Box(
             modifier = Modifier
@@ -92,6 +93,7 @@ fun HomeScreen(
                         aalOnboarding = state.aalOnboarding,
                         aalActivities = state.aalActivities,
                         onNavigateToNotifications = onNavigateToNotifications,
+                        onNavigateToChats = onNavigateToChats,
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToRepository = onNavigateToRepository,
                         onNavigateToEvents = onNavigateToEvents,
@@ -102,7 +104,8 @@ fun HomeScreen(
                         onNavigateToBadges = onNavigateToBadges,
                         onNavigateToProjectShowcase = onNavigateToProjectShowcase,
                         onNavigateToLeaderboard = onNavigateToLeaderboard,
-                        onNavigateToInterviewSandbox = onNavigateToInterviewSandbox
+                        onNavigateToInterviewSandbox = onNavigateToInterviewSandbox,
+                        onNavigateToProfile = onNavigateToProfile
                     )
                 }
                 is HomeState.Error -> {
@@ -128,6 +131,7 @@ fun HomeContent(
     aalOnboarding: AalOnboardingDto?,
     aalActivities: List<AalActivityDto>,
     onNavigateToNotifications: () -> Unit,
+    onNavigateToChats: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToRepository: () -> Unit,
     onNavigateToEvents: () -> Unit,
@@ -138,20 +142,31 @@ fun HomeContent(
     onNavigateToBadges: () -> Unit,
     onNavigateToProjectShowcase: () -> Unit,
     onNavigateToLeaderboard: () -> Unit,
-    onNavigateToInterviewSandbox: () -> Unit
+    onNavigateToInterviewSandbox: () -> Unit,
+    onNavigateToProfile: () -> Unit
 ) {
+    val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 100.dp)
+        contentPadding = PaddingValues(bottom = 120.dp)
     ) {
-        item { HomeTopBar(onNavigateToNotifications = onNavigateToNotifications) }
+        item { 
+            HomeTopBar(
+                userName = user.fullName, 
+                onNavigateToNotifications = onNavigateToNotifications,
+                onNavigateToChats = onNavigateToChats,
+                onNavigateToProfile = onNavigateToProfile
+            ) 
+        }
+        item { PersistentSearchBar(onClick = onNavigateToSearch) }
         item { GreetingSection(userName = user.fullName) }
         
         if (aalOnboarding != null) {
             item { AalInternshipCard(aalOnboarding, aalActivities, onClick = onNavigateToAal) }
         }
-
+ 
         item { InnovationProgressCard(points = user.pointsCount) }
         item { DiscoverCommunityCard(onNavigateToSearch = onNavigateToSearch) }
         item { ResumeBuilderCard(onClick = onNavigateToResumeBuilder) }
@@ -159,8 +174,17 @@ fun HomeContent(
         item { ProjectShowcaseCard(onClick = onNavigateToProjectShowcase) }
         item { CampusAmbassadorCard(onClick = onNavigateToLeaderboard) }
         item { InterviewSandboxCard(onClick = onNavigateToInterviewSandbox) }
-        item { InnovationHubCard(onNavigateToHub = { /* Handled in MainScaffold */ }) }
-        item { RepositoriesSection(onNavigateToRepository = onNavigateToRepository) }
+        item { 
+            InnovationHubCard(
+                onNavigateToHub = {
+                    try {
+                        uriHandler.openUri(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            )
+        }
         item { 
             UpcomingEventsSection(
                 events = events, 
@@ -175,125 +199,125 @@ fun HomeContent(
 
 @Composable
 fun ResumeBuilderCard(onClick: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintSky,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintSkyDark else NotionTintSky
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("AI CAREER TOOLS", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple800.copy(alpha = 0.6f), letterSpacing = 1.sp)
-                Text("ATS Resume Builder", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
-                Text("Generate target-role optimized resume with Google X-Y-Z formula.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+                Text("AI CAREER TOOLS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("ATS Resume Builder", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Generate target-role optimized resume with Google X-Y-Z formula.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "📄", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.Description, backgroundColor = NotionCanvas)
         }
     }
 }
 
 @Composable
 fun MicroCredentialsCard(onClick: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintYellow,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintYellowDark else NotionTintYellow
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("VERIFIABLE CREDENTIALS", style = MaterialTheme.typography.labelSmall, color = NotionBrandBrown.copy(alpha = 0.8f), letterSpacing = 1.sp)
-                Text("Badges & Certifications", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
-                Text("Showcase skill badges, achievements, and roadmap milestones.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+                Text("VERIFIABLE CREDENTIALS", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("Badges & Certifications", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Showcase skill badges, achievements, and roadmap milestones.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "🥇", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.WorkspacePremium, backgroundColor = NotionCanvas)
         }
     }
 }
 
 @Composable
 fun ProjectShowcaseCard(onClick: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintMint,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintMintDark else NotionTintMint
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("PEER CODE REVIEW", style = MaterialTheme.typography.labelSmall, color = NotionBrandTeal.copy(alpha = 0.8f), letterSpacing = 1.sp)
-                Text("Project Showcase", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
-                Text("Submit repositories, get peer feedback, and feature your projects.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+                Text("PEER CODE REVIEW", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("Project Showcase", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Submit repositories, get peer feedback, and feature your projects.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "💻", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.Code, backgroundColor = NotionCanvas)
         }
     }
 }
 
 @Composable
 fun CampusAmbassadorCard(onClick: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintLavender,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintLavenderDark else NotionTintLavender
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("CAMPUS AMBASSADOR", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple.copy(alpha = 0.8f), letterSpacing = 1.sp)
-                Text("Leaderboard & Referrals", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
-                Text("Invite friends, earn points, and climb the campus rank list.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+                Text("CAMPUS AMBASSADOR", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("Leaderboard & Referrals", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Invite friends, earn points, and climb the campus rank list.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "📣", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.Campaign, backgroundColor = NotionCanvas)
         }
     }
 }
 
 @Composable
 fun InterviewSandboxCard(onClick: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintRose,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintRoseDark else NotionTintRose
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("AI CAREER SANDBOX", style = MaterialTheme.typography.labelSmall, color = NotionBrandPinkDeep.copy(alpha = 0.8f), letterSpacing = 1.sp)
-                Text("Interview Practice Sandbox", style = MaterialTheme.typography.titleMedium, color = NotionCharcoal, fontWeight = FontWeight.Bold)
-                Text("Practice domain-specific interviews and get a confidence evaluation report.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.7f))
+                Text("AI CAREER SANDBOX", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("Interview Practice Sandbox", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Practice domain-specific interviews and get a confidence evaluation report.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "🎙️", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.Mic, backgroundColor = NotionCanvas)
         }
     }
 }
@@ -301,15 +325,14 @@ fun InterviewSandboxCard(onClick: () -> Unit) {
 @Composable
 fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivityDto>, onClick: () -> Unit) {
     val completedCount = activities.count { it.status == ActivityStatus.VERIFIED }
-    
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintLavender,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintLavenderDark else NotionTintLavender
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -318,19 +341,18 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column {
-                    Text("KIRI AI INTERNSHIP", style = MaterialTheme.typography.labelSmall, color = NotionBrandPurple800.copy(alpha = 0.5f), letterSpacing = 1.sp)
-                    Text("Intelligence Progress", style = MaterialTheme.typography.titleMedium, color = NotionBrandPurple800, fontWeight = FontWeight.Bold)
+                    Text("KIRI AI INTERNSHIP", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                    Text("Intelligence Progress", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
                 }
                 Surface(
-                    color = NotionPrimary.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(4.dp),
-                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
                         onboarding.lmsStatus?.name ?: "ENROLLED",
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = NotionPrimary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -342,14 +364,14 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
                 Text(
                     "$completedCount / 7",
                     style = MaterialTheme.typography.titleLarge,
-                    color = NotionBrandPurple800,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
                 LinearProgressIndicator(
                     progress = { completedCount / 7f },
                     modifier = Modifier.weight(1f).height(8.dp).clip(CircleShape),
-                    color = NotionPrimary,
-                    trackColor = NotionBrandPurple300.copy(alpha = 0.5f),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                     strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
                 )
             }
@@ -358,7 +380,7 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
             Text(
                 "Continue your journey to unlock Kiri Certification.",
                 style = MaterialTheme.typography.bodySmall,
-                color = NotionBrandPurple800.copy(alpha = 0.6f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
     }
@@ -366,38 +388,39 @@ fun AalInternshipCard(onboarding: AalOnboardingDto, activities: List<AalActivity
 
 @Composable
 fun InnovationHubCard(onNavigateToHub: () -> Unit) {
+    val isDark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
             .fillMaxWidth()
             .clickableDebounced { onNavigateToHub() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionTintPeach,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = if (isDark) NotionTintPeachDark else NotionTintPeach
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text("KIRI ECOSYSTEM", style = MaterialTheme.typography.labelSmall, color = NotionBrandOrangeDeep.copy(alpha = 0.6f), letterSpacing = 1.sp)
-                Text("Hub Dashboard", style = MaterialTheme.typography.titleMedium, color = NotionBrandOrangeDeep, fontWeight = FontWeight.Bold)
-                Text("Marketplace & AI Services.", style = MaterialTheme.typography.bodySmall, color = NotionBrandOrangeDeep.copy(alpha = 0.6f))
+                Text("KIRI ECOSYSTEM", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), letterSpacing = 1.sp)
+                Text("Hub Dashboard", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                Text("Marketplace & AI Services.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
             }
-            KiriIconBadge(icon = "⚡", backgroundColor = NotionCanvas)
+            KiriIconBadge(imageVector = Icons.Default.Bolt, backgroundColor = NotionCanvas)
         }
     }
 }
 
 @Composable
 fun InnovationProgressCard(points: Int) {
-    val rankInfo = remember(points) {
+    val isDark = isSystemInDarkTheme()
+    val rankInfo = remember(points, isDark) {
         when {
-            points >= 10000 -> Triple("Neural Tier 5 (Apex)", 1.0f, NotionBrandPurple)
+            points >= 10000 -> Triple("Neural Tier 5 (Apex)", 1.0f, if (isDark) NotionLinkBlue else NotionPrimary)
             points >= 5000 -> Triple("Neural Tier 4 (Elite)", (points - 5000) / 5000f, NotionBrandPink)
             points >= 2500 -> Triple("Neural Tier 3 (Advanced)", (points - 2500) / 2500f, NotionBrandOrange)
             points >= 1000 -> Triple("Neural Tier 2 (Growth)", (points - 1000) / 1500f, NotionBrandTeal)
-            else -> Triple("Neural Tier 1 (Initiate)", (points / 1000f), NotionPrimary)
+            else -> Triple("Neural Tier 1 (Initiate)", (points / 1000f), if (isDark) NotionLinkBlue else NotionPrimary)
         }
     }
 
@@ -407,7 +430,6 @@ fun InnovationProgressCard(points: Int) {
             .fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
         shadowElevation = 1.dp
     ) {
         Box(modifier = Modifier.background(
@@ -427,10 +449,15 @@ fun InnovationProgressCard(points: Int) {
                     modifier = Modifier
                         .size(52.dp)
                         .clip(CircleShape)
-                        .background(rankInfo.third.copy(alpha = 0.1f)),
+                        .background(rankInfo.third.copy(alpha = if (isDark) 0.25f else 0.1f)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("💎", fontSize = 28.sp)
+                    Icon(
+                        imageVector = Icons.Default.TrendingUp,
+                        contentDescription = null,
+                        tint = rankInfo.third,
+                        modifier = Modifier.size(28.dp)
+                    )
                 }
                 
                 Column(modifier = Modifier.weight(1f)) {
@@ -483,33 +510,112 @@ fun InnovationProgressCard(points: Int) {
 }
 
 @Composable
-fun HomeTopBar(onNavigateToNotifications: () -> Unit) {
-    Row(
+fun HomeTopBar(
+    userName: String,
+    onNavigateToNotifications: () -> Unit,
+    onNavigateToChats: () -> Unit,
+    onNavigateToProfile: () -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth().statusBarsPadding(),
+        color = MaterialTheme.colorScheme.surface
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val isLightTheme = MaterialTheme.colorScheme.surface == NaukriSurface
+            Text(
+                "KIRI",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Black,
+                color = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White,
+                letterSpacing = 1.sp
+            )
+            
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                IconButton(
+                    onClick = onNavigateToNotifications,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "Notifications",
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+
+                IconButton(
+                    onClick = onNavigateToChats,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Chat,
+                        contentDescription = "Chats",
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                
+                Surface(
+                    modifier = Modifier.size(36.dp).clickable { onNavigateToProfile() },
+                    shape = CircleShape,
+                    color = if (isLightTheme) MaterialTheme.colorScheme.primaryContainer else Color(0xFF1E3A8A)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Text(
+                            text = userName.take(1).uppercase(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PersistentSearchBar(onClick: () -> Unit) {
+    Surface(
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 20.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .height(48.dp),
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+        shadowElevation = 0.dp
     ) {
-        Text(
-            "KIRI",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-            letterSpacing = 1.sp
-        )
-        
-        IconButton(
-            onClick = onNavigateToNotifications,
+        Row(
             modifier = Modifier
-                .size(40.dp)
-                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = "Notifications",
-                modifier = Modifier.size(20.dp),
-                tint = MaterialTheme.colorScheme.onSurface
+                imageVector = Icons.Default.Search,
+                contentDescription = "Search icon",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
+            )
+            Text(
+                text = "Search jobs, skills, or resources...",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
             )
         }
     }
@@ -552,8 +658,7 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
             .fillMaxWidth()
             .clickableDebounced { onNavigateToSearch() },
         shape = RoundedCornerShape(8.dp),
-        color = NotionPrimary,
-        border = BorderStroke(1.dp, NotionBrandPurple800.copy(alpha = 0.2f))
+        color = NotionPrimary
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
@@ -586,59 +691,7 @@ fun DiscoverCommunityCard(onNavigateToSearch: () -> Unit) {
     }
 }
 
-@Composable
-fun RepositoriesSection(onNavigateToRepository: () -> Unit) {
-    val repos = listOf(
-        RepoItem("🎬", "Creators", "0", NotionTintSky),
-        RepoItem("🏆", "Engineers", "0", NotionTintMint),
-        RepoItem("🎯", "Founders", "0", NotionTintPeach)
-    )
 
-    Column {
-        SectionHeader(title = "Kiri Repositories", actionText = "See all", onActionClick = onNavigateToRepository)
-        LazyRow(
-            modifier = Modifier.padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(repos) { item ->
-                RepositoryCard(item, onClick = onNavigateToRepository)
-            }
-        }
-    }
-}
-
-@Composable
-fun RepositoryCard(item: RepoItem, onClick: () -> Unit) {
-    Surface(
-        modifier = Modifier
-            .width(110.dp)
-            .height(100.dp)
-            .clickableDebounced { onClick() },
-        shape = RoundedCornerShape(8.dp),
-        color = item.color,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(item.icon, fontSize = 24.sp)
-            Spacer(Modifier.height(8.dp))
-            Text(
-                item.name,
-                style = MaterialTheme.typography.labelSmall,
-                color = NotionCharcoal,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-data class RepoItem(val icon: String, val name: String, val count: String, val color: Color)
 
 @Composable
 fun UpcomingEventsSection(
@@ -664,8 +717,7 @@ fun UpcomingEventsSection(
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.surface,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ) {
                     Text(
                         "No events scheduled currently.", 
@@ -713,8 +765,7 @@ fun EventItemCard(event: EventDto, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth().clickableDebounced { onClick() },
         shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),

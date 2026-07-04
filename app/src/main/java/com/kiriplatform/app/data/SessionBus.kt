@@ -14,4 +14,5 @@ object SessionBus {
 
 sealed class SessionEvent {
     object Logout : SessionEvent()
+    object NotificationReceived : SessionEvent()
 }

@@ -360,7 +360,7 @@ fun RoleStep(
     selectedRole: String, onRoleChange: (String) -> Unit,
     inviteCode: String, onInviteCodeChange: (String) -> Unit
 ) {
-    val roles = listOf("STUDENT" to "🎓 Student", "FOUNDER" to "🚀 Founder", "MENTOR" to "👨‍🏫 Mentor", "SPOC" to "🏢 SPOC")
+    val roles = listOf("STUDENT" to "Student", "FOUNDER" to "Founder", "MENTOR" to "Mentor", "SPOC" to "SPOC")
     
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text("Identify Your Role", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Black)
@@ -431,7 +431,7 @@ fun DetailStep(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = NotionPrimary))
-                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium, color = NotionCharcoal)
+                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
             }
         }
         
@@ -449,7 +449,7 @@ fun PersonaStep(
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
-        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.6f))
+        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         
         OutlinedTextField(
             value = bio,

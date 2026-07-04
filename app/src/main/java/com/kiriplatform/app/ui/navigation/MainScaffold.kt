@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -112,70 +113,61 @@ fun MainScaffold(
     val showBottomBar = currentRoute in BottomNavItems.map { it.route } && !isChatSubScreen
     
     Scaffold(
-        containerColor = Color.Transparent,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets.systemBars,
+        bottomBar = {
+            AnimatedVisibility(
+                visible = showBottomBar,
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+                modifier = Modifier.navigationBarsPadding()
+            ) {
+                ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
+            }
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                // Main Content
-                content(padding)
-
-                // Floating Bottom Navigation
-                AnimatedVisibility(
-                    visible = showBottomBar,
-                    enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-                    exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .navigationBarsPadding() // Keep above gesture line
-                        .padding(bottom = 24.dp)
-                ) {
-                    ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
-                }
-            }
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Main Content
+            content(padding)
         }
     }
 }
 
 @Composable
 fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
-    Surface(
-        modifier = Modifier
-            .padding(horizontal = 48.dp) // Narrower width for icon-only nav
-            .height(56.dp)
-            .wrapContentWidth(),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 0.dp,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Row(
+    Column {
+        Divider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
+        Surface(
             modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .fillMaxHeight(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .height(68.dp),
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 8.dp
         ) {
-            BottomNavItems.forEach { screen ->
-                val selected = currentRoute == screen.route
-                
-                NavigationTab(
-                    screen = screen,
-                    selected = selected,
-                    onClick = {
-                        if (currentRoute != screen.route) {
-                            navController.navigate(screen.route) {
-                                popUpTo(Screen.Home.route) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BottomNavItems.forEach { screen ->
+                    val selected = currentRoute == screen.route
+                    
+                    NavigationTab(
+                        screen = screen,
+                        selected = selected,
+                        modifier = Modifier.weight(1f),
+                        onClick = {
+                            if (currentRoute != screen.route) {
+                                navController.navigate(screen.route) {
+                                    popUpTo(Screen.Home.route) { saveState = true }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
@@ -185,28 +177,35 @@ fun ASGBottomNavigation(navController: NavController, currentRoute: String?) {
 fun NavigationTab(
     screen: Screen,
     selected: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    val iconColor by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-        label = "iconColor"
-    )
+    val tintColor = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
 
-    Box(
-        modifier = Modifier
-            .size(44.dp)
-            .clip(RoundedCornerShape(8.dp))
+    Column(
+        modifier = modifier
+            .fillMaxHeight()
             .clickable(onClick = onClick)
-            .background(if (selected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent),
-        contentAlignment = Alignment.Center
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         if (screen.icon != null) {
             Icon(
                 imageVector = screen.icon,
                 contentDescription = screen.title,
-                modifier = Modifier.size(22.dp),
-                tint = iconColor
+                modifier = Modifier.size(24.dp),
+                tint = tintColor
             )
         }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = screen.title,
+            style = MaterialTheme.typography.labelSmall,
+            color = tintColor,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            fontSize = 11.sp,
+            maxLines = 1
+        )
     }
 }

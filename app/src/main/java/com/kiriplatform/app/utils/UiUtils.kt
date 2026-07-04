@@ -21,22 +21,17 @@ import androidx.compose.ui.unit.dp
 
 fun Modifier.glassmorphism(
     enabled: Boolean = true,
-    cornerRadius: Dp = 32.dp,
-    alpha: Float = 0.15f
+    cornerRadius: Dp = 8.dp,
+    alpha: Float = 1f
 ): Modifier = composed {
     if (!enabled) return@composed this
 
     this
         .clip(RoundedCornerShape(cornerRadius))
-        .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = alpha))
+        .background(MaterialTheme.colorScheme.surface)
         .border(
             width = 1.dp,
-            brush = Brush.verticalGradient(
-                colors = listOf(
-                    Color.White.copy(alpha = 0.3f),
-                    Color.White.copy(alpha = 0.05f)
-                )
-            ),
+            color = MaterialTheme.colorScheme.outlineVariant,
             shape = RoundedCornerShape(cornerRadius)
         )
 }

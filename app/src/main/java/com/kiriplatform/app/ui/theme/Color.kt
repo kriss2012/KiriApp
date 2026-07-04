@@ -2,65 +2,86 @@ package com.kiriplatform.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Notion Design System Colors (from DESIGN.md)
-val NotionPrimary = Color(0xFF5645D4)
-val NotionPrimaryPressed = Color(0xFF4534B3)
-val NotionPrimaryDeep = Color(0xFF3A2A99)
+// Naukri Design System Colors
+val NaukriNavy = Color(0xFF0F2C59) // Navy Primary
+val NaukriCyan = Color(0xFF00A5EC) // Cyan Accent
+val NaukriBackground = Color(0xFFF4F6F9) // Off-white canvas
+val NaukriSurface = Color(0xFFFFFFFF) // White surface
+val NaukriTextPrimary = Color(0xFF1E293B) // Dark slate for text
+val NaukriTextSecondary = Color(0xFF64748B) // Slate gray for secondary text
+val NaukriBorder = Color(0xFFE2E8F0) // Flat hairline border
+
+// Notion Design System Colors mapped to Naukri colors
+val NotionPrimary = NaukriNavy
+val NotionPrimaryPressed = Color(0xFF0B2143)
+val NotionPrimaryDeep = Color(0xFF081832)
 val NotionOnPrimary = Color(0xFFFFFFFF)
 
-val NotionBrandNavy = Color(0xFF0A1530)
-val NotionBrandNavyDeep = Color(0xFF070F24)
-val NotionBrandNavyMid = Color(0xFF1A2A52)
+val NotionBrandNavy = NaukriNavy
+val NotionBrandNavyDeep = Color(0xFF081832)
+val NotionBrandNavyMid = NaukriNavy
 
-val NotionLinkBlue = Color(0xFF0075DE)
-val NotionLinkBluePressed = Color(0xFF005BAB)
+val NotionLinkBlue = NaukriCyan
+val NotionLinkBluePressed = Color(0xFF0088C2)
 
-val NotionBrandOrange = Color(0xFFDD5B00)
-val NotionBrandOrangeDeep = Color(0xFF793400)
-val NotionBrandPink = Color(0xFFFF64C8)
-val NotionBrandPinkDeep = Color(0xFFA02E6D)
-val NotionBrandPurple = Color(0xFF7B3FF2)
-val NotionBrandPurple300 = Color(0xFFD6B6F6)
-val NotionBrandPurple800 = Color(0xFF391C57)
-val NotionBrandTeal = Color(0xFF2A9D99)
-val NotionBrandGreen = Color(0xFF1AAE39)
-val NotionBrandYellow = Color(0xFFF5D75E)
-val NotionBrandBrown = Color(0xFF523410)
+val NotionBrandOrange = Color(0xFFE056FD)
+val NotionBrandOrangeDeep = Color(0xFFBE2EDD)
+val NotionBrandPink = Color(0xFFFF6B6B)
+val NotionBrandPinkDeep = Color(0xFFEE5253)
+val NotionBrandPurple = NaukriNavy
+val NotionBrandPurple300 = Color(0xFF90A4AE)
+val NotionBrandPurple800 = Color(0xFF081832)
+val NotionBrandTeal = NaukriCyan
+val NotionBrandGreen = Color(0xFF10B981)
+val NotionBrandYellow = Color(0xFFFBBF24)
+val NotionBrandBrown = Color(0xFF78350F)
 
 // Card Tints
-val NotionTintPeach = Color(0xFFFFE8D4)
-val NotionTintRose = Color(0xFFFDE0EC)
-val NotionTintMint = Color(0xFFD9F3E1)
-val NotionTintLavender = Color(0xFFE6E0F5)
-val NotionTintSky = Color(0xFFDCECFA)
-val NotionTintYellow = Color(0xFFFEF7D6)
-val NotionTintYellowBold = Color(0xFFF9E79F)
-val NotionTintCream = Color(0xFFF8F5E8)
-val NotionTintGray = Color(0xFFF0EEEC)
+val NotionTintPeach = Color(0xFFF8FAFC)
+val NotionTintRose = Color(0xFFF8FAFC)
+val NotionTintMint = Color(0xFFECFDF5)
+val NotionTintLavender = Color(0xFFF1F5F9)
+val NotionTintSky = Color(0xFFEFF6FF)
+val NotionTintYellow = Color(0xFFFEF3C7)
+val NotionTintYellowBold = Color(0xFFFDE68A)
+val NotionTintCream = Color(0xFFF8FAFC)
+val NotionTintGray = Color(0xFFF1F5F9)
+
+// Dark Card Tints
+val NotionTintSkyDark = Color(0xFF10243D)
+val NotionTintYellowDark = Color(0xFF2E2810)
+val NotionTintMintDark = Color(0xFF0F2A1C)
+val NotionTintLavenderDark = Color(0xFF241A3D)
+val NotionTintRoseDark = Color(0xFF33101F)
+val NotionTintPeachDark = Color(0xFF332008)
+
+// Dark-mode text colors to pair with the tints above
+val NotionOnTintDark = Color(0xFFF2F0EC)
+val NotionOnTintDarkMuted = Color(0xFFC9C6C0)
 
 // Surface
-val NotionCanvas = Color(0xFFFFFFFF)
-val NotionSurface = Color(0xFFF6F5F4)
-val NotionSurfaceSoft = Color(0xFFFAFAF9)
-val NotionHairline = Color(0xFFE5E3DF)
-val NotionHairlineSoft = Color(0xFFEDE9E4)
-val NotionHairlineStrong = Color(0xFFC8C4BE)
+val NotionCanvas = NaukriBackground
+val NotionSurface = NaukriSurface
+val NotionSurfaceSoft = Color(0xFFF8FAFC)
+val NotionHairline = NaukriBorder
+val NotionHairlineSoft = Color(0xFFF1F5F9)
+val NotionHairlineStrong = Color(0xFFCBD5E1)
 
 // Text
-val NotionInkDeep = Color(0xFF000000)
-val NotionInk = Color(0xFF1A1A1A)
-val NotionCharcoal = Color(0xFF37352F)
-val NotionSlate = Color(0xFF5D5B54)
-val NotionSteel = Color(0xFF787671)
-val NotionStone = Color(0xFFA4A097)
-val NotionMuted = Color(0xFFBBB8B1)
+val NotionInkDeep = Color(0xFF0F172A)
+val NotionInk = NaukriTextPrimary
+val NotionCharcoal = Color(0xFF334155)
+val NotionSlate = NaukriTextSecondary
+val NotionSteel = Color(0xFF64748B)
+val NotionStone = Color(0xFF94A3B8)
+val NotionMuted = Color(0xFFCBD5E1)
 val NotionOnDark = Color(0xFFFFFFFF)
-val NotionOnDarkMuted = Color(0xFFA4A097)
+val NotionOnDarkMuted = Color(0xFF94A3B8)
 
 // Semantic
-val NotionSuccess = Color(0xFF1AAE39)
-val NotionWarning = Color(0xFFDD5B00)
-val NotionError = Color(0xFFE03131)
+val NotionSuccess = Color(0xFF10B981)
+val NotionWarning = Color(0xFFF59E0B)
+val NotionError = Color(0xFFEF4444)
 
 // Amoled (Retained from original)
 val AmoledBlack = Color(0xFF000000)

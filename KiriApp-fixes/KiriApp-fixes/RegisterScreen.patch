@@ -1,0 +1,20 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/screens/RegisterScreen.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/screens/RegisterScreen.kt	2026-07-04 03:33:01.573712355 +0000
+@@ -431,7 +431,7 @@
+ 
+             Row(verticalAlignment = Alignment.CenterVertically) {
+                 Checkbox(autoEnroll, onAutoEnrollChange, colors = CheckboxDefaults.colors(checkedColor = NotionPrimary))
+-                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium, color = NotionCharcoal)
++                Text("Enroll in Kiri Organization Internship", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+             }
+         }
+         
+@@ -449,7 +449,7 @@
+ ) {
+     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+         Text("Digital Persona", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
+-        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = NotionCharcoal.copy(alpha = 0.6f))
++        Text("Help the AI Agent map your skills to regional opportunities.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+         
+         OutlinedTextField(
+             value = bio,

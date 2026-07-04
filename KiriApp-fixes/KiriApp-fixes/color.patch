@@ -1,0 +1,32 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/theme/Color.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/theme/Color.kt	2026-07-04 03:23:06.759934830 +0000
+@@ -27,7 +27,7 @@
+ val NotionBrandYellow = Color(0xFFF5D75E)
+ val NotionBrandBrown = Color(0xFF523410)
+ 
+-// Card Tints
++// Card Tints (Light mode)
+ val NotionTintPeach = Color(0xFFFFE8D4)
+ val NotionTintRose = Color(0xFFFDE0EC)
+ val NotionTintMint = Color(0xFFD9F3E1)
+@@ -38,6 +38,20 @@
+ val NotionTintCream = Color(0xFFF8F5E8)
+ val NotionTintGray = Color(0xFFF0EEEC)
+ 
++// Card Tints (Dark mode) - desaturated/darkened counterparts so cards
++// no longer stay bright pastel when the app is in dark theme.
++val NotionTintPeachDark = Color(0xFF332008)
++val NotionTintRoseDark = Color(0xFF33101F)
++val NotionTintMintDark = Color(0xFF0F2A1C)
++val NotionTintLavenderDark = Color(0xFF241A3D)
++val NotionTintSkyDark = Color(0xFF10243D)
++val NotionTintYellowDark = Color(0xFF2E2810)
++
++// Dark-mode text colors to pair with the tints above (replace NotionCharcoal /
++// NotionBrandPurple800 / etc. which are dark-only colors that vanish on dark cards)
++val NotionOnTintDark = Color(0xFFF2F0EC)
++val NotionOnTintDarkMuted = Color(0xFFC9C6C0)
++
+ // Surface
+ val NotionCanvas = Color(0xFFFFFFFF)
+ val NotionSurface = Color(0xFFF6F5F4)

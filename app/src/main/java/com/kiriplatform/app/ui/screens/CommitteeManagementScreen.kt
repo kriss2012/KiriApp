@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -99,22 +100,31 @@ fun RepsManagement() {
             items(reps) { (name, role) ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Row(
                         modifier = Modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        val isDark = isSystemInDarkTheme()
                         Surface(
                             modifier = Modifier.size(40.dp),
                             shape = RoundedCornerShape(20.dp),
-                            color = if (role.contains("FACULTY")) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else NotionTintPeach
+                            color = if (role.contains("FACULTY")) {
+                                MaterialTheme.colorScheme.primary.copy(alpha = if (isDark) 0.25f else 0.1f)
+                            } else {
+                                if (isDark) NotionTintPeachDark else NotionTintPeach
+                            }
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
                                     if (role.contains("FACULTY")) Icons.Default.School else Icons.Default.Person,
                                     null,
-                                    tint = if (role.contains("FACULTY")) MaterialTheme.colorScheme.primary else NotionBrandOrange
+                                    tint = if (role.contains("FACULTY")) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        if (isDark) NotionOnTintDark else NotionBrandOrange
+                                    }
                                 )
                             }
                         }

@@ -1,0 +1,20 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/screens/EventDetailsScreen.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/screens/EventDetailsScreen.kt	2026-07-04 03:32:28.477529430 +0000
+@@ -126,7 +126,7 @@
+             Column(modifier = Modifier.padding(24.dp)) {
+                 // Type Badge
+                 Surface(
+-                    color = NotionTintLavender,
++                    color = if (isSystemInDarkTheme()) NotionTintLavenderDark else NotionTintLavender,
+                     shape = RoundedCornerShape(6.dp),
+                     border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
+                 ) {
+@@ -134,7 +134,7 @@
+                         text = (event.type ?: "GENERAL").uppercase(),
+                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                         style = MaterialTheme.typography.labelMedium,
+-                        color = NotionBrandPurple800,
++                        color = if (isSystemInDarkTheme()) NotionOnTintDark else NotionBrandPurple800,
+                         fontWeight = FontWeight.Bold,
+                         letterSpacing = 1.sp
+                     )

@@ -3,6 +3,7 @@ package com.kiriplatform.app.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -105,11 +106,12 @@ fun PitchCard(pitch: PitchDto, onBack: () -> Unit) {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val dark = isSystemInDarkTheme()
                 Surface(
-                    color = NotionTintPeach,
+                    color = if (dark) NotionTintPeachDark else NotionTintPeach,
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = NotionBrandOrangeDeep, fontWeight = FontWeight.Bold)
+                    Text(pitch.category, modifier = Modifier.padding(8.dp, 4.dp), style = MaterialTheme.typography.labelSmall, color = if (dark) NotionOnTintDark else NotionBrandOrangeDeep, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.weight(1f))
                 Text(pitch.status, style = MaterialTheme.typography.labelSmall, color = if (pitch.status == "OPEN") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)

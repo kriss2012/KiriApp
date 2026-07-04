@@ -72,7 +72,7 @@ fun OnboardingScreen(onComplete: () -> Unit) {
 @Composable
 fun RoleSelectionPage() {
     var selectedRole by remember { mutableStateOf<String?>(null) }
-    val roles = listOf("🎓 Student", "🚀 Founder", "💼 Investor", "👨‍🏫 Mentor")
+    val roles = listOf("Student", "Founder", "Investor", "Mentor")
 
     Column(
         modifier = Modifier

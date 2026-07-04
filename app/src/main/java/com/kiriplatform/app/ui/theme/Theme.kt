@@ -40,8 +40,8 @@ enum class AppTheme(
             onError = NotionOnPrimary
         ),
         darkScheme = darkColorScheme(
-            primary = NotionPrimary,
-            onPrimary = NotionOnPrimary,
+            primary = NotionLinkBlue,
+            onPrimary = NotionPrimaryDeep,
             primaryContainer = NotionBrandPurple800,
             onPrimaryContainer = NotionBrandPurple300,
             secondary = NotionLinkBlue,
@@ -60,37 +60,13 @@ enum class AppTheme(
     )
 }
 
-fun ColorScheme.toAmoled(): ColorScheme {
-    return this.copy(
-        background = AmoledBlack,
-        surface = AmoledBlack,
-        surfaceContainer = AmoledBlack
-    )
-}
-
-private object SafeIndication : IndicationNodeFactory {
-    override fun create(interactionSource: InteractionSource): DelegatableNode {
-        return object : Modifier.Node() {}
-    }
-    
-    override fun equals(other: Any?): Boolean = other === this
-    override fun hashCode(): Int = System.identityHashCode(this)
-}
-
 @Composable
 fun KiriAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     appTheme: AppTheme = AppTheme.NOTION,
-    isAmoledTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val baseColorScheme = if (darkTheme) appTheme.darkScheme else appTheme.lightScheme
-    
-    val colorScheme = if (darkTheme && isAmoledTheme) {
-        baseColorScheme.toAmoled()
-    } else {
-        baseColorScheme
-    }
+    val colorScheme = if (darkTheme) appTheme.darkScheme else appTheme.lightScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -98,7 +74,9 @@ fun KiriAppTheme(
             val activity = view.context as? Activity
             activity?.window?.let { window ->
                 window.statusBarColor = colorScheme.background.toArgb()
-                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+                val insetsController = WindowCompat.getInsetsController(window, view)
+                insetsController.isAppearanceLightStatusBars = !darkTheme
+                insetsController.isAppearanceLightNavigationBars = !darkTheme
             }
         }
     }

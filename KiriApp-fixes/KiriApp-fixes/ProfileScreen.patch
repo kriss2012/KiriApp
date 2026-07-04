@@ -1,0 +1,11 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/screens/ProfileScreen.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/screens/ProfileScreen.kt	2026-07-04 03:32:54.062634881 +0000
+@@ -442,7 +442,7 @@
+             ) {
+                 Text(
+                     "SECURE LOGOUT", 
+-                    color = NotionCharcoal.copy(alpha = 0.6f), 
++                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f), 
+                     fontWeight = FontWeight.Bold,
+                     style = MaterialTheme.typography.labelSmall,
+                     letterSpacing = 1.sp

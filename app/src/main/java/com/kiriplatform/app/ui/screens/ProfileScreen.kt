@@ -3,6 +3,11 @@ package com.kiriplatform.app.ui.screens
 import android.widget.Toast
 import com.kiriplatform.app.ui.components.ClickableUrlText
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -18,6 +23,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -94,7 +101,7 @@ fun ProfileScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = { Spacer(Modifier.height(0.dp)) }
+        contentWindowInsets = WindowInsets(0)
     ) { padding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
@@ -160,6 +167,7 @@ fun ProfileContent(
     var isScoreLoading by remember { mutableStateOf(false) }
     var scoreError by remember { mutableStateOf<String?>(null) }
 
+
     LaunchedEffect(user.githubUrl) {
         val gitUrl = user.githubUrl
         if (!gitUrl.isNullOrBlank()) {
@@ -169,10 +177,35 @@ fun ProfileContent(
                 isGithubLoading = true
                 githubError = null
                 try {
-                    githubStats = ApiClient.service.getGitHubStats(username)
+                    val githubUser = GitHubApiClient.service.getUser(username)
+                    val githubRepos = GitHubApiClient.service.getRepos(username)
+                    githubStats = com.kiriplatform.app.data.remote.models.GitHubStatsResponse(
+                        login = githubUser.login,
+                        name = githubUser.name,
+                        followers = githubUser.followers,
+                        following = githubUser.following,
+                        public_repos = githubUser.public_repos,
+                        bio = githubUser.bio,
+                        avatar_url = githubUser.avatar_url,
+                        repos = githubRepos.map { repo ->
+                            com.kiriplatform.app.data.remote.models.GitHubRepoDto(
+                                name = repo.name,
+                                description = repo.description,
+                                language = repo.language,
+                                stars = repo.stargazers_count,
+                                forks = repo.forks_count,
+                                url = repo.html_url
+                            )
+                        }
+                    )
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    githubError = "GitHub integration is temporarily unavailable. Please try again later."
+                    try {
+                        githubStats = ApiClient.service.getGitHubStats(username)
+                    } catch (e2: Exception) {
+                        e2.printStackTrace()
+                        githubError = "GitHub integration is temporarily unavailable. Please try again later."
+                    }
                 } finally {
                     isGithubLoading = false
                 }
@@ -194,9 +227,8 @@ fun ProfileContent(
     }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 100.dp) // Space for floating nav
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 120.dp)
     ) {
         item { 
             ProfileHeroSection(
@@ -230,8 +262,7 @@ fun ProfileContent(
                     user.services.forEach { service ->
                         Surface(
                             shape = RoundedCornerShape(8.dp),
-                            color = MaterialTheme.colorScheme.surface,
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
                         ) {
                             Text(
                                 text = service.uppercase(),
@@ -253,8 +284,7 @@ fun ProfileContent(
                 Surface(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -333,8 +363,7 @@ fun ProfileContent(
                 Surface(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.2f))
+                    color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.1f)
                 ) {
                     Text(
                         text = githubError!!,
@@ -354,9 +383,8 @@ fun ProfileContent(
             item {
                 Surface(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.25f)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
@@ -410,8 +438,7 @@ fun ProfileContent(
                 Surface(
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp).fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ) {
                     Text(
                         text = scoreError!!,
@@ -431,18 +458,20 @@ fun ProfileContent(
             ) 
         }
         item {
-            OutlinedButton(
+            Button(
                 onClick = onLogout,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 32.dp)
                     .height(44.dp),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.8f),
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer
+                )
             ) {
                 Text(
                     "SECURE LOGOUT", 
-                    color = NotionCharcoal.copy(alpha = 0.6f), 
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.labelSmall,
                     letterSpacing = 1.sp
@@ -474,7 +503,8 @@ fun ProfileHeroSection(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 24.dp, vertical = 32.dp)
+            .statusBarsPadding()
+            .padding(horizontal = 24.dp, vertical = 24.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -484,8 +514,7 @@ fun ProfileHeroSection(
             Surface(
                 modifier = Modifier.size(72.dp),
                 shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                color = MaterialTheme.colorScheme.surfaceVariant
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
@@ -555,8 +584,7 @@ fun RowScope.StatBox(value: String, label: String) {
     Surface(
         modifier = Modifier.weight(1f),
         shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     ) {
         Column(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 8.dp),
@@ -586,9 +614,9 @@ fun DashboardMenu(
     onNavigateToActivity: () -> Unit
 ) {
     val menuItems = listOf(
-        DashboardMenuItem("🚀", "My Startup Profile", "Coming Soon"),
-        DashboardMenuItem("🤝", "Team Requests", null),
-        DashboardMenuItem("📋", "My Community Activity", null)
+        DashboardMenuItem(Icons.Default.Build, "My Startup Profile", "Coming Soon"),
+        DashboardMenuItem(Icons.Default.AccountCircle, "Team Requests", null),
+        DashboardMenuItem(Icons.Default.CheckCircle, "My Community Activity", null)
     )
 
     Column(modifier = Modifier.padding(horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -610,7 +638,7 @@ fun DashboardMenu(
     }
 }
 
-data class DashboardMenuItem(val icon: String, val label: String, val badge: String? = null)
+data class DashboardMenuItem(val icon: androidx.compose.ui.graphics.vector.ImageVector, val label: String, val badge: String? = null)
 
 @Composable
 fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
@@ -618,15 +646,19 @@ fun DashboardMenuCard(item: DashboardMenuItem, onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(item.icon, fontSize = 20.sp)
+            Icon(
+                imageVector = item.icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp)
+            )
             
             Text(
                 item.label,
@@ -669,8 +701,7 @@ fun GitHubStatsCard(stats: com.kiriplatform.app.data.remote.models.GitHubStatsRe
             .fillMaxWidth()
             .padding(vertical = 12.dp),
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -727,8 +758,7 @@ fun GitHubStatsCard(stats: com.kiriplatform.app.data.remote.models.GitHubStatsRe
                             .padding(vertical = 6.dp)
                             .clickable { onOpenUrl(repo.url) },
                         shape = MaterialTheme.shapes.medium,
-                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Row(
@@ -815,8 +845,7 @@ fun EmployabilityScoreCard(
             .fillMaxWidth()
             .padding(horizontal = 24.dp, vertical = 8.dp),
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -924,6 +953,47 @@ private fun BreakdownRow(label: String, score: Int, weight: Int) {
             color = if (score >= 80) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
             trackColor = MaterialTheme.colorScheme.outlineVariant
         )
+    }
+}
+
+interface PublicGitHubApiService {
+    @GET("users/{username}")
+    suspend fun getUser(@Path("username") username: String): PublicGitHubUser
+
+    @GET("users/{username}/repos")
+    suspend fun getRepos(
+        @Path("username") username: String,
+        @Query("sort") sort: String = "updated",
+        @Query("per_page") perPage: Int = 3
+    ): List<PublicGitHubRepo>
+}
+
+data class PublicGitHubUser(
+    val login: String,
+    val name: String?,
+    val followers: Int,
+    val following: Int,
+    val public_repos: Int,
+    val bio: String?,
+    val avatar_url: String?
+)
+
+data class PublicGitHubRepo(
+    val name: String,
+    val description: String?,
+    val language: String?,
+    val stargazers_count: Int,
+    val forks_count: Int,
+    val html_url: String
+)
+
+object GitHubApiClient {
+    val service: PublicGitHubApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://api.github.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(PublicGitHubApiService::class.java)
     }
 }
 

@@ -73,8 +73,7 @@ class MainActivity : ComponentActivity() {
             
             KiriAppTheme(
                 darkTheme = uiState.isDarkTheme ?: androidx.compose.foundation.isSystemInDarkTheme(),
-                appTheme = uiState.currentColorTheme,
-                isAmoledTheme = uiState.isAmoledTheme
+                appTheme = uiState.currentColorTheme
             ) {
                 val navController = rememberNavController()
                 

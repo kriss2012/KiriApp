@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,14 +52,14 @@ fun AalOrganizationScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = NotionInk) },
+                title = { Text("Kiri Organization", style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onSurface) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null, tint = NotionInk) }
+                    IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, null, tint = MaterialTheme.colorScheme.onSurface) }
                 },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = NotionCanvas)
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.surface)
             )
         },
-        containerColor = NotionCanvas
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         when (val currentState = state) {
             is AalState.Loading -> {
@@ -82,7 +83,7 @@ fun AalOrganizationScreen(
                     item {
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            color = NotionInkDeep,
+                            color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.large // 12dp
                         ) {
                             Column(modifier = Modifier.padding(24.dp)) {
@@ -93,8 +94,8 @@ fun AalOrganizationScreen(
                                 LinearProgressIndicator(
                                     progress = { completedCount.toFloat() / 7f },
                                     modifier = Modifier.fillMaxWidth().height(6.dp),
-                                    color = NotionPrimary,
-                                    trackColor = NotionOnDark.copy(alpha = 0.1f),
+                                    color = NotionOnDark,
+                                    trackColor = NotionOnDark.copy(alpha = 0.2f),
                                     strokeCap = androidx.compose.ui.graphics.StrokeCap.Round
                                 )
                             }
@@ -126,12 +127,21 @@ fun AalOrganizationScreen(
 
 @Composable
 fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClick: () -> Unit) {
+    val dark = isSystemInDarkTheme()
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium, // 8dp
-        color = if (isCurrent) NotionTintLavender.copy(alpha = 0.3f) else NotionSurface,
+        color = if (isCurrent) {
+            (if (dark) NotionTintLavenderDark else NotionTintLavender).copy(alpha = 0.3f)
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
         onClick = onClick,
-        border = if (isCurrent) androidx.compose.foundation.BorderStroke(1.dp, NotionPrimary) else BorderStroke(1.dp, NotionHairline)
+        border = if (isCurrent) {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        } else {
+            BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        }
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -140,15 +150,19 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
         ) {
             Box(
                 modifier = Modifier.size(40.dp).background(
-                    if (isCompleted) NotionPrimary.copy(alpha = 0.1f) else NotionSlate.copy(alpha = 0.1f),
+                    if (isCompleted) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = if (dark) 0.25f else 0.1f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f)
+                    },
                     MaterialTheme.shapes.small // 6dp
                 ),
                 contentAlignment = Alignment.Center
             ) {
                 if (isCompleted) {
-                    Icon(Icons.Default.CheckCircle, null, tint = NotionPrimary)
+                    Icon(Icons.Default.CheckCircle, null, tint = MaterialTheme.colorScheme.primary)
                 } else {
-                    Icon(Icons.Default.Info, null, tint = NotionSteel)
+                    Icon(Icons.Default.Info, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
 
@@ -157,12 +171,12 @@ fun ActivityCard(title: String, isCompleted: Boolean, isCurrent: Boolean, onClic
                     title,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
-                    color = NotionInk
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     if (isCompleted) "VERIFIED" else if (isCurrent) "START NOW" else "LOCKED",
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isCompleted) NotionPrimary else if (isCurrent) NotionPrimary else NotionSteel
+                    color = if (isCompleted || isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

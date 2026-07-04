@@ -1,6 +1,7 @@
 package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,7 +37,7 @@ import com.kiriplatform.app.data.remote.ApiClient
 import com.kiriplatform.app.ui.components.ClickableUrlText
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ChatScreen(
     receiverId: String = "admin-support", // Default
@@ -231,9 +232,16 @@ fun ChatScreen(
                         EmptyChatState(receiverName)
                     } else {
                         val listState = rememberLazyListState()
+                        val imeVisible = WindowInsets.isImeVisible
                         
                         LaunchedEffect(state.messages.size) {
                             if (state.messages.isNotEmpty()) {
+                                listState.animateScrollToItem(state.messages.size - 1)
+                            }
+                        }
+
+                        LaunchedEffect(imeVisible) {
+                            if (imeVisible && state.messages.isNotEmpty()) {
                                 listState.animateScrollToItem(state.messages.size - 1)
                             }
                         }
@@ -310,16 +318,17 @@ fun ModernMessageBubble(message: MessageDto, currentUserId: String) {
     } catch (e: Exception) { "" }
 
     if (isSystem) {
+        val dark = isSystemInDarkTheme()
         Box(Modifier.fillMaxWidth().padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
             Surface(
-                color = NotionTintMint,
+                color = if (dark) NotionTintMintDark else NotionTintMint,
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = message.content,
                     modifier = Modifier.padding(16.dp, 8.dp),
                     style = MaterialTheme.typography.labelSmall,
-                    color = NotionSuccess,
+                    color = if (dark) NotionOnTintDark else NotionSuccess,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
                 )
             }

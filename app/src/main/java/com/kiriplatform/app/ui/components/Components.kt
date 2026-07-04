@@ -100,21 +100,23 @@ fun KiriPrimaryButton(
 @Composable
 fun ASGTagChip(
     text: String,
-    backgroundColor: Color,
-    textColor: Color,
+    backgroundColor: Color = Color.Transparent,
+    textColor: Color = Color.Unspecified,
     modifier: Modifier = Modifier
 ) {
+    val finalBg = if (backgroundColor == Color.Transparent) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f) else backgroundColor
+    val finalTextColor = if (textColor == Color.Unspecified) MaterialTheme.colorScheme.onSurfaceVariant else textColor
     Surface(
-        color = backgroundColor,
-        shape = MaterialTheme.shapes.extraSmall, // 4dp
+        color = finalBg,
+        shape = RoundedCornerShape(12.dp), // Pill shape
         modifier = modifier
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = textColor,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-            fontWeight = FontWeight.Bold
+            color = finalTextColor,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            fontWeight = FontWeight.Medium
         )
     }
 }
@@ -124,8 +126,7 @@ fun AIStatusChip(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(MaterialTheme.shapes.small) // 6dp
-            .background(MaterialTheme.colorScheme.surface)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
             .padding(horizontal = 10.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -157,10 +158,35 @@ fun KiriIconBadge(
             .size(32.dp)
             .clip(MaterialTheme.shapes.small) // 6dp
             .background(backgroundColor)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(text = icon, fontSize = 14.sp)
     }
 }
+
+@Composable
+fun KiriIconBadge(
+    imageVector: androidx.compose.ui.graphics.vector.ImageVector,
+    backgroundColor: Color,
+    onClick: () -> Unit = {},
+    tint: Color = MaterialTheme.colorScheme.primary,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .size(32.dp)
+            .clip(MaterialTheme.shapes.small) // 6dp
+            .background(backgroundColor)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            modifier = Modifier.size(16.dp),
+            tint = tint
+        )
+    }
+}
+

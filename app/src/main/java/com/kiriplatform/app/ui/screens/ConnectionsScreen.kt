@@ -29,6 +29,8 @@ import com.kiriplatform.app.data.remote.models.UserDto
 import com.kiriplatform.app.ui.theme.*
 import com.kiriplatform.app.ui.viewmodels.ConnectionsState
 import com.kiriplatform.app.ui.viewmodels.ConnectionsViewModel
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -175,7 +177,17 @@ fun ConnectionItem(
                     .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Text(user.fullName.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                if (!user.avatarUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model = user.avatarUrl,
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    val firstChar = user.fullName.trim().firstOrNull()?.toString()?.uppercase() ?: "?"
+                    Text(text = firstChar, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                }
             }
 
             Column(modifier = Modifier.weight(1f)) {

@@ -1,0 +1,13 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/screens/ChatScreen.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/screens/ChatScreen.kt	2026-07-04 03:31:55.596112705 +0000
+@@ -311,8 +311,9 @@
+ 
+     if (isSystem) {
+         Box(Modifier.fillMaxWidth().padding(vertical = 12.dp), contentAlignment = Alignment.Center) {
++            val dark = androidx.compose.foundation.isSystemInDarkTheme()
+             Surface(
+-                color = NotionTintMint,
++                color = if (dark) NotionTintMintDark else NotionTintMint,
+                 shape = RoundedCornerShape(12.dp)
+             ) {
+                 Text(

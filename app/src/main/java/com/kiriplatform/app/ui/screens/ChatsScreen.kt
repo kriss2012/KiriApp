@@ -2,6 +2,7 @@ package com.kiriplatform.app.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -45,11 +46,11 @@ fun ChatsScreen(
     }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.surface,
         topBar = {
             Column(
                 modifier = Modifier
-                    .background(MaterialTheme.colorScheme.background)
+                    .background(MaterialTheme.colorScheme.surface)
                     .statusBarsPadding()
                     .padding(horizontal = 24.dp, vertical = 20.dp)
             ) {
@@ -78,10 +79,12 @@ fun ChatsScreen(
                     leadingIcon = { Icon(Icons.Default.Search, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)) },
                     trailingIcon = { if (query.isNotEmpty()) IconButton(onClick = { viewModel.searchUsers("") }) { Icon(Icons.Default.Close, null) } },
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surface,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                         unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-                        focusedBorderColor = MaterialTheme.colorScheme.primary
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     ),
                     singleLine = true
                 )
@@ -93,7 +96,6 @@ fun ChatsScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(bottom = 100.dp, top = 16.dp)
         ) {
             // Search Results Override
@@ -131,7 +133,7 @@ fun ChatsScreen(
                 // Recent Chats
                 if (conversations.isNotEmpty()) {
                     item {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text("Recent Conversations", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 4.dp))
                     }
                     items(conversations) { convo ->
@@ -141,7 +143,7 @@ fun ChatsScreen(
                             ChatListItem(
                                 name = otherUser.fullName,
                                 lastMsg = lastMessage?.content ?: "",
-                                time = "Active", // TODO: Format timestamp
+                                time = "Active",
                                 unreadCount = convo.unreadCount ?: 0,
                                 isAgent = false,
                                 onClick = { onNavigateToChat(otherUser.id) }
@@ -173,39 +175,44 @@ fun ChatListItem(
     isAgent: Boolean,
     onClick: () -> Unit
 ) {
-    Surface(
-        onClick = onClick,
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        modifier = Modifier.fillMaxWidth()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(vertical = 14.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Avatar
             Box {
+                val isLightTheme = MaterialTheme.colorScheme.surface == NaukriSurface
                 Surface(
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(44.dp),
                     shape = RoundedCornerShape(8.dp),
-                    color = if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.05f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
-                    border = BorderStroke(1.dp, if (isAgent) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                    color = if (isLightTheme) MaterialTheme.colorScheme.primary.copy(alpha = 0.05f) else Color(0xFF1E3A8A),
+                    border = BorderStroke(1.dp, if (isLightTheme) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color(0xFF3B82F6))
                 ) {
                     if (isAgent) {
                         Box(contentAlignment = Alignment.Center) {
                             Icon(
                                 Icons.Default.SmartToy,
                                 contentDescription = null,
-                                modifier = Modifier.size(24.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                modifier = Modifier.size(22.dp),
+                                tint = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White
                             )
                         }
                     } else {
                         Box(contentAlignment = Alignment.Center) {
-                            Text(name.take(1).uppercase(), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text(
+                                text = name.take(1).uppercase(),
+                                color = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
                         }
                     }
                 }
@@ -267,5 +274,9 @@ fun ChatListItem(
                 ) {}
             }
         }
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
+        )
     }
 }

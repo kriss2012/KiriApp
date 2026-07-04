@@ -8,11 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -114,7 +110,13 @@ fun EventDetailsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("🖼️", fontSize = 48.sp)
+                            Icon(
+                                imageVector = Icons.Default.Image,
+                                contentDescription = null,
+                                tint = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.4f) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                                modifier = Modifier.size(48.dp)
+                            )
+                            Spacer(Modifier.height(8.dp))
                             Text("No Banner Image Provided", 
                                 color = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurfaceVariant, 
                                 style = MaterialTheme.typography.labelSmall)
@@ -125,16 +127,16 @@ fun EventDetailsScreen(
 
             Column(modifier = Modifier.padding(24.dp)) {
                 // Type Badge
+                val dark = isSystemInDarkTheme()
                 Surface(
-                    color = NotionTintLavender,
-                    shape = RoundedCornerShape(6.dp),
-                    border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.2f))
+                    color = if (dark) NotionTintLavenderDark else NotionTintLavender,
+                    shape = RoundedCornerShape(6.dp)
                 ) {
                     Text(
                         text = (event.type ?: "GENERAL").uppercase(),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
-                        color = NotionBrandPurple800,
+                        color = if (dark) NotionOnTintDark else NotionBrandPurple800,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 1.sp
                     )
@@ -179,8 +181,7 @@ fun EventDetailsScreen(
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    color = if (isSystemInDarkTheme()) NotionBrandNavyMid else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                    border = BorderStroke(1.dp, if (isSystemInDarkTheme()) NotionBrandPurple.copy(alpha = 0.3f) else MaterialTheme.colorScheme.outlineVariant)
+                    color = if (isSystemInDarkTheme()) NotionBrandNavyMid else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text("EVENT COORDINATOR", 
@@ -203,16 +204,20 @@ fun EventDetailsScreen(
                 if (!event.prize.isNullOrEmpty()) {
                     Spacer(Modifier.height(16.dp))
                     Surface(
-                        color = if (isSystemInDarkTheme()) NotionBrandGreen.copy(alpha = 0.1f) else NotionTintMint,
+                        color = if (isSystemInDarkTheme()) NotionTintMintDark else NotionTintMint,
                         shape = RoundedCornerShape(12.dp),
-                        modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, NotionBrandGreen.copy(alpha = 0.3f))
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("🏆", fontSize = 24.sp)
+                            Icon(
+                                imageVector = Icons.Default.EmojiEvents,
+                                contentDescription = null,
+                                tint = NotionBrandGreen,
+                                modifier = Modifier.size(28.dp)
+                            )
                             Spacer(Modifier.width(12.dp))
                             Column {
                                 Text("Prizes & Rewards", fontWeight = FontWeight.Bold, color = NotionBrandGreen)
@@ -240,11 +245,19 @@ fun EventDetailsScreen(
                 Spacer(Modifier.height(48.dp))
 
                 // Apply Button
+                var isRegistered by remember { 
+                    mutableStateOf(context.getSharedPreferences("event_regs", android.content.Context.MODE_PRIVATE).getBoolean("reg_${event.id}", false)) 
+                }
+
                 KiriPrimaryButton(
-                    text = if (!event.registrationLink.isNullOrEmpty()) "Register Now →" else "Apply via Platform",
+                    text = if (isRegistered) "Registered ✓" else if (!event.registrationLink.isNullOrEmpty()) "Register Now →" else "Apply via Platform",
+                    enabled = !isRegistered,
                     onClick = {
                         if (!event.registrationLink.isNullOrEmpty()) {
                             event.registrationLink?.let { uriHandler.openUri(it) }
+                            context.getSharedPreferences("event_regs", android.content.Context.MODE_PRIVATE)
+                                .edit().putBoolean("reg_${event.id}", true).apply()
+                            isRegistered = true
                         } else {
                             android.widget.Toast.makeText(context, "Registration link not available", android.widget.Toast.LENGTH_SHORT).show()
                         }

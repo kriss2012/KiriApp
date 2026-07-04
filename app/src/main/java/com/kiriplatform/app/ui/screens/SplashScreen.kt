@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -72,14 +73,14 @@ fun SplashScreen(
             Text(
                 "KIRI",
                 style = MaterialTheme.typography.displaySmall,
-                color = NotionInk,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = (-1).sp
             )
             Text(
                 "INNOVATION HUB OF BHARAT",
                 style = MaterialTheme.typography.labelSmall,
-                color = NotionSteel,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
             )
@@ -88,10 +89,11 @@ fun SplashScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // Pulsing Badge
+        val isDark = isSystemInDarkTheme()
         Surface(
-            color = NotionTintLavender,
+            color = if (isDark) NotionTintLavenderDark else NotionTintLavender,
             shape = MaterialTheme.shapes.medium,
-            border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f)),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
             modifier = Modifier.alpha(alpha.value)
         ) {
             Row(
@@ -101,13 +103,13 @@ fun SplashScreen(
                 Box(
                     modifier = Modifier
                         .size(6.dp)
-                        .background(NotionPrimary, CircleShape)
+                        .background(MaterialTheme.colorScheme.primary, CircleShape)
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
                     "Startup Community of Bharat",
                     style = MaterialTheme.typography.labelSmall,
-                    color = NotionBrandPurple800,
+                    color = if (isDark) NotionOnTintDark else NotionBrandPurple800,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -118,11 +120,11 @@ fun SplashScreen(
         Text(
             text = buildAnnotatedString {
                 append("Where ")
-                withStyle(style = SpanStyle(color = NotionPrimary)) { append("Founders, Investors") }
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) { append("Founders, Investors") }
                 append("\n& Mentors Connect")
             },
             style = MaterialTheme.typography.headlineMedium,
-            color = NotionInk,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             modifier = Modifier.alpha(alpha.value),
             fontWeight = FontWeight.Bold
@@ -158,8 +160,8 @@ fun SplashScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = MaterialTheme.shapes.medium,
-                border = BorderStroke(1.dp, NotionHairline),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = NotionInk)
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
             ) {
                 Text(
                     "KIRI AI Launchpad →",
@@ -175,7 +177,7 @@ fun SplashScreen(
                 Text(
                     "Already have an account? Sign In",
                     style = MaterialTheme.typography.labelMedium,
-                    color = NotionSteel,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                     fontWeight = FontWeight.Medium
                 )
             }

@@ -14,7 +14,7 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object Home : Screen("home", "Home", Icons.Default.Home)
     object Search : Screen("search", "Search", Icons.Default.Search)
     object Chats : Screen("chats", "Chats", Icons.Default.Chat)
-    object Repository : Screen("repository", "Community", Icons.Default.People)
+    object Network : Screen("network", "Network", Icons.Default.People)
     object Events : Screen("events", "Events", Icons.Default.DateRange)
     object Profile : Screen("profile", "Profile", Icons.Default.Person)
     object EditProfile : Screen("edit_profile", "Edit Profile")
@@ -53,12 +53,16 @@ sealed class Screen(val route: String, val title: String = "", val icon: ImageVe
     object ProjectShowcase : Screen("project_showcase", "Project Showcase")
     object Leaderboard : Screen("leaderboard", "Leaderboard")
     object InterviewSandbox : Screen("interview_sandbox", "Interview Sandbox")
+    
+    // Bottom Bar Screens
+    object Prepare : Screen("prepare", "Prepare", Icons.Default.Book)
+    object Participate : Screen("participate", "Participate", Icons.Default.HowToReg)
+    object Opportunities : Screen("opportunities", "Opportunities", Icons.Default.Work)
 }
 
 val BottomNavItems = listOf(
     Screen.Home,
-    Screen.Search,
-    Screen.Chats,
-    Screen.Repository,
-    Screen.Profile
+    Screen.Prepare,
+    Screen.Participate,
+    Screen.Opportunities
 )

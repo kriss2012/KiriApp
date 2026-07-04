@@ -62,6 +62,11 @@ fun NotificationScreen(
     LaunchedEffect(userId) {
         if (userId.isNotEmpty()) {
             viewModel.fetchNotifications(context, userId)
+            com.kiriplatform.app.data.SessionBus.events.collect { event ->
+                if (event == com.kiriplatform.app.data.SessionEvent.NotificationReceived) {
+                    viewModel.fetchNotifications(context, userId)
+                }
+            }
         }
     }
 
@@ -80,7 +85,7 @@ fun NotificationScreen(
                         modifier = Modifier
                             .padding(8.dp)
                             .size(36.dp)
-                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f), RoundedCornerShape(8.dp))
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", modifier = Modifier.size(18.dp))
                     }
@@ -185,8 +190,7 @@ fun NotificationItem(
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -196,8 +200,7 @@ fun NotificationItem(
                 Surface(
                     modifier = Modifier.size(40.dp),
                     shape = RoundedCornerShape(8.dp),
-                    color = iconColor.copy(alpha = 0.05f),
-                    border = BorderStroke(1.dp, iconColor.copy(alpha = 0.1f))
+                    color = iconColor.copy(alpha = 0.1f)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(18.dp))
@@ -251,14 +254,17 @@ fun NotificationItem(
                     ) {
                         Text("Accept", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                     }
-                    OutlinedButton(
+                    Button(
                         onClick = onDecline,
                         modifier = Modifier.weight(1f).height(36.dp),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
                         shape = RoundedCornerShape(8.dp),
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text("Ignore", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                        Text("Ignore", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
                     }
                 }
             }

@@ -117,19 +117,50 @@ fun KiriNavGraph(
         composable(Screen.Home.route) {
             HomeScreen(
                 onNavigateToNotifications = { navController.navigate(Screen.Notifications.route) },
-                onNavigateToSearch = { navController.navigate(Screen.Search.route) },
-                onNavigateToRepository = { navController.navigate(Screen.Repository.route) },
-                onNavigateToEvents = { navController.navigate(Screen.Events.route) },
+                onNavigateToChats = { navController.navigate(Screen.Chats.route) },
+                onNavigateToSearch = { navController.navigate(Screen.Opportunities.route) },
+                onNavigateToRepository = { navController.navigate(Screen.Opportunities.route) },
+                onNavigateToEvents = { navController.navigate(Screen.Participate.route) },
                 onNavigateToEventDetail = { eventJson -> 
                     navController.navigate(Screen.EventDetails.createRoute(eventJson))
                 },
                 onNavigateToAddEvent = { navController.navigate(Screen.AddEvent.route) },
-                onNavigateToAal = { navController.navigate(Screen.Organization.route) },
+                onNavigateToAal = { navController.navigate(Screen.Prepare.route) },
                 onNavigateToResumeBuilder = { navController.navigate(Screen.ResumeBuilder.route) },
                 onNavigateToBadges = { navController.navigate(Screen.Badges.route) },
                 onNavigateToProjectShowcase = { navController.navigate(Screen.ProjectShowcase.route) },
                 onNavigateToLeaderboard = { navController.navigate(Screen.Leaderboard.route) },
-                onNavigateToInterviewSandbox = { navController.navigate(Screen.InterviewSandbox.route) }
+                onNavigateToInterviewSandbox = { navController.navigate(Screen.InterviewSandbox.route) },
+                onNavigateToProfile = { navController.navigate(Screen.Profile.route) }
+            )
+        }
+
+        composable(Screen.Prepare.route) {
+            PrepareScreen(
+                onNavigateToResumeBuilder = { navController.navigate(Screen.ResumeBuilder.route) },
+                onNavigateToInterviewSandbox = { navController.navigate(Screen.InterviewSandbox.route) },
+                onNavigateToLms = { navController.navigate(Screen.Organization.route) },
+                onNavigateToAIAgent = { navController.navigate(Screen.AIAgent.route) }
+            )
+        }
+
+        composable(Screen.Participate.route) {
+            ParticipateScreen(
+                onNavigateToAddEvent = { navController.navigate(Screen.AddEvent.route) },
+                onNavigateToEventDetails = { eventJson ->
+                    navController.navigate(Screen.EventDetails.createRoute(eventJson))
+                }
+            )
+        }
+
+        composable(Screen.Opportunities.route) {
+            OpportunitiesScreen(
+                onNavigateToProfile = { userId ->
+                    navController.navigate(Screen.PublicProfile.createRoute(userId))
+                },
+                onNavigateToChat = { receiverId ->
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
+                }
             )
         }
         
@@ -141,10 +172,13 @@ fun KiriNavGraph(
             )
         }
 
-        composable(Screen.Repository.route) {
-            RepositoryScreen(
-                onNavigateToProfile = { userId -> 
+        composable(Screen.Network.route) {
+            NetworkScreen(
+                onNavigateToProfile = { userId ->
                     navController.navigate(Screen.PublicProfile.createRoute(userId))
+                },
+                onNavigateToChat = { receiverId ->
+                    navController.navigate(Screen.Chat.createRoute(receiverId))
                 }
             )
         }

@@ -22,6 +22,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import com.kiriplatform.app.data.remote.models.EventDto
 import com.kiriplatform.app.ui.theme.*
 import com.google.gson.Gson
@@ -36,34 +39,45 @@ fun EventsScreen(
     var selectedFilter by remember { mutableStateOf("ALL") }
     val filters = listOf("ALL", "HACKATHON", "COMPETITION", "WORKSHOP", "OFFER")
 
-    // Mock data updated to match EventDto structure for better visual representation
     val events = listOf(
         EventDto(
             _id = "1",
-            _title = "National AI Hackathon",
+            _title = "Kiri AI Innovation Summit 2026",
             type = "HACKATHON",
-            _description = "A 24-hour hackathon to build AI solutions for the future of decentralized ecosystems.",
-            _date = "2024-06-25T10:00:00.000Z",
-            _location = "Innovation Hub, Bangalore",
-            prize = "₹1,00,000 + Incubation"
+            _description = "Join developers, founders, and creators to showcase next-generation AI platforms, agents, and local language models.",
+            _date = "2026-07-07T10:00:00.000Z",
+            _location = "Virtual / Kiri Hub",
+            coordinatorName = "Aditi Sharma",
+            coordinatorPhone = "+91 98765 43210",
+            prize = "₹5,00,000 + Incubation",
+            imageUrl = "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop",
+            registrationLink = "https://forms.gle/KiriSummit2026"
         ),
         EventDto(
             _id = "2",
-            _title = "Kiri Tech Summit 2024",
-            type = "WORKSHOP",
-            _description = "Join top engineering leads to discuss the future of AI and LLMs in production.",
-            _date = "2024-07-15T09:00:00.000Z",
-            _location = "Virtual via Kiri Portal",
-            prize = "Free Kiri Certifications"
+            _title = "Global Builders Hackathon",
+            type = "COMPETITION",
+            _description = "A 48-hour virtual hackathon focused on building open-source projects, peer review, and developer collaboration.",
+            _date = "2026-07-24T14:00:00.000Z",
+            _location = "Kiri Sandbox / Discord",
+            coordinatorName = "Rohan Verma",
+            coordinatorPhone = "+91 99999 88888",
+            prize = "$10,000 Seed Grant",
+            imageUrl = "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&auto=format&fit=crop",
+            registrationLink = "https://forms.gle/KiriHackathon2026"
         ),
         EventDto(
             _id = "3",
-            _title = "Startup Pitch Deck Competition",
-            type = "COMPETITION",
+            _title = "Startup Pitch Deck Workshop",
+            type = "WORKSHOP",
             _description = "Pitch your idea to global investors and get a chance to secure seed funding.",
-            _date = "2024-08-05T14:00:00.000Z",
+            _date = "2026-08-05T14:00:00.000Z",
             _location = "Main Auditorium",
-            prize = "$5000 AWS Credits"
+            coordinatorName = "ASG Core Team",
+            coordinatorPhone = null,
+            prize = "$5000 AWS Credits",
+            imageUrl = "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop",
+            registrationLink = "https://forms.gle/KiriWorkshop2026"
         )
     )
 
@@ -155,8 +169,7 @@ fun FilterChip(label: String, isSelected: Boolean, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.clickable { onClick() },
         shape = RoundedCornerShape(20.dp),
-        color = if (isSelected) MaterialTheme.colorScheme.onSurface else Color.Transparent,
-        border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.outlineVariant)
+        color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
     ) {
         Text(
             text = label,
@@ -189,25 +202,37 @@ fun BroadcastCard(event: EventDto, onClick: () -> Unit) {
             .fillMaxWidth()
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
-        color = if (isSystemInDarkTheme()) NotionBrandNavyMid.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.1f) else MaterialTheme.colorScheme.outlineVariant)
+        color = if (isSystemInDarkTheme()) NotionBrandNavyMid.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            // Top Row: Category and Status
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+        Column {
+            if (!event.imageUrl.isNullOrEmpty()) {
+                AsyncImage(
+                    model = event.imageUrl,
+                    contentDescription = "Event Banner",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(130.dp)
+                        .clip(RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column(modifier = Modifier.padding(16.dp)) {
+                // Top Row: Category and Status
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                val dark = isSystemInDarkTheme()
                 Surface(
-                    color = if (isSystemInDarkTheme()) NotionBrandPurple800 else NotionTintLavender,
+                    color = if (dark) NotionTintLavenderDark else NotionTintLavender,
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
                         text = (event.type ?: "GENERAL").uppercase(),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (isSystemInDarkTheme()) NotionBrandPurple300 else NotionBrandPurple800,
+                        color = if (dark) NotionOnTintDark else NotionBrandPurple800,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 0.5.sp
                     )
@@ -294,4 +319,5 @@ fun BroadcastCard(event: EventDto, onClick: () -> Unit) {
             }
         }
     }
+}
 }

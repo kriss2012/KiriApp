@@ -1,0 +1,22 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/screens/SplashScreen.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/screens/SplashScreen.kt	2026-07-04 03:32:13.552126285 +0000
+@@ -88,8 +88,9 @@
+         Spacer(modifier = Modifier.height(24.dp))
+ 
+         // Pulsing Badge
++        val dark = androidx.compose.foundation.isSystemInDarkTheme()
+         Surface(
+-            color = NotionTintLavender,
++            color = if (dark) NotionTintLavenderDark else NotionTintLavender,
+             shape = MaterialTheme.shapes.medium,
+             border = BorderStroke(1.dp, NotionPrimary.copy(alpha = 0.1f)),
+             modifier = Modifier.alpha(alpha.value)
+@@ -107,7 +108,7 @@
+                 Text(
+                     "Startup Community of Bharat",
+                     style = MaterialTheme.typography.labelSmall,
+-                    color = NotionBrandPurple800,
++                    color = if (dark) NotionOnTintDark else NotionBrandPurple800,
+                     fontWeight = FontWeight.Bold
+                 )
+             }

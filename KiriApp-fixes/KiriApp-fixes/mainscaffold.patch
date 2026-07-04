@@ -1,0 +1,34 @@
+--- kiri_v2/KiriApp-2/app/src/main/java/com/kiriplatform/app/ui/navigation/MainScaffold.kt	2026-06-11 19:22:11.000000000 +0000
++++ kiri_v2_fixed/app/src/main/java/com/kiriplatform/app/ui/navigation/MainScaffold.kt	2026-07-04 03:25:10.799075349 +0000
+@@ -113,7 +113,12 @@
+     
+     Scaffold(
+         containerColor = Color.Transparent,
+-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
++        // Let Scaffold compute real status-bar / navigation-bar insets instead of
++        // zeroing them out. Previously only the floating nav pill applied its own
++        // navigationBarsPadding(), so screen content never reserved space for the
++        // status bar or the system nav bar — fine on gesture nav (thin inset),
++        // but overlapping/clipped on 3-button nav (tall opaque bar) and on
++        // devices with different status bar heights.
+         snackbarHost = { SnackbarHost(snackbarHostState) }
+     ) { padding ->
+         Surface(
+@@ -121,7 +126,7 @@
+             color = MaterialTheme.colorScheme.background
+         ) {
+             Box(modifier = Modifier.fillMaxSize()) {
+-                // Main Content
++                // Main Content — now receives real insets via `padding`
+                 content(padding)
+ 
+                 // Floating Bottom Navigation
+@@ -131,7 +136,7 @@
+                     exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+                     modifier = Modifier
+                         .align(Alignment.BottomCenter)
+-                        .navigationBarsPadding() // Keep above gesture line
++                        .navigationBarsPadding() // Keep above gesture line / 3-button bar
+                         .padding(bottom = 24.dp)
+                 ) {
+                     ASGBottomNavigation(navController = navController, currentRoute = currentRoute)
