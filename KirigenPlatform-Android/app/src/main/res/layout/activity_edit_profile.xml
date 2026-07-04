@@ -7,14 +7,13 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.KirigenPlatform.AppBarOverlay">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/navy_blue"
+            android:background="@color/background_secondary"
             app:title="Edit Profile"
             app:titleTextColor="@color/white"
             app:navigationIcon="@drawable/ic_back" />

@@ -1,5 +1,6 @@
 package com.kirigenplatform.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,12 @@ import com.kirigenplatform.adapter.JobAdapter;
 import com.kirigenplatform.data.api.ApiClient;
 import com.kirigenplatform.data.api.ApiService;
 import com.kirigenplatform.data.model.Job;
+import com.kirigenplatform.ui.student.AalInternshipActivity;
+import com.kirigenplatform.ui.student.BadgesActivity;
+import com.kirigenplatform.ui.student.InterviewSandboxActivity;
+import com.kirigenplatform.ui.student.LeaderboardActivity;
+import com.kirigenplatform.ui.student.ProjectShowcaseActivity;
+import com.kirigenplatform.ui.student.ResumeBuilderActivity;
 import com.kirigenplatform.utils.SharedPreferencesManager;
 import java.util.List;
 import retrofit2.Call;
@@ -29,7 +36,9 @@ public class HomeFragment extends Fragment {
     private JobAdapter jobAdapter;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TextView tvWelcome, tvNoJobs;
+    private TextView tvWelcome, tvNoJobs, tvRankTier, tvRankPoints;
+    private ProgressBar progressRank;
+    private View cardResumeBuilder, cardInterviewSandbox, cardBadges, cardProjectShowcase, cardCampusAmbassador, cardAiInternship;
     private SharedPreferencesManager sharedPreferencesManager;
     private ApiService apiService;
     
@@ -43,6 +52,7 @@ public class HomeFragment extends Fragment {
         
         initViews(view);
         setupRecyclerView();
+        setupLaunchers();
         loadJobs();
         
         return view;
@@ -55,8 +65,26 @@ public class HomeFragment extends Fragment {
         tvWelcome = view.findViewById(R.id.tv_welcome);
         tvNoJobs = view.findViewById(R.id.tv_no_jobs);
         
+        // Rank Views
+        tvRankTier = view.findViewById(R.id.tv_rank_tier);
+        tvRankPoints = view.findViewById(R.id.tv_rank_points);
+        progressRank = view.findViewById(R.id.progress_rank);
+        
+        // Launcher Cards
+        cardResumeBuilder = view.findViewById(R.id.card_resume_builder);
+        cardInterviewSandbox = view.findViewById(R.id.card_interview_sandbox);
+        cardBadges = view.findViewById(R.id.card_badges);
+        cardProjectShowcase = view.findViewById(R.id.card_project_showcase);
+        cardCampusAmbassador = view.findViewById(R.id.card_campus_ambassador);
+        cardAiInternship = view.findViewById(R.id.card_ai_internship);
+        
         String userName = sharedPreferencesManager.getUserName();
-        tvWelcome.setText("Welcome back, " + (userName != null ? userName : "User") + "!");
+        tvWelcome.setText("Welcome back, " + (userName != null ? userName : "Innovator") + "!");
+        
+        // Set dynamic simulated rank data
+        tvRankTier.setText("Neural Tier 3 (Advanced)");
+        tvRankPoints.setText("2,840 pts");
+        progressRank.setProgress(72);
         
         swipeRefreshLayout.setOnRefreshListener(this::loadJobs);
     }
@@ -65,7 +93,7 @@ public class HomeFragment extends Fragment {
         jobAdapter = new JobAdapter(new JobAdapter.OnJobClickListener() {
             @Override
             public void onJobClick(Job job) {
-                // Navigate to job detail
+                // Navigate to job detail if implemented
             }
             
             @Override
@@ -76,6 +104,38 @@ public class HomeFragment extends Fragment {
         
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(jobAdapter);
+    }
+    
+    private void setupLaunchers() {
+        cardResumeBuilder.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), ResumeBuilderActivity.class);
+            startActivity(intent);
+        });
+        
+        cardInterviewSandbox.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), InterviewSandboxActivity.class);
+            startActivity(intent);
+        });
+        
+        cardBadges.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), BadgesActivity.class);
+            startActivity(intent);
+        });
+        
+        cardProjectShowcase.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), ProjectShowcaseActivity.class);
+            startActivity(intent);
+        });
+        
+        cardCampusAmbassador.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), LeaderboardActivity.class);
+            startActivity(intent);
+        });
+        
+        cardAiInternship.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), AalInternshipActivity.class);
+            startActivity(intent);
+        });
     }
     
     private void loadJobs() {

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme -->
-    <style name="Theme.KirigenPlatform" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color -->
-        <item name="colorPrimary">@color/primary_blue</item>
-        <item name="colorPrimaryDark">@color/primary_blue_dark</item>
+    <style name="Theme.KirigenPlatform" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color - Purple -->
+        <item name="colorPrimary">@color/primary_purple</item>
+        <item name="colorPrimaryDark">@color/primary_purple_dark</item>
+        <item name="colorAccent">@color/neon_cyan</item>
         
-        <!-- Secondary brand color (Navy Blue - 20% usage) -->
-        <item name="colorSecondary">@color/navy_blue</item>
+        <!-- Secondary brand color (Navy Blue/Space Dark) -->
+        <item name="colorSecondary">@color/background_secondary</item>
         
         <!-- Status bar color -->
-        <item name="android:statusBarColor">@color/navy_blue</item>
+        <item name="android:statusBarColor">@color/background_primary</item>
+        <item name="android:windowLightStatusBar">false</item>
         
         <!-- Background colors -->
         <item name="android:windowBackground">@color/background_primary</item>
@@ -25,43 +27,60 @@
         <item name="windowNoTitle">true</item>
     </style>
     
-    <!-- Button Styles -->
+    <!-- Button Styles - Modern Rounded Buttons -->
     <style name="Widget.KirigenPlatform.Button" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/primary_blue</item>
-        <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/primary_purple</item>
+        <item name="cornerRadius">10dp</item>
         <item name="android:textColor">@color/text_on_primary</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     
     <style name="Widget.KirigenPlatform.Button.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/primary_blue</item>
-        <item name="cornerRadius">8dp</item>
-        <item name="android:textColor">@color/primary_blue</item>
+        <item name="strokeColor">@color/primary_purple</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textColor">@color/primary_purple_light</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     
     <style name="Widget.KirigenPlatform.Button.Navy" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/navy_blue</item>
-        <item name="cornerRadius">8dp</item>
-        <item name="android:textColor">@color/text_on_navy</item>
+        <item name="backgroundTint">@color/background_card_light</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Widget.KirigenPlatform.Button.Cyan" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/neon_cyan</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:textColor">@color/background_primary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
     
-    <!-- Card Styles -->
+    <!-- Card Styles - Translucent Space Dark Cards -->
     <style name="Widget.KirigenPlatform.Card" parent="Widget.MaterialComponents.CardView">
-        <item name="cardCornerRadius">12dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">0dp</item> <!-- Elevated by outlines rather than heavy shadows -->
+        <item name="cardBackgroundColor">@color/background_card</item>
+        <item name="strokeColor">@color/divider</item>
+        <item name="strokeWidth">1dp</item>
     </style>
     
     <!-- TextInputLayout Style -->
     <style name="Widget.KirigenPlatform.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/primary_blue</item>
-        <item name="hintTextColor">@color/primary_blue</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxStrokeColor">@color/primary_purple</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="hintTextColor">@color/primary_purple_light</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
     </style>
     
     <!-- Typography Styles -->
@@ -140,6 +159,6 @@
     <style name="TextAppearance.KirigenPlatform.Overline" parent="TextAppearance.MaterialComponents.Overline">
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/primary_blue</item>
+        <item name="android:textColor">@color/neon_cyan</item>
     </style>
 </resources>
