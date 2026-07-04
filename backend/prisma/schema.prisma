@@ -79,6 +79,7 @@ model User {
   digitalPersona   String?       @map("digital_persona") // AI Generated summary
   phoneNumber      String?       @unique
   avatarUrl        String?
+  bannerUrl        String?
   bio              String?
   department       String?
   college          String?

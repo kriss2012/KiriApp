@@ -56,7 +56,8 @@ fun HomeScreen(
     onNavigateToProjectShowcase: () -> Unit = {},
     onNavigateToLeaderboard: () -> Unit = {},
     onNavigateToInterviewSandbox: () -> Unit = {},
-    onNavigateToProfile: () -> Unit = {}
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToOpportunities: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val userId = remember { SessionManager.getInstance(context).getUserId() ?: "" }
@@ -103,7 +104,8 @@ fun HomeScreen(
                         onNavigateToProjectShowcase = onNavigateToProjectShowcase,
                         onNavigateToLeaderboard = onNavigateToLeaderboard,
                         onNavigateToInterviewSandbox = onNavigateToInterviewSandbox,
-                        onNavigateToProfile = onNavigateToProfile
+                        onNavigateToProfile = onNavigateToProfile,
+                        onNavigateToOpportunities = onNavigateToOpportunities
                     )
                 }
                 is HomeState.Error -> {
@@ -140,7 +142,8 @@ fun HomeContent(
     onNavigateToProjectShowcase: () -> Unit,
     onNavigateToLeaderboard: () -> Unit,
     onNavigateToInterviewSandbox: () -> Unit,
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    onNavigateToOpportunities: () -> Unit
 ) {
     val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
 
@@ -187,6 +190,20 @@ fun HomeContent(
                 attachmentIcon = Icons.Default.Campaign,
                 likesCount = 105,
                 commentsCount = 37
+            ),
+            ActivityFeedItem(
+                id = "4",
+                actorName = "KiriGen Tech",
+                actorHeadline = "Ecosystem Tech Blog",
+                actorAvatarText = "KB",
+                actionText = "published a new tech blog",
+                timeAgo = "2d ago",
+                contentText = "Read our latest post on Building Decentralized Identity: Standardizing Verifiable Credentials for Students & Innovators in India.",
+                attachmentTitle = "Building Decentralized Identity",
+                attachmentSubtitle = "KiriGen Tech Blog • 5 min read",
+                attachmentIcon = Icons.Default.Book,
+                likesCount = 56,
+                commentsCount = 14
             )
         )
     }
@@ -199,6 +216,7 @@ fun HomeContent(
         item { 
             HomeTopBar(
                 userName = user.fullName, 
+                avatarUrl = user.avatarUrl,
                 onNavigateToNotifications = onNavigateToNotifications,
                 onNavigateToChats = onNavigateToChats,
                 onNavigateToProfile = onNavigateToProfile
@@ -255,7 +273,23 @@ fun HomeContent(
         }
 
         items(mockFeedItems) { feedItem ->
-            ActivityFeedItemCard(item = feedItem)
+            ActivityFeedItemCard(
+                item = feedItem,
+                onClick = {
+                    when {
+                        feedItem.actionText.contains("job") -> onNavigateToOpportunities()
+                        feedItem.actionText.contains("credential") -> onNavigateToBadges()
+                        feedItem.actionText.contains("challenge") -> onNavigateToEvents()
+                        feedItem.actionText.contains("blog") -> {
+                            try {
+                                uriHandler.openUri(com.kiriplatform.app.utils.AppConfig.WEBSITE_URL)
+                            } catch (e: Exception) {
+                                // Fallback
+                            }
+                        }
+                    }
+                }
+            )
         }
     }
 }
@@ -575,6 +609,7 @@ fun InnovationProgressCard(points: Int) {
 @Composable
 fun HomeTopBar(
     userName: String,
+    avatarUrl: String?,
     onNavigateToNotifications: () -> Unit,
     onNavigateToChats: () -> Unit,
     onNavigateToProfile: () -> Unit
@@ -637,12 +672,21 @@ fun HomeTopBar(
                     color = if (isLightTheme) MaterialTheme.colorScheme.primaryContainer else Color(0xFF1E3A8A)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Text(
-                            text = userName.take(1).uppercase(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White
-                        )
+                        if (!avatarUrl.isNullOrEmpty()) {
+                            coil.compose.AsyncImage(
+                                model = avatarUrl,
+                                contentDescription = "Profile Photo",
+                                modifier = Modifier.fillMaxSize().clip(CircleShape),
+                                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                            )
+                        } else {
+                            Text(
+                                text = userName.take(1).uppercase(),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isLightTheme) MaterialTheme.colorScheme.primary else Color.White
+                            )
+                        }
                     }
                 }
             }
@@ -1063,11 +1107,12 @@ fun QuickToolItem(
 }
 
 @Composable
-fun ActivityFeedItemCard(item: ActivityFeedItem) {
+fun ActivityFeedItemCard(item: ActivityFeedItem, onClick: () -> Unit = {}) {
     Surface(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.8f)),
         color = MaterialTheme.colorScheme.surface

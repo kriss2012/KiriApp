@@ -23,6 +23,7 @@ export const getProfile = async (req: Request, res: Response) => {
           digitalPersona: true,
           bio: true,
           avatarUrl: true,
+          bannerUrl: true,
           phoneNumber: true,
           points: true,
           createdAt: true,
@@ -107,6 +108,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       fullName,
       bio,
       avatarUrl,
+      bannerUrl,
       phoneNumber,
       role,
       department,
@@ -142,6 +144,7 @@ export const updateProfile = async (req: Request, res: Response) => {
         fullName,
         bio: bio || null,
         avatarUrl,
+        bannerUrl: bannerUrl || null,
         phoneNumber: phoneNumber || null, // Fix unique constraint issue with empty strings
         department: department || null,
         college: college || null,

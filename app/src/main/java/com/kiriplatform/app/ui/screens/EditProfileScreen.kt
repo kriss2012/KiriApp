@@ -47,6 +47,8 @@ fun EditProfileScreen(
     var githubUrl by remember { mutableStateOf("") }
     var linkedInUrl by remember { mutableStateOf("") }
     var servicesStr by remember { mutableStateOf("") }
+    var avatarUrl by remember { mutableStateOf("") }
+    var bannerUrl by remember { mutableStateOf("") }
     var isSaving by remember { mutableStateOf(false) }
     var showErrorDialog by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
@@ -80,6 +82,8 @@ fun EditProfileScreen(
                     githubUrl = state.user.githubUrl ?: ""
                     linkedInUrl = state.user.linkedInUrl ?: ""
                     servicesStr = state.user.services?.joinToString(", ") ?: ""
+                    avatarUrl = state.user.avatarUrl ?: ""
+                    bannerUrl = state.user.bannerUrl ?: sessionManager.getUserBanner() ?: ""
                 }
             }
             is ProfileState.Error -> {
@@ -120,6 +124,8 @@ fun EditProfileScreen(
             EditField(label = "Website", value = website, onValueChange = { website = it })
             EditField(label = "GitHub URL", value = githubUrl, onValueChange = { githubUrl = it })
             EditField(label = "LinkedIn URL", value = linkedInUrl, onValueChange = { linkedInUrl = it })
+            EditField(label = "Profile Image URL (Avatar)", value = avatarUrl, onValueChange = { avatarUrl = it })
+            EditField(label = "Profile Banner URL", value = bannerUrl, onValueChange = { bannerUrl = it })
             EditField(label = "Services (comma separated)", value = servicesStr, onValueChange = { servicesStr = it })
             
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
@@ -170,6 +176,7 @@ fun EditProfileScreen(
 
             Button(
                 onClick = {
+                    sessionManager.saveUserBanner(bannerUrl)
                     val cleanServices = servicesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                     viewModel.updateProfile(
                         context = context,
@@ -184,6 +191,8 @@ fun EditProfileScreen(
                         website = website,
                         githubUrl = githubUrl,
                         linkedInUrl = linkedInUrl,
+                        avatarUrl = avatarUrl,
+                        bannerUrl = bannerUrl,
                         services = cleanServices
                     )
                     isSaving = true

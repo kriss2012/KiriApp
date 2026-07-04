@@ -61,6 +61,8 @@ class ProfileViewModel : ViewModel() {
         website: String? = null,
         githubUrl: String? = null,
         linkedInUrl: String? = null,
+        avatarUrl: String? = null,
+        bannerUrl: String? = null,
         services: List<String> = emptyList()
     ) {
         viewModelScope.launch {
@@ -69,7 +71,13 @@ class ProfileViewModel : ViewModel() {
                 _uiState.value = ProfileState.Error("Full Name cannot be empty.")
                 return@launch
             }
-            val urlFields = mapOf("Website" to website, "GitHub URL" to githubUrl, "LinkedIn URL" to linkedInUrl)
+            val urlFields = mapOf(
+                "Website" to website, 
+                "GitHub URL" to githubUrl, 
+                "LinkedIn URL" to linkedInUrl, 
+                "Avatar URL" to avatarUrl,
+                "Banner URL" to bannerUrl
+            )
             for ((label, url) in urlFields) {
                 if (!url.isNullOrBlank() && !url.startsWith("http://") && !url.startsWith("https://")) {
                     _uiState.value = ProfileState.Error("$label must start with https://")
@@ -91,6 +99,8 @@ class ProfileViewModel : ViewModel() {
                     website = website,
                     githubUrl = githubUrl,
                     linkedInUrl = linkedInUrl,
+                    avatarUrl = avatarUrl,
+                    bannerUrl = bannerUrl,
                     services = services
                 )
 
@@ -101,6 +111,8 @@ class ProfileViewModel : ViewModel() {
                 val sessionManager = com.kiriplatform.app.data.SessionManager.getInstance(context)
                 sessionManager.saveUserName(updatedUser.fullName)
                 sessionManager.saveUserRole(updatedUser.role)
+                sessionManager.saveUserAvatar(updatedUser.avatarUrl)
+                sessionManager.saveUserBanner(updatedUser.bannerUrl)
                 sessionManager.setCanCreateEvents(updatedUser.canCreateEvents)
 
                 // Persist to cache so it survives offline

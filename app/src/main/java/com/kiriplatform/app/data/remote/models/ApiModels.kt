@@ -296,6 +296,7 @@ data class UpdateProfileRequest(
     val githubUrl: String? = null,
     val linkedInUrl: String? = null,
     val avatarUrl: String? = null,
+    val bannerUrl: String? = null,
     val services: List<String> = emptyList()
 )
 
@@ -365,6 +366,7 @@ data class UserDto(
     val year: String? = null,
     val section: String? = null,
     val avatarUrl: String? = null,
+    val bannerUrl: String? = null,
     val _canCreateEvents: Boolean? = false,
     val points: Int? = 100,
     val phoneNumber: String? = null,

@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.Brush
 fun EventDetailsScreen(
     navController: NavController,
     eventJson: String
-) {
+) 
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     val gson = com.google.gson.Gson()
@@ -310,8 +310,6 @@ fun EventDetailsScreen(
                     
                     Spacer(Modifier.height(24.dp))
                 }
-            }
         }
     }
-}
 }

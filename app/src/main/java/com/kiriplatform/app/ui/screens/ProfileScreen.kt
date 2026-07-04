@@ -500,6 +500,18 @@ fun ProfileHeroSection(
     user: UserDto, 
     onNavigateToEdit: () -> Unit
 ) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val bannerUrl = remember(user.bannerUrl, user.id) {
+        if (!user.bannerUrl.isNullOrEmpty()) {
+            user.bannerUrl
+        } else if (user.id == sessionManager.getUserId()) {
+            sessionManager.getUserBanner() ?: ""
+        } else {
+            ""
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -511,22 +523,33 @@ fun ProfileHeroSection(
                 .fillMaxWidth()
                 .height(150.dp)
         ) {
-            // LinkedIn-style Profile Banner
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(110.dp)
-                    .background(
-                        Brush.horizontalGradient(
-                            colors = listOf(
-                                MaterialTheme.colorScheme.primary,
-                                MaterialTheme.colorScheme.secondaryContainer
+            // LinkedIn-style Profile Banner (with fixed resolution/cropping)
+            if (bannerUrl.isNotEmpty()) {
+                AsyncImage(
+                    model = bannerUrl,
+                    contentDescription = "Profile Banner",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(110.dp),
+                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(110.dp)
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.secondaryContainer
+                                )
                             )
                         )
-                    )
-            )
+                )
+            }
 
-            // Profile Avatar overlapping the banner
+            // Profile Avatar overlapping the banner (with fixed resolution/cropping)
             Surface(
                 modifier = Modifier
                     .padding(start = 24.dp)

@@ -114,7 +114,7 @@ fun MainScaffold(
     
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets.systemBars,
+        contentWindowInsets = WindowInsets(0),
         bottomBar = {
             AnimatedVisibility(
                 visible = showBottomBar,
