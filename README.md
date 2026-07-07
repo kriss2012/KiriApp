@@ -1,5 +1,6 @@
 Kiri App – Student Community Platform
 
+KiriGen Tech
 Overview
 
 Kiri App is a modern Android-based student community application designed to connect students through communication, collaboration, resource sharing, and academic support. The platform provides a centralized ecosystem where students can interact, share notes, discuss projects, discover opportunities, and stay updated with college activities.
